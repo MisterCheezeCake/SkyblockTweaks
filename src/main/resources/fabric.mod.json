@@ -1,0 +1,40 @@
+{
+	"schemaVersion": 1,
+	"id": "skyblocktweaks",
+	"version": "${version}",
+	"name": "Skyblock Tweaks",
+	"description": "A Hypixel SkyBlock mod for the latest version providing many tweaks and gameplay enhancements",
+	"authors": [
+		"MisterCheezeCake"
+	],
+	"contact": {
+		"homepage": "https://modrinth.com/project/sbt",
+		"sources": "https://github.com/MisterCheezeCake/SkyblockTweaks",
+		"issues": "https://github.com/MisterCheezeCake/SkyBlockTweaks/issues",
+		"discord": "https://discord.gg/YH3hw926hz"
+	},
+	"license": "LGPL-3.0-or-later",
+	"icon": "assets/skyblocktweaks/icon.png",
+	"environment": "client",
+	"entrypoints": {
+		"main": [
+			"wtf.cheeze.sbt.SkyBlockTweaks"
+		],
+		"modmenu": [
+			"wtf.cheeze.sbt.config.ModMenu"
+		]
+	},
+	"mixins": [
+		"skyblocktweaks.mixins.json"
+	],
+	"depends": {
+		"fabricloader": ">=0.15.11",
+		"minecraft": "~1.21",
+		"java": ">=21",
+		"fabric-api": "*",
+		"yet_another_config_lib_v3": "*"
+	},
+	"suggests": {
+		"modmenu": "*"
+	}
+}

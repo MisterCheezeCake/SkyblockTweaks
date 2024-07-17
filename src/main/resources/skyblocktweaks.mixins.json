@@ -1,0 +1,15 @@
+{
+	"required": true,
+	"package": "wtf.cheeze.sbt.mixin",
+	"compatibilityLevel": "JAVA_21",
+	"mixins": [
+		"InGameHudMixin",
+		"DrawContextMixin",
+		"BossBarHudMixin",
+		"AbstractInventoryScreenMixin",
+		"InventoryScreenMixin"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	}
+}
