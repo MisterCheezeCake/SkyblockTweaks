@@ -51,7 +51,7 @@ public class OverflowManaHUD extends TextHUD {
     @Override
     public boolean shouldRender(boolean fromHudScreen) {
         if (!super.shouldRender(fromHudScreen)) return false;
-        if ((SkyBlockTweaks.DATA.inSB && SkyBlockTweaks.CONFIG.config.huds.overflowMana.enabled) || fromHudScreen) return true;
+        if ((SkyBlockTweaks.DATA.inSB && SkyBlockTweaks.CONFIG.config.huds.overflowMana.enabled && (!SkyBlockTweaks.CONFIG.config.huds.overflowMana.hideWhenZero || SkyBlockTweaks.DATA.overflowMana != 0)) || fromHudScreen) return true;
         return false;
     }
     @Override
@@ -68,6 +68,9 @@ public class OverflowManaHUD extends TextHUD {
 
         @SerialEntry
         public boolean enabled = false;
+
+        @SerialEntry
+        public boolean hideWhenZero = true;
 
         @SerialEntry
         public boolean shadow = true;
@@ -99,6 +102,16 @@ public class OverflowManaHUD extends TextHUD {
                             defaults.huds.overflowMana.enabled,
                             () -> config.huds.overflowMana.enabled,
                             value -> config.huds.overflowMana.enabled = (Boolean) value
+                    )
+                    .build();
+            var hideWhenZero = Option.<Boolean>createBuilder()
+                    .name(Text.literal("Hide Overflow Mana HUD when Zero"))
+                    .description(OptionDescription.of(Text.literal("Hides the Overflow Mana HUD when the value is zero")))
+                    .controller(SkyBlockTweaksConfig::generateBooleanController)
+                    .binding(
+                            defaults.huds.overflowMana.hideWhenZero,
+                            () -> config.huds.overflowMana.hideWhenZero,
+                            value -> config.huds.overflowMana.hideWhenZero = (Boolean) value
                     )
                     .build();
             var shadow = Option.<Boolean>createBuilder()
@@ -156,6 +169,7 @@ public class OverflowManaHUD extends TextHUD {
                     .name(Text.literal("Overflow Mana HUD"))
                     .description(OptionDescription.of(Text.literal("Settings for the Overflow Mana HUD")))
                     .option(enabled)
+                    .option(hideWhenZero)
                     .option(shadow)
                     .option(color)
                     .option(icon)

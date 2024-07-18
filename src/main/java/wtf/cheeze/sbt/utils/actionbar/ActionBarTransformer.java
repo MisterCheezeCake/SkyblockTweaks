@@ -97,6 +97,8 @@ public class ActionBarTransformer {
                 data.maxMana = Float.parseFloat(mana[1].replace(",", ""));
                 if (manaParts[1].contains("ʬ")) {
                     data.overflowMana = Float.parseFloat(manaParts[1].replace("ʬ", "").replace(",", ""));
+                } else {
+                    data.overflowMana = 0f;
                 }
                 if (!SkyBlockTweaks.CONFIG.config.actionBarFilters.hideMana) {
                     newText += SEPERATOR5 + unpadded;
