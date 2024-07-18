@@ -54,6 +54,12 @@ public class Huds {
     @SerialEntry
     public DamageReductionHUD.Config dr = new DamageReductionHUD.Config();
 
+    @SerialEntry
+    public DrillFuelHUD.Config drillFuel = new DrillFuelHUD.Config();
+
+    @SerialEntry
+    public DrillFuelBar.Config drillFuelBar = new DrillFuelBar.Config();
+
     public static ConfigCategory getCategory(ConfigImpl defaults, ConfigImpl config) {
         return ConfigCategory.createBuilder()
                 .name(Text.literal("HUDs"))
@@ -67,6 +73,8 @@ public class Huds {
                 .group(SpeedHUD.Config.getGroup(defaults, config))
                 .group(DefenseHUD.Config.getGroup(defaults, config))
                 .group(DamageReductionHUD.Config.getGroup(defaults, config))
+                .group(DrillFuelHUD.Config.getGroup(defaults, config))
+                .group(DrillFuelBar.Config.getGroup(defaults, config))
                 .build();
     }
 }

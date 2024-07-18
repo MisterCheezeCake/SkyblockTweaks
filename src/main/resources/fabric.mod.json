@@ -1,6 +1,6 @@
 {
 	"schemaVersion": 1,
-	"id": "skyblocktweaks",
+	"id": "skyblocktweaks-fabric",
 	"version": "${version}",
 	"name": "Skyblock Tweaks",
 	"description": "A Hypixel SkyBlock mod for the latest version providing many tweaks and gameplay enhancements",

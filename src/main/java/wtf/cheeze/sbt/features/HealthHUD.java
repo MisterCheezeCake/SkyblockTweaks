@@ -32,7 +32,7 @@ import wtf.cheeze.sbt.utils.TextUtils;
 import wtf.cheeze.sbt.utils.hud.HudInformation;
 import wtf.cheeze.sbt.utils.hud.TextHUD;
 
-import java.awt.*;
+import java.awt.Color;
 
 public class HealthHUD extends TextHUD {
 

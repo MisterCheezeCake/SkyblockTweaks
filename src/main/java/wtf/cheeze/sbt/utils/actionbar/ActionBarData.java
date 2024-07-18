@@ -56,9 +56,9 @@ public class ActionBarData {
     @Nullable
     public Float skillPercentage;
     @Nullable
-    public int drillFuel;
+    public Integer drillFuel;
     @Nullable
-    public int maxDrillFuel;
+    public Integer maxDrillFuel;
     @Nullable
     public String abilityName;
     @Nullable

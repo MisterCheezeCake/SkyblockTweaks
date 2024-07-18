@@ -19,6 +19,8 @@
 package wtf.cheeze.sbt.utils;
 
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.component.DataComponentTypes;
+import wtf.cheeze.sbt.SkyBlockTweaks;
 import wtf.cheeze.sbt.utils.actionbar.ActionBarData;
 
 public class SkyBlockData {
@@ -30,6 +32,9 @@ public class SkyBlockData {
     public float maxMana = 0;
     public float mana = 0;
     public float overflowMana = 0;
+
+    public float drillFuel = 0;
+    public float maxDrillFuel = 0;
 
 
     public float getSpeed() {
@@ -44,6 +49,10 @@ public class SkyBlockData {
         return (defense / (defense + 100f)) * 100;
     }
 
+    public boolean isThePlayerHoldingADrill() {
+        return MinecraftClient.getInstance().player.getMainHandStack().getName().getString().contains("Drill");
+    }
+
     public void update(ActionBarData data) {
         if (data == null) return;
         if (data.defense != null) this.defense = data.defense;
@@ -52,6 +61,8 @@ public class SkyBlockData {
         if (data.maxMana != null) this.maxMana = data.maxMana;
         if (data.currentMana != null) this.mana = data.currentMana;
         if (data.overflowMana != null) this.overflowMana = data.overflowMana;
+        if (data.drillFuel != null) this.drillFuel = data.drillFuel;
+        if (data.maxDrillFuel != null) this.maxDrillFuel = data.maxDrillFuel;
 
 
     }

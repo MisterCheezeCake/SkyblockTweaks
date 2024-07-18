@@ -70,7 +70,9 @@ public class SkyBlockTweaks implements ModInitializer {
 		HUDS.add(new HealthHUD());
 		HUDS.add(new ManaHUD());
 		HUDS.add(new OverflowManaHUD());
+		HUDS.add(new DrillFuelHUD());
 
+		HUDS.add(new DrillFuelBar());
 		HUDS.add(new HealthBar());
 		HUDS.add(new ManaBar());
 
@@ -84,11 +86,13 @@ public class SkyBlockTweaks implements ModInitializer {
 
 
 		ClientReceiveMessageEvents.MODIFY_GAME.register((message, overlay) -> {
+
 			if (!overlay) return message;
 			//SkyBlockTweaks.LOGGER.info("Old: " + message.getString());
 			var data = ActionBarTransformer.extractDataAndRunTransformation(message.getString());
 			//SkyBlockTweaks.LOGGER.info("New: " + data.transformedText);
 			SkyBlockTweaks.DATA.update(data);
+			SkyBlockTweaks.DATA.isThePlayerHoldingADrill();
 			return Text.of(data.transformedText);
 
 		});

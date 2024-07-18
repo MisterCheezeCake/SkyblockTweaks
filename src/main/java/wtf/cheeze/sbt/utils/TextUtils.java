@@ -48,6 +48,15 @@ public class TextUtils {
         }
         return sb.toString();
     }
+    public static String addKOrM(int number, String separator) {
+        if (number >= 1000000) {
+            return formatNumber(number / 1000000, separator) + "M";
+        } else if (number >= 1000) {
+            return formatNumber(number / 1000, separator) + "K";
+        } else {
+            return formatNumber(number, separator);
+        }
+    }
     public static Text getTextThatLinksToURL(String text,String hovered, String url) {
         return Text.literal(text).styled(style -> {
             style = style.withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.literal(hovered)));

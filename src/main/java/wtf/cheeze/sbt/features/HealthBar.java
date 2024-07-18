@@ -31,7 +31,7 @@ import wtf.cheeze.sbt.utils.TextUtils;
 import wtf.cheeze.sbt.utils.hud.BarHUD;
 import wtf.cheeze.sbt.utils.hud.HudInformation;
 
-import java.awt.*;
+import java.awt.Color;
 
 public class HealthBar extends BarHUD {
 
