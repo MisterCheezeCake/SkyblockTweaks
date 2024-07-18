@@ -18,37 +18,29 @@
  */
 package wtf.cheeze.sbt.mixin;
 
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.hud.InGameHud;
 import net.minecraft.text.Text;
-import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import wtf.cheeze.sbt.SkyBlockTweaks;
 import wtf.cheeze.sbt.utils.ModifiedDrawContext;
 
 @Mixin(InGameHud.class)
 public abstract class InGameHudMixin {
-
-    @Shadow
-    @Nullable
-    private Text overlayMessage;
-
-    @Redirect(method ="renderOverlayMessage", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawTextWithBackground(Lnet/minecraft/client/font/TextRenderer;Lnet/minecraft/text/Text;IIII)I"))
-    private int sbt$drawTextWithBackgroundNoShadowRedirect(DrawContext instance, TextRenderer textRenderer, Text text, int x, int y, int width, int color) {
+    @WrapOperation(method = "renderOverlayMessage", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawTextWithBackground(Lnet/minecraft/client/font/TextRenderer;Lnet/minecraft/text/Text;IIII)I"))
+    private int sbt$drawTextWithBackgroundNoShadowWrap(DrawContext instance, TextRenderer textRenderer, Text text, int x, int y, int width, int color, Operation<Integer> original) {
         if (SkyBlockTweaks.CONFIG.config.hudTweaks.noShadowActionBar) {
             return ((ModifiedDrawContext) instance).sbt$drawTextWithBackgroundNoShadow(textRenderer, text, x, y, width, color);
         } else {
-            return instance.drawTextWithBackground(textRenderer, text, x, y, width, color);
+            return original.call(instance, textRenderer, text, x, y, width, color);
         }
     }
-
-
 
     @Inject(method = "renderArmor" , at = @At("HEAD"), cancellable = true)
     private static void sbt$onRenderArmor(CallbackInfo ci) {
