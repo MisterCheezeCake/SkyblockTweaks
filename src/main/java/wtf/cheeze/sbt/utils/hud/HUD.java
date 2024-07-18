@@ -39,6 +39,7 @@ public abstract class HUD  {
     public  boolean shouldRender(boolean fromHudScreen) {
         // We let the HUD screen handle rendering when it is open
         if (!fromHudScreen && MinecraftClient.getInstance().currentScreen instanceof HudScreen) return false;
+        if (!fromHudScreen && MinecraftClient.getInstance().options.hudHidden) return false;
         else return true;
     };
 
