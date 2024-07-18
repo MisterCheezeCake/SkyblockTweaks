@@ -18,8 +18,18 @@
  */
 package wtf.cheeze.sbt.utils;
 
-public class Version {
+import dev.isxander.yacl3.api.NameableEnum;
+import dev.isxander.yacl3.api.Option;
+import dev.isxander.yacl3.api.OptionDescription;
+import dev.isxander.yacl3.api.controller.EnumControllerBuilder;
+import net.minecraft.text.Text;
+import wtf.cheeze.sbt.config.ConfigImpl;
 
+import java.util.regex.Pattern;
+
+public class Version {
+    public static Pattern PATTERN_RELEASE = Pattern.compile("^(\\d+)\\.(\\d+)\\.(\\d+)$");
+    public static Pattern PATTERN_ALPHA_BETA = Pattern.compile("^(\\d+)\\.(\\d+)\\.(\\d+)-(Alpha|Beta)\\.(\\d+)$");
     public static enum VersionType {
         // Development versions, ideally, a user should never be using these
         UNSTABLE,
@@ -48,6 +58,7 @@ public class Version {
         if (type == VersionType.RELEASE || type == VersionType.UNSTABLE) {
             throw new IllegalArgumentException("Release and Unstable versions must NOT have a build number");
         }
+        STREAM = type; // Good lord, I am an idiot, this was missing
         MAJOR = major;
         MINOR = minor;
         PATCH = patch;
@@ -61,13 +72,130 @@ public class Version {
         MINOR = minor;
         PATCH = patch;
     }
+    public Version (String versionString) {
+        if (versionString.equals("Unstable")) {
+            STREAM = VersionType.UNSTABLE;
+            return;
+        }
+        var releaseMatcher = PATTERN_RELEASE.matcher(versionString);
+        var alphaBetaMatcher = PATTERN_ALPHA_BETA.matcher(versionString);
+        if (releaseMatcher.matches()) {
+            STREAM = VersionType.RELEASE;
+            MAJOR = Integer.parseInt(releaseMatcher.group(1));
+            MINOR = Integer.parseInt(releaseMatcher.group(2));
+            PATCH = Integer.parseInt(releaseMatcher.group(3));
+        } else if (alphaBetaMatcher.matches()) {
+            MAJOR = Integer.parseInt(alphaBetaMatcher.group(1));
+            MINOR = Integer.parseInt(alphaBetaMatcher.group(2));
+            PATCH = Integer.parseInt(alphaBetaMatcher.group(3));
+            STREAM = alphaBetaMatcher.group(4).equals("Alpha") ? VersionType.ALPHA : VersionType.BETA;
+            BUILD = Integer.parseInt(alphaBetaMatcher.group(5));
+        } else {
+            throw new IllegalArgumentException("Invalid version string: " + versionString);
+        }
+    }
+
     public String getVersionString() {
         if (STREAM == VersionType.UNSTABLE) {
             return "Unstable";
         } else if (STREAM != VersionType.RELEASE) {
-            return String.format("%d.%d.%d-%s.%d", MAJOR, MINOR, PATCH, STREAM == VersionType.ALPHA ? "Beta" : "Alpha", BUILD);
+            return String.format("%d.%d.%d-%s.%d", MAJOR, MINOR, PATCH, STREAM == VersionType.ALPHA ? "Alpha" : "Beta", BUILD);
         } else {
             return String.format("%d.%d.%d", MAJOR, MINOR, PATCH);
         }
     }
+    public static class RemoteVersionFile {
+        // This can be disabled in the remote file in case of a bug
+        public boolean enabled;
+        // Latest Alpha is not necessarily the latest build with on the alpha stream, it is the latest build that someone with their notifier set on alpha will get notified about, so it could be alpha, beta or release.
+        public RemoteVersion latestAlpha;
+        // Like latest alpha, latest beta could be beta or release.
+        public RemoteVersion latestBeta;
+        // Latest release is the latest build that is on the release stream.
+        public RemoteVersion latestRelease;
+
+
+    }
+
+    public static class RemoteVersion {
+        public String versionString;
+        // The names that the build has on modrinth, used to generate the links to the modrinth page for the builds
+        // https://modrinth.com/mod/sbt/version/${version}
+        public String modrinthName;
+
+    }
+
+    public static enum VersionComparison {
+        EQUAL,
+        GREATER,
+        LESS,
+        FAILURE
+    }
+
+    public static VersionComparison compareVersions(Version a, Version b) {
+        try {
+            if (a.STREAM == VersionType.UNSTABLE || b.STREAM == VersionType.UNSTABLE) {
+                return VersionComparison.FAILURE;
+            }
+
+            if (a.MAJOR > b.MAJOR) {
+                return VersionComparison.GREATER;
+            } else if (a.MAJOR < b.MAJOR) {
+                return VersionComparison.LESS;
+            }
+            if (a.MINOR > b.MINOR) {
+                return VersionComparison.GREATER;
+            } else if (a.MINOR < b.MINOR) {
+                return VersionComparison.LESS;
+            }
+            if (a.PATCH > b.PATCH) {
+                return VersionComparison.GREATER;
+            } else if (a.PATCH < b.PATCH) {
+                return VersionComparison.LESS;
+            }
+            // If we get here, the semvers are equal
+            if (a.STREAM == VersionType.ALPHA && b.STREAM == VersionType.BETA) {
+                return VersionComparison.LESS;
+            } else if (a.STREAM == VersionType.BETA && b.STREAM == VersionType.ALPHA) {
+                return VersionComparison.GREATER;
+            }
+            if (a.BUILD > b.BUILD) {
+                return VersionComparison.GREATER;
+            } else if (a.BUILD < b.BUILD) {
+                return VersionComparison.LESS;
+            }
+            return VersionComparison.EQUAL;
+        } catch (Exception e) {
+            return VersionComparison.FAILURE;
+        }
+    }
+
+    public static enum NotificationStream implements NameableEnum {
+        ALPHA,
+        BETA,
+        RELEASE,
+        NONE;
+
+        @Override
+        public Text getDisplayName() {
+            return Text.literal(name());
+        }
+    }
+
+    public static Option getStreamOption(ConfigImpl defaults, ConfigImpl config) {
+        return Option.<NotificationStream>createBuilder()
+                .name(Text.literal("Update Notification Type"))
+                .description(OptionDescription.of(Text.literal("What updates you want to be notified about. Alpha will notify you about all updates, Beta will notify you about beta and release updates, Release will only notify you about release updates, and None will disable notifications.")))
+                .controller(opt -> EnumControllerBuilder.create(opt).enumClass(NotificationStream.class))
+                .binding(
+                        defaults.notificationStream,
+                        () -> config.notificationStream,
+                        value -> config.notificationStream = value
+                )
+                .build();
+    }
+    public static String getModrinthLink(String name) {
+        return "https://modrinth.com/mod/sbt/version/" + name;
+    }
 }
+

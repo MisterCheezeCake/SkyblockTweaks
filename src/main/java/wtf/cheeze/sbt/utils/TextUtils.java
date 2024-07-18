@@ -18,6 +18,10 @@
  */
 package wtf.cheeze.sbt.utils;
 
+import net.minecraft.text.ClickEvent;
+import net.minecraft.text.HoverEvent;
+import net.minecraft.text.Text;
+
 public class TextUtils {
     public static final String SECTION  = "§";
     public static String removeColorCodes(String text) {
@@ -43,6 +47,13 @@ public class TextUtils {
             }
         }
         return sb.toString();
+    }
+    public static Text getTextThatLinksToURL(String text,String hovered, String url) {
+        return Text.literal(text).styled(style -> {
+            style = style.withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.literal(hovered)));
+            style = style.withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, url));
+            return style;
+        });
     }
 
 }

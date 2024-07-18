@@ -23,10 +23,13 @@ import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ConfirmLinkScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
+import net.minecraft.client.gui.widget.TextFieldWidget;
+import net.minecraft.client.gui.widget.TextWidget;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import wtf.cheeze.sbt.SkyBlockTweaks;
 import wtf.cheeze.sbt.utils.RenderUtils;
+import wtf.cheeze.sbt.utils.Version;
 import wtf.cheeze.sbt.utils.hud.HudScreen;
 
 public class SkyBlockTweaksScreenMain extends Screen {
@@ -80,6 +83,8 @@ public class SkyBlockTweaksScreenMain extends Screen {
         if (MinecraftClient.getInstance().world == null) {
             hudButton.active = false;
         }
+
+
 
     }
     @Override

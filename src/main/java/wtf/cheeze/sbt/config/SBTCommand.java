@@ -18,14 +18,18 @@
  */
 package wtf.cheeze.sbt.config;
 
+import com.mojang.brigadier.arguments.StringArgumentType;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.text.Text;
 import wtf.cheeze.sbt.SkyBlockTweaks;
+import wtf.cheeze.sbt.utils.Version;
 import wtf.cheeze.sbt.utils.hud.HudScreen;
 
 import static net.fabricmc.fabric.api.client.command.v2.ClientCommandManager.literal;
+import static net.fabricmc.fabric.api.client.command.v2.ClientCommandManager.argument;
+
 
 public class SBTCommand {
 

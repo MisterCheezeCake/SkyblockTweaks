@@ -21,11 +21,15 @@ package wtf.cheeze.sbt.config;
 import dev.isxander.yacl3.config.v2.api.SerialEntry;
 import wtf.cheeze.sbt.config.categories.General;
 import wtf.cheeze.sbt.config.categories.Huds;
+import wtf.cheeze.sbt.utils.Version;
 import wtf.cheeze.sbt.utils.actionbar.ActionBarTransformer;
 
 public class ConfigImpl {
     @SerialEntry // This defines the spec version of the config, so that in the future, migration code can be written if necessary
     public int configVersion = 1;
+
+    @SerialEntry
+    public Version.NotificationStream notificationStream = Version.NotificationStream.ALPHA;
 
     @SerialEntry
     public General.HudTweaks hudTweaks = new General.HudTweaks();
