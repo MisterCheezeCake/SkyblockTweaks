@@ -22,7 +22,7 @@ import dev.isxander.yacl3.api.ConfigCategory;
 import dev.isxander.yacl3.config.v2.api.SerialEntry;
 import net.minecraft.text.Text;
 import wtf.cheeze.sbt.config.ConfigImpl;
-import wtf.cheeze.sbt.features.*;
+import wtf.cheeze.sbt.features.huds.*;
 
 public class Huds {
 

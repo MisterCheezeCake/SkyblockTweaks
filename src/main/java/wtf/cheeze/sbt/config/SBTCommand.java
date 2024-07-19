@@ -33,7 +33,7 @@ import static net.fabricmc.fabric.api.client.command.v2.ClientCommandManager.arg
 
 public class SBTCommand {
 
-    public static void register() {
+    public static void registerEvents() {
         ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> dispatcher.register(
                 literal("sbt")
                         .then(literal("config")

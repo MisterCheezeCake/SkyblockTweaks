@@ -25,6 +25,7 @@ import wtf.cheeze.sbt.utils.actionbar.ActionBarData;
 
 public class SkyBlockData {
     public boolean inSB = false;
+    public String zone;
 
     public int defense = 0;
     public float maxHealth = 0;

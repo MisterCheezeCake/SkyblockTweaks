@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with SkyblockTweaks. If not, see <https://www.gnu.org/licenses/>.
  */
-package wtf.cheeze.sbt.features;
+package wtf.cheeze.sbt.features.huds;
 
 import dev.isxander.yacl3.api.Option;
 import dev.isxander.yacl3.api.OptionDescription;
@@ -32,39 +32,40 @@ import wtf.cheeze.sbt.utils.TextUtils;
 import wtf.cheeze.sbt.utils.hud.HudInformation;
 import wtf.cheeze.sbt.utils.hud.TextHUD;
 
-import java.awt.Color;
+import java.awt.*;
 
-public class EhpHUD extends TextHUD {
+public class ManaHUD extends TextHUD {
 
-    public EhpHUD() {
+    public ManaHUD() {
         INFO = new HudInformation(
-                () -> SkyBlockTweaks.CONFIG.config.huds.ehp.x,
-                () -> SkyBlockTweaks.CONFIG.config.huds.ehp.y,
-                () -> SkyBlockTweaks.CONFIG.config.huds.ehp.scale,
-                () -> SkyBlockTweaks.CONFIG.config.huds.ehp.shadow,
-                () -> SkyBlockTweaks.CONFIG.config.huds.ehp.color,
-                x -> SkyBlockTweaks.CONFIG.config.huds.ehp.x = (float) x,
-                y -> SkyBlockTweaks.CONFIG.config.huds.ehp.y = (float) y,
-                scale -> SkyBlockTweaks.CONFIG.config.huds.ehp.scale = (float) scale
+                () -> SkyBlockTweaks.CONFIG.config.huds.mana.x,
+                () -> SkyBlockTweaks.CONFIG.config.huds.mana.y,
+                () -> SkyBlockTweaks.CONFIG.config.huds.mana.scale,
+                () -> SkyBlockTweaks.CONFIG.config.huds.mana.shadow,
+                () -> SkyBlockTweaks.CONFIG.config.huds.mana.color,
+                x -> SkyBlockTweaks.CONFIG.config.huds.mana.x = (float) x,
+                y -> SkyBlockTweaks.CONFIG.config.huds.mana.y = (float) y,
+                scale -> SkyBlockTweaks.CONFIG.config.huds.mana.scale = (float) scale
         );
     }
     @Override
     public boolean shouldRender(boolean fromHudScreen) {
         if (!super.shouldRender(fromHudScreen)) return false;
-        if ((SkyBlockTweaks.DATA.inSB && SkyBlockTweaks.CONFIG.config.huds.ehp.enabled) || fromHudScreen) return true;
+        if ((SkyBlockTweaks.DATA.inSB && SkyBlockTweaks.CONFIG.config.huds.mana.enabled) || fromHudScreen) return true;
         return false;
     }
     @Override
     public String getText() {
-        return TextUtils.formatNumber((int) SkyBlockTweaks.DATA.effectiveHealth(), SkyBlockTweaks.CONFIG.config.huds.ehp.separator) + (SkyBlockTweaks.CONFIG.config.huds.ehp.icon ? "❤" : "");
+        return TextUtils.formatNumber((int) SkyBlockTweaks.DATA.mana, SkyBlockTweaks.CONFIG.config.huds.mana.separator) + "/" + TextUtils.formatNumber((int) SkyBlockTweaks.DATA.maxMana, SkyBlockTweaks.CONFIG.config.huds.mana.separator) + (SkyBlockTweaks.CONFIG.config.huds.mana.icon ? "✎" : "");
     }
 
     @Override
     public String getName() {
-        return TextUtils.SECTION + "2Effective Health HUD";
+        return TextUtils.SECTION +  "9Mana HUD";
     }
 
     public static class Config {
+
         @SerialEntry
         public boolean enabled = false;
 
@@ -75,13 +76,13 @@ public class EhpHUD extends TextHUD {
         public float x = 0;
 
         @SerialEntry // Not handled by YACL Gui
-        public float y = 0.10f;
+        public float y = 0.30f;
 
         @SerialEntry
         public float scale = 1.0f;
 
         @SerialEntry
-        public int color = 43520;
+        public int color = 5592575;
 
         @SerialEntry
         public boolean icon = true;
@@ -91,72 +92,69 @@ public class EhpHUD extends TextHUD {
 
         public static OptionGroup getGroup(ConfigImpl defaults, ConfigImpl config) {
             var enabled = Option.<Boolean>createBuilder()
-                    .name(Text.literal("Enable Effective Health HUD"))
-                    .description(OptionDescription.of(Text.literal("Enables the Effective Health HUD")))
+                    .name(Text.literal("Enable Mana HUD"))
+                    .description(OptionDescription.of(Text.literal("Enables the Mana HUD")))
                     .controller(SkyBlockTweaksConfig::generateBooleanController)
                     .binding(
-                            defaults.huds.ehp.enabled,
-                            () -> config.huds.ehp.enabled,
-                            value -> config.huds.ehp.enabled = (Boolean) value
+                            defaults.huds.mana.enabled,
+                            () -> config.huds.mana.enabled,
+                            value -> config.huds.mana.enabled = (Boolean) value
                     )
                     .build();
             var shadow = Option.<Boolean>createBuilder()
-                    .name(Text.literal("Effective Health HUD Shadow"))
-                    .description(OptionDescription.of(Text.literal("Enables the shadow for the Effective Health HUD")))
+                    .name(Text.literal("Mana HUD Shadow"))
+                    .description(OptionDescription.of(Text.literal("Enables the shadow for the Mana HUD")))
                     .controller(SkyBlockTweaksConfig::generateBooleanController)
                     .binding(
-                            defaults.huds.ehp.shadow,
-                            () -> config.huds.ehp.shadow,
-                            value -> config.huds.ehp.shadow = (Boolean) value
+                            defaults.huds.mana.shadow,
+                            () -> config.huds.mana.shadow,
+                            value -> config.huds.mana.shadow = (Boolean) value
                     )
                     .build();
-
             var color = Option.<Color>createBuilder()
-                    .name(Text.literal("Effective Health HUD Color"))
-                    .description(OptionDescription.of(Text.literal("The color of the Effective Health HUD")))
+                    .name(Text.literal("Mana HUD Color"))
+                    .description(OptionDescription.of(Text.literal("The color of the Mana HUD")))
                     .controller(ColorControllerBuilder::create)
                     .binding(
-                            new Color(defaults.huds.ehp.color),
-                            () ->  new Color(config.huds.ehp.color),
-                            value -> config.huds.ehp.color = value.getRGB()
+                            new Color(defaults.huds.mana.color),
+                            () ->  new Color(config.huds.mana.color),
+                            value -> config.huds.mana.color = value.getRGB()
 
                     )
                     .build();
             var icon = Option.<Boolean>createBuilder()
-                    .name(Text.literal("Effective Health HUD Icon"))
-                    .description(OptionDescription.of(Text.literal("Enables the icon (❤) in the Effective Health HUD")))
+                    .name(Text.literal("Mana HUD Icon"))
+                    .description(OptionDescription.of(Text.literal("Enables the icon (✎) in the Mana HUD")))
                     .controller(SkyBlockTweaksConfig::generateBooleanController)
                     .binding(
-                            defaults.huds.ehp.icon,
-                            () -> config.huds.ehp.icon,
-                            value -> config.huds.ehp.icon = (Boolean) value
+                            defaults.huds.mana.icon,
+                            () -> config.huds.mana.icon,
+                            value -> config.huds.mana.icon = (Boolean) value
                     )
                     .build();
             var separator = Option.<String>createBuilder()
-                    .name(Text.literal("Effective Health HUD Separator"))
-                    .description(OptionDescription.of(Text.literal("The separator for the Effective Health HUD")))
+                    .name(Text.literal("Mana HUD Separator"))
+                    .description(OptionDescription.of(Text.literal("The separator for the Mana HUD")))
                     .controller(StringControllerBuilder::create)
                     .binding(
-                            defaults.huds.ehp.separator,
-                            () -> config.huds.ehp.separator,
-                            value -> config.huds.ehp.separator = value
+                            defaults.huds.mana.separator,
+                            () -> config.huds.mana.separator,
+                            value -> config.huds.mana.separator = value
                     )
                     .build();
             var scale = Option.<Float>createBuilder()
-                    .name(Text.literal("Effective Health HUD Scale"))
-                    .description(OptionDescription.of(Text.literal("The scale of the Effective Health HUD")))
+                    .name(Text.literal("Mana HUD Scale"))
+                    .description(OptionDescription.of(Text.literal("The scale of the Mana HUD")))
                     .controller(SkyBlockTweaksConfig::generateScaleController)
                     .binding(
-                            defaults.huds.ehp.scale,
-                            () -> config.huds.ehp.scale,
-                            value -> config.huds.ehp.scale = value
+                            defaults.huds.mana.scale,
+                            () -> config.huds.mana.scale,
+                            value -> config.huds.mana.scale = value
                     )
                     .build();
-
-
             return OptionGroup.createBuilder()
-                    .name(Text.literal("Effective Health HUD"))
-                    .description(OptionDescription.of(Text.literal("Settings for the Effective Health HUD")))
+                    .name(Text.literal("Mana HUD"))
+                    .description(OptionDescription.of(Text.literal("Settings for the Mana HUD")))
                     .option(enabled)
                     .option(shadow)
                     .option(color)
@@ -165,13 +163,7 @@ public class EhpHUD extends TextHUD {
                     .option(scale)
                     .collapsed(true)
                     .build();
-
         }
 
-
     }
-
 }
-
-
-

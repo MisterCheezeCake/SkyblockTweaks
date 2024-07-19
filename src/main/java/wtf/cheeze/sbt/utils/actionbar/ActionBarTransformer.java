@@ -22,6 +22,7 @@ import dev.isxander.yacl3.api.Option;
 import dev.isxander.yacl3.api.OptionDescription;
 import dev.isxander.yacl3.api.OptionGroup;
 import dev.isxander.yacl3.config.v2.api.SerialEntry;
+import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents;
 import net.minecraft.text.Text;
 import wtf.cheeze.sbt.SkyBlockTweaks;
 import wtf.cheeze.sbt.config.ConfigImpl;
@@ -169,6 +170,20 @@ public class ActionBarTransformer {
         data.transformedText = newText;
         return data;
     }
+
+    public static void registerEvents() {
+        ClientReceiveMessageEvents.MODIFY_GAME.register((message, overlay) -> {
+            if (!overlay) return message;
+            //SkyBlockTweaks.LOGGER.info("Old: " + message.getString());
+            var data = ActionBarTransformer.extractDataAndRunTransformation(message.getString());
+            //SkyBlockTweaks.LOGGER.info("New: " + data.transformedText);
+            SkyBlockTweaks.DATA.update(data);
+            SkyBlockTweaks.DATA.isThePlayerHoldingADrill();
+            return Text.of(data.transformedText);
+
+        });
+    }
+
 
     public static class Config {
         @SerialEntry
