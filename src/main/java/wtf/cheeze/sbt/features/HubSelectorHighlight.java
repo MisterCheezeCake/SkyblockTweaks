@@ -53,6 +53,7 @@ public class HubSelectorHighlight {
         else if (playerCount >= 40) context.fill(slot.x, slot.y, slot.x + 16, slot.y + 16, HIGHLIGHT_ORANGE);
         else if (playerCount >= 20) context.fill(slot.x, slot.y, slot.x + 16, slot.y + 16, HIGHLIGHT_YELLOW);
         else context.fill(slot.x, slot.y, slot.x + 16, slot.y + 16, HIGHLIGHT_GREEN);
+
     }
     public static void tryDrawHighlightDH(DrawContext context, Slot slot) {
         if (!slot.getStack().getName().getString().contains("Dungeon Hub #")) return;
