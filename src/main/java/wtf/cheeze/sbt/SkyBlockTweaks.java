@@ -25,7 +25,6 @@ import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.screen.ingame.GenericContainerScreen;
 import net.minecraft.scoreboard.Scoreboard;
 import net.minecraft.scoreboard.ScoreboardDisplaySlot;
 import net.minecraft.scoreboard.ScoreboardObjective;
@@ -48,6 +47,7 @@ public class SkyBlockTweaks implements ModInitializer {
 	public static final ArrayList<HUD> HUDS = new ArrayList<HUD>();
 	public static final Version VERSION = new Version(Version.VersionType.UNSTABLE);
 	public static final Gson GSON = new Gson();
+	public static final MinecraftClient mc = MinecraftClient.getInstance();
 
 
 	@Override
@@ -74,6 +74,8 @@ public class SkyBlockTweaks implements ModInitializer {
 		HUDS.add(new HealthBar());
 		HUDS.add(new ManaBar());
 
+
+
 		HudRenderCallback.EVENT.register((context, tickCounter) -> {
 			HUDS.forEach(hud -> hud.render(context, false));
 		});
@@ -87,7 +89,6 @@ public class SkyBlockTweaks implements ModInitializer {
 
 		// TODO: Checking this every tick may be overkill, change this later
 		ClientTickEvents.END_CLIENT_TICK.register(client -> {
-			MinecraftClient mc = MinecraftClient.getInstance();
 
 			if (mc != null && mc.world != null) {
 				Scoreboard scoreboard = mc.world.getScoreboard();
@@ -111,6 +112,5 @@ public class SkyBlockTweaks implements ModInitializer {
 			}
 
 		});
-
 	}
 }

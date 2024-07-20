@@ -21,6 +21,7 @@ package wtf.cheeze.sbt.config;
 import dev.isxander.yacl3.config.v2.api.SerialEntry;
 import wtf.cheeze.sbt.config.categories.General;
 import wtf.cheeze.sbt.config.categories.Huds;
+import wtf.cheeze.sbt.features.HubSelectorHighlight;
 import wtf.cheeze.sbt.utils.Version;
 import wtf.cheeze.sbt.utils.actionbar.ActionBarTransformer;
 
@@ -39,6 +40,9 @@ public class ConfigImpl {
 
     @SerialEntry
     public ActionBarTransformer.Config actionBarFilters = new ActionBarTransformer.Config();
+
+    @SerialEntry
+    public HubSelectorHighlight.Config hubSelectorHighlight = new HubSelectorHighlight.Config();
 
     @SerialEntry
     public Huds huds = new Huds();
