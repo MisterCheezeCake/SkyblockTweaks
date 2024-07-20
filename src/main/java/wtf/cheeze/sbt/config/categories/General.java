@@ -116,7 +116,7 @@ public class General {
                     )
                     .build();
             var noRenderArmor = Option.<Boolean>createBuilder()
-                    .name(Text.literal("Disable Armor Bar"))
+                    .name(Text.literal("Dusable Armor Bar"))
                     .description(OptionDescription.of(Text.literal("Disables rendering of the armor bar")))
                     .controller(SkyBlockTweaksConfig::generateBooleanController)
                     .binding(
