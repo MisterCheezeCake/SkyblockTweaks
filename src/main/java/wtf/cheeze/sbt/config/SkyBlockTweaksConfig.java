@@ -29,6 +29,7 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import wtf.cheeze.sbt.config.categories.*;
+import wtf.cheeze.sbt.utils.HudLine;
 
 
 public class SkyBlockTweaksConfig {
@@ -73,6 +74,10 @@ public class SkyBlockTweaksConfig {
         return FloatSliderControllerBuilder.create(opt)
                 .range(0.1f, 3.0f)
                 .step(0.1f);
+    }
+
+    public static EnumControllerBuilder<HudLine.DrawMode> generateDrawModeController(Option<HudLine.DrawMode> opt) {
+        return EnumControllerBuilder.create(opt).enumClass(HudLine.DrawMode.class);
     }
 
 }

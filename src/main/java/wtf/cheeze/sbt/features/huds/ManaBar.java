@@ -45,8 +45,7 @@ public class ManaBar extends BarHUD {
                 () -> SkyBlockTweaks.DATA.mana,
                 x -> SkyBlockTweaks.CONFIG.config.huds.manaBar.x = (float) x,
                 y -> SkyBlockTweaks.CONFIG.config.huds.manaBar.y = (float) y,
-                scale -> SkyBlockTweaks.CONFIG.config.huds.manaBar.scale = (float) scale,
-                true
+                scale -> SkyBlockTweaks.CONFIG.config.huds.manaBar.scale = (float) scale
 
         );
     }

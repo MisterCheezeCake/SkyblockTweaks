@@ -18,35 +18,37 @@
  */
 package wtf.cheeze.sbt.utils.hud;
 
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
-import net.minecraft.text.Text;
+import wtf.cheeze.sbt.SkyBlockTweaks;
 import wtf.cheeze.sbt.utils.RenderUtils;
+import wtf.cheeze.sbt.utils.HudLine;
 
 public abstract class TextHUD extends HUD {
-    public abstract String getText();
+    //public abstract String getText();
 
+    public HudLine line;
+
+    @Override
     public void render(DrawContext context, boolean fromHudScreen, boolean hovered) {
         if (!shouldRender(fromHudScreen)) return;
         var bounds = getCurrentBounds();
         if (fromHudScreen) {
-            drawBackground(context, hovered ? BACKGROUND_HOVERED : BACKGROUND_NOT_HOVERED);
+            drawBackground(context, hovered ? BACKGROUND_HOVERED : BACKGROUND_NOT_HOVERED, line.mode.get() == HudLine.DrawMode.OUTLINE);
         }
-        if (bounds.scale == 1.0f) {
-            RenderUtils.drawString(context, Text.literal(getText()), bounds.x, bounds.y, (int) INFO.getColor.get(), (boolean) INFO.getShadow.get());
-        } else {
-            RenderUtils.drawString(context, Text.literal(getText()), bounds.x, bounds.y, (int) INFO.getColor.get(), (boolean) INFO.getShadow.get(), bounds.scale);
-        }
+        RenderUtils.beginScale(context, bounds.scale);
+        line.render(context, bounds.x, bounds.y, bounds.scale);
+        RenderUtils.endScale(context);
+
+
+
     }
     public Bounds getCurrentBounds() {
-        var textRenderer = MinecraftClient.getInstance().textRenderer;
         var scale = (float) INFO.getScale.get();
-        return new Bounds(getActualX((float) INFO.getX.get()), getActualY((float) INFO.getY.get()), textRenderer.getWidth(getText()) * scale, textRenderer.fontHeight * scale, scale);
+        return new Bounds(getActualX((float) INFO.getX.get()), getActualY((float) INFO.getY.get()), RenderUtils.getStringWidth(line.text.get()) * scale, SkyBlockTweaks.mc.textRenderer.fontHeight * scale, scale);
     }
 
     public BoundsRelative getCurrentBoundsRelative() {
-        var textRenderer = MinecraftClient.getInstance().textRenderer;
         var scale = (float) INFO.getScale.get();
-        return new BoundsRelative((float) INFO.getX.get(), (float) INFO.getY.get(), textRenderer.getWidth(getText()) * scale, textRenderer.fontHeight * scale, scale);
+        return new BoundsRelative((float) INFO.getX.get(), (float) INFO.getY.get(), RenderUtils.getStringWidth(line.text.get()) * scale, SkyBlockTweaks.mc.textRenderer.fontHeight * scale, scale);
     }
 }

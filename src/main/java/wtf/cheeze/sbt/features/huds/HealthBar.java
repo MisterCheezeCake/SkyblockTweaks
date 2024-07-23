@@ -45,8 +45,7 @@ public class HealthBar extends BarHUD {
                 () -> SkyBlockTweaks.DATA.health,
                 x -> SkyBlockTweaks.CONFIG.config.huds.healthBar.x = (float) x,
                 y -> SkyBlockTweaks.CONFIG.config.huds.healthBar.y = (float) y,
-                scale -> SkyBlockTweaks.CONFIG.config.huds.healthBar.scale = (float) scale,
-                true
+                scale -> SkyBlockTweaks.CONFIG.config.huds.healthBar.scale = (float) scale
 
         );
     }

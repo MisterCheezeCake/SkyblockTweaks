@@ -27,6 +27,7 @@ import net.minecraft.text.Text;
 import wtf.cheeze.sbt.SkyBlockTweaks;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SkyBlockTweaksConfig;
+import wtf.cheeze.sbt.utils.HudLine;
 import wtf.cheeze.sbt.utils.hud.HudInformation;
 import wtf.cheeze.sbt.utils.hud.TextHUD;
 
@@ -39,11 +40,15 @@ public class SpeedHUD extends TextHUD {
                 () -> SkyBlockTweaks.CONFIG.config.huds.speed.x,
                 () -> SkyBlockTweaks.CONFIG.config.huds.speed.y,
                 () -> SkyBlockTweaks.CONFIG.config.huds.speed.scale,
-                () -> SkyBlockTweaks.CONFIG.config.huds.speed.shadow,
-                () -> SkyBlockTweaks.CONFIG.config.huds.speed.color,
                 x -> SkyBlockTweaks.CONFIG.config.huds.speed.x = (float) x,
                 y -> SkyBlockTweaks.CONFIG.config.huds.speed.y = (float) y,
                 scale -> SkyBlockTweaks.CONFIG.config.huds.speed.scale = (float) scale
+        );
+        line = new HudLine(
+                () -> SkyBlockTweaks.CONFIG.config.huds.speed.color,
+                () -> SkyBlockTweaks.CONFIG.config.huds.speed.outlineColor,
+                () -> SkyBlockTweaks.CONFIG.config.huds.speed.mode,
+                () ->  (SkyBlockTweaks.DATA.getSpeed()+"").split("\\.")[0] + "%"
         );
     }
     @Override
@@ -51,14 +56,6 @@ public class SpeedHUD extends TextHUD {
         if (!super.shouldRender(fromHudScreen)) return false;
         if ((SkyBlockTweaks.DATA.inSB && SkyBlockTweaks.CONFIG.config.huds.speed.enabled) || fromHudScreen) return true;
         return false;
-    }
-    @Override
-    public String getText() {
-        float _speed = SkyBlockTweaks.DATA.getSpeed();
-        String speed = ""+_speed;
-        speed = speed.split("\\.")[0];
-        speed = speed + "%";
-        return speed;
     }
 
     @Override
@@ -71,10 +68,13 @@ public class SpeedHUD extends TextHUD {
         public boolean enabled = false;
 
         @SerialEntry
-        public boolean shadow = true;
+        public HudLine.DrawMode mode = HudLine.DrawMode.SHADOW;
 
         @SerialEntry
         public int color = 0xFFFFFF;
+
+        @SerialEntry
+        public int outlineColor = 0x000000;
 
         @SerialEntry // Not handled by YACL Gui
         public float x = 0;
@@ -96,16 +96,6 @@ public class SpeedHUD extends TextHUD {
                             value -> config.huds.speed.enabled = (Boolean) value
                     )
                     .build();
-            var shadow = Option.<Boolean>createBuilder()
-                    .name(Text.literal("Speed HUD Shadow"))
-                    .description(OptionDescription.of(Text.literal("Enables the shadow for the Speed HUD")))
-                    .controller(SkyBlockTweaksConfig::generateBooleanController)
-                    .binding(
-                            defaults.huds.speed.shadow,
-                            () -> config.huds.speed.shadow,
-                            value -> config.huds.speed.shadow = (Boolean) value
-                    )
-                    .build();
 
             var color = Option.<Color>createBuilder()
                     .name(Text.literal("Speed HUD Color"))
@@ -116,6 +106,32 @@ public class SpeedHUD extends TextHUD {
                             () ->  new Color(config.huds.speed.color),
                             value -> config.huds.speed.color = value.getRGB()
 
+                    )
+                    .build();
+            var outline = Option.<Color>createBuilder()
+                    .name(Text.literal("Speed HUD Outline Color"))
+                    .description(OptionDescription.of(Text.literal("The outline color of the Speed HUD")))
+                    .controller(ColorControllerBuilder::create)
+                    .available(config.huds.speed.mode == HudLine.DrawMode.OUTLINE)
+                    .binding(
+                            new Color(defaults.huds.speed.outlineColor),
+                            () ->  new Color(config.huds.speed.outlineColor),
+                            value -> config.huds.speed.outlineColor = value.getRGB()
+
+                    )
+                    .build();
+            var mode = Option.<HudLine.DrawMode>createBuilder()
+                    .name(Text.literal("Speed HUD Mode"))
+                    .description(OptionDescription.of(Text.literal("The draw mode of the Speed HUD. Pure will render without shadow, Shadow will render with a shadow, and Outline will render with an outline\n§4Warning: §cOutline mode is still a work in progress and can cause annoying visual bugs in menus.")))
+                    .controller(SkyBlockTweaksConfig::generateDrawModeController)
+                    .binding(
+                            defaults.huds.speed.mode,
+                            () -> config.huds.speed.mode,
+                            value -> {
+                                config.huds.speed.mode = value;
+                                if (value == HudLine.DrawMode.OUTLINE) outline.setAvailable(true);
+                                else outline.setAvailable(false);
+                            }
                     )
                     .build();
             var scale = Option.<Float>createBuilder()
@@ -133,8 +149,9 @@ public class SpeedHUD extends TextHUD {
                     .name(Text.literal("Speed HUD"))
                     .description(OptionDescription.of(Text.literal("Settings for the Speed HUD")))
                     .option(enabled)
-                    .option(shadow)
+                    .option(mode)
                     .option(color)
+                    .option(outline)
                     .option(scale)
                     .collapsed(true)
                     .build();

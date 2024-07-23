@@ -45,8 +45,7 @@ public class DrillFuelBar extends BarHUD {
                 () -> SkyBlockTweaks.DATA.drillFuel,
                 x -> SkyBlockTweaks.CONFIG.config.huds.drillFuelBar.x = (float) x,
                 y -> SkyBlockTweaks.CONFIG.config.huds.drillFuelBar.y = (float) y,
-                scale -> SkyBlockTweaks.CONFIG.config.huds.drillFuelBar.scale = (float) scale,
-                true
+                scale -> SkyBlockTweaks.CONFIG.config.huds.drillFuelBar.scale = (float) scale
 
         );
     }

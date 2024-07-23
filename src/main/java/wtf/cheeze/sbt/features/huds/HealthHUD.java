@@ -28,6 +28,7 @@ import net.minecraft.text.Text;
 import wtf.cheeze.sbt.SkyBlockTweaks;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SkyBlockTweaksConfig;
+import wtf.cheeze.sbt.utils.HudLine;
 import wtf.cheeze.sbt.utils.TextUtils;
 import wtf.cheeze.sbt.utils.hud.HudInformation;
 import wtf.cheeze.sbt.utils.hud.TextHUD;
@@ -41,11 +42,15 @@ public class HealthHUD extends TextHUD {
                 () -> SkyBlockTweaks.CONFIG.config.huds.health.x,
                 () -> SkyBlockTweaks.CONFIG.config.huds.health.y,
                 () -> SkyBlockTweaks.CONFIG.config.huds.health.scale,
-                () -> SkyBlockTweaks.CONFIG.config.huds.health.shadow,
-                () -> SkyBlockTweaks.DATA.health > SkyBlockTweaks.DATA.maxHealth ? SkyBlockTweaks.CONFIG.config.huds.health.colorAbsorption : SkyBlockTweaks.CONFIG.config.huds.health.color,
                 x -> SkyBlockTweaks.CONFIG.config.huds.health.x = (float) x,
                 y -> SkyBlockTweaks.CONFIG.config.huds.health.y = (float) y,
                 scale -> SkyBlockTweaks.CONFIG.config.huds.health.scale = (float) scale
+        );
+        line = new HudLine(
+                () -> SkyBlockTweaks.DATA.health > SkyBlockTweaks.DATA.maxHealth ? SkyBlockTweaks.CONFIG.config.huds.health.colorAbsorption : SkyBlockTweaks.CONFIG.config.huds.health.color,
+                () -> SkyBlockTweaks.CONFIG.config.huds.health.outlineColor,
+                () -> SkyBlockTweaks.CONFIG.config.huds.health.mode,
+                () -> TextUtils.formatNumber((int) SkyBlockTweaks.DATA.health, SkyBlockTweaks.CONFIG.config.huds.health.separator) + "/" + TextUtils.formatNumber((int) SkyBlockTweaks.DATA.maxHealth, SkyBlockTweaks.CONFIG.config.huds.health.separator) + (SkyBlockTweaks.CONFIG.config.huds.health.icon ? "❤" : "")
         );
     }
     @Override
@@ -53,10 +58,6 @@ public class HealthHUD extends TextHUD {
         if (!super.shouldRender(fromHudScreen)) return false;
         if ((SkyBlockTweaks.DATA.inSB && SkyBlockTweaks.CONFIG.config.huds.health.enabled) || fromHudScreen) return true;
         return false;
-    }
-    @Override
-    public String getText() {
-        return TextUtils.formatNumber((int) SkyBlockTweaks.DATA.health, SkyBlockTweaks.CONFIG.config.huds.health.separator) + "/" + TextUtils.formatNumber((int) SkyBlockTweaks.DATA.maxHealth, SkyBlockTweaks.CONFIG.config.huds.health.separator) + (SkyBlockTweaks.CONFIG.config.huds.health.icon ? "❤" : "");
     }
 
     @Override
@@ -69,7 +70,7 @@ public class HealthHUD extends TextHUD {
         public boolean enabled = false;
 
         @SerialEntry
-        public boolean shadow = true;
+        public HudLine.DrawMode mode = HudLine.DrawMode.SHADOW;
 
         @SerialEntry // Not handled by YACL Gui
         public float x = 0;
@@ -87,6 +88,9 @@ public class HealthHUD extends TextHUD {
         public int colorAbsorption = 16755200;
 
         @SerialEntry
+        public int outlineColor = 0x000000;
+
+        @SerialEntry
         public boolean icon = true;
 
         @SerialEntry
@@ -101,16 +105,6 @@ public class HealthHUD extends TextHUD {
                             defaults.huds.health.enabled,
                             () -> config.huds.health.enabled,
                             value -> config.huds.health.enabled = (Boolean) value
-                    )
-                    .build();
-            var shadow = Option.<Boolean>createBuilder()
-                    .name(Text.literal("Health HUD Shadow"))
-                    .description(OptionDescription.of(Text.literal("Enables the shadow for the Health HUD")))
-                    .controller(SkyBlockTweaksConfig::generateBooleanController)
-                    .binding(
-                            defaults.huds.health.shadow,
-                            () -> config.huds.health.shadow,
-                            value -> config.huds.health.shadow = (Boolean) value
                     )
                     .build();
             var color = Option.<Color>createBuilder()
@@ -133,6 +127,32 @@ public class HealthHUD extends TextHUD {
                             () ->  new Color(config.huds.health.colorAbsorption),
                             value -> config.huds.health.colorAbsorption = value.getRGB()
 
+                    )
+                    .build();
+            var outline = Option.<Color>createBuilder()
+                    .name(Text.literal("Health HUD Outline Color"))
+                    .description(OptionDescription.of(Text.literal("The outline color of the Health HUD")))
+                    .controller(ColorControllerBuilder::create)
+                    .available(config.huds.health.mode == HudLine.DrawMode.OUTLINE)
+                    .binding(
+                            new Color(defaults.huds.health.outlineColor),
+                            () ->  new Color(config.huds.health.outlineColor),
+                            value -> config.huds.health.outlineColor = value.getRGB()
+
+                    )
+                    .build();
+            var mode = Option.<HudLine.DrawMode>createBuilder()
+                    .name(Text.literal("Health HUD Mode"))
+                    .description(OptionDescription.of(Text.literal("The draw mode of the Health HUD. Pure will render without shadow, Shadow will render with a shadow, and Outline will render with an outline\n§4Warning: §cOutline mode is still a work in progress and can cause annoying visual bugs in menus.")))
+                    .controller(SkyBlockTweaksConfig::generateDrawModeController)
+                    .binding(
+                            defaults.huds.health.mode,
+                            () -> config.huds.health.mode,
+                            value -> {
+                                config.huds.health.mode = value;
+                                if (value == HudLine.DrawMode.OUTLINE) outline.setAvailable(true);
+                                else outline.setAvailable(false);
+                            }
                     )
                     .build();
             var icon = Option.<Boolean>createBuilder()
@@ -169,9 +189,10 @@ public class HealthHUD extends TextHUD {
                     .name(Text.literal("Health HUD"))
                     .description(OptionDescription.of(Text.literal("Settings for the Health HUD")))
                     .option(enabled)
-                    .option(shadow)
+                    .option(mode)
                     .option(color)
                     .option(colorAbsorption)
+                    .option(outline)
                     .option(icon)
                     .option(separator)
                     .option(scale)

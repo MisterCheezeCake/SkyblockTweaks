@@ -28,6 +28,7 @@ import net.minecraft.text.Text;
 import wtf.cheeze.sbt.SkyBlockTweaks;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SkyBlockTweaksConfig;
+import wtf.cheeze.sbt.utils.HudLine;
 import wtf.cheeze.sbt.utils.TextUtils;
 import wtf.cheeze.sbt.utils.hud.HudInformation;
 import wtf.cheeze.sbt.utils.hud.TextHUD;
@@ -41,22 +42,23 @@ public class EhpHUD extends TextHUD {
                 () -> SkyBlockTweaks.CONFIG.config.huds.ehp.x,
                 () -> SkyBlockTweaks.CONFIG.config.huds.ehp.y,
                 () -> SkyBlockTweaks.CONFIG.config.huds.ehp.scale,
-                () -> SkyBlockTweaks.CONFIG.config.huds.ehp.shadow,
-                () -> SkyBlockTweaks.CONFIG.config.huds.ehp.color,
                 x -> SkyBlockTweaks.CONFIG.config.huds.ehp.x = (float) x,
                 y -> SkyBlockTweaks.CONFIG.config.huds.ehp.y = (float) y,
                 scale -> SkyBlockTweaks.CONFIG.config.huds.ehp.scale = (float) scale
         );
+        line = new HudLine(
+                () -> SkyBlockTweaks.CONFIG.config.huds.ehp.color,
+                () -> SkyBlockTweaks.CONFIG.config.huds.ehp.outlineColor,
+                () -> SkyBlockTweaks.CONFIG.config.huds.ehp.mode,
+                () -> TextUtils.formatNumber((int) SkyBlockTweaks.DATA.effectiveHealth(), SkyBlockTweaks.CONFIG.config.huds.ehp.separator) + (SkyBlockTweaks.CONFIG.config.huds.ehp.icon ? "❤" : "")
+        );
+
     }
     @Override
     public boolean shouldRender(boolean fromHudScreen) {
         if (!super.shouldRender(fromHudScreen)) return false;
         if ((SkyBlockTweaks.DATA.inSB && SkyBlockTweaks.CONFIG.config.huds.ehp.enabled) || fromHudScreen) return true;
         return false;
-    }
-    @Override
-    public String getText() {
-        return TextUtils.formatNumber((int) SkyBlockTweaks.DATA.effectiveHealth(), SkyBlockTweaks.CONFIG.config.huds.ehp.separator) + (SkyBlockTweaks.CONFIG.config.huds.ehp.icon ? "❤" : "");
     }
 
     @Override
@@ -69,7 +71,7 @@ public class EhpHUD extends TextHUD {
         public boolean enabled = false;
 
         @SerialEntry
-        public boolean shadow = true;
+        public HudLine.DrawMode mode = HudLine.DrawMode.SHADOW;
 
         @SerialEntry // Not handled by YACL Gui
         public float x = 0;
@@ -82,6 +84,9 @@ public class EhpHUD extends TextHUD {
 
         @SerialEntry
         public int color = 43520;
+
+        @SerialEntry
+        public int outlineColor = 0x000000;
 
         @SerialEntry
         public boolean icon = true;
@@ -100,14 +105,32 @@ public class EhpHUD extends TextHUD {
                             value -> config.huds.ehp.enabled = (Boolean) value
                     )
                     .build();
-            var shadow = Option.<Boolean>createBuilder()
-                    .name(Text.literal("Effective Health HUD Shadow"))
-                    .description(OptionDescription.of(Text.literal("Enables the shadow for the Effective Health HUD")))
-                    .controller(SkyBlockTweaksConfig::generateBooleanController)
+            var outline = Option.<Color>createBuilder()
+                    .name(Text.literal("Effective Health HUD Outline Color"))
+                    .description(OptionDescription.of(Text.literal("The outline color of the Effective Health HUD")))
+                    .controller(ColorControllerBuilder::create)
+                    .available(config.huds.ehp.mode == HudLine.DrawMode.OUTLINE)
                     .binding(
-                            defaults.huds.ehp.shadow,
-                            () -> config.huds.ehp.shadow,
-                            value -> config.huds.ehp.shadow = (Boolean) value
+                            new Color(defaults.huds.ehp.outlineColor),
+                            () ->  new Color(config.huds.ehp.outlineColor),
+                            value -> config.huds.ehp.outlineColor = value.getRGB()
+
+
+
+                    )
+                    .build();
+            var mode = Option.<HudLine.DrawMode>createBuilder()
+                    .name(Text.literal("Effective Health HUD Mode"))
+                    .description(OptionDescription.of(Text.literal("The draw mode of the Effective Health HUD. Pure will render without shadow, Shadow will render with a shadow, and Outline will render with an outline\n§4Warning: §cOutline mode is still a work in progress and can cause annoying visual bugs in menus.")))
+                    .controller(SkyBlockTweaksConfig::generateDrawModeController)
+                    .binding(
+                            defaults.huds.ehp.mode,
+                            () -> config.huds.ehp.mode,
+                            value -> {
+                                config.huds.ehp.mode = value;
+                                if (value == HudLine.DrawMode.OUTLINE) outline.setAvailable(true);
+                                else outline.setAvailable(false);
+                            }
                     )
                     .build();
 
@@ -158,8 +181,9 @@ public class EhpHUD extends TextHUD {
                     .name(Text.literal("Effective Health HUD"))
                     .description(OptionDescription.of(Text.literal("Settings for the Effective Health HUD")))
                     .option(enabled)
-                    .option(shadow)
+                    .option(mode)
                     .option(color)
+                    .option(outline)
                     .option(icon)
                     .option(separator)
                     .option(scale)

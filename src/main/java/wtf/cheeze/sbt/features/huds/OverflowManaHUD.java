@@ -28,6 +28,7 @@ import net.minecraft.text.Text;
 import wtf.cheeze.sbt.SkyBlockTweaks;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SkyBlockTweaksConfig;
+import wtf.cheeze.sbt.utils.HudLine;
 import wtf.cheeze.sbt.utils.TextUtils;
 import wtf.cheeze.sbt.utils.hud.HudInformation;
 import wtf.cheeze.sbt.utils.hud.TextHUD;
@@ -41,22 +42,23 @@ public class OverflowManaHUD extends TextHUD {
                 () -> SkyBlockTweaks.CONFIG.config.huds.overflowMana.x,
                 () -> SkyBlockTweaks.CONFIG.config.huds.overflowMana.y,
                 () -> SkyBlockTweaks.CONFIG.config.huds.overflowMana.scale,
-                () -> SkyBlockTweaks.CONFIG.config.huds.overflowMana.shadow,
-                () -> SkyBlockTweaks.CONFIG.config.huds.overflowMana.color,
                 x -> SkyBlockTweaks.CONFIG.config.huds.overflowMana.x = (float) x,
                 y -> SkyBlockTweaks.CONFIG.config.huds.overflowMana.y = (float) y,
                 scale -> SkyBlockTweaks.CONFIG.config.huds.overflowMana.scale = (float) scale
         );
+        line = new HudLine(
+                () -> SkyBlockTweaks.CONFIG.config.huds.overflowMana.color,
+                () -> SkyBlockTweaks.CONFIG.config.huds.overflowMana.outlineColor,
+                () -> SkyBlockTweaks.CONFIG.config.huds.overflowMana.mode,
+                () -> TextUtils.formatNumber((int) SkyBlockTweaks.DATA.overflowMana, SkyBlockTweaks.CONFIG.config.huds.overflowMana.separator) + (SkyBlockTweaks.CONFIG.config.huds.overflowMana.icon ? "ʬ" : "")
+        );
+
     }
     @Override
     public boolean shouldRender(boolean fromHudScreen) {
         if (!super.shouldRender(fromHudScreen)) return false;
         if ((SkyBlockTweaks.DATA.inSB && SkyBlockTweaks.CONFIG.config.huds.overflowMana.enabled && (!SkyBlockTweaks.CONFIG.config.huds.overflowMana.hideWhenZero || SkyBlockTweaks.DATA.overflowMana != 0)) || fromHudScreen) return true;
         return false;
-    }
-    @Override
-    public String getText() {
-        return TextUtils.formatNumber((int) SkyBlockTweaks.DATA.overflowMana, SkyBlockTweaks.CONFIG.config.huds.overflowMana.separator) + (SkyBlockTweaks.CONFIG.config.huds.overflowMana.icon ? "ʬ" : "");
     }
 
     @Override
@@ -73,7 +75,7 @@ public class OverflowManaHUD extends TextHUD {
         public boolean hideWhenZero = true;
 
         @SerialEntry
-        public boolean shadow = true;
+        public HudLine.DrawMode mode = HudLine.DrawMode.SHADOW;
 
         @SerialEntry // Not handled by YACL Gui
         public float x = 0;
@@ -86,6 +88,9 @@ public class OverflowManaHUD extends TextHUD {
 
         @SerialEntry
         public int color = 43690;
+
+        @SerialEntry
+        public int outlineColor = 0x000000;
 
         @SerialEntry
         public boolean icon = true;
@@ -114,16 +119,6 @@ public class OverflowManaHUD extends TextHUD {
                             value -> config.huds.overflowMana.hideWhenZero = (Boolean) value
                     )
                     .build();
-            var shadow = Option.<Boolean>createBuilder()
-                    .name(Text.literal("Overflow Mana HUD Shadow"))
-                    .description(OptionDescription.of(Text.literal("Enables the shadow for the Overflow Mana HUD")))
-                    .controller(SkyBlockTweaksConfig::generateBooleanController)
-                    .binding(
-                            defaults.huds.overflowMana.shadow,
-                            () -> config.huds.overflowMana.shadow,
-                            value -> config.huds.overflowMana.shadow = (Boolean) value
-                    )
-                    .build();
             var color = Option.<Color>createBuilder()
                     .name(Text.literal("Overflow Mana HUD Color"))
                     .description(OptionDescription.of(Text.literal("The color of the Overflow Mana HUD")))
@@ -133,6 +128,32 @@ public class OverflowManaHUD extends TextHUD {
                             () ->  new Color(config.huds.overflowMana.color),
                             value -> config.huds.overflowMana.color = value.getRGB()
 
+                    )
+                    .build();
+            var outline = Option.<Color>createBuilder()
+                    .name(Text.literal("Overflow Mana HUD Outline Color"))
+                    .description(OptionDescription.of(Text.literal("The outline color of the Overflow Mana HUD")))
+                    .controller(ColorControllerBuilder::create)
+                    .available(config.huds.overflowMana.mode == HudLine.DrawMode.OUTLINE)
+                    .binding(
+                            new Color(defaults.huds.overflowMana.outlineColor),
+                            () ->  new Color(config.huds.overflowMana.outlineColor),
+                            value -> config.huds.overflowMana.outlineColor = value.getRGB()
+
+                    )
+                    .build();
+            var mode = Option.<HudLine.DrawMode>createBuilder()
+                    .name(Text.literal("Overflow Mana HUD Mode"))
+                    .description(OptionDescription.of(Text.literal("The draw mode of the Overflow Mana HUD. Pure will render without shadow, Shadow will render with a shadow, and Outline will render with an outline\n§4Warning: §cOutline mode is still a work in progress and can cause annoying visual bugs in menus.")))
+                    .controller(SkyBlockTweaksConfig::generateDrawModeController)
+                    .binding(
+                            defaults.huds.overflowMana.mode,
+                            () -> config.huds.overflowMana.mode,
+                            value -> {
+                                config.huds.overflowMana.mode = value;
+                                if (value == HudLine.DrawMode.OUTLINE) outline.setAvailable(true);
+                                else outline.setAvailable(false);
+                            }
                     )
                     .build();
             var icon = Option.<Boolean>createBuilder()
@@ -170,8 +191,9 @@ public class OverflowManaHUD extends TextHUD {
                     .description(OptionDescription.of(Text.literal("Settings for the Overflow Mana HUD")))
                     .option(enabled)
                     .option(hideWhenZero)
-                    .option(shadow)
+                    .option(mode)
                     .option(color)
+                    .option(outline)
                     .option(icon)
                     .option(separator)
                     .option(scale)

@@ -31,6 +31,7 @@ import wtf.cheeze.sbt.config.SkyBlockTweaksConfig;
 import wtf.cheeze.sbt.utils.TextUtils;
 import wtf.cheeze.sbt.utils.hud.HudInformation;
 import wtf.cheeze.sbt.utils.hud.TextHUD;
+import wtf.cheeze.sbt.utils.HudLine;
 
 import java.awt.Color;
 
@@ -41,11 +42,16 @@ public class DefenseHUD extends TextHUD {
                 () -> SkyBlockTweaks.CONFIG.config.huds.defense.x,
                 () -> SkyBlockTweaks.CONFIG.config.huds.defense.y,
                 () -> SkyBlockTweaks.CONFIG.config.huds.defense.scale,
-                () -> SkyBlockTweaks.CONFIG.config.huds.defense.shadow,
-                () -> SkyBlockTweaks.CONFIG.config.huds.defense.color,
                 x -> SkyBlockTweaks.CONFIG.config.huds.defense.x = (float) x,
                 y -> SkyBlockTweaks.CONFIG.config.huds.defense.y = (float) y,
                 scale -> SkyBlockTweaks.CONFIG.config.huds.defense.scale = (float) scale
+        );
+
+        line = new HudLine(
+                () -> SkyBlockTweaks.CONFIG.config.huds.defense.color,
+                () -> SkyBlockTweaks.CONFIG.config.huds.defense.outlineColor,
+                () -> SkyBlockTweaks.CONFIG.config.huds.defense.mode,
+                () -> TextUtils.formatNumber(SkyBlockTweaks.DATA.defense, SkyBlockTweaks.CONFIG.config.huds.defense.separator)+ (SkyBlockTweaks.CONFIG.config.huds.defense.icon ? "❈" : "")
         );
     }
     @Override
@@ -54,10 +60,8 @@ public class DefenseHUD extends TextHUD {
         if ((SkyBlockTweaks.DATA.inSB && SkyBlockTweaks.CONFIG.config.huds.defense.enabled) || fromHudScreen) return true;
         return false;
     }
-    @Override
-    public String getText() {
-        return TextUtils.formatNumber(SkyBlockTweaks.DATA.defense, SkyBlockTweaks.CONFIG.config.huds.defense.separator)+ (SkyBlockTweaks.CONFIG.config.huds.defense.icon ? "❈" : "");
-    }
+
+
 
     @Override
     public String getName() {
@@ -69,10 +73,13 @@ public class DefenseHUD extends TextHUD {
         public boolean enabled = false;
 
         @SerialEntry
-        public boolean shadow = true;
+        public HudLine.DrawMode mode = HudLine.DrawMode.SHADOW;
 
         @SerialEntry
         public int color = 5635925;
+
+        @SerialEntry
+        public int outlineColor = 0x000000;
 
         @SerialEntry // Not handled by YACL Gui
         public float x = 0;
@@ -100,17 +107,6 @@ public class DefenseHUD extends TextHUD {
                             value -> config.huds.defense.enabled = (Boolean) value
                     )
                     .build();
-            var shadow = Option.<Boolean>createBuilder()
-                    .name(Text.literal("Defense HUD Shadow"))
-                    .description(OptionDescription.of(Text.literal("Enables the shadow for the Defense HUD")))
-                    .controller(SkyBlockTweaksConfig::generateBooleanController)
-                    .binding(
-                            defaults.huds.defense.shadow,
-                            () -> config.huds.defense.shadow,
-                            value -> config.huds.defense.shadow = (Boolean) value
-                    )
-                    .build();
-
             var color = Option.<Color>createBuilder()
                     .name(Text.literal("Defense HUD Color"))
                     .description(OptionDescription.of(Text.literal("The color of the Defense HUD")))
@@ -120,6 +116,34 @@ public class DefenseHUD extends TextHUD {
                             () ->  new Color(config.huds.defense.color),
                             value -> config.huds.defense.color = value.getRGB()
 
+                    )
+                    .build();
+            var outline = Option.<Color>createBuilder()
+                    .name(Text.literal("Defense HUD Outline Color"))
+                    .description(OptionDescription.of(Text.literal("The outline color of the Defense HUD")))
+                    .controller(ColorControllerBuilder::create)
+                    .available(config.huds.defense.mode == HudLine.DrawMode.OUTLINE)
+                    .binding(
+                            new Color(defaults.huds.defense.outlineColor),
+                            () ->  new Color(config.huds.defense.outlineColor),
+                            value -> config.huds.defense.outlineColor = value.getRGB()
+
+
+
+                    )
+                    .build();
+            var mode = Option.<HudLine.DrawMode>createBuilder()
+                    .name(Text.literal("Defense HUD Mode"))
+                    .description(OptionDescription.of(Text.literal("The draw mode of the Defense HUD. Pure will render without shadow, Shadow will render with a shadow, and Outline will render with an outline\n§4Warning: §cOutline mode is still a work in progress and can cause annoying visual bugs in menus.")))
+                    .controller(SkyBlockTweaksConfig::generateDrawModeController)
+                    .binding(
+                            defaults.huds.defense.mode,
+                            () -> config.huds.defense.mode,
+                            value -> {
+                                config.huds.defense.mode = value;
+                                if (value == HudLine.DrawMode.OUTLINE) outline.setAvailable(true);
+                                else outline.setAvailable(false);
+                            }
                     )
                     .build();
             var icon = Option.<Boolean>createBuilder()
@@ -157,8 +181,9 @@ public class DefenseHUD extends TextHUD {
                     .name(Text.literal("Defense HUD"))
                     .description(OptionDescription.of(Text.literal("Settings for the Defense HUD")))
                     .option(enabled)
-                    .option(shadow)
+                    .option(mode)
                     .option(color)
+                    .option(outline)
                     .option(icon)
                     .option(separator)
                     .option(scale)

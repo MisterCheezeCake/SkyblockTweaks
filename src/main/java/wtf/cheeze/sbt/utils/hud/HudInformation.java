@@ -25,44 +25,48 @@ import java.util.function.Supplier;
 
 public class HudInformation {
 
-    public Supplier getX;
-    public Supplier getY;
-    public Supplier getScale;
-    public Supplier getColor;
-    @Nullable
-    public Supplier getShadow;
-    @Nullable
-    public Supplier getMaxNum;
-    @Nullable
-    public Supplier getFillNum;
+    public Supplier<Float> getX;
+    public Supplier<Float> getY;
+    public Supplier<Float> getScale;
 
-    public Consumer setX;
-    public Consumer setY;
-    public Consumer setScale;
+    @Nullable
+    public Supplier<Float> getMaxNum;
+    @Nullable
+    public Supplier<Float> getFillNum;
 
-    public HudInformation(Supplier xSupplier, Supplier ySupplier, Supplier scaleSupplier, Supplier shadowSupplier, Supplier colorSupplier, Consumer xConsumer, Consumer yConsumer, Consumer scaleConsumer) {
+    @Nullable
+    public Supplier<Integer> getColor;
+
+    public Consumer<Float> setX;
+    public Consumer<Float> setY;
+    public Consumer<Float> setScale;
+
+    public HudInformation(Supplier<Float> xSupplier, Supplier<Float> ySupplier, Supplier<Float> scaleSupplier,  Consumer<Float> xConsumer, Consumer<Float> yConsumer, Consumer<Float> scaleConsumer) {
         this.getX = xSupplier;
         this.getY = ySupplier;
         this.getScale = scaleSupplier;
-        this.getShadow = shadowSupplier;
-        this.getColor = colorSupplier;
+
 
         this.setX = xConsumer;
         this.setY = yConsumer;
         this.setScale = scaleConsumer;
     }
-    public HudInformation(Supplier xSupplier, Supplier ySupplier, Supplier scaleSupplier, Supplier colorSupplier, Supplier maxNumSupplier, Supplier fillNumSupplier, Consumer xConsumer, Consumer yConsumer, Consumer scaleConsumer, /*This just exists to provide a more obvious difference in the constructors*/boolean barHud) {
+    public HudInformation(Supplier<Float> xSupplier, Supplier<Float> ySupplier, Supplier<Float> scaleSupplier, Supplier<Integer> colorSupplier, Supplier<Float> maxNumSupplier, Supplier<Float> fillNumSupplier, Consumer<Float> xConsumer, Consumer<Float> yConsumer, Consumer<Float> scaleConsumer) {
         this.getX = xSupplier;
         this.getY = ySupplier;
         this.getScale = scaleSupplier;
-        this.getColor = colorSupplier;
+
         this.getMaxNum = maxNumSupplier;
         this.getFillNum = fillNumSupplier;
+        this.getColor = colorSupplier;
 
         this.setX = xConsumer;
         this.setY = yConsumer;
         this.setScale = scaleConsumer;
     }
+
+
+
 
 
 }

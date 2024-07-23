@@ -178,7 +178,6 @@ public class ActionBarTransformer {
             var data = ActionBarTransformer.extractDataAndRunTransformation(message.getString());
             //SkyBlockTweaks.LOGGER.info("New: " + data.transformedText);
             SkyBlockTweaks.DATA.update(data);
-            SkyBlockTweaks.DATA.isThePlayerHoldingADrill();
             return Text.of(data.transformedText);
 
         });

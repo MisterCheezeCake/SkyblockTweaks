@@ -44,13 +44,9 @@ public abstract class DrawContextMixin implements ModifiedDrawContext {
     public int sbt$drawTextWithBackgroundNoShadow(TextRenderer textRenderer, Text text, int x, int y, int width, int color) {
         int i = this.client.options.getTextBackgroundColor(0.0F);
         if (i != 0) {
-            int var10001 = x - 2;
-            int var10002 = y - 2;
-            int var10003 = x + width + 2;
             Objects.requireNonNull(textRenderer);
-            this.fill(var10001, var10002, var10003, y + 9 + 2, ColorHelper.Argb.mixColor(i, color));
+            this.fill(x -2, y-2 ,  x + width + 2, y + 9 + 2, ColorHelper.Argb.mixColor(i, color));
         }
-
         return this.drawText(textRenderer, text, x, y, color, false);
     }
 }

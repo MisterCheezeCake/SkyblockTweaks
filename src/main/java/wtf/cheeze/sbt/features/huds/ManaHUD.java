@@ -24,6 +24,7 @@ import dev.isxander.yacl3.api.OptionGroup;
 import dev.isxander.yacl3.api.controller.ColorControllerBuilder;
 import dev.isxander.yacl3.api.controller.StringControllerBuilder;
 import dev.isxander.yacl3.config.v2.api.SerialEntry;
+import kotlin.jvm.internal.SerializedIr;
 import net.minecraft.text.Text;
 import wtf.cheeze.sbt.SkyBlockTweaks;
 import wtf.cheeze.sbt.config.ConfigImpl;
@@ -31,6 +32,8 @@ import wtf.cheeze.sbt.config.SkyBlockTweaksConfig;
 import wtf.cheeze.sbt.utils.TextUtils;
 import wtf.cheeze.sbt.utils.hud.HudInformation;
 import wtf.cheeze.sbt.utils.hud.TextHUD;
+import wtf.cheeze.sbt.utils.HudLine;
+
 
 import java.awt.*;
 
@@ -41,11 +44,15 @@ public class ManaHUD extends TextHUD {
                 () -> SkyBlockTweaks.CONFIG.config.huds.mana.x,
                 () -> SkyBlockTweaks.CONFIG.config.huds.mana.y,
                 () -> SkyBlockTweaks.CONFIG.config.huds.mana.scale,
-                () -> SkyBlockTweaks.CONFIG.config.huds.mana.shadow,
-                () -> SkyBlockTweaks.CONFIG.config.huds.mana.color,
                 x -> SkyBlockTweaks.CONFIG.config.huds.mana.x = (float) x,
                 y -> SkyBlockTweaks.CONFIG.config.huds.mana.y = (float) y,
                 scale -> SkyBlockTweaks.CONFIG.config.huds.mana.scale = (float) scale
+        );
+        line = new HudLine(
+                () -> SkyBlockTweaks.CONFIG.config.huds.mana.color,
+                () -> SkyBlockTweaks.CONFIG.config.huds.mana.outlineColor,
+                () -> SkyBlockTweaks.CONFIG.config.huds.mana.mode,
+                () -> TextUtils.formatNumber((int) SkyBlockTweaks.DATA.mana, SkyBlockTweaks.CONFIG.config.huds.mana.separator) + "/" + TextUtils.formatNumber((int) SkyBlockTweaks.DATA.maxMana, SkyBlockTweaks.CONFIG.config.huds.mana.separator) + (SkyBlockTweaks.CONFIG.config.huds.mana.icon ? "✎" : "")
         );
     }
     @Override
@@ -54,10 +61,10 @@ public class ManaHUD extends TextHUD {
         if ((SkyBlockTweaks.DATA.inSB && SkyBlockTweaks.CONFIG.config.huds.mana.enabled) || fromHudScreen) return true;
         return false;
     }
-    @Override
-    public String getText() {
-        return TextUtils.formatNumber((int) SkyBlockTweaks.DATA.mana, SkyBlockTweaks.CONFIG.config.huds.mana.separator) + "/" + TextUtils.formatNumber((int) SkyBlockTweaks.DATA.maxMana, SkyBlockTweaks.CONFIG.config.huds.mana.separator) + (SkyBlockTweaks.CONFIG.config.huds.mana.icon ? "✎" : "");
-    }
+//    @Override
+//    public String getText() {
+//        return TextUtils.formatNumber((int) SkyBlockTweaks.DATA.mana, SkyBlockTweaks.CONFIG.config.huds.mana.separator) + "/" + TextUtils.formatNumber((int) SkyBlockTweaks.DATA.maxMana, SkyBlockTweaks.CONFIG.config.huds.mana.separator) + (SkyBlockTweaks.CONFIG.config.huds.mana.icon ? "✎" : "");
+//    }
 
     @Override
     public String getName() {
@@ -69,8 +76,11 @@ public class ManaHUD extends TextHUD {
         @SerialEntry
         public boolean enabled = false;
 
+//        @SerialEntry
+//        public boolean shadow = true;
+
         @SerialEntry
-        public boolean shadow = true;
+        public HudLine.DrawMode mode = HudLine.DrawMode.SHADOW;
 
         @SerialEntry // Not handled by YACL Gui
         public float x = 0;
@@ -83,6 +93,9 @@ public class ManaHUD extends TextHUD {
 
         @SerialEntry
         public int color = 5592575;
+
+        @SerialEntry
+        public int outlineColor = 0x000000;
 
         @SerialEntry
         public boolean icon = true;
@@ -101,16 +114,6 @@ public class ManaHUD extends TextHUD {
                             value -> config.huds.mana.enabled = (Boolean) value
                     )
                     .build();
-            var shadow = Option.<Boolean>createBuilder()
-                    .name(Text.literal("Mana HUD Shadow"))
-                    .description(OptionDescription.of(Text.literal("Enables the shadow for the Mana HUD")))
-                    .controller(SkyBlockTweaksConfig::generateBooleanController)
-                    .binding(
-                            defaults.huds.mana.shadow,
-                            () -> config.huds.mana.shadow,
-                            value -> config.huds.mana.shadow = (Boolean) value
-                    )
-                    .build();
             var color = Option.<Color>createBuilder()
                     .name(Text.literal("Mana HUD Color"))
                     .description(OptionDescription.of(Text.literal("The color of the Mana HUD")))
@@ -120,6 +123,32 @@ public class ManaHUD extends TextHUD {
                             () ->  new Color(config.huds.mana.color),
                             value -> config.huds.mana.color = value.getRGB()
 
+                    )
+                    .build();
+            var outline = Option.<Color>createBuilder()
+                    .name(Text.literal("Mana HUD Outline Color"))
+                    .description(OptionDescription.of(Text.literal("The outline color of the Mana HUD")))
+                    .controller(ColorControllerBuilder::create)
+                    .available(config.huds.mana.mode == HudLine.DrawMode.OUTLINE)
+                    .binding(
+                            new Color(defaults.huds.mana.outlineColor),
+                            () ->  new Color(config.huds.mana.outlineColor),
+                            value -> config.huds.mana.outlineColor = value.getRGB()
+
+                    )
+                    .build();
+            var mode = Option.<HudLine.DrawMode>createBuilder()
+                    .name(Text.literal("Mana HUD Mode"))
+                    .description(OptionDescription.of(Text.literal("The draw mode of the Mana HUD. Pure will render without shadow, Shadow will render with a shadow, and Outline will render with an outline\n§4Warning: §cOutline mode is still a work in progress and can cause annoying visual bugs in menus.")))
+                    .controller(SkyBlockTweaksConfig::generateDrawModeController)
+                    .binding(
+                            defaults.huds.mana.mode,
+                            () -> config.huds.mana.mode,
+                            value -> {
+                                config.huds.mana.mode = value;
+                                if (value == HudLine.DrawMode.OUTLINE) outline.setAvailable(true);
+                                else outline.setAvailable(false);
+                            }
                     )
                     .build();
             var icon = Option.<Boolean>createBuilder()
@@ -156,8 +185,9 @@ public class ManaHUD extends TextHUD {
                     .name(Text.literal("Mana HUD"))
                     .description(OptionDescription.of(Text.literal("Settings for the Mana HUD")))
                     .option(enabled)
-                    .option(shadow)
+                    .option(mode)
                     .option(color)
+                    .option(outline)
                     .option(icon)
                     .option(separator)
                     .option(scale)

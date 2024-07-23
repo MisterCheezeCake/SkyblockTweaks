@@ -36,7 +36,7 @@ public abstract class HUD  {
 
 
 
-    public  boolean shouldRender(boolean fromHudScreen) {
+    public boolean shouldRender(boolean fromHudScreen) {
         // We let the HUD screen handle rendering when it is open
         if (!fromHudScreen && MinecraftClient.getInstance().currentScreen instanceof HudScreen) return false;
         if (!fromHudScreen && MinecraftClient.getInstance().options.hudHidden) return false;
@@ -63,11 +63,13 @@ public abstract class HUD  {
         INFO.setScale.accept(scale);
     }
 
-    public void drawBackground(DrawContext context, int color) {
+    public void drawBackground(DrawContext context, int color, boolean hasOutline) {
         var bounds = getCurrentBounds();
          int i = (int) (1 * bounds.scale);
-        //int i = 1;
         context.fill(bounds.x - i, bounds.y - i, (int) (bounds.x + bounds.width + i), (int) (bounds.y + bounds.height + i - 1), color);
+    }
+    public void drawBackground(DrawContext context, int color) {
+        drawBackground(context, color, false);
     }
 
 
