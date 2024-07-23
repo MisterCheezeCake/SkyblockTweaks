@@ -46,7 +46,7 @@ public class SkyBlockTweaks implements ModInitializer {
 	public static final SkyBlockData DATA = new SkyBlockData();
 	public static final SkyBlockTweaksConfig CONFIG = new SkyBlockTweaksConfig();
 	public static final ArrayList<HUD> HUDS = new ArrayList<HUD>();
-	public static final Version VERSION = new Version(Version.VersionType.UNSTABLE);
+	public static final Version VERSION = new Version(Version.VersionType.ALPHA, 0, 1, 0, 3);
 	public static final Gson GSON = new Gson();
 	public static final MinecraftClient mc = MinecraftClient.getInstance();
 
@@ -74,14 +74,8 @@ public class SkyBlockTweaks implements ModInitializer {
 		HUDS.add(new HealthBar());
 		HUDS.add(new ManaBar());
 
-		//HUDS.add(new MultilineTest());
-
-
-
 		HudRenderCallback.EVENT.register((context, tickCounter) -> {
 			HUDS.forEach(hud -> hud.render(context, false));
-			//context.drawText(MinecraftClient.getInstance().textRenderer, "Test\nTest 2", 0, 0, 0xFFFFFF, false);
-			//RenderUtils.drawStringWithOutline(context, Text.of("A B C"), 10, 50, 43690, 0xFFFFFF);
 		});
 
 		SBTCommand.registerEvents();
@@ -115,18 +109,6 @@ public class SkyBlockTweaks implements ModInitializer {
 				DATA.inSB = false;
 			}
 
-		});
-		ScreenEvents.AFTER_INIT.register((client, screen, scaledWidth, scaledHeight)  -> {
-			//LOGGER.info("Screen init " + screen.getTitle().getString() + " + " + screen.getClass().getName());
-			var name = screen.getTitle().getString();
-
-//			client.send(() -> {
-//				if (screen instanceof GenericContainerScreen) {
-//					var container = ( GenericContainerScreen) screen;
-//					var slot = container.getScreenHandler().getSlot(13);
-//					LOGGER.info(slot.getStack().getName().getString());
-//				}
-//			});
 		});
 	}
 }

@@ -37,7 +37,7 @@ public abstract class HandledScreenMixin<T extends ScreenHandler> extends Screen
     @Inject(method = "drawSlot", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawItem(Lnet/minecraft/item/ItemStack;III)V"))
     protected void sbt$onDrawSlot(DrawContext context, Slot slot, CallbackInfo ci) {
         var title = this.getTitle().getString();
-        if (SkyBlockTweaks.CONFIG.config.hubSelectorHighlight.enabledDungeon) return;
+        if (!SkyBlockTweaks.CONFIG.config.hubSelectorHighlight.enabledDungeon) return;
         switch (title) {
             case "SkyBlock Hub Selector" -> HubSelectorHighlight.tryDrawHighlight(context, slot);
             case "Dungeon Hub Selector" -> HubSelectorHighlight.tryDrawHighlightDH(context, slot);
