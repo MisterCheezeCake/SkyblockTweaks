@@ -37,6 +37,17 @@ public class TextUtils {
             return Integer.parseInt(text);
         }
     }
+    public static float parseFloatWithKorM(String text) {
+        text = text.toLowerCase();
+        text = text.replaceAll(",", "");
+        if (text.endsWith("k")) {
+            return Float.parseFloat(text.substring(0, text.length() - 1)) * 1000;
+        } else if (text.endsWith("m")) {
+            return Float.parseFloat(text.substring(0, text.length() - 1)) * 1000000;
+        } else {
+            return Float.parseFloat(text);
+        }
+    }
     public static String formatNumber(int number, String seperator) {
         String str = Integer.toString(number);
         StringBuilder sb = new StringBuilder();

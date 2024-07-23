@@ -56,119 +56,125 @@ public class ActionBarTransformer {
     private static Pattern secretsPattern = Pattern.compile("(\\d+)/(\\d+) Secrets");
 
     public static ActionBarData extractDataAndRunTransformation(String actionBarText) {
+      try {
+          ActionBarData data = new ActionBarData();
+          String[] parts = actionBarText.split(SEPERATOR3);
+          String newText = "";
+          for (String part : parts) {
+              String unpadded = part.trim();
+              String segment = TextUtils.removeColorCodes(unpadded);
+              if (segment.toLowerCase().contains("race")) {
+                  // Races, we do these first because the timer updates an obscene amount
+                  newText += unpadded + SEPERATOR12;
+              } else if (segment.contains("❤")) {
+                  // Health
+                  if (segment.contains("+")) {
+                      // Health with a healing wand
+                      String[] health = segment.replaceAll("❤", "").split("\\+")[0].split("/");
+                      data.currentHealth = Float.parseFloat(health[0].replace(",", ""));
+                      data.maxHealth = Float.parseFloat(health[1].replace(",", ""));
+                      if (!SkyBlockTweaks.CONFIG.config.actionBarFilters.hideHealth) {
+                          newText += SEPERATOR5 + unpadded;
+                      } else {
+                          newText += SEPERATOR5 + TextUtils.SECTION + "c" + "+" + segment.split("\\+")[1];
+                      }
+                      continue;
+                  }
+                  String[] health = segment.replaceAll("❤", "").split("/");
+                  data.currentHealth = Float.parseFloat(health[0].replace(",", ""));
+                  data.maxHealth = Float.parseFloat(health[1].replace(",", ""));
+                  if (!SkyBlockTweaks.CONFIG.config.actionBarFilters.hideHealth) {
+                      newText += SEPERATOR5 + unpadded;
+                  }
 
-        ActionBarData data = new ActionBarData();
-        String[] parts = actionBarText.split(SEPERATOR3);
-        String newText = "";
-        for (String part: parts) {
-            String unpadded = part.trim();
-            String segment = TextUtils.removeColorCodes(unpadded);
-            if (segment.toLowerCase().contains("race")) {
-                // Races, we do these first because the timer updates an obscene amount
-                newText += unpadded + SEPERATOR12;
-            } else if (segment.contains("❤")) {
-                // Health
-                if (segment.contains("+")) {
-                    // Health with a healing wand
-                    String[] health = segment.replaceAll("❤", "").split("\\+")[0].split("/");
-                    data.currentHealth = Float.parseFloat(health[0].replace(",", ""));
-                    data.maxHealth = Float.parseFloat(health[1].replace(",", ""));
-                    if (!SkyBlockTweaks.CONFIG.config.actionBarFilters.hideHealth) {
-                        newText += SEPERATOR5 + unpadded;
-                    } else {
-                        newText += SEPERATOR5 + TextUtils.SECTION + "c" + "+" + segment.split("\\+")[1];
-                    }
-                    continue;
-                }
-                String[] health = segment.replaceAll("❤", "").split("/");
-                data.currentHealth = Float.parseFloat(health[0].replace(",", ""));
-                data.maxHealth = Float.parseFloat(health[1].replace(",", ""));
-                if (!SkyBlockTweaks.CONFIG.config.actionBarFilters.hideHealth) {
-                    newText += SEPERATOR5 + unpadded;
-                }
+              } else if (segment.contains("✎")) {
+                  // Mana
+                  // 411/1,221✎ 2ʬ
+                  // 289/1,221✎ Mana
+                  String[] manaParts = segment.split(" ");
+                  manaParts[0] = manaParts[0].replace("✎", "");
+                  String[] mana = manaParts[0].split("/");
+                  data.currentMana = Float.parseFloat(mana[0].replace(",", ""));
+                  data.maxMana = Float.parseFloat(mana[1].replace(",", ""));
+                  if (manaParts[1].contains("ʬ")) {
+                      data.overflowMana = Float.parseFloat(manaParts[1].replace("ʬ", "").replace(",", ""));
+                  } else {
+                      data.overflowMana = 0f;
+                  }
+                  if (!SkyBlockTweaks.CONFIG.config.actionBarFilters.hideMana) {
+                      newText += SEPERATOR5 + unpadded;
+                  }
+              } else if (segment.contains("NOT ENOUGH MANA")) {
+                  newText += SEPERATOR5 + unpadded;
+              } else if (segment.contains("❈")) {
+                  // Defense
+                  String defense = segment.split("❈")[0].trim();
+                  data.defense = Integer.parseInt(defense.replace(",", ""));
+                  if (!SkyBlockTweaks.CONFIG.config.actionBarFilters.hideDefense) {
+                      newText += SEPERATOR5 + unpadded;
+                  }
 
-            } else if (segment.contains("✎")) {
-                // Mana
-                // 411/1,221✎ 2ʬ
-                // 289/1,221✎ Mana
-                String[] manaParts = segment.split(" ");
-                manaParts[0] = manaParts[0].replace("✎", "");
-                String [] mana = manaParts[0].split("/");
-                data.currentMana = Float.parseFloat(mana[0].replace(",", ""));
-                data.maxMana = Float.parseFloat(mana[1].replace(",", ""));
-                if (manaParts[1].contains("ʬ")) {
-                    data.overflowMana = Float.parseFloat(manaParts[1].replace("ʬ", "").replace(",", ""));
-                } else {
-                    data.overflowMana = 0f;
-                }
-                if (!SkyBlockTweaks.CONFIG.config.actionBarFilters.hideMana) {
-                    newText += SEPERATOR5 + unpadded;
-                }
-            } else if (segment.contains("NOT ENOUGH MANA")) {
-                newText += SEPERATOR5 + unpadded;
-            } else  if (segment.contains("❈")) {
-                // Defense
-                String defense = segment.split("❈")[0].trim();
-                data.defense = Integer.parseInt(defense.replace(",", ""));
-                if (!SkyBlockTweaks.CONFIG.config.actionBarFilters.hideDefense) {
-                    newText += SEPERATOR5 + unpadded;
-                }
+              } else if (segment.contains("Mana")) {
+                  Matcher matcher = manaAbilityPattern.matcher(segment);
+                  if (matcher.find()) {
+                      data.abilityManaCost = Integer.parseInt(matcher.group(1));
+                      data.abilityName = matcher.group(2);
+                      if (!SkyBlockTweaks.CONFIG.config.actionBarFilters.hideAbilityUse) {
+                          newText += SEPERATOR5 + unpadded;
+                      }
+                      continue;
+                  }
+                  newText += SEPERATOR5 + unpadded;
 
-            } else if (segment.contains("Mana")) {
-                Matcher matcher = manaAbilityPattern.matcher(segment);
-                if (matcher.find()) {
-                    data.abilityManaCost = Integer.parseInt(matcher.group(1));
-                    data.abilityName = matcher.group(2);
-                    if (!SkyBlockTweaks.CONFIG.config.actionBarFilters.hideAbilityUse) {
-                        newText += SEPERATOR5 + unpadded;
-                    }
-                    continue;
-                }
-                newText += SEPERATOR5 + unpadded;
-
-            } else if (skillLevelPatern.matcher(segment).matches()) {
-                Matcher matcher = skillLevelPatern.matcher(segment);
-                if (matcher.find()) {
-                    data.gainedXP = Float.parseFloat(matcher.group(1).replaceAll(",", ""));
-                    data.skillType = matcher.group(2);
-                    if (matcher.group(3).contains("/")) {
-                        String[] xp = matcher.group(3).split("/");
-                        data.totalXP = Float.parseFloat(xp[1].replace(",", ""));
-                        data.nextLevelXP = Float.parseFloat(xp[0].replace(",", ""));
-                    } else {
-                        data.skillPercentage = Float.parseFloat(matcher.group(3).replace("%", ""));
-                    }
-                }
-                if (!SkyBlockTweaks.CONFIG.config.actionBarFilters.hideSkill) {
-                    newText += SEPERATOR5 + unpadded;
-                }
-            } else if (segment.contains("Secrets")) {
-                Matcher matcher = secretsPattern.matcher(segment);
-                if (matcher.find()) {
-                    data.secretsFound = Integer.parseInt(matcher.group(1));
-                    data.secretsTotal = Integer.parseInt(matcher.group(2));
-                }
-                if (!SkyBlockTweaks.CONFIG.config.actionBarFilters.hideSecrets) {
-                    newText += SEPERATOR5 + unpadded;
-                }
-            } else if (segment.contains("Drill Fuel")) {
-                // Drill Fuel
-                String[] drillFuel = segment.split(" ")[0].split("/");
-                data.drillFuel = Integer.parseInt(drillFuel[0].replace(",", ""));
-                data.maxDrillFuel = TextUtils.parseIntWithKorM(drillFuel[1]);
-                if (!SkyBlockTweaks.CONFIG.config.actionBarFilters.hideDrill) {
-                    newText += SEPERATOR5 + unpadded;
-                }
-            } else if (segment.contains("second") || segment.contains("DPS")) {
-                // Trial of Fire
-                newText += SEPERATOR3 + unpadded;
-            } else {
-                newText += SEPERATOR5 + unpadded;
-            }
-        }
-        newText = newText.trim();
-        data.transformedText = newText;
-        return data;
+              } else if (skillLevelPatern.matcher(segment).matches()) {
+                  Matcher matcher = skillLevelPatern.matcher(segment);
+                  if (matcher.find()) {
+                      data.gainedXP = TextUtils.parseFloatWithKorM(matcher.group(1));
+                      data.skillType = matcher.group(2);
+                      if (matcher.group(3).contains("/")) {
+                          String[] xp = matcher.group(3).split("/");
+                          data.totalXP = TextUtils.parseFloatWithKorM(xp[1]);
+                          data.nextLevelXP = TextUtils.parseFloatWithKorM(xp[0]);
+                      } else {
+                          data.skillPercentage = Float.parseFloat(matcher.group(3).replace("%", ""));
+                      }
+                  }
+                  if (!SkyBlockTweaks.CONFIG.config.actionBarFilters.hideSkill) {
+                      newText += SEPERATOR5 + unpadded;
+                  }
+              } else if (segment.contains("Secrets")) {
+                  Matcher matcher = secretsPattern.matcher(segment);
+                  if (matcher.find()) {
+                      data.secretsFound = Integer.parseInt(matcher.group(1));
+                      data.secretsTotal = Integer.parseInt(matcher.group(2));
+                  }
+                  if (!SkyBlockTweaks.CONFIG.config.actionBarFilters.hideSecrets) {
+                      newText += SEPERATOR5 + unpadded;
+                  }
+              } else if (segment.contains("Drill Fuel")) {
+                  // Drill Fuel
+                  String[] drillFuel = segment.split(" ")[0].split("/");
+                  data.drillFuel = Integer.parseInt(drillFuel[0].replace(",", ""));
+                  data.maxDrillFuel = TextUtils.parseIntWithKorM(drillFuel[1]);
+                  if (!SkyBlockTweaks.CONFIG.config.actionBarFilters.hideDrill) {
+                      newText += SEPERATOR5 + unpadded;
+                  }
+              } else if (segment.contains("second") || segment.contains("DPS")) {
+                  // Trial of Fire
+                  newText += SEPERATOR3 + unpadded;
+              } else {
+                  newText += SEPERATOR5 + unpadded;
+              }
+          }
+          newText = newText.trim();
+          data.transformedText = newText;
+          return data;
+      } catch (Exception e) {
+          SkyBlockTweaks.LOGGER.error("Error parsing action bar text: " + actionBarText);
+          e.printStackTrace();
+          SkyBlockTweaks.LOGGER.warn("Some features may not work correctly. Please report this to MisterCheezeCake immediately.");
+          return new ActionBarData();
+      }
     }
 
     public static void registerEvents() {
