@@ -18,39 +18,155 @@
  */
 package wtf.cheeze.sbt.config;
 
+import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
+import net.azureaaron.hmapi.network.HypixelNetworking;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.text.Text;
 import wtf.cheeze.sbt.SkyBlockTweaks;
-import wtf.cheeze.sbt.utils.Version;
+import wtf.cheeze.sbt.utils.CommandUtils;
+import wtf.cheeze.sbt.utils.SkyblockConstants;
+import wtf.cheeze.sbt.utils.SkyblockUtils;
+import wtf.cheeze.sbt.utils.TextUtils;
 import wtf.cheeze.sbt.utils.hud.HudScreen;
 
-import static net.fabricmc.fabric.api.client.command.v2.ClientCommandManager.literal;
+import java.util.Arrays;
+
 import static net.fabricmc.fabric.api.client.command.v2.ClientCommandManager.argument;
+import static net.fabricmc.fabric.api.client.command.v2.ClientCommandManager.literal;
 
 
 public class SBTCommand {
 
+    public static String PREFIX = "§7[§aSkyblockTweaks§f§7]";
+
     public static void registerEvents() {
         ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> dispatcher.register(
                 literal("sbt")
-                        .then(literal("config")
-                                .executes(context -> {
-                                    MinecraftClient mc = context.getSource().getClient();
-                                    Screen screen = SkyBlockTweaks.CONFIG.getScreen(null);
-                                    mc.send(() -> mc.setScreen(screen));
-                                    return 1;
-                                })
-                        )
-                        .then(literal("hud")
-                                .executes(context -> {
-                                    MinecraftClient mc = context.getSource().getClient();
-                                    Screen screen = new HudScreen(Text.literal("SkyBlockTweaks"), SkyBlockTweaks.HUDS, null);
-                                    mc.send(() -> mc.setScreen(screen));
-                                    return 1;
-                                })
+                        .then(CommandUtils.getScreenOpeningCommand("config", () -> SkyBlockTweaks.CONFIG.getScreen(null)))
+                        .then(CommandUtils.getScreenOpeningCommand("hud", () -> new HudScreen(Text.literal("SkyBlockTweaks"), SkyBlockTweaks.HUDS, null)))
+                        .then(literal("calc")
+                                        .then(literal("skill")
+                                                .then(argument("level-start", IntegerArgumentType.integer())
+                                                .then(argument("level-end", IntegerArgumentType.integer())
+                                                    .executes(context -> {
+                                                        var levelStart = IntegerArgumentType.getInteger(context, "level-start");
+                                                        var levelEnd = IntegerArgumentType.getInteger(context, "level-end");
+
+                                                         if (levelStart < 0 || levelEnd < 0 || levelStart > 60 || levelEnd > 60 || levelStart >= levelEnd) {
+                                                            context.getSource().sendFeedback(Text.of(PREFIX + " §cInvalid arguments"));
+                                                            return 0;
+                                                        }
+
+                                                        var newArr = Arrays.stream(SkyblockConstants.SKILL_LEVELS).skip(levelStart).limit(levelEnd - levelStart).toArray();
+                                                        var total = Arrays.stream(newArr).sum();
+                                                        context.getSource().sendFeedback(Text.of(PREFIX + " §3Total Skill XP Required: §e" + TextUtils.formatNumber(total, ",")));
+                                                        return 1;
+                                                    }
+                                                )
+                                            )).executes(context -> {
+                                                context.getSource().sendFeedback(Text.of(PREFIX + " §cInvalid arguments"));
+                                                return 0;
+                                            })
+                                        )
+                                        .then(literal("slayer")
+                                                        .then(argument("type", StringArgumentType.string()).suggests(CommandUtils.getArrayAsSuggestions(new String[]{"zombie", "spider", "wolf", "enderman", "blaze", "vampire"}))
+                                                        .then(argument("level-start", IntegerArgumentType.integer())
+                                                        .then(argument("level-end", IntegerArgumentType.integer())
+                                                                .executes(context -> {
+                                                                    var slayer = SkyblockUtils.castStringToSlayerType(StringArgumentType.getString(context, "type"));
+                                                                    if (slayer == null) {
+                                                                        context.getSource().sendFeedback(Text.of(PREFIX + " §cInvalid slayer type"));
+                                                                        return 0;
+
+                                                                    }
+                                                                    var levelStart = IntegerArgumentType.getInteger(context, "level-start");
+                                                                    var levelEnd = IntegerArgumentType.getInteger(context, "level-end");
+                                                                    var cap = slayer == SkyblockConstants.Slayers.VAMPIRE ? 5 : 9;
+
+                                                                    if (levelStart > levelEnd || levelEnd < 0 || levelStart < 0 || levelStart > cap || levelEnd > cap) {
+                                                                        context.getSource().sendFeedback(Text.of(PREFIX + " §cInvalid arguments"));
+                                                                        return 0;
+                                                                    }
+
+                                                                    var table = getCalcSlayerTable(slayer);
+                                                                    var needed = table[levelEnd] - table[levelStart];
+                                                                    context.getSource().sendFeedback(Text.of(PREFIX + " §3Total Slayer XP Required: §e" + TextUtils.formatNumber(needed, ",")));
+                                                                    return 1;
+                                                                })
+
+                                        ))))
+                                        .then(literal("dungeon")
+                                                .then(argument("level-start", IntegerArgumentType.integer())
+                                                        .then(argument("level-end", IntegerArgumentType.integer())
+                                                                .executes(context -> {
+                                                                            var levelStart = IntegerArgumentType.getInteger(context, "level-start");
+                                                                            var levelEnd = IntegerArgumentType.getInteger(context, "level-end");
+
+                                                                            if (levelStart < 0 || levelEnd < 0 || levelStart > 50 || levelEnd > 50 || levelStart >= levelEnd) {
+                                                                                context.getSource().sendFeedback(Text.of(PREFIX + " §cInvalid arguments"));
+                                                                                return 0;
+                                                                            }
+
+                                                                            var newArr = Arrays.stream(SkyblockConstants.DUNGEON_LEVELS).skip(levelStart).limit(levelEnd - levelStart).toArray();
+                                                                            var total = Arrays.stream(newArr).sum();
+                                                                            context.getSource().sendFeedback(Text.of(PREFIX + " §3Total Dungeons XP Required: §e" + TextUtils.formatNumber(total, ",")));
+                                                                            return 1;
+                                                                        }
+                                                                )
+                                                        ))
+
+                                        )
+                                        .then(literal("pet")
+                                                .then(argument("rarity", StringArgumentType.string()).suggests(CommandUtils.getArrayAsSuggestions(new String[]{"common", "uncommon", "rare", "epic", "legendary", "mythic"}))
+                                                .then(argument("level-start", IntegerArgumentType.integer())
+                                                .then(argument("level-end", IntegerArgumentType.integer())
+                                                    .executes(context -> {
+                                                        var rarity = SkyblockUtils.castStringToRarity(StringArgumentType.getString(context, "rarity"));
+                                                        if (rarity == null) {
+                                                            context.getSource().sendFeedback(Text.of(PREFIX + " §cInvalid rarity"));
+                                                            return 0;
+                                                        }
+                                                        var levelStart = IntegerArgumentType.getInteger(context, "level-start");
+                                                        var levelEnd = IntegerArgumentType.getInteger(context, "level-end");
+
+                                                        var cap = (rarity == SkyblockConstants.Rarity.LEGENDARY || rarity == SkyblockConstants.Rarity.MYTHIC) ? 200 : 100;
+
+
+                                                        if (levelStart < 0 || levelEnd < 0 || levelStart > cap || levelEnd > cap || levelStart >= levelEnd) {
+                                                            context.getSource().sendFeedback(Text.of(PREFIX + " §cInvalid arguments"));
+                                                            return 0;
+                                                        }
+
+                                                        var newArr = Arrays.stream(getCalcPetTable(rarity)).skip(levelStart).limit(levelEnd - levelStart).toArray();
+                                                        var total = Arrays.stream(newArr).sum();
+                                                        context.getSource().sendFeedback(Text.of(PREFIX + " §3Total Pet XP Required: §e" + TextUtils.formatNumber(total, ",")));
+                                                        return 1;
+                                                    })
+                                                    ).executes(context -> {
+                                                        context.getSource().sendFeedback(Text.of(PREFIX + " §cInvalid arguments"));
+                                                        return 0;
+                                                    }))))
+                                .then(literal("dev")
+                                        .then(literal("sendpacket")
+                                                .executes(context -> {
+                                                    HypixelNetworking.sendPartyInfoC2SPacket(2);
+                                                    return 1;
+                                                }
+                                        ))
+                                        .then(literal("locpack")
+                                                .executes(context -> {
+                                                    HypixelNetworking.sendPlayerInfoC2SPacket(1);
+                                                    return 1;
+                                                }
+                                        )
+                                        )
+                        ).executes(context -> {
+                            context.getSource().sendFeedback(Text.of(PREFIX + " §cInvalid arguments"));
+                            return 0;
+                        })
 
                         )
                         .executes(context -> {
@@ -60,7 +176,28 @@ public class SBTCommand {
                                     return 1;
                                 }
                         )
-        ));
+                        ));
+    }
+
+    private static int[] getCalcPetTable(SkyblockConstants.Rarity rarity) {
+        switch (rarity) {
+            case COMMON: return SkyblockConstants.PET_LEVELS_COMMON;
+            case UNCOMMON: return SkyblockConstants.PET_LEVELS_UNCOMMON;
+            case RARE: return SkyblockConstants.PET_LEVELS_RARE;
+            case EPIC: return SkyblockConstants.PET_LEVELS_EPIC;
+            case LEGENDARY, MYTHIC: return SkyblockConstants.PET_LEVELS_LEGENDARY;
+            default: return null;
+        }
+    }
+
+    private static int[] getCalcSlayerTable (SkyblockConstants.Slayers slayer) {
+        switch (slayer) {
+            case ZOMBIE: return SkyblockConstants.SLAYER_LEVELS_ZOMBIE;
+            case SPIDER: return SkyblockConstants.SLAYER_LEVELS_SPIDER;
+            case WOLF, ENDERMAN, BLAZE: return SkyblockConstants.SLAYER_LEVELS_WEB;
+            case VAMPIRE: return SkyblockConstants.SLAYER_LEVELS_VAMPIRE;
+            default: return null;
+        }
     }
 
 }

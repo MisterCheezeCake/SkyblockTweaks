@@ -8,7 +8,8 @@ import dev.isxander.yacl3.config.v2.api.SerialEntry;
 import net.minecraft.text.Text;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SkyBlockTweaksConfig;
-import wtf.cheeze.sbt.features.HubSelectorHighlight;
+import wtf.cheeze.sbt.features.MenuHighlights;
+import wtf.cheeze.sbt.features.PartyCommands;
 import wtf.cheeze.sbt.utils.Version;
 import wtf.cheeze.sbt.utils.actionbar.ActionBarTransformer;
 
@@ -19,7 +20,9 @@ public class General {
                 .tooltip(Text.literal("General settings for SkyBlockTweaks"))
                 .option(Version.getStreamOption(defaults, config))
                 .group(InventoryTweaks.getGroup(defaults, config))
-                .group(HubSelectorHighlight.Config.getGroup(defaults, config))
+                .group(MenuHighlights.Config.getGroup(defaults, config))
+                .group(PartyCommands.Config.getGroup(defaults, config))
+                .option(PartyCommands.Config.getBlackList(defaults, config))
                 .group(HudTweaks.getGroup(defaults, config))
                 .group(ActionBarTransformer.Config.getGroup(defaults, config))
                 .build();

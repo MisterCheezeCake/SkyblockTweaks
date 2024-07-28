@@ -21,7 +21,8 @@ package wtf.cheeze.sbt.config;
 import dev.isxander.yacl3.config.v2.api.SerialEntry;
 import wtf.cheeze.sbt.config.categories.General;
 import wtf.cheeze.sbt.config.categories.Huds;
-import wtf.cheeze.sbt.features.HubSelectorHighlight;
+import wtf.cheeze.sbt.features.MenuHighlights;
+import wtf.cheeze.sbt.features.PartyCommands;
 import wtf.cheeze.sbt.utils.Version;
 import wtf.cheeze.sbt.utils.actionbar.ActionBarTransformer;
 
@@ -41,8 +42,12 @@ public class ConfigImpl {
     @SerialEntry
     public ActionBarTransformer.Config actionBarFilters = new ActionBarTransformer.Config();
 
+    // This is called hubSelectorHighlight for legacy reasons, mainly that I really don't want to write config migration right now
     @SerialEntry
-    public HubSelectorHighlight.Config hubSelectorHighlight = new HubSelectorHighlight.Config();
+    public MenuHighlights.Config hubSelectorHighlight = new MenuHighlights.Config();
+
+    @SerialEntry
+    public PartyCommands.Config partyCommands = new PartyCommands.Config();
 
     @SerialEntry
     public Huds huds = new Huds();

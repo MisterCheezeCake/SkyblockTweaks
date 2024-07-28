@@ -20,6 +20,7 @@ package wtf.cheeze.sbt.utils.actionbar;
 
 import org.jetbrains.annotations.Nullable;
 import com.google.gson.Gson;
+import wtf.cheeze.sbt.SkyBlockTweaks;
 
 /**
  * Represents the data that can be extracted from the action bar, and also contains the transformed text.
@@ -29,7 +30,6 @@ import com.google.gson.Gson;
  *      - Location Alert Fields
  */
 public class ActionBarData {
-    private static Gson GSON = new Gson();
     public String transformedText;
 
 
@@ -69,6 +69,6 @@ public class ActionBarData {
     public int secretsTotal;
 
     public String toJson() {
-        return GSON.toJson(this);
+        return SkyBlockTweaks.GSON.toJson(this);
     }
 }

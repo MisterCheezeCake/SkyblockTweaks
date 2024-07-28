@@ -28,8 +28,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import wtf.cheeze.sbt.SkyBlockTweaks;
-import wtf.cheeze.sbt.features.HubSelectorHighlight;
+import wtf.cheeze.sbt.features.MenuHighlights;
 
 @Mixin(HandledScreen.class)
 public abstract class HandledScreenMixin<T extends ScreenHandler> extends Screen {
@@ -37,10 +36,10 @@ public abstract class HandledScreenMixin<T extends ScreenHandler> extends Screen
     @Inject(method = "drawSlot", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawItem(Lnet/minecraft/item/ItemStack;III)V"))
     protected void sbt$onDrawSlot(DrawContext context, Slot slot, CallbackInfo ci) {
         var title = this.getTitle().getString();
-        if (!SkyBlockTweaks.CONFIG.config.hubSelectorHighlight.enabledDungeon) return;
         switch (title) {
-            case "SkyBlock Hub Selector" -> HubSelectorHighlight.tryDrawHighlight(context, slot);
-            case "Dungeon Hub Selector" -> HubSelectorHighlight.tryDrawHighlightDH(context, slot);
+            case "SkyBlock Hub Selector" -> MenuHighlights.tryDrawHighlight(context, slot);
+            case "Dungeon Hub Selector" -> MenuHighlights.tryDrawHighlightDH(context, slot);
+            case "Heart of the Mountain" -> MenuHighlights.tryDrawHighlightHOTM(context, slot);
         }
     }
     private HandledScreenMixin(Text t) {super(t);}

@@ -18,13 +18,28 @@
  */
 package wtf.cheeze.sbt.utils;
 
+import net.azureaaron.hmapi.data.party.PartyRole;
+import net.azureaaron.hmapi.network.packet.s2c.ErrorS2CPacket;
+import net.azureaaron.hmapi.network.packet.s2c.HypixelS2CPacket;
+import net.azureaaron.hmapi.network.packet.v1.s2c.LocationUpdateS2CPacket;
+import net.azureaaron.hmapi.network.packet.v1.s2c.PlayerInfoS2CPacket;
+import net.azureaaron.hmapi.network.packet.v2.s2c.PartyInfoS2CPacket;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.component.DataComponentTypes;
+import org.jetbrains.annotations.Nullable;
 import wtf.cheeze.sbt.SkyBlockTweaks;
 import wtf.cheeze.sbt.utils.actionbar.ActionBarData;
 
+import java.util.Map;
+import java.util.Optional;
+import java.util.UUID;
+import java.util.logging.Logger;
+
 public class SkyBlockData {
     public boolean inSB = false;
+    public boolean inParty = false;
+    public boolean amITheLeader = false;
+
     public String zone;
 
     public int defense = 0;
@@ -64,7 +79,33 @@ public class SkyBlockData {
         if (data.overflowMana != null) this.overflowMana = data.overflowMana;
         if (data.drillFuel != null) this.drillFuel = data.drillFuel;
         if (data.maxDrillFuel != null) this.maxDrillFuel = data.maxDrillFuel;
+    }
 
+    public void handlePacket(HypixelS2CPacket packet) {
+        //SkyBlockTweaks.LOGGER.info("Handling packet");
+        switch (packet) {
+            case PartyInfoS2CPacket(boolean parInParty, Map<UUID, PartyRole> members) -> {
+                //SkyBlockTweaks.LOGGER.info("Handling party info packet");
+                inParty = parInParty;
+                //SkyBlockTweaks.LOGGER.info("I am in a party: {}", inParty);
+                var myUUID = SkyBlockTweaks.mc.player.getUuid();
+                if (myUUID == null || members == null)  {
+                    amITheLeader = false;
+                    return;
+                }
+                amITheLeader = members.get(myUUID) == PartyRole.LEADER;
+                //SkyBlockTweaks.LOGGER.info("I am the leader: {}", amITheLeader);
+            }
+            case ErrorS2CPacket(var id, var errorReason) -> {
+                SkyBlockTweaks.LOGGER.error("The Hypixel Mod API experienced an error. ID: {} Reason: {}", id, errorReason);
+            }
+            case LocationUpdateS2CPacket(String serverName, Optional<String> serverType, Optional<String> lobbyName, Optional<String> mode, Optional<String> map) -> {
+                SkyBlockTweaks.LOGGER.info(serverName);
+            }
+            default -> {
+                //Do nothing
+            }
+        }
 
     }
 }

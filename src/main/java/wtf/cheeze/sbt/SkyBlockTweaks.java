@@ -34,6 +34,7 @@ import org.slf4j.LoggerFactory;
 
 import wtf.cheeze.sbt.config.SBTCommand;
 import wtf.cheeze.sbt.config.SkyBlockTweaksConfig;
+import wtf.cheeze.sbt.features.PartyCommands;
 import wtf.cheeze.sbt.features.huds.*;
 import wtf.cheeze.sbt.utils.*;
 import wtf.cheeze.sbt.utils.actionbar.ActionBarTransformer;
@@ -46,7 +47,8 @@ public class SkyBlockTweaks implements ModInitializer {
 	public static final SkyBlockData DATA = new SkyBlockData();
 	public static final SkyBlockTweaksConfig CONFIG = new SkyBlockTweaksConfig();
 	public static final ArrayList<HUD> HUDS = new ArrayList<HUD>();
-	public static final Version VERSION = new Version(Version.VersionType.ALPHA, 0, 1, 0, 3);
+	//public static final Version VERSION = new Version(Version.VersionType.ALPHA, 0, 1, 0, 3);
+	public static final Version VERSION = new Version(Version.VersionType.UNSTABLE);
 	public static final Gson GSON = new Gson();
 	public static final MinecraftClient mc = MinecraftClient.getInstance();
 
@@ -83,9 +85,12 @@ public class SkyBlockTweaks implements ModInitializer {
 		NotificationHandler.registerEvents();
 
 		UpdateChecker.checkForUpdates();
+		ModAPIUtils.registerEvents();
+		PartyCommands.registerEvents();
 
 
 		// TODO: Checking this every tick may be overkill, change this later
+		// TODO: Use the mod api for this
 		ClientTickEvents.END_CLIENT_TICK.register(client -> {
 
 			if (mc != null && mc.world != null) {

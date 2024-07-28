@@ -19,6 +19,15 @@ repositories {
 		name = "Terraformers"
 		url = "https://maven.terraformersmc.com/"
 	}
+	exclusiveContent {
+		forRepository {
+			maven { url "https://maven.azureaaron.net/releases" }
+		}
+
+		filter {
+			includeGroup "net.azureaaron"
+		}
+	}
 }
 
 dependencies {
@@ -28,6 +37,7 @@ dependencies {
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 	modImplementation 'dev.isxander:yet-another-config-lib:3.5.0+1.21-fabric'
 	modImplementation("com.terraformersmc:modmenu:${project.modmenu_version}")
+	include modImplementation("net.azureaaron:hm-api:1.0.0+1.21")
 
 
 }
