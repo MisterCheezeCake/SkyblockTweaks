@@ -808,6 +808,19 @@ public class SkyblockConstants {
             116250000
     };
 
+    public static final int[] HOTM_LEVELS = {
+            0,
+            3000,
+            9000,
+            25000,
+            60000,
+            100000,
+            150000,
+            210000,
+            290000,
+            400000
+    };
+
     public static enum Rarity {
         COMMON,
         UNCOMMON,
