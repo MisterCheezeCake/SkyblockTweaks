@@ -97,7 +97,11 @@ public class SBTCommand {
                                                                     return 1;
                                                                 })
 
-                                        ))))
+                                        ))).executes(context -> {
+                                                    context.getSource().sendFeedback(Text.of(PREFIX + " §cInvalid arguments"));
+                                                    return 0;
+                                                })
+                                        )
                                         .then(literal("dungeon")
                                                 .then(argument("level-start", IntegerArgumentType.integer())
                                                         .then(argument("level-end", IntegerArgumentType.integer())
@@ -117,6 +121,10 @@ public class SBTCommand {
                                                                         }
                                                                 )
                                                         ))
+                                                .executes(context -> {
+                                                    context.getSource().sendFeedback(Text.of(PREFIX + " §cInvalid arguments"));
+                                                    return 0;
+                                                })
 
                                         )
                                         .then(literal("pet")
@@ -148,22 +156,13 @@ public class SBTCommand {
                                                     ).executes(context -> {
                                                         context.getSource().sendFeedback(Text.of(PREFIX + " §cInvalid arguments"));
                                                         return 0;
-                                                    }))))
-                                .then(literal("dev")
-                                        .then(literal("sendpacket")
+                                                    })))
                                                 .executes(context -> {
-                                                    HypixelNetworking.sendPartyInfoC2SPacket(2);
-                                                    return 1;
-                                                }
-                                        ))
-                                        .then(literal("locpack")
-                                                .executes(context -> {
-                                                    HypixelNetworking.sendPlayerInfoC2SPacket(1);
-                                                    return 1;
-                                                }
+                                                    context.getSource().sendFeedback(Text.of(PREFIX + " §cInvalid arguments"));
+                                                    return 0;
+                                                })
                                         )
-                                        )
-                        ).executes(context -> {
+                        .executes(context -> {
                             context.getSource().sendFeedback(Text.of(PREFIX + " §cInvalid arguments"));
                             return 0;
                         })

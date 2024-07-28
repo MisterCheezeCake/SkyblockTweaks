@@ -99,9 +99,9 @@ public class SkyBlockData {
             case ErrorS2CPacket(var id, var errorReason) -> {
                 SkyBlockTweaks.LOGGER.error("The Hypixel Mod API experienced an error. ID: {} Reason: {}", id, errorReason);
             }
-            case LocationUpdateS2CPacket(String serverName, Optional<String> serverType, Optional<String> lobbyName, Optional<String> mode, Optional<String> map) -> {
-                SkyBlockTweaks.LOGGER.info(serverName);
-            }
+//            case LocationUpdateS2CPacket(String serverName, Optional<String> serverType, Optional<String> lobbyName, Optional<String> mode, Optional<String> map) -> {
+//                SkyBlockTweaks.LOGGER.info(serverName);
+//            }
             default -> {
                 //Do nothing
             }
