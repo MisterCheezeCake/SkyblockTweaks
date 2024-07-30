@@ -41,6 +41,9 @@ public abstract class HandledScreenMixin<T extends ScreenHandler> extends Screen
             case "Dungeon Hub Selector" -> MenuHighlights.tryDrawHighlightDH(context, slot);
             case "Heart of the Mountain" -> MenuHighlights.tryDrawHighlightHOTM(context, slot);
         }
+        if (title.contains("Widget") || title.contains("Setting")) {
+            MenuHighlights.tryDrawHighlightWidget(context, slot);
+        }
     }
     private HandledScreenMixin(Text t) {super(t);}
 }

@@ -94,6 +94,14 @@ public class MenuHighlights {
         }
     }
 
+    public static void tryDrawHighlightWidget(DrawContext context, Slot slot) {
+        if (!SkyBlockTweaks.CONFIG.config.hubSelectorHighlight.widgetHighlight) return;
+        var name = slot.getStack().getName().getString();
+        if (!name.contains("✔") && !name.contains("✖")) return;
+        if (name.contains("✔")) context.fill(slot.x, slot.y, slot.x + 16, slot.y + 16, HIGHLIGHT_GREEN2);
+        else context.fill(slot.x, slot.y, slot.x + 16, slot.y + 16, HIGHLIGHT_RED2);
+    }
+
     public static class Config {
         @SerialEntry
         public boolean enabledRegular = true;
@@ -103,6 +111,9 @@ public class MenuHighlights {
 
         @SerialEntry
         public boolean hotmHighlight = true;
+
+        @SerialEntry
+        public boolean widgetHighlight = true;
 
         public static OptionGroup getGroup(ConfigImpl defaults, ConfigImpl config) {
             var enabled = Option.<Boolean>createBuilder()
@@ -136,12 +147,24 @@ public class MenuHighlights {
                     )
                     .build();
 
+            var widgetHighlight = Option.<Boolean>createBuilder()
+                    .name(Text.literal("Widget Highlights"))
+                    .description(OptionDescription.of(Text.literal("Whether or not to highlight items in the /widgets menu based on their status (enabled/disabled)")))
+                    .controller(SkyBlockTweaksConfig::generateBooleanController)
+                    .binding(
+                                    defaults.hubSelectorHighlight.widgetHighlight,
+                                    () -> config.hubSelectorHighlight.widgetHighlight,
+                                    value -> config.hubSelectorHighlight.widgetHighlight = (Boolean) value
+                    )
+                    .build();
+
             return OptionGroup.createBuilder()
                     .name(Text.literal("Menu Highlights"))
                     .description(OptionDescription.of(Text.literal("Settings for Menu Highlights and coloring")))
                     .option(enabled)
                     .option(enabledDungeon)
                     .option(hotmHighlight)
+                    .option(widgetHighlight)
                     .build();
         }
     }
