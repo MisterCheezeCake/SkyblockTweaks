@@ -24,15 +24,14 @@ import dev.isxander.yacl3.api.OptionGroup;
 import dev.isxander.yacl3.api.controller.ColorControllerBuilder;
 import dev.isxander.yacl3.api.controller.StringControllerBuilder;
 import dev.isxander.yacl3.config.v2.api.SerialEntry;
-import kotlin.jvm.internal.SerializedIr;
 import net.minecraft.text.Text;
-import wtf.cheeze.sbt.SkyBlockTweaks;
+import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.config.ConfigImpl;
-import wtf.cheeze.sbt.config.SkyBlockTweaksConfig;
+import wtf.cheeze.sbt.config.SkyblockTweaksConfig;
 import wtf.cheeze.sbt.utils.TextUtils;
 import wtf.cheeze.sbt.utils.hud.HudInformation;
 import wtf.cheeze.sbt.utils.hud.TextHUD;
-import wtf.cheeze.sbt.utils.HudLine;
+import wtf.cheeze.sbt.utils.hud.HudLine;
 
 
 import java.awt.*;
@@ -41,24 +40,24 @@ public class ManaHUD extends TextHUD {
 
     public ManaHUD() {
         INFO = new HudInformation(
-                () -> SkyBlockTweaks.CONFIG.config.huds.mana.x,
-                () -> SkyBlockTweaks.CONFIG.config.huds.mana.y,
-                () -> SkyBlockTweaks.CONFIG.config.huds.mana.scale,
-                x -> SkyBlockTweaks.CONFIG.config.huds.mana.x = (float) x,
-                y -> SkyBlockTweaks.CONFIG.config.huds.mana.y = (float) y,
-                scale -> SkyBlockTweaks.CONFIG.config.huds.mana.scale = (float) scale
+                () -> SkyblockTweaks.CONFIG.config.huds.mana.x,
+                () -> SkyblockTweaks.CONFIG.config.huds.mana.y,
+                () -> SkyblockTweaks.CONFIG.config.huds.mana.scale,
+                x -> SkyblockTweaks.CONFIG.config.huds.mana.x = (float) x,
+                y -> SkyblockTweaks.CONFIG.config.huds.mana.y = (float) y,
+                scale -> SkyblockTweaks.CONFIG.config.huds.mana.scale = (float) scale
         );
         line = new HudLine(
-                () -> SkyBlockTweaks.CONFIG.config.huds.mana.color,
-                () -> SkyBlockTweaks.CONFIG.config.huds.mana.outlineColor,
-                () -> SkyBlockTweaks.CONFIG.config.huds.mana.mode,
-                () -> TextUtils.formatNumber((int) SkyBlockTweaks.DATA.mana, SkyBlockTweaks.CONFIG.config.huds.mana.separator) + "/" + TextUtils.formatNumber((int) SkyBlockTweaks.DATA.maxMana, SkyBlockTweaks.CONFIG.config.huds.mana.separator) + (SkyBlockTweaks.CONFIG.config.huds.mana.icon ? "✎" : "")
+                () -> SkyblockTweaks.CONFIG.config.huds.mana.color,
+                () -> SkyblockTweaks.CONFIG.config.huds.mana.outlineColor,
+                () -> SkyblockTweaks.CONFIG.config.huds.mana.mode,
+                () -> TextUtils.formatNumber((int) SkyblockTweaks.DATA.mana, SkyblockTweaks.CONFIG.config.huds.mana.separator) + "/" + TextUtils.formatNumber((int) SkyblockTweaks.DATA.maxMana, SkyblockTweaks.CONFIG.config.huds.mana.separator) + (SkyblockTweaks.CONFIG.config.huds.mana.icon ? "✎" : "")
         );
     }
     @Override
     public boolean shouldRender(boolean fromHudScreen) {
         if (!super.shouldRender(fromHudScreen)) return false;
-        if ((SkyBlockTweaks.DATA.inSB && SkyBlockTweaks.CONFIG.config.huds.mana.enabled) || fromHudScreen) return true;
+        if ((SkyblockTweaks.DATA.inSB && SkyblockTweaks.CONFIG.config.huds.mana.enabled) || fromHudScreen) return true;
         return false;
     }
 //    @Override
@@ -107,7 +106,7 @@ public class ManaHUD extends TextHUD {
             var enabled = Option.<Boolean>createBuilder()
                     .name(Text.literal("Enable Mana HUD"))
                     .description(OptionDescription.of(Text.literal("Enables the Mana HUD")))
-                    .controller(SkyBlockTweaksConfig::generateBooleanController)
+                    .controller(SkyblockTweaksConfig::generateBooleanController)
                     .binding(
                             defaults.huds.mana.enabled,
                             () -> config.huds.mana.enabled,
@@ -140,7 +139,7 @@ public class ManaHUD extends TextHUD {
             var mode = Option.<HudLine.DrawMode>createBuilder()
                     .name(Text.literal("Mana HUD Mode"))
                     .description(OptionDescription.of(Text.literal("The draw mode of the Mana HUD. Pure will render without shadow, Shadow will render with a shadow, and Outline will render with an outline\n§4Warning: §cOutline mode is still a work in progress and can cause annoying visual bugs in menus.")))
-                    .controller(SkyBlockTweaksConfig::generateDrawModeController)
+                    .controller(SkyblockTweaksConfig::generateDrawModeController)
                     .binding(
                             defaults.huds.mana.mode,
                             () -> config.huds.mana.mode,
@@ -154,7 +153,7 @@ public class ManaHUD extends TextHUD {
             var icon = Option.<Boolean>createBuilder()
                     .name(Text.literal("Mana HUD Icon"))
                     .description(OptionDescription.of(Text.literal("Enables the icon (✎) in the Mana HUD")))
-                    .controller(SkyBlockTweaksConfig::generateBooleanController)
+                    .controller(SkyblockTweaksConfig::generateBooleanController)
                     .binding(
                             defaults.huds.mana.icon,
                             () -> config.huds.mana.icon,
@@ -174,7 +173,7 @@ public class ManaHUD extends TextHUD {
             var scale = Option.<Float>createBuilder()
                     .name(Text.literal("Mana HUD Scale"))
                     .description(OptionDescription.of(Text.literal("The scale of the Mana HUD")))
-                    .controller(SkyBlockTweaksConfig::generateScaleController)
+                    .controller(SkyblockTweaksConfig::generateScaleController)
                     .binding(
                             defaults.huds.mana.scale,
                             () -> config.huds.mana.scale,

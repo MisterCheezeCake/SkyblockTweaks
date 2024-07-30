@@ -17,14 +17,14 @@
  * along with SkyblockTweaks. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package wtf.cheeze.sbt.utils;
+package wtf.cheeze.sbt.utils.skyblock;
 
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.azureaaron.hmapi.events.HypixelPacketEvents;
 import net.azureaaron.hmapi.network.HypixelNetworking;
 import net.azureaaron.hmapi.network.packet.v1.s2c.LocationUpdateS2CPacket;
 import net.minecraft.util.Util;
-import wtf.cheeze.sbt.SkyBlockTweaks;
+import wtf.cheeze.sbt.SkyblockTweaks;
 
 public class ModAPIUtils {
 
@@ -32,6 +32,6 @@ public class ModAPIUtils {
         HypixelNetworking.registerToEvents(Util.make(new Object2IntOpenHashMap<>(), map -> {
             map.put(LocationUpdateS2CPacket.ID, 1);
         }));
-        HypixelPacketEvents.PARTY_INFO.register(SkyBlockTweaks.DATA::handlePacket);
+        HypixelPacketEvents.PARTY_INFO.register(SkyblockTweaks.DATA::handlePacket);
     }
 }

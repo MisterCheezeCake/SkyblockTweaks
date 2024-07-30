@@ -16,26 +16,20 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with SkyblockTweaks. If not, see <https://www.gnu.org/licenses/>.
  */
-package wtf.cheeze.sbt.utils;
+package wtf.cheeze.sbt.utils.skyblock;
 
 import net.azureaaron.hmapi.data.party.PartyRole;
 import net.azureaaron.hmapi.network.packet.s2c.ErrorS2CPacket;
 import net.azureaaron.hmapi.network.packet.s2c.HypixelS2CPacket;
-import net.azureaaron.hmapi.network.packet.v1.s2c.LocationUpdateS2CPacket;
-import net.azureaaron.hmapi.network.packet.v1.s2c.PlayerInfoS2CPacket;
 import net.azureaaron.hmapi.network.packet.v2.s2c.PartyInfoS2CPacket;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.component.DataComponentTypes;
-import org.jetbrains.annotations.Nullable;
-import wtf.cheeze.sbt.SkyBlockTweaks;
+import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.utils.actionbar.ActionBarData;
 
 import java.util.Map;
-import java.util.Optional;
 import java.util.UUID;
-import java.util.logging.Logger;
 
-public class SkyBlockData {
+public class SkyblockData {
     public boolean inSB = false;
     public boolean inParty = false;
     public boolean amITheLeader = false;
@@ -88,7 +82,7 @@ public class SkyBlockData {
                 //SkyBlockTweaks.LOGGER.info("Handling party info packet");
                 inParty = parInParty;
                 //SkyBlockTweaks.LOGGER.info("I am in a party: {}", inParty);
-                var myUUID = SkyBlockTweaks.mc.player.getUuid();
+                var myUUID = SkyblockTweaks.mc.player.getUuid();
                 if (myUUID == null || members == null)  {
                     amITheLeader = false;
                     return;
@@ -97,7 +91,7 @@ public class SkyBlockData {
                 //SkyBlockTweaks.LOGGER.info("I am the leader: {}", amITheLeader);
             }
             case ErrorS2CPacket(var id, var errorReason) -> {
-                SkyBlockTweaks.LOGGER.error("The Hypixel Mod API experienced an error. ID: {} Reason: {}", id, errorReason);
+                SkyblockTweaks.LOGGER.error("The Hypixel Mod API experienced an error. ID: {} Reason: {}", id, errorReason);
             }
 //            case LocationUpdateS2CPacket(String serverName, Optional<String> serverType, Optional<String> lobbyName, Optional<String> mode, Optional<String> map) -> {
 //                SkyBlockTweaks.LOGGER.info(serverName);

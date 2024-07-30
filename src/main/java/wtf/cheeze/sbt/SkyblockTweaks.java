@@ -23,29 +23,29 @@ import net.fabricmc.api.ModInitializer;
 
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
-import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.scoreboard.Scoreboard;
 import net.minecraft.scoreboard.ScoreboardDisplaySlot;
 import net.minecraft.scoreboard.ScoreboardObjective;
-import net.minecraft.text.Text;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import wtf.cheeze.sbt.config.SBTCommand;
-import wtf.cheeze.sbt.config.SkyBlockTweaksConfig;
+import wtf.cheeze.sbt.command.SBTCommand;
+import wtf.cheeze.sbt.config.SkyblockTweaksConfig;
 import wtf.cheeze.sbt.features.PartyCommands;
 import wtf.cheeze.sbt.features.huds.*;
 import wtf.cheeze.sbt.utils.*;
 import wtf.cheeze.sbt.utils.actionbar.ActionBarTransformer;
 import wtf.cheeze.sbt.utils.hud.HUD;
+import wtf.cheeze.sbt.utils.skyblock.ModAPIUtils;
+import wtf.cheeze.sbt.utils.skyblock.SkyblockData;
 
 import java.util.ArrayList;
 
-public class SkyBlockTweaks implements ModInitializer {
+public class SkyblockTweaks implements ModInitializer {
     public static final Logger LOGGER = LoggerFactory.getLogger("SkyBlockTweaks");
-	public static final SkyBlockData DATA = new SkyBlockData();
-	public static final SkyBlockTweaksConfig CONFIG = new SkyBlockTweaksConfig();
+	public static final SkyblockData DATA = new SkyblockData();
+	public static final SkyblockTweaksConfig CONFIG = new SkyblockTweaksConfig();
 	public static final ArrayList<HUD> HUDS = new ArrayList<HUD>();
 	//public static final Version VERSION = new Version(Version.VersionType.ALPHA, 0, 1, 0, 4);
 	public static final Version VERSION = new Version(Version.VersionType.UNSTABLE);

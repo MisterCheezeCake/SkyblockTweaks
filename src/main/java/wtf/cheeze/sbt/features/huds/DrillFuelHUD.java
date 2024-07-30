@@ -25,13 +25,13 @@ import dev.isxander.yacl3.api.controller.ColorControllerBuilder;
 import dev.isxander.yacl3.api.controller.StringControllerBuilder;
 import dev.isxander.yacl3.config.v2.api.SerialEntry;
 import net.minecraft.text.Text;
-import wtf.cheeze.sbt.SkyBlockTweaks;
+import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.config.ConfigImpl;
-import wtf.cheeze.sbt.config.SkyBlockTweaksConfig;
+import wtf.cheeze.sbt.config.SkyblockTweaksConfig;
 import wtf.cheeze.sbt.utils.TextUtils;
 import wtf.cheeze.sbt.utils.hud.HudInformation;
 import wtf.cheeze.sbt.utils.hud.TextHUD;
-import wtf.cheeze.sbt.utils.HudLine;
+import wtf.cheeze.sbt.utils.hud.HudLine;
 
 import java.awt.Color;
 
@@ -39,27 +39,27 @@ public class DrillFuelHUD extends TextHUD {
 
     public DrillFuelHUD() {
         INFO = new HudInformation(
-                () -> SkyBlockTweaks.CONFIG.config.huds.drillFuel.x,
-                () -> SkyBlockTweaks.CONFIG.config.huds.drillFuel.y,
-                () -> SkyBlockTweaks.CONFIG.config.huds.drillFuel.scale,
-                x -> SkyBlockTweaks.CONFIG.config.huds.drillFuel.x = (float) x,
-                y -> SkyBlockTweaks.CONFIG.config.huds.drillFuel.y = (float) y,
-                scale -> SkyBlockTweaks.CONFIG.config.huds.drillFuel.scale = (float) scale
+                () -> SkyblockTweaks.CONFIG.config.huds.drillFuel.x,
+                () -> SkyblockTweaks.CONFIG.config.huds.drillFuel.y,
+                () -> SkyblockTweaks.CONFIG.config.huds.drillFuel.scale,
+                x -> SkyblockTweaks.CONFIG.config.huds.drillFuel.x = (float) x,
+                y -> SkyblockTweaks.CONFIG.config.huds.drillFuel.y = (float) y,
+                scale -> SkyblockTweaks.CONFIG.config.huds.drillFuel.scale = (float) scale
         );
         line = new HudLine(
-                () -> SkyBlockTweaks.CONFIG.config.huds.drillFuel.color,
-                () -> SkyBlockTweaks.CONFIG.config.huds.drillFuel.outlineColor,
-                () -> SkyBlockTweaks.CONFIG.config.huds.drillFuel.mode,
+                () -> SkyblockTweaks.CONFIG.config.huds.drillFuel.color,
+                () -> SkyblockTweaks.CONFIG.config.huds.drillFuel.outlineColor,
+                () -> SkyblockTweaks.CONFIG.config.huds.drillFuel.mode,
                 () ->
-                        (TextUtils.formatNumber((int) SkyBlockTweaks.DATA.drillFuel, SkyBlockTweaks.CONFIG.config.huds.drillFuel.separator))
+                        (TextUtils.formatNumber((int) SkyblockTweaks.DATA.drillFuel, SkyblockTweaks.CONFIG.config.huds.drillFuel.separator))
                         + "/"
-                        + (SkyBlockTweaks.CONFIG.config.huds.drillFuel.abridgeSecondNumber ? TextUtils.addKOrM((int) SkyBlockTweaks.DATA.maxDrillFuel, SkyBlockTweaks.CONFIG.config.huds.drillFuel.separator) : TextUtils.formatNumber((int) SkyBlockTweaks.DATA.maxDrillFuel, SkyBlockTweaks.CONFIG.config.huds.drillFuel.separator))
+                        + (SkyblockTweaks.CONFIG.config.huds.drillFuel.abridgeSecondNumber ? TextUtils.addKOrM((int) SkyblockTweaks.DATA.maxDrillFuel, SkyblockTweaks.CONFIG.config.huds.drillFuel.separator) : TextUtils.formatNumber((int) SkyblockTweaks.DATA.maxDrillFuel, SkyblockTweaks.CONFIG.config.huds.drillFuel.separator))
         );
     }
     @Override
     public boolean shouldRender(boolean fromHudScreen) {
         if (!super.shouldRender(fromHudScreen)) return false;
-        if ((SkyBlockTweaks.DATA.inSB && SkyBlockTweaks.CONFIG.config.huds.drillFuel.enabled) && SkyBlockTweaks.DATA.isThePlayerHoldingADrill() || fromHudScreen) return true;
+        if ((SkyblockTweaks.DATA.inSB && SkyblockTweaks.CONFIG.config.huds.drillFuel.enabled) && SkyblockTweaks.DATA.isThePlayerHoldingADrill() || fromHudScreen) return true;
         return false;
     }
 
@@ -101,7 +101,7 @@ public class DrillFuelHUD extends TextHUD {
             var enabled = Option.<Boolean>createBuilder()
                     .name(Text.literal("Enable Drill Fuel HUD"))
                     .description(OptionDescription.of(Text.literal("Enables the Drill Fuel HUD")))
-                    .controller(SkyBlockTweaksConfig::generateBooleanController)
+                    .controller(SkyblockTweaksConfig::generateBooleanController)
                     .binding(
                             defaults.huds.drillFuel.enabled,
                             () -> config.huds.drillFuel.enabled,
@@ -111,7 +111,7 @@ public class DrillFuelHUD extends TextHUD {
             var secondNo = Option.<Boolean>createBuilder()
                     .name(Text.literal("Abridge Max Fuel"))
                     .description(OptionDescription.of(Text.literal("Replaces thousands with k in the max fuel in the Drill Fuel HUD")))
-                    .controller(SkyBlockTweaksConfig::generateBooleanController)
+                    .controller(SkyblockTweaksConfig::generateBooleanController)
                     .binding(
                             defaults.huds.drillFuel.abridgeSecondNumber,
                             () -> config.huds.drillFuel.abridgeSecondNumber,
@@ -143,7 +143,7 @@ public class DrillFuelHUD extends TextHUD {
             var mode = Option.<HudLine.DrawMode>createBuilder()
                     .name(Text.literal("Drill Fuel HUD Mode"))
                     .description(OptionDescription.of(Text.literal("The draw mode of the Drill Fuel HUD. Pure will render without shadow, Shadow will render with a shadow, and Outline will render with an outline\n§4Warning: §cOutline mode is still a work in progress and can cause annoying visual bugs in menus.")))
-                    .controller(SkyBlockTweaksConfig::generateDrawModeController)
+                    .controller(SkyblockTweaksConfig::generateDrawModeController)
                     .binding(
                             defaults.huds.drillFuel.mode,
                             () -> config.huds.drillFuel.mode,
@@ -167,7 +167,7 @@ public class DrillFuelHUD extends TextHUD {
             var scale = Option.<Float>createBuilder()
                     .name(Text.literal("Drill Fuel HUD Scale"))
                     .description(OptionDescription.of(Text.literal("The scale of the Drill Fuel HUD")))
-                    .controller(SkyBlockTweaksConfig::generateScaleController)
+                    .controller(SkyblockTweaksConfig::generateScaleController)
                     .binding(
                             defaults.huds.drillFuel.scale,
                             () -> config.huds.drillFuel.scale,

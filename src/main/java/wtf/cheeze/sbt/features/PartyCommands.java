@@ -27,9 +27,9 @@ import dev.isxander.yacl3.api.controller.StringControllerBuilder;
 import net.azureaaron.hmapi.network.HypixelNetworking;
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents;
 import net.minecraft.text.Text;
-import wtf.cheeze.sbt.SkyBlockTweaks;
+import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.config.ConfigImpl;
-import wtf.cheeze.sbt.config.SkyBlockTweaksConfig;
+import wtf.cheeze.sbt.config.SkyblockTweaksConfig;
 import wtf.cheeze.sbt.utils.TextUtils;
 
 import java.util.ArrayList;
@@ -47,42 +47,42 @@ public class PartyCommands {
         ClientReceiveMessageEvents.GAME.register((message, overlay) -> {
 
             if (overlay) return;
-            if (!SkyBlockTweaks.CONFIG.config.partyCommands.enabled) return;
+            if (!SkyblockTweaks.CONFIG.config.partyCommands.enabled) return;
             var s = TextUtils.removeColorCodes(message.getString());
             if (s.startsWith("Party >")) {
                 var matcher = PARTY_PATTERN.matcher(s);
                 if (!matcher.matches()) return;
-                if (System.currentTimeMillis() - lastPartyCommand < SkyBlockTweaks.CONFIG.config.partyCommands.cooldown) return;
+                if (System.currentTimeMillis() - lastPartyCommand < SkyblockTweaks.CONFIG.config.partyCommands.cooldown) return;
                 HypixelNetworking.sendPartyInfoC2SPacket(2);
                 lastPartyCommand = System.currentTimeMillis();
                 var name = matcher.group(1);
                 if (name.contains(" ")) name = name.split(" ")[1];
-                if (SkyBlockTweaks.CONFIG.config.partyCommands.blockedUsers.contains(name)) {
-                    SkyBlockTweaks.LOGGER.info("Blocked user tried to use party commands: " + name);
+                if (SkyblockTweaks.CONFIG.config.partyCommands.blockedUsers.contains(name)) {
+                    SkyblockTweaks.LOGGER.info("Blocked user tried to use party commands: " + name);
                     return;
                 }
                 var msg = matcher.group(2);
                 var args = msg.split(" ");
                 switch (args[0]) {
                     case "pt", "ptme" -> {
-                        if (!SkyBlockTweaks.DATA.amITheLeader) {
+                        if (!SkyblockTweaks.DATA.amITheLeader) {
                             return;
                         }
-                        SkyBlockTweaks.mc.getNetworkHandler().sendChatCommand("p transfer " + name);
+                        SkyblockTweaks.mc.getNetworkHandler().sendChatCommand("p transfer " + name);
                     }
                     case "allinv", "allinvite" -> {
-                        if (!SkyBlockTweaks.DATA.amITheLeader) {
+                        if (!SkyblockTweaks.DATA.amITheLeader) {
                             return;
                         }
-                        SkyBlockTweaks.mc.getNetworkHandler().sendChatCommand("p settings allinvite");
+                        SkyblockTweaks.mc.getNetworkHandler().sendChatCommand("p settings allinvite");
                     }
                     case "help" -> {
-                        SkyBlockTweaks.LOGGER.info(name);
-                        if ((name.equals(SkyBlockTweaks.mc.player.getName().getString()))) {
-                            SkyBlockTweaks.mc.player.sendMessage(Text.of("§7[§aSkyblockTweaks§f§7] §fAvailable party commands: !ptme, !allinvite, !help"), false);
+                        SkyblockTweaks.LOGGER.info(name);
+                        if ((name.equals(SkyblockTweaks.mc.player.getName().getString()))) {
+                            SkyblockTweaks.mc.player.sendMessage(Text.of("§7[§aSkyblockTweaks§f§7] §fAvailable party commands: !ptme, !allinvite, !help"), false);
                             return;
                         }
-                        SkyBlockTweaks.mc.getNetworkHandler().sendChatCommand("pc [SkyblockTweaks] Available party commands: !ptme, !allinvite, !help");
+                        SkyblockTweaks.mc.getNetworkHandler().sendChatCommand("pc [SkyblockTweaks] Available party commands: !ptme, !allinvite, !help");
                     }
                 }
             } else if (s.startsWith("The party was transferred to")) {
@@ -91,11 +91,11 @@ public class PartyCommands {
                 if (!matcher.matches()) return;
                 var name = matcher.group(1);
                 if (name.contains(" ")) name = name.split(" ")[1];
-                var me = SkyBlockTweaks.mc.player.getName().getString();
+                var me = SkyblockTweaks.mc.player.getName().getString();
                 if (name.equals(me)) {
-                    SkyBlockTweaks.DATA.amITheLeader = true;
+                    SkyblockTweaks.DATA.amITheLeader = true;
                 } else {
-                    SkyBlockTweaks.DATA.amITheLeader = false;
+                    SkyblockTweaks.DATA.amITheLeader = false;
                 }
             }
         });
@@ -124,7 +124,7 @@ public class PartyCommands {
             var enabled = Option.<Boolean>createBuilder()
                     .name(Text.literal("Enable Party Commands"))
                     .description(OptionDescription.of(Text.literal("Whether or not to enable party commands")))
-                    .controller(SkyBlockTweaksConfig::generateBooleanController)
+                    .controller(SkyblockTweaksConfig::generateBooleanController)
                     .binding(
                             defaults.partyCommands.enabled,
                             () -> config.partyCommands.enabled,

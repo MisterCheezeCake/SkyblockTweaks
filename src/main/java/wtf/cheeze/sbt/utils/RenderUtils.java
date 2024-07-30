@@ -21,9 +21,8 @@ package wtf.cheeze.sbt.utils;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.util.Window;
-import net.minecraft.text.OrderedText;
 import net.minecraft.text.Text;
-import wtf.cheeze.sbt.SkyBlockTweaks;
+import wtf.cheeze.sbt.SkyblockTweaks;
 
 public class RenderUtils {
 
@@ -43,11 +42,11 @@ public class RenderUtils {
         drawString(context, text, (int) (x/scale), (int) (y/scale), color, shadow);
     }
     public static void drawString(DrawContext context, Text text, int x, int y, int color, boolean shadow) {
-        context.drawText(SkyBlockTweaks.mc.textRenderer, text, x, y, color, shadow);
+        context.drawText(SkyblockTweaks.mc.textRenderer, text, x, y, color, shadow);
     }
     public static void drawStringWithOutline (DrawContext context, Text text, int x, int y, int color, int outlineColor) {
         // TODO: This currently renders weirdly, fix it
-        SkyBlockTweaks.mc.textRenderer.drawWithOutline(text.asOrderedText(), x, y, color, outlineColor, context.getMatrices().peek().getPositionMatrix(), context.getVertexConsumers(), 15728880);
+        SkyblockTweaks.mc.textRenderer.drawWithOutline(text.asOrderedText(), x, y, color, outlineColor, context.getMatrices().peek().getPositionMatrix(), context.getVertexConsumers(), 15728880);
     }
     public static void drawStringWithOutline (DrawContext context, Text text, int x, int y, int color, int outlineColor, float scale) {
         beginScale(context, scale);
@@ -82,10 +81,10 @@ public class RenderUtils {
     }
 
     public static int getStringWidth(Text text) {
-        return SkyBlockTweaks.mc.textRenderer.getWidth(text);
+        return SkyblockTweaks.mc.textRenderer.getWidth(text);
     }
     public static int getStringWidth(String text) {
-        return SkyBlockTweaks.mc.textRenderer.getWidth(text);
+        return SkyblockTweaks.mc.textRenderer.getWidth(text);
     }
 
     public static Color3f getColor3f(int color) {

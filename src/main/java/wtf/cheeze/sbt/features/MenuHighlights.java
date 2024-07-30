@@ -27,9 +27,9 @@ import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.LoreComponent;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.text.Text;
-import wtf.cheeze.sbt.SkyBlockTweaks;
+import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.config.ConfigImpl;
-import wtf.cheeze.sbt.config.SkyBlockTweaksConfig;
+import wtf.cheeze.sbt.config.SkyblockTweaksConfig;
 
 import java.util.regex.Pattern;
 
@@ -49,7 +49,7 @@ public class MenuHighlights {
     public static final int HIGHLIGHT_GREY = -27962027;
 
     public static void tryDrawHighlight(DrawContext context, Slot slot) {
-        if (!SkyBlockTweaks.CONFIG.config.hubSelectorHighlight.enabledRegular) return;
+        if (!SkyblockTweaks.CONFIG.config.hubSelectorHighlight.enabledRegular) return;
         if (!slot.getStack().getName().getString().contains("SkyBlock Hub #")) return;
         var lines = slot.getStack().getOrDefault(DataComponentTypes.LORE, LoreComponent.DEFAULT).lines();
         var matcher = PLAYER_COUNT_PATTERN.matcher(lines.getFirst().getString());
@@ -62,7 +62,7 @@ public class MenuHighlights {
 
     }
     public static void tryDrawHighlightDH(DrawContext context, Slot slot) {
-        if (!SkyBlockTweaks.CONFIG.config.hubSelectorHighlight.enabledDungeon) return;
+        if (!SkyblockTweaks.CONFIG.config.hubSelectorHighlight.enabledDungeon) return;
         if (!slot.getStack().getName().getString().contains("Dungeon Hub #")) return;
         var lines = slot.getStack().getOrDefault(DataComponentTypes.LORE, LoreComponent.DEFAULT).lines();
         var matcher = PLAYER_COUNT_PATTERN_DH.matcher(lines.getFirst().getString());
@@ -74,7 +74,7 @@ public class MenuHighlights {
         else context.fill(slot.x, slot.y, slot.x + 16, slot.y + 16, HIGHLIGHT_GREEN);
     }
     public static void tryDrawHighlightHOTM(DrawContext context, Slot slot) {
-        if (!SkyBlockTweaks.CONFIG.config.hubSelectorHighlight.hotmHighlight) return;
+        if (!SkyblockTweaks.CONFIG.config.hubSelectorHighlight.hotmHighlight) return;
         var lines = slot.getStack().getOrDefault(DataComponentTypes.LORE, LoreComponent.DEFAULT).lines();
         for (var line: lines) {
             switch (line.getString()) {
@@ -95,7 +95,7 @@ public class MenuHighlights {
     }
 
     public static void tryDrawHighlightWidget(DrawContext context, Slot slot) {
-        if (!SkyBlockTweaks.CONFIG.config.hubSelectorHighlight.widgetHighlight) return;
+        if (!SkyblockTweaks.CONFIG.config.hubSelectorHighlight.widgetHighlight) return;
         var name = slot.getStack().getName().getString();
         if (!name.contains("✔") && !name.contains("✖")) return;
         if (name.contains("✔")) context.fill(slot.x, slot.y, slot.x + 16, slot.y + 16, HIGHLIGHT_GREEN2);
@@ -119,7 +119,7 @@ public class MenuHighlights {
             var enabled = Option.<Boolean>createBuilder()
                     .name(Text.literal("Hub Selector Highlights"))
                     .description(OptionDescription.of(Text.literal("Whether or not to highlight hubs in the hub selector based on their capacity")))
-                    .controller(SkyBlockTweaksConfig::generateBooleanController)
+                    .controller(SkyblockTweaksConfig::generateBooleanController)
                     .binding(
                                     defaults.hubSelectorHighlight.enabledRegular,
                                     () -> config.hubSelectorHighlight.enabledRegular,
@@ -129,7 +129,7 @@ public class MenuHighlights {
             var enabledDungeon = Option.<Boolean>createBuilder()
                     .name(Text.literal("Dungeon Hub Selector Highlights"))
                     .description(OptionDescription.of(Text.literal("Whether or not to highlight hubs in the dungeon hub selector based on their capacity")))
-                    .controller(SkyBlockTweaksConfig::generateBooleanController)
+                    .controller(SkyblockTweaksConfig::generateBooleanController)
                     .binding(
                                     defaults.hubSelectorHighlight.enabledDungeon,
                                     () -> config.hubSelectorHighlight.enabledDungeon,
@@ -139,7 +139,7 @@ public class MenuHighlights {
             var hotmHighlight = Option.<Boolean>createBuilder()
                     .name(Text.literal("HOTM Highlights"))
                     .description(OptionDescription.of(Text.literal("Whether or not to highlight HOTM perks based on their status (enabled/disabled)")))
-                    .controller(SkyBlockTweaksConfig::generateBooleanController)
+                    .controller(SkyblockTweaksConfig::generateBooleanController)
                     .binding(
                                     defaults.hubSelectorHighlight.hotmHighlight,
                                     () -> config.hubSelectorHighlight.hotmHighlight,
@@ -150,7 +150,7 @@ public class MenuHighlights {
             var widgetHighlight = Option.<Boolean>createBuilder()
                     .name(Text.literal("Widget Highlights"))
                     .description(OptionDescription.of(Text.literal("Whether or not to highlight items in the /widgets menu based on their status (enabled/disabled)")))
-                    .controller(SkyBlockTweaksConfig::generateBooleanController)
+                    .controller(SkyblockTweaksConfig::generateBooleanController)
                     .binding(
                                     defaults.hubSelectorHighlight.widgetHighlight,
                                     () -> config.hubSelectorHighlight.widgetHighlight,

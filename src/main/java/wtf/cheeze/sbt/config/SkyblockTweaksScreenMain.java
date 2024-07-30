@@ -23,16 +23,13 @@ import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ConfirmLinkScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.client.gui.widget.TextFieldWidget;
-import net.minecraft.client.gui.widget.TextWidget;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
-import wtf.cheeze.sbt.SkyBlockTweaks;
+import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.utils.RenderUtils;
-import wtf.cheeze.sbt.utils.Version;
 import wtf.cheeze.sbt.utils.hud.HudScreen;
 
-public class SkyBlockTweaksScreenMain extends Screen {
+public class SkyblockTweaksScreenMain extends Screen {
     public static final Identifier ICON = Identifier.of("skyblocktweaks", "icon.png");
     private ButtonWidget configButton;
     private ButtonWidget hudButton;
@@ -42,7 +39,7 @@ public class SkyBlockTweaksScreenMain extends Screen {
     private ButtonWidget legalButton;
     private ButtonWidget closeButton;
     private Screen parent;
-    public SkyBlockTweaksScreenMain(Screen parent) {
+    public SkyblockTweaksScreenMain(Screen parent) {
         super(Text.literal("SkyBlockTweaks"));
         this.parent = parent;
     }
@@ -53,10 +50,10 @@ public class SkyBlockTweaksScreenMain extends Screen {
         var leftColumn = centerx - 100;
         var rightColumn = centerx + 5;
         configButton = ButtonWidget.builder(Text.literal("Open Config"), button -> {
-            mc.send(() -> mc.setScreen(SkyBlockTweaks.CONFIG.getScreen(this)));
+            mc.send(() -> mc.setScreen(SkyblockTweaks.CONFIG.getScreen(this)));
         }).dimensions(centerx - 100, 55, 200, 20).build();
         hudButton = ButtonWidget.builder(Text.literal("Edit HUD Positions"), button -> {
-            mc.send(() -> mc.setScreen(new HudScreen(Text.literal("SkyBlockTweaks"), SkyBlockTweaks.HUDS, this)));
+            mc.send(() -> mc.setScreen(new HudScreen(Text.literal("SkyBlockTweaks"), SkyblockTweaks.HUDS, this)));
         }).dimensions(centerx - 100, 85, 200, 20).build();
         modrinthButton = ButtonWidget.builder(Text.literal("Modrinth"), button -> {
             ConfirmLinkScreen.open(this, "https://modrinth.com/mod/sbt", true);
@@ -98,7 +95,7 @@ public class SkyBlockTweaksScreenMain extends Screen {
         var centerX = mc.getWindow().getScaledWidth() / 2;
         super.render(context, mouseX, mouseY, delta);
         RenderUtils.drawCenteredString(context, Text.literal("SkyblockTweaks"), centerX, 3, 3658595, true, 2.5f);
-        RenderUtils.drawCenteredString(context, Text.literal("v" + SkyBlockTweaks.VERSION.getVersionString()), centerX, 25, 0xFFFFFF, true);
+        RenderUtils.drawCenteredString(context, Text.literal("v" + SkyblockTweaks.VERSION.getVersionString()), centerX, 25, 0xFFFFFF, true);
         RenderUtils.drawCenteredString(context, Text.literal("By MisterCheezeCake"), centerX, 36, 16733525, true);
     }
 

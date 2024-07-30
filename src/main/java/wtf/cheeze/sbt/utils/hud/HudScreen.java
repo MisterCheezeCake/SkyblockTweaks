@@ -28,7 +28,7 @@ import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.text.Text;
 import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
-import wtf.cheeze.sbt.SkyBlockTweaks;
+import wtf.cheeze.sbt.SkyblockTweaks;
 
 import java.util.ArrayList;
 import java.util.function.Predicate;
@@ -193,7 +193,7 @@ public class HudScreen extends Screen {
         @Override
         public void close() {
             MinecraftClient.getInstance().setScreen(parent);
-            SkyBlockTweaks.CONFIG.HANDLER.save();
+            SkyblockTweaks.CONFIG.HANDLER.save();
         }
         @Override
         public boolean mouseDragged(double mouseX, double mouseY, int button, double deltaX, double deltaY) {

@@ -24,10 +24,10 @@ import dev.isxander.yacl3.api.OptionGroup;
 import dev.isxander.yacl3.api.controller.ColorControllerBuilder;
 import dev.isxander.yacl3.config.v2.api.SerialEntry;
 import net.minecraft.text.Text;
-import wtf.cheeze.sbt.SkyBlockTweaks;
+import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.config.ConfigImpl;
-import wtf.cheeze.sbt.config.SkyBlockTweaksConfig;
-import wtf.cheeze.sbt.utils.HudLine;
+import wtf.cheeze.sbt.config.SkyblockTweaksConfig;
+import wtf.cheeze.sbt.utils.hud.HudLine;
 import wtf.cheeze.sbt.utils.hud.HudInformation;
 import wtf.cheeze.sbt.utils.hud.TextHUD;
 
@@ -37,24 +37,24 @@ public class SpeedHUD extends TextHUD {
 
     public SpeedHUD() {
         INFO = new HudInformation(
-                () -> SkyBlockTweaks.CONFIG.config.huds.speed.x,
-                () -> SkyBlockTweaks.CONFIG.config.huds.speed.y,
-                () -> SkyBlockTweaks.CONFIG.config.huds.speed.scale,
-                x -> SkyBlockTweaks.CONFIG.config.huds.speed.x = (float) x,
-                y -> SkyBlockTweaks.CONFIG.config.huds.speed.y = (float) y,
-                scale -> SkyBlockTweaks.CONFIG.config.huds.speed.scale = (float) scale
+                () -> SkyblockTweaks.CONFIG.config.huds.speed.x,
+                () -> SkyblockTweaks.CONFIG.config.huds.speed.y,
+                () -> SkyblockTweaks.CONFIG.config.huds.speed.scale,
+                x -> SkyblockTweaks.CONFIG.config.huds.speed.x = (float) x,
+                y -> SkyblockTweaks.CONFIG.config.huds.speed.y = (float) y,
+                scale -> SkyblockTweaks.CONFIG.config.huds.speed.scale = (float) scale
         );
         line = new HudLine(
-                () -> SkyBlockTweaks.CONFIG.config.huds.speed.color,
-                () -> SkyBlockTweaks.CONFIG.config.huds.speed.outlineColor,
-                () -> SkyBlockTweaks.CONFIG.config.huds.speed.mode,
-                () ->  (SkyBlockTweaks.DATA.getSpeed()+"").split("\\.")[0] + "%"
+                () -> SkyblockTweaks.CONFIG.config.huds.speed.color,
+                () -> SkyblockTweaks.CONFIG.config.huds.speed.outlineColor,
+                () -> SkyblockTweaks.CONFIG.config.huds.speed.mode,
+                () ->  (SkyblockTweaks.DATA.getSpeed()+"").split("\\.")[0] + "%"
         );
     }
     @Override
     public boolean shouldRender(boolean fromHudScreen) {
         if (!super.shouldRender(fromHudScreen)) return false;
-        if ((SkyBlockTweaks.DATA.inSB && SkyBlockTweaks.CONFIG.config.huds.speed.enabled) || fromHudScreen) return true;
+        if ((SkyblockTweaks.DATA.inSB && SkyblockTweaks.CONFIG.config.huds.speed.enabled) || fromHudScreen) return true;
         return false;
     }
 
@@ -89,7 +89,7 @@ public class SpeedHUD extends TextHUD {
             var enabled = Option.<Boolean>createBuilder()
                     .name(Text.literal("Enable Speed HUD"))
                     .description(OptionDescription.of(Text.literal("Enables the Speed HUD")))
-                    .controller(SkyBlockTweaksConfig::generateBooleanController)
+                    .controller(SkyblockTweaksConfig::generateBooleanController)
                     .binding(
                             defaults.huds.speed.enabled,
                             () -> config.huds.speed.enabled,
@@ -123,7 +123,7 @@ public class SpeedHUD extends TextHUD {
             var mode = Option.<HudLine.DrawMode>createBuilder()
                     .name(Text.literal("Speed HUD Mode"))
                     .description(OptionDescription.of(Text.literal("The draw mode of the Speed HUD. Pure will render without shadow, Shadow will render with a shadow, and Outline will render with an outline\n§4Warning: §cOutline mode is still a work in progress and can cause annoying visual bugs in menus.")))
-                    .controller(SkyBlockTweaksConfig::generateDrawModeController)
+                    .controller(SkyblockTweaksConfig::generateDrawModeController)
                     .binding(
                             defaults.huds.speed.mode,
                             () -> config.huds.speed.mode,
@@ -137,7 +137,7 @@ public class SpeedHUD extends TextHUD {
             var scale = Option.<Float>createBuilder()
                     .name(Text.literal("Speed HUD Scale"))
                     .description(OptionDescription.of(Text.literal("The scale of the Speed HUD")))
-                    .controller(SkyBlockTweaksConfig::generateScaleController)
+                    .controller(SkyblockTweaksConfig::generateScaleController)
                     .binding(
                             defaults.huds.speed.scale,
                             () -> config.huds.speed.scale,

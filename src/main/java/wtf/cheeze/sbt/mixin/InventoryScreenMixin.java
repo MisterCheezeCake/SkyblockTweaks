@@ -25,7 +25,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import wtf.cheeze.sbt.SkyBlockTweaks;
+import wtf.cheeze.sbt.SkyblockTweaks;
 
 @Mixin(InventoryScreen.class)
 public abstract class InventoryScreenMixin {
@@ -34,7 +34,7 @@ public abstract class InventoryScreenMixin {
     // This injects into the head of the synthetic method that is triggered when you click the recipe book button
     @Inject(method = "method_19891", at = @At("HEAD"), cancellable = true)
     private void sbt$onPressRBook(ButtonWidget button, CallbackInfo ci) {
-        if (SkyBlockTweaks.CONFIG.config.inventory.redirectRecipeBook && SkyBlockTweaks.DATA.inSB) {
+        if (SkyblockTweaks.CONFIG.config.inventory.redirectRecipeBook && SkyblockTweaks.DATA.inSB) {
             ci.cancel();
             MinecraftClient.getInstance().getNetworkHandler().sendChatCommand("recipebook");
         }

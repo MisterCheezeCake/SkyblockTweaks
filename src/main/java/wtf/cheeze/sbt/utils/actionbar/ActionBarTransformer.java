@@ -24,9 +24,9 @@ import dev.isxander.yacl3.api.OptionGroup;
 import dev.isxander.yacl3.config.v2.api.SerialEntry;
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents;
 import net.minecraft.text.Text;
-import wtf.cheeze.sbt.SkyBlockTweaks;
+import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.config.ConfigImpl;
-import wtf.cheeze.sbt.config.SkyBlockTweaksConfig;
+import wtf.cheeze.sbt.config.SkyblockTweaksConfig;
 import wtf.cheeze.sbt.utils.TextUtils;
 
 import java.util.regex.Matcher;
@@ -73,7 +73,7 @@ public class ActionBarTransformer {
                       String[] health = segment.replaceAll("❤", "").split("\\+")[0].split("/");
                       data.currentHealth = Float.parseFloat(health[0].replace(",", ""));
                       data.maxHealth = Float.parseFloat(health[1].replace(",", ""));
-                      if (!SkyBlockTweaks.CONFIG.config.actionBarFilters.hideHealth) {
+                      if (!SkyblockTweaks.CONFIG.config.actionBarFilters.hideHealth) {
                           newText += SEPERATOR5 + unpadded;
                       } else {
                           newText += SEPERATOR5 + TextUtils.SECTION + "c" + "+" + segment.split("\\+")[1];
@@ -83,7 +83,7 @@ public class ActionBarTransformer {
                   String[] health = segment.replaceAll("❤", "").split("/");
                   data.currentHealth = Float.parseFloat(health[0].replace(",", ""));
                   data.maxHealth = Float.parseFloat(health[1].replace(",", ""));
-                  if (!SkyBlockTweaks.CONFIG.config.actionBarFilters.hideHealth) {
+                  if (!SkyblockTweaks.CONFIG.config.actionBarFilters.hideHealth) {
                       newText += SEPERATOR5 + unpadded;
                   }
 
@@ -101,7 +101,7 @@ public class ActionBarTransformer {
                   } else {
                       data.overflowMana = 0f;
                   }
-                  if (!SkyBlockTweaks.CONFIG.config.actionBarFilters.hideMana) {
+                  if (!SkyblockTweaks.CONFIG.config.actionBarFilters.hideMana) {
                       newText += SEPERATOR5 + unpadded;
                   }
               } else if (segment.contains("NOT ENOUGH MANA")) {
@@ -110,7 +110,7 @@ public class ActionBarTransformer {
                   // Defense
                   String defense = segment.split("❈")[0].trim();
                   data.defense = Integer.parseInt(defense.replace(",", ""));
-                  if (!SkyBlockTweaks.CONFIG.config.actionBarFilters.hideDefense) {
+                  if (!SkyblockTweaks.CONFIG.config.actionBarFilters.hideDefense) {
                       newText += SEPERATOR5 + unpadded;
                   }
 
@@ -119,7 +119,7 @@ public class ActionBarTransformer {
                   if (matcher.find()) {
                       data.abilityManaCost = Integer.parseInt(matcher.group(1));
                       data.abilityName = matcher.group(2);
-                      if (!SkyBlockTweaks.CONFIG.config.actionBarFilters.hideAbilityUse) {
+                      if (!SkyblockTweaks.CONFIG.config.actionBarFilters.hideAbilityUse) {
                           newText += SEPERATOR5 + unpadded;
                       }
                       continue;
@@ -139,7 +139,7 @@ public class ActionBarTransformer {
                           data.skillPercentage = Float.parseFloat(matcher.group(3).replace("%", ""));
                       }
                   }
-                  if (!SkyBlockTweaks.CONFIG.config.actionBarFilters.hideSkill) {
+                  if (!SkyblockTweaks.CONFIG.config.actionBarFilters.hideSkill) {
                       newText += SEPERATOR5 + unpadded;
                   }
               } else if (segment.contains("Secrets")) {
@@ -148,7 +148,7 @@ public class ActionBarTransformer {
                       data.secretsFound = Integer.parseInt(matcher.group(1));
                       data.secretsTotal = Integer.parseInt(matcher.group(2));
                   }
-                  if (!SkyBlockTweaks.CONFIG.config.actionBarFilters.hideSecrets) {
+                  if (!SkyblockTweaks.CONFIG.config.actionBarFilters.hideSecrets) {
                       newText += SEPERATOR5 + unpadded;
                   }
               } else if (segment.contains("Drill Fuel")) {
@@ -156,7 +156,7 @@ public class ActionBarTransformer {
                   String[] drillFuel = segment.split(" ")[0].split("/");
                   data.drillFuel = Integer.parseInt(drillFuel[0].replace(",", ""));
                   data.maxDrillFuel = TextUtils.parseIntWithKorM(drillFuel[1]);
-                  if (!SkyBlockTweaks.CONFIG.config.actionBarFilters.hideDrill) {
+                  if (!SkyblockTweaks.CONFIG.config.actionBarFilters.hideDrill) {
                       newText += SEPERATOR5 + unpadded;
                   }
               } else if (segment.contains("second") || segment.contains("DPS")) {
@@ -170,9 +170,9 @@ public class ActionBarTransformer {
           data.transformedText = newText;
           return data;
       } catch (Exception e) {
-          SkyBlockTweaks.LOGGER.error("Error parsing action bar text: " + actionBarText);
+          SkyblockTweaks.LOGGER.error("Error parsing action bar text: " + actionBarText);
           e.printStackTrace();
-          SkyBlockTweaks.LOGGER.warn("Some features may not work correctly. Please report this to MisterCheezeCake immediately.");
+          SkyblockTweaks.LOGGER.warn("Some features may not work correctly. Please report this to MisterCheezeCake immediately.");
           return new ActionBarData();
       }
     }
@@ -183,7 +183,7 @@ public class ActionBarTransformer {
             //SkyBlockTweaks.LOGGER.info("Old: " + message.getString());
             var data = ActionBarTransformer.extractDataAndRunTransformation(message.getString());
             //SkyBlockTweaks.LOGGER.info("New: " + data.transformedText);
-            SkyBlockTweaks.DATA.update(data);
+            SkyblockTweaks.DATA.update(data);
             return Text.of(data.transformedText);
 
         });
@@ -215,7 +215,7 @@ public class ActionBarTransformer {
             var health = Option.<Boolean>createBuilder()
                     .name(Text.literal("Hide Health in Action Bar"))
                     .description(OptionDescription.of(Text.literal("Hides the health in the action bar")))
-                    .controller(SkyBlockTweaksConfig::generateBooleanController)
+                    .controller(SkyblockTweaksConfig::generateBooleanController)
                     .binding(
                             defaults.actionBarFilters.hideHealth,
                             () -> config.actionBarFilters.hideHealth,
@@ -225,7 +225,7 @@ public class ActionBarTransformer {
             var defense = Option.<Boolean>createBuilder()
                     .name(Text.literal("Hide Defense in Action Bar"))
                     .description(OptionDescription.of(Text.literal("Hides the defense in the action bar")))
-                    .controller(SkyBlockTweaksConfig::generateBooleanController)
+                    .controller(SkyblockTweaksConfig::generateBooleanController)
                     .binding(
                             defaults.actionBarFilters.hideDefense,
                             () -> config.actionBarFilters.hideDefense,
@@ -235,7 +235,7 @@ public class ActionBarTransformer {
             var mana = Option.<Boolean>createBuilder()
                     .name(Text.literal("Hide Mana in Action Bar"))
                     .description(OptionDescription.of(Text.literal("Hides the mana in the action bar")))
-                    .controller(SkyBlockTweaksConfig::generateBooleanController)
+                    .controller(SkyblockTweaksConfig::generateBooleanController)
                     .binding(
                             defaults.actionBarFilters.hideMana,
                             () -> config.actionBarFilters.hideMana,
@@ -245,7 +245,7 @@ public class ActionBarTransformer {
             var ability = Option.<Boolean>createBuilder()
                     .name(Text.literal("Hide Ability Use in Action Bar"))
                     .description(OptionDescription.of(Text.literal("Hides the ability use in the action bar")))
-                    .controller(SkyBlockTweaksConfig::generateBooleanController)
+                    .controller(SkyblockTweaksConfig::generateBooleanController)
                     .binding(
                             defaults.actionBarFilters.hideAbilityUse,
                             () -> config.actionBarFilters.hideAbilityUse,
@@ -255,7 +255,7 @@ public class ActionBarTransformer {
             var skill = Option.<Boolean>createBuilder()
                     .name(Text.literal("Hide Skill in Action Bar"))
                     .description(OptionDescription.of(Text.literal("Hides the skill in the action bar")))
-                    .controller(SkyBlockTweaksConfig::generateBooleanController)
+                    .controller(SkyblockTweaksConfig::generateBooleanController)
                     .binding(
                             defaults.actionBarFilters.hideSkill,
                             () -> config.actionBarFilters.hideSkill,
@@ -265,7 +265,7 @@ public class ActionBarTransformer {
             var drill = Option.<Boolean>createBuilder()
                     .name(Text.literal("Hide Drill Fuel in Action Bar"))
                     .description(OptionDescription.of(Text.literal("Hides the drill fuel in the action bar")))
-                    .controller(SkyBlockTweaksConfig::generateBooleanController)
+                    .controller(SkyblockTweaksConfig::generateBooleanController)
                     .binding(
                             defaults.actionBarFilters.hideDrill,
                             () -> config.actionBarFilters.hideDrill,
@@ -275,7 +275,7 @@ public class ActionBarTransformer {
             var secrets = Option.<Boolean>createBuilder()
                     .name(Text.literal("Hide Secrets in Action Bar"))
                     .description(OptionDescription.of(Text.literal("Hides the secrets display in the action bar")))
-                    .controller(SkyBlockTweaksConfig::generateBooleanController)
+                    .controller(SkyblockTweaksConfig::generateBooleanController)
                     .binding(
                             defaults.actionBarFilters.hideSecrets,
                             () -> config.actionBarFilters.hideSecrets,

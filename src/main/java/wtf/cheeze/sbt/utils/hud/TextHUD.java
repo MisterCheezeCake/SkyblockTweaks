@@ -19,9 +19,8 @@
 package wtf.cheeze.sbt.utils.hud;
 
 import net.minecraft.client.gui.DrawContext;
-import wtf.cheeze.sbt.SkyBlockTweaks;
+import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.utils.RenderUtils;
-import wtf.cheeze.sbt.utils.HudLine;
 
 public abstract class TextHUD extends HUD {
     //public abstract String getText();
@@ -44,11 +43,11 @@ public abstract class TextHUD extends HUD {
     }
     public Bounds getCurrentBounds() {
         var scale = (float) INFO.getScale.get();
-        return new Bounds(getActualX((float) INFO.getX.get()), getActualY((float) INFO.getY.get()), RenderUtils.getStringWidth(line.text.get()) * scale, SkyBlockTweaks.mc.textRenderer.fontHeight * scale, scale);
+        return new Bounds(getActualX((float) INFO.getX.get()), getActualY((float) INFO.getY.get()), RenderUtils.getStringWidth(line.text.get()) * scale, SkyblockTweaks.mc.textRenderer.fontHeight * scale, scale);
     }
 
     public BoundsRelative getCurrentBoundsRelative() {
         var scale = (float) INFO.getScale.get();
-        return new BoundsRelative((float) INFO.getX.get(), (float) INFO.getY.get(), RenderUtils.getStringWidth(line.text.get()) * scale, SkyBlockTweaks.mc.textRenderer.fontHeight * scale, scale);
+        return new BoundsRelative((float) INFO.getX.get(), (float) INFO.getY.get(), RenderUtils.getStringWidth(line.text.get()) * scale, SkyblockTweaks.mc.textRenderer.fontHeight * scale, scale);
     }
 }

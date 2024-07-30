@@ -3,7 +3,7 @@ package wtf.cheeze.sbt.utils;
 import java.io.IOException;
 import java.net.URL;
 
-public class HTTPUtil {
+public class HTTPUtils {
 
     public static String get(String uri){
         try {

@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with SkyblockTweaks. If not, see <https://www.gnu.org/licenses/>.
  */
-package wtf.cheeze.sbt.config;
+package wtf.cheeze.sbt.command;
 
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
@@ -24,10 +24,10 @@ import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallba
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.text.Text;
-import wtf.cheeze.sbt.SkyBlockTweaks;
-import wtf.cheeze.sbt.utils.CommandUtils;
-import wtf.cheeze.sbt.utils.SkyblockConstants;
-import wtf.cheeze.sbt.utils.SkyblockUtils;
+import wtf.cheeze.sbt.SkyblockTweaks;
+import wtf.cheeze.sbt.config.SkyblockTweaksScreenMain;
+import wtf.cheeze.sbt.utils.skyblock.SkyblockConstants;
+import wtf.cheeze.sbt.utils.skyblock.SkyblockUtils;
 import wtf.cheeze.sbt.utils.TextUtils;
 import wtf.cheeze.sbt.utils.hud.HudScreen;
 
@@ -44,8 +44,8 @@ public class SBTCommand {
     public static void registerEvents() {
         ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> dispatcher.register(
                 literal("sbt")
-                        .then(CommandUtils.getScreenOpeningCommand("config", () -> SkyBlockTweaks.CONFIG.getScreen(null)))
-                        .then(CommandUtils.getScreenOpeningCommand("hud", () -> new HudScreen(Text.literal("SkyBlockTweaks"), SkyBlockTweaks.HUDS, null)))
+                        .then(CommandUtils.getScreenOpeningCommand("config", () -> SkyblockTweaks.CONFIG.getScreen(null)))
+                        .then(CommandUtils.getScreenOpeningCommand("hud", () -> new HudScreen(Text.literal("SkyBlockTweaks"), SkyblockTweaks.HUDS, null)))
                         .then(literal("calc")
                                 .then(literal("skill")
                                         .then(argument("level-start", IntegerArgumentType.integer())
@@ -195,7 +195,7 @@ public class SBTCommand {
                         )
                         .executes(context -> {
                                     MinecraftClient mc = context.getSource().getClient();
-                                    Screen screen = new SkyBlockTweaksScreenMain(null);
+                                    Screen screen = new SkyblockTweaksScreenMain(null);
                                     mc.send(() -> mc.setScreen(screen));
                                     return 1;
                                 }
