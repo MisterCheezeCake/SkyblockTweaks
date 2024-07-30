@@ -55,6 +55,9 @@ public class HudScreen extends Screen {
         private Mode mode = Mode.DRAG;
         private int resetModeIndex = 0;
 
+        private float offsetX = 0;
+        private float offsetY = 0;
+
         private Screen parent;
         public HudScreen(Text title, ArrayList<HUD> huds, Screen parent) {
             super(title);
@@ -200,7 +203,7 @@ public class HudScreen extends Screen {
             boolean b = super.mouseDragged(mouseX, mouseY, button, deltaX, deltaY);
             if (this.mode != Mode.DRAG) return b;
             if (selectedElement != null) {
-                selectedElement.updatePosition(HUD.getRelativeX(mouseX), HUD.getRelativeY(mouseY));
+                selectedElement.updatePosition(HUD.getRelativeX(mouseX - offsetX), HUD.getRelativeY(mouseY - offsetY));
             }
             return b;
         }
@@ -214,7 +217,10 @@ public class HudScreen extends Screen {
                         enableTextMode(hud);
                         return b;
                     }
-                    if (this.mode == Mode.DRAG) selectedElement = hud;
+                    if (this.mode == Mode.DRAG)  {
+                        selectedElement = hud;
+                        updateOffset(hud, mouseX, mouseY);
+                    }
                 }
             }
             return b;
@@ -315,11 +321,21 @@ public class HudScreen extends Screen {
                 }
             }
         }
+
+        private void updateOffset(HUD hud, double mouseX, double mouseY) {
+            var bounds = hud.getCurrentBounds();
+            offsetX = (float) (mouseX - bounds.x);
+            offsetY = (float) (mouseY - bounds.y);
+        }
+
+
         private static enum Mode {
             DRAG,
             TEXT,
             RESET
         }
+
+
 
 
 
