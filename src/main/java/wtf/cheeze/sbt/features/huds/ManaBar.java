@@ -40,12 +40,14 @@ public class ManaBar extends BarHUD {
                 () -> SkyblockTweaks.CONFIG.config.huds.manaBar.x,
                 () -> SkyblockTweaks.CONFIG.config.huds.manaBar.y,
                 () -> SkyblockTweaks.CONFIG.config.huds.manaBar.scale,
+                () -> SkyblockTweaks.CONFIG.config.huds.manaBar.anchor,
                 () -> SkyblockTweaks.CONFIG.config.huds.manaBar.color,
                 () -> SkyblockTweaks.DATA.maxMana,
                 () -> SkyblockTweaks.DATA.mana,
                 x -> SkyblockTweaks.CONFIG.config.huds.manaBar.x = (float) x,
                 y -> SkyblockTweaks.CONFIG.config.huds.manaBar.y = (float) y,
-                scale -> SkyblockTweaks.CONFIG.config.huds.manaBar.scale = (float) scale
+                scale -> SkyblockTweaks.CONFIG.config.huds.manaBar.scale = (float) scale,
+                anchor -> SkyblockTweaks.CONFIG.config.huds.manaBar.anchor = anchor
 
         );
     }
@@ -77,6 +79,9 @@ public class ManaBar extends BarHUD {
 
         @SerialEntry
         public int color = 5592575;
+
+        @SerialEntry
+        public AnchorPoint anchor = AnchorPoint.LEFT;
 
         public static OptionGroup getGroup(ConfigImpl defaults, ConfigImpl config) {
             var enabled = Option.<Boolean>createBuilder()

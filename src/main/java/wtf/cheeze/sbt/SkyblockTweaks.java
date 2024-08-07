@@ -83,11 +83,10 @@ public class SkyblockTweaks implements ModInitializer {
 		SBTCommand.registerEvents();
 		ActionBarTransformer.registerEvents();
 		NotificationHandler.registerEvents();
-
-		UpdateChecker.checkForUpdates();
 		ModAPIUtils.registerEvents();
 		PartyCommands.registerEvents();
 
+		UpdateChecker.checkForUpdates();
 
 		// TODO: Checking this every tick may be overkill, change this later
 		// TODO: Use the mod api for this
@@ -116,4 +115,6 @@ public class SkyblockTweaks implements ModInitializer {
 
 		});
 	}
+
+	public static HUD.AnchorPoint devNull;
 }

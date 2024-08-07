@@ -18,8 +18,10 @@
  */
 package wtf.cheeze.sbt.utils.hud;
 
+import dev.isxander.yacl3.api.NameableEnum;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
+import net.minecraft.text.Text;
 
 /**
  * Represents any sort of HUD that can be drawn to the screen, and handles logic that is that same if the HUD is a text or bar based hud
@@ -28,13 +30,13 @@ public abstract class HUD  {
 
     public HudInformation INFO;
 
-
     public abstract String getName();
+
     public abstract void render(DrawContext context, boolean fromHudScreen, boolean hovered);
+
     public abstract Bounds getCurrentBounds();
+
     public abstract BoundsRelative getCurrentBoundsRelative();
-
-
 
     public boolean shouldRender(boolean fromHudScreen) {
         // We let the HUD screen handle rendering when it is open
@@ -42,7 +44,6 @@ public abstract class HUD  {
         if (!fromHudScreen && MinecraftClient.getInstance().options.hudHidden) return false;
         else return true;
     };
-
 
     public void render(DrawContext context, boolean fromHudScreen) {
         render(context, fromHudScreen, false);
@@ -52,6 +53,7 @@ public abstract class HUD  {
         INFO.setX.accept(x);
         INFO.setY.accept(y);
     }
+
     public void updateScale(float scale) {
         if (scale <= MIN_SCALE) {
             INFO.setScale.accept(MIN_SCALE);
@@ -65,20 +67,18 @@ public abstract class HUD  {
 
     public void drawBackground(DrawContext context, int color, boolean hasOutline) {
         var bounds = getCurrentBounds();
-         int i = (int) (1 * bounds.scale);
+        int i = (int) (1 * bounds.scale);
         context.fill(bounds.x - i, bounds.y - i, (int) (bounds.x + bounds.width + i), (int) (bounds.y + bounds.height + i - 1), color);
     }
     public void drawBackground(DrawContext context, int color) {
         drawBackground(context, color, false);
     }
 
-
     public static final float MIN_SCALE = 0.1f;
     public static final float MAX_SCALE = 3.0f;
 
     public static final int BACKGROUND_NOT_HOVERED = 855638015;
     public static final int BACKGROUND_HOVERED = -1761607681;
-
 
     public static int getActualX(float x) {
         return (int) (x * MinecraftClient.getInstance().getWindow().getScaledWidth());
@@ -99,4 +99,11 @@ public abstract class HUD  {
         return (float) (y / MinecraftClient.getInstance().getWindow().getScaledHeight());
     }
 
+    public enum AnchorPoint implements NameableEnum {
+        LEFT, CENTER, RIGHT;
+        @Override
+        public Text getDisplayName() {
+            return Text.literal(name());
+        }
+    }
 }

@@ -51,4 +51,6 @@ public class ConfigImpl {
 
     @SerialEntry
     public Huds huds = new Huds();
+
+
 }

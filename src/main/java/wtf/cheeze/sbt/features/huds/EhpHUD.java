@@ -42,9 +42,11 @@ public class EhpHUD extends TextHUD {
                 () -> SkyblockTweaks.CONFIG.config.huds.ehp.x,
                 () -> SkyblockTweaks.CONFIG.config.huds.ehp.y,
                 () -> SkyblockTweaks.CONFIG.config.huds.ehp.scale,
+                () -> SkyblockTweaks.CONFIG.config.huds.ehp.anchor,
                 x -> SkyblockTweaks.CONFIG.config.huds.ehp.x = (float) x,
                 y -> SkyblockTweaks.CONFIG.config.huds.ehp.y = (float) y,
-                scale -> SkyblockTweaks.CONFIG.config.huds.ehp.scale = (float) scale
+                scale -> SkyblockTweaks.CONFIG.config.huds.ehp.scale = (float) scale,
+                anchor -> SkyblockTweaks.CONFIG.config.huds.ehp.anchor = anchor
         );
         line = new HudLine(
                 () -> SkyblockTweaks.CONFIG.config.huds.ehp.color,
@@ -93,6 +95,9 @@ public class EhpHUD extends TextHUD {
 
         @SerialEntry
         public String separator = ",";
+
+        @SerialEntry
+        public AnchorPoint anchor = AnchorPoint.LEFT;
 
         public static OptionGroup getGroup(ConfigImpl defaults, ConfigImpl config) {
             var enabled = Option.<Boolean>createBuilder()

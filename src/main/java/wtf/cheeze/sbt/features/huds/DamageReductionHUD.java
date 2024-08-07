@@ -42,9 +42,11 @@ public class DamageReductionHUD extends TextHUD {
                 () -> SkyblockTweaks.CONFIG.config.huds.dr.x,
                 () -> SkyblockTweaks.CONFIG.config.huds.dr.y,
                 () -> SkyblockTweaks.CONFIG.config.huds.dr.scale,
+                () -> SkyblockTweaks.CONFIG.config.huds.dr.anchor,
                 x -> SkyblockTweaks.CONFIG.config.huds.dr.x = (float) x,
                 y -> SkyblockTweaks.CONFIG.config.huds.dr.y = (float) y,
-                scale -> SkyblockTweaks.CONFIG.config.huds.dr.scale = (float) scale
+                scale -> SkyblockTweaks.CONFIG.config.huds.dr.scale = (float) scale,
+                anchor -> SkyblockTweaks.CONFIG.config.huds.dr.anchor = anchor
         );
         line = new HudLine(
                 () -> SkyblockTweaks.CONFIG.config.huds.dr.color,
@@ -85,6 +87,9 @@ public class DamageReductionHUD extends TextHUD {
 
         @SerialEntry // Not handled by YACL Gui
         public float y = 0;
+
+        @SerialEntry
+        public AnchorPoint anchor = AnchorPoint.LEFT;
 
         @SerialEntry
         public float scale = 1.0f;

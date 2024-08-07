@@ -42,9 +42,11 @@ public class HealthHUD extends TextHUD {
                 () -> SkyblockTweaks.CONFIG.config.huds.health.x,
                 () -> SkyblockTweaks.CONFIG.config.huds.health.y,
                 () -> SkyblockTweaks.CONFIG.config.huds.health.scale,
+                () -> SkyblockTweaks.CONFIG.config.huds.health.anchor,
                 x -> SkyblockTweaks.CONFIG.config.huds.health.x = (float) x,
                 y -> SkyblockTweaks.CONFIG.config.huds.health.y = (float) y,
-                scale -> SkyblockTweaks.CONFIG.config.huds.health.scale = (float) scale
+                scale -> SkyblockTweaks.CONFIG.config.huds.health.scale = (float) scale,
+                anchor -> SkyblockTweaks.CONFIG.config.huds.health.anchor = anchor
         );
         line = new HudLine(
                 () -> SkyblockTweaks.DATA.health > SkyblockTweaks.DATA.maxHealth ? SkyblockTweaks.CONFIG.config.huds.health.colorAbsorption : SkyblockTweaks.CONFIG.config.huds.health.color,
@@ -95,6 +97,9 @@ public class HealthHUD extends TextHUD {
 
         @SerialEntry
         public String separator = ",";
+
+        @SerialEntry
+        public AnchorPoint anchor = AnchorPoint.LEFT;
 
         public static OptionGroup getGroup(ConfigImpl defaults, ConfigImpl config) {
             var enabled = Option.<Boolean>createBuilder()

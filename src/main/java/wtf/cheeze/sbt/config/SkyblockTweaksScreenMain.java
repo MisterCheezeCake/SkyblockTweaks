@@ -98,6 +98,4 @@ public class SkyblockTweaksScreenMain extends Screen {
         RenderUtils.drawCenteredString(context, Text.literal("v" + SkyblockTweaks.VERSION.getVersionString()), centerX, 25, 0xFFFFFF, true);
         RenderUtils.drawCenteredString(context, Text.literal("By MisterCheezeCake"), centerX, 36, 16733525, true);
     }
-
-
 }

@@ -40,12 +40,14 @@ public class DrillFuelBar extends BarHUD {
                 () -> SkyblockTweaks.CONFIG.config.huds.drillFuelBar.x,
                 () -> SkyblockTweaks.CONFIG.config.huds.drillFuelBar.y,
                 () -> SkyblockTweaks.CONFIG.config.huds.drillFuelBar.scale,
+                () -> SkyblockTweaks.CONFIG.config.huds.drillFuelBar.anchor,
                 () -> SkyblockTweaks.CONFIG.config.huds.drillFuelBar.color,
                 () -> SkyblockTweaks.DATA.maxDrillFuel,
                 () -> SkyblockTweaks.DATA.drillFuel,
                 x -> SkyblockTweaks.CONFIG.config.huds.drillFuelBar.x = (float) x,
                 y -> SkyblockTweaks.CONFIG.config.huds.drillFuelBar.y = (float) y,
-                scale -> SkyblockTweaks.CONFIG.config.huds.drillFuelBar.scale = (float) scale
+                scale -> SkyblockTweaks.CONFIG.config.huds.drillFuelBar.scale = (float) scale,
+                anchor -> SkyblockTweaks.CONFIG.config.huds.drillFuelBar.anchor = anchor
 
         );
     }
@@ -74,6 +76,9 @@ public class DrillFuelBar extends BarHUD {
 
         @SerialEntry
         public float scale = 1.0f;
+
+        @SerialEntry
+        public AnchorPoint anchor = AnchorPoint.LEFT;
 
         @SerialEntry
         public int color = 43520;

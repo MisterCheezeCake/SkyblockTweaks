@@ -75,5 +75,4 @@ public class TextUtils {
             return style;
         });
     }
-
 }

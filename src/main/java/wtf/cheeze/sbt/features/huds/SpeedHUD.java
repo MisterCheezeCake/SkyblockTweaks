@@ -40,9 +40,11 @@ public class SpeedHUD extends TextHUD {
                 () -> SkyblockTweaks.CONFIG.config.huds.speed.x,
                 () -> SkyblockTweaks.CONFIG.config.huds.speed.y,
                 () -> SkyblockTweaks.CONFIG.config.huds.speed.scale,
+                () -> SkyblockTweaks.CONFIG.config.huds.speed.anchor,
                 x -> SkyblockTweaks.CONFIG.config.huds.speed.x = (float) x,
                 y -> SkyblockTweaks.CONFIG.config.huds.speed.y = (float) y,
-                scale -> SkyblockTweaks.CONFIG.config.huds.speed.scale = (float) scale
+                scale -> SkyblockTweaks.CONFIG.config.huds.speed.scale = (float) scale,
+                anchor -> SkyblockTweaks.CONFIG.config.huds.speed.anchor = anchor
         );
         line = new HudLine(
                 () -> SkyblockTweaks.CONFIG.config.huds.speed.color,
@@ -84,6 +86,9 @@ public class SpeedHUD extends TextHUD {
 
         @SerialEntry
         public float scale = 1.0f;
+
+        @SerialEntry
+        public AnchorPoint anchor = AnchorPoint.LEFT;
 
         public static OptionGroup getGroup(ConfigImpl defaults, ConfigImpl config) {
             var enabled = Option.<Boolean>createBuilder()

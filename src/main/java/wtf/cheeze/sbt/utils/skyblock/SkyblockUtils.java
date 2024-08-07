@@ -18,34 +18,32 @@
  */
 package wtf.cheeze.sbt.utils.skyblock;
 
+import com.mojang.authlib.GameProfile;
+
 public class SkyblockUtils {
 
     public static SkyblockConstants.Rarity castStringToRarity(String input) {
         input = input.toLowerCase();
-        switch (input) {
-            case "common", "com", "c": return SkyblockConstants.Rarity.COMMON;
-            case "uncommon", "unc", "u" : return SkyblockConstants.Rarity.UNCOMMON;
-            case "rare", "rar", "r" : return SkyblockConstants.Rarity.RARE;
-            case "epic", "ep", "e" : return SkyblockConstants.Rarity.EPIC;
-            case "legendary", "leg", "l" : return SkyblockConstants.Rarity.LEGENDARY;
-            case "mythic", "myth", "myt", "m" : return SkyblockConstants.Rarity.MYTHIC;
-
-            default:
-                return null;
-        }
+        return switch (input) {
+            case "common", "com", "c" -> SkyblockConstants.Rarity.COMMON;
+            case "uncommon", "unc", "u" -> SkyblockConstants.Rarity.UNCOMMON;
+            case "rare", "rar", "r" -> SkyblockConstants.Rarity.RARE;
+            case "epic", "ep", "e" -> SkyblockConstants.Rarity.EPIC;
+            case "legendary", "leg", "l" -> SkyblockConstants.Rarity.LEGENDARY;
+            case "mythic", "myth", "myt", "m" -> SkyblockConstants.Rarity.MYTHIC;
+            default -> null;
+        };
     }
     public static SkyblockConstants.Slayers castStringToSlayerType(String input) {
         input = input.toLowerCase();
-        switch (input) {
-            case "zombie", "zom", "z", "revenant", "rev": return SkyblockConstants.Slayers.ZOMBIE;
-            case "spider", "spi", "s", "tarantula", "tara" : return SkyblockConstants.Slayers.SPIDER;
-            case "wolf", "wol", "w" , "sven": return SkyblockConstants.Slayers.WOLF;
-            case "enderman", "ender", "e", "eman",  "void", "voidgloom" : return SkyblockConstants.Slayers.ENDERMAN;
-            case "blaze", "bla", "b" , "inferno", "inf" : return SkyblockConstants.Slayers.BLAZE;
-            case "vampire", "vamp", "v", "rift",  "riftstalker", "blood" : return SkyblockConstants.Slayers.VAMPIRE;
-
-            default:
-                return null;
-        }
+        return switch (input) {
+            case "zombie", "zom", "z", "revenant", "rev" -> SkyblockConstants.Slayers.ZOMBIE;
+            case "spider", "spi", "s", "tarantula", "tara" -> SkyblockConstants.Slayers.SPIDER;
+            case "wolf", "wol", "w", "sven" -> SkyblockConstants.Slayers.WOLF;
+            case "enderman", "ender", "e", "eman", "void", "voidgloom" -> SkyblockConstants.Slayers.ENDERMAN;
+            case "blaze", "bla", "b", "inferno", "inf" -> SkyblockConstants.Slayers.BLAZE;
+            case "vampire", "vamp", "v", "rift", "riftstalker", "blood" -> SkyblockConstants.Slayers.VAMPIRE;
+            default -> null;
+        };
     }
 }

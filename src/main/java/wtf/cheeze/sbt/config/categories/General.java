@@ -28,7 +28,7 @@ public class General {
                 .build();
     }
 
-    // These two are subclassed because their features live in mixins and so can't control their own config
+    // These are subclassed because their features live in mixins and so can't control their own config
     public static class InventoryTweaks {
         @SerialEntry
         public boolean redirectRecipeBook = true;
@@ -150,6 +150,5 @@ public class General {
                     .option(noRenderHunger)
                     .build();
         }
-
     }
 }

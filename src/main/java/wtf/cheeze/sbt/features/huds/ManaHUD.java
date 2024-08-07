@@ -43,9 +43,11 @@ public class ManaHUD extends TextHUD {
                 () -> SkyblockTweaks.CONFIG.config.huds.mana.x,
                 () -> SkyblockTweaks.CONFIG.config.huds.mana.y,
                 () -> SkyblockTweaks.CONFIG.config.huds.mana.scale,
+                () -> SkyblockTweaks.CONFIG.config.huds.mana.anchor,
                 x -> SkyblockTweaks.CONFIG.config.huds.mana.x = (float) x,
                 y -> SkyblockTweaks.CONFIG.config.huds.mana.y = (float) y,
-                scale -> SkyblockTweaks.CONFIG.config.huds.mana.scale = (float) scale
+                scale -> SkyblockTweaks.CONFIG.config.huds.mana.scale = (float) scale,
+                anchor -> SkyblockTweaks.CONFIG.config.huds.mana.anchor = anchor
         );
         line = new HudLine(
                 () -> SkyblockTweaks.CONFIG.config.huds.mana.color,
@@ -101,6 +103,9 @@ public class ManaHUD extends TextHUD {
 
         @SerialEntry
         public String separator = ",";
+
+        @SerialEntry
+        public AnchorPoint anchor = AnchorPoint.LEFT;
 
         public static OptionGroup getGroup(ConfigImpl defaults, ConfigImpl config) {
             var enabled = Option.<Boolean>createBuilder()

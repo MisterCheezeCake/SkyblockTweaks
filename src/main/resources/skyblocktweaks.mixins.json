@@ -3,12 +3,12 @@
 	"package": "wtf.cheeze.sbt.mixin",
 	"compatibilityLevel": "JAVA_21",
 	"mixins": [
-		"InGameHudMixin",
-		"DrawContextMixin",
-		"BossBarHudMixin",
 		"AbstractInventoryScreenMixin",
+		"BossBarHudMixin",
+		"DrawContextMixin",
+		"HandledScreenMixin",
+		"InGameHudMixin",
 		"InventoryScreenMixin",
-		"HandledScreenMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

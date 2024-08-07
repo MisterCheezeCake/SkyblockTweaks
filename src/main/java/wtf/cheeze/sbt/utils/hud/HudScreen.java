@@ -52,6 +52,7 @@ public class HudScreen extends Screen {
         private ButtonWidget resetModeButton;
         private ButtonWidget cancelButton;
         private ButtonWidget resetButton;
+        private ButtonWidget anchorButton;
         private Mode mode = Mode.DRAG;
         private int resetModeIndex = 0;
 
@@ -84,7 +85,7 @@ public class HudScreen extends Screen {
             doneButton = ButtonWidget.builder(Text.literal("Done"), button -> {
                 this.selectedElement = null;
                 setMode(Mode.DRAG);
-            }).dimensions(centerX, 110, 100, 20).build();
+            }).dimensions(centerX, 140, 100, 20).build();
             resetModeButton = ButtonWidget.builder(Text.literal(this.huds.getFirst().getName()), button -> {
                 this.resetModeIndex++;
                 if (this.resetModeIndex >= this.huds.size()) {
@@ -100,9 +101,25 @@ public class HudScreen extends Screen {
             }).dimensions(centerX-25, 95, 150, 20).build();
 
             resetButton = ButtonWidget.builder(Text.literal("Reset"), button -> {
-                    this.huds.get(this.resetModeIndex).updatePosition(0f, 0f);
+                    this.huds.get(this.resetModeIndex).updatePosition(0.1f, 0.f);
 
             }).dimensions(centerX-25, 65, 150, 20).build();
+
+            anchorButton = ButtonWidget.builder(Text.literal("you should not be seeing this text"), button -> {
+                if (selectedElement != null) {
+                    var anchor = selectedElement.INFO.getAnchorPoint.get();
+                    if (anchor == HUD.AnchorPoint.LEFT) {
+                        selectedElement.INFO.setAnchorPoint.accept(HUD.AnchorPoint.CENTER);
+                        anchorButton.setMessage(Text.literal("Anchor: " + HUD.AnchorPoint.CENTER.name()));
+                    } else if (anchor == HUD.AnchorPoint.CENTER) {
+                        selectedElement.INFO.setAnchorPoint.accept(HUD.AnchorPoint.RIGHT);
+                        anchorButton.setMessage(Text.literal("Anchor: " + HUD.AnchorPoint.RIGHT.name()));
+                    } else if (anchor == HUD.AnchorPoint.RIGHT) {
+                        selectedElement.INFO.setAnchorPoint.accept(HUD.AnchorPoint.LEFT);
+                        anchorButton.setMessage(Text.literal("Anchor: " + HUD.AnchorPoint.LEFT.name()));
+                    }
+                }
+            }).dimensions(centerX, 110, 100, 20).build();
 
             setMode(Mode.DRAG);
             this.addDrawableChild(widgetX);
@@ -111,6 +128,7 @@ public class HudScreen extends Screen {
             this.addDrawableChild(resetModeButton);
             this.addDrawableChild(cancelButton);
             this.addDrawableChild(resetButton);
+            this.addDrawableChild(anchorButton);
             this.parent = parent;
 
         }
@@ -125,10 +143,12 @@ public class HudScreen extends Screen {
                 resetModeButton.visible = false;
                 cancelButton.visible = false;
                 resetButton.visible = false;
+                anchorButton.visible = false;
             } else if (newMode == Mode.TEXT) {
                 widgetX.setVisible(true);
                 widgetY.setVisible(true);
                 doneButton.visible = true;
+                anchorButton.visible = true;
                 resetModeButton.visible = false;
                 cancelButton.visible = false;
                 resetButton.visible = false;
@@ -139,6 +159,7 @@ public class HudScreen extends Screen {
                 resetModeButton.visible = true;
                 cancelButton.visible = true;
                 resetButton.visible = true;
+                anchorButton.visible = false;
             }
         }
         private void enableTextMode(HUD hud) {
@@ -147,6 +168,7 @@ public class HudScreen extends Screen {
             var bounds = hud.getCurrentBoundsRelative();
             widgetX.setText(""+bounds.x);
             widgetY.setText(""+bounds.y);
+            anchorButton.setMessage(Text.literal("Anchor: " + hud.INFO.getAnchorPoint.get().name()));
         }
 
         @Override
@@ -159,7 +181,7 @@ public class HudScreen extends Screen {
                 context.drawCenteredTextWithShadow(mc.textRenderer, "Drag or use the arrow keys to move items" , centerX, 5, 0xFFFFFF);
                 context.drawCenteredTextWithShadow(mc.textRenderer, "Scroll or use the + and - keys to scale items" , centerX, 15, 0xFFFFFF);
                 context.drawCenteredTextWithShadow(mc.textRenderer, "Press shift and hover to see the name of the item" , centerX, 25, 0xFFFFFF);
-                context.drawCenteredTextWithShadow(mc.textRenderer, "Control click to edit the positions in a text field" , centerX, 35, 0xFFFFFF);
+                context.drawCenteredTextWithShadow(mc.textRenderer, "Control click for text mode/to edit anchor points" , centerX, 35, 0xFFFFFF);
                 context.drawCenteredTextWithShadow(mc.textRenderer, "Control + R to enter Reset Mode" , centerX, 45, 0xFFFFFF);
                 context.drawCenteredTextWithShadow(mc.textRenderer, "Press alt to hide this text" , centerX, 55, 0xFFFFFF);
             } else if (this.mode == Mode.TEXT) {
@@ -224,9 +246,6 @@ public class HudScreen extends Screen {
                 }
             }
             return b;
-
-
-
         }
         @Override
         public boolean mouseReleased(double mouseX, double mouseY, int button) {
@@ -324,7 +343,14 @@ public class HudScreen extends Screen {
 
         private void updateOffset(HUD hud, double mouseX, double mouseY) {
             var bounds = hud.getCurrentBounds();
-            offsetX = (float) (mouseX - bounds.x);
+            var anchor = hud.INFO.getAnchorPoint.get();
+            if (anchor == HUD.AnchorPoint.LEFT) {
+                offsetX = (float) (mouseX - bounds.x);
+            } else if (anchor == HUD.AnchorPoint.CENTER) {
+                offsetX = (float) (mouseX - bounds.x - bounds.width / 2);
+            } else if (anchor == HUD.AnchorPoint.RIGHT) {
+                offsetX = (float) (mouseX - bounds.x - bounds.width);
+            }
             offsetY = (float) (mouseY - bounds.y);
         }
 

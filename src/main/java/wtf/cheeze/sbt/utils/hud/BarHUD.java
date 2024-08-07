@@ -20,6 +20,7 @@ package wtf.cheeze.sbt.utils.hud;
 
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.util.Identifier;
+import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.utils.RenderUtils;
 
 /**
@@ -56,12 +57,36 @@ public abstract class BarHUD extends HUD{
     @Override
     public Bounds getCurrentBounds() {
         var scale = (float) INFO.getScale.get();
-        return new Bounds(getActualX((float) INFO.getX.get()), getActualY((float) INFO.getY.get()), BAR_WIDTH * scale, BAR_HEIGHT * scale, scale);
+        switch (INFO.getAnchorPoint.get()) {
+            case LEFT -> {
+                return new Bounds(getActualX((float) INFO.getX.get()), getActualY((float) INFO.getY.get()), BAR_WIDTH * scale, BAR_HEIGHT * scale, scale);
+            }
+            case RIGHT -> {
+                return new Bounds((int) (getActualX((float) INFO.getX.get()) - BAR_WIDTH * scale), getActualY((float) INFO.getY.get()), BAR_WIDTH * scale, BAR_HEIGHT * scale, scale);
+            }
+            case CENTER -> {
+                return new Bounds((int) (getActualX((float) INFO.getX.get()) - BAR_WIDTH * scale / 2), getActualY((float) INFO.getY.get()), BAR_WIDTH * scale, BAR_HEIGHT * scale, scale);
+            }
+            default -> throw new IllegalStateException("Unexpected value: " + INFO.getAnchorPoint.get());
+        }
     }
     @Override
     public BoundsRelative getCurrentBoundsRelative() {
         var scale = (float) INFO.getScale.get();
-        return new BoundsRelative((float) INFO.getX.get(), (float) INFO.getY.get(), BAR_WIDTH * scale, BAR_HEIGHT * scale, scale);
+        switch (INFO.getAnchorPoint.get()) {
+            case LEFT -> {
+                return new BoundsRelative((float) INFO.getX.get(), (float) INFO.getY.get(), BAR_WIDTH * scale, BAR_HEIGHT * scale, scale);
+            }
+            case RIGHT -> {
+                return new BoundsRelative((float) INFO.getX.get() - getRelativeBarWidth() * scale, (float) INFO.getY.get(), BAR_WIDTH * scale, BAR_HEIGHT * scale, scale);
+            }
+            case CENTER -> {
+                return new BoundsRelative((float) INFO.getX.get() - getRelativeBarWidth() * scale / 2, (float) INFO.getY.get(), BAR_WIDTH * scale, BAR_HEIGHT * scale, scale);
+            }
+            default -> throw new IllegalStateException("Unexpected value: " + INFO.getAnchorPoint.get());
+
+        }
+      //  return new BoundsRelative((float) INFO.getX.get(), (float) INFO.getY.get(), BAR_WIDTH * scale, BAR_HEIGHT * scale, scale);
     }
 
 //    @Override
@@ -71,13 +96,14 @@ public abstract class BarHUD extends HUD{
 //        //int i = 1;
 //        context.fill(bounds.x , bounds.y, (int) (bounds.x + bounds.width), (int) (bounds.y + bounds.height), color);
 //    }
-
-
-
     private static int calculateFill(float current, float max) {
         if (current >= max) return BAR_WIDTH;
         var i = (int) (current / max * BAR_WIDTH);
         return i;
+    }
+
+    private static float getRelativeBarWidth(){
+        return BAR_WIDTH / SkyblockTweaks.mc.getWindow().getWidth();
     }
 
 }

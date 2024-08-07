@@ -42,9 +42,11 @@ public class DrillFuelHUD extends TextHUD {
                 () -> SkyblockTweaks.CONFIG.config.huds.drillFuel.x,
                 () -> SkyblockTweaks.CONFIG.config.huds.drillFuel.y,
                 () -> SkyblockTweaks.CONFIG.config.huds.drillFuel.scale,
+                () -> SkyblockTweaks.CONFIG.config.huds.drillFuel.anchor,
                 x -> SkyblockTweaks.CONFIG.config.huds.drillFuel.x = (float) x,
                 y -> SkyblockTweaks.CONFIG.config.huds.drillFuel.y = (float) y,
-                scale -> SkyblockTweaks.CONFIG.config.huds.drillFuel.scale = (float) scale
+                scale -> SkyblockTweaks.CONFIG.config.huds.drillFuel.scale = (float) scale,
+                anchor -> SkyblockTweaks.CONFIG.config.huds.drillFuel.anchor = anchor
         );
         line = new HudLine(
                 () -> SkyblockTweaks.CONFIG.config.huds.drillFuel.color,
@@ -96,6 +98,9 @@ public class DrillFuelHUD extends TextHUD {
 
         @SerialEntry
         public float scale = 1.0f;
+
+        @SerialEntry
+        public AnchorPoint anchor = AnchorPoint.LEFT;
 
         public static OptionGroup getGroup(ConfigImpl defaults, ConfigImpl config) {
             var enabled = Option.<Boolean>createBuilder()

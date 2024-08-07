@@ -42,9 +42,11 @@ public class DefenseHUD extends TextHUD {
                 () -> SkyblockTweaks.CONFIG.config.huds.defense.x,
                 () -> SkyblockTweaks.CONFIG.config.huds.defense.y,
                 () -> SkyblockTweaks.CONFIG.config.huds.defense.scale,
+                () -> SkyblockTweaks.CONFIG.config.huds.defense.anchor,
                 x -> SkyblockTweaks.CONFIG.config.huds.defense.x = (float) x,
                 y -> SkyblockTweaks.CONFIG.config.huds.defense.y = (float) y,
-                scale -> SkyblockTweaks.CONFIG.config.huds.defense.scale = (float) scale
+                scale -> SkyblockTweaks.CONFIG.config.huds.defense.scale = (float) scale,
+                anchor -> SkyblockTweaks.CONFIG.config.huds.defense.anchor = anchor
         );
 
         line = new HudLine(
@@ -89,6 +91,9 @@ public class DefenseHUD extends TextHUD {
 
         @SerialEntry
         public float scale = 1.0f;
+
+        @SerialEntry
+        public AnchorPoint anchor = AnchorPoint.LEFT;
 
         @SerialEntry
         public boolean icon = true;

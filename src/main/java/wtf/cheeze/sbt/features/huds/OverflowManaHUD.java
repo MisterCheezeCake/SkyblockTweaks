@@ -42,9 +42,11 @@ public class OverflowManaHUD extends TextHUD {
                 () -> SkyblockTweaks.CONFIG.config.huds.overflowMana.x,
                 () -> SkyblockTweaks.CONFIG.config.huds.overflowMana.y,
                 () -> SkyblockTweaks.CONFIG.config.huds.overflowMana.scale,
+                () -> SkyblockTweaks.CONFIG.config.huds.overflowMana.anchor,
                 x -> SkyblockTweaks.CONFIG.config.huds.overflowMana.x = (float) x,
                 y -> SkyblockTweaks.CONFIG.config.huds.overflowMana.y = (float) y,
-                scale -> SkyblockTweaks.CONFIG.config.huds.overflowMana.scale = (float) scale
+                scale -> SkyblockTweaks.CONFIG.config.huds.overflowMana.scale = (float) scale,
+                anchor -> SkyblockTweaks.CONFIG.config.huds.overflowMana.anchor = anchor
         );
         line = new HudLine(
                 () -> SkyblockTweaks.CONFIG.config.huds.overflowMana.color,
@@ -97,6 +99,9 @@ public class OverflowManaHUD extends TextHUD {
 
         @SerialEntry
         public String separator = ",";
+
+        @SerialEntry
+        public AnchorPoint anchor = AnchorPoint.LEFT;
 
         public static OptionGroup getGroup(ConfigImpl defaults, ConfigImpl config) {
             var enabled = Option.<Boolean>createBuilder()
