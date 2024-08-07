@@ -22,4 +22,11 @@ public class NumberUtils {
     public static double round(float number, int decimalPlaces) {
         return Math.round(number * Math.pow(10, decimalPlaces)) / Math.pow(10, decimalPlaces);
     }
+    public static double round(double number, int decimalPlaces) {
+        return Math.round(number * Math.pow(10, decimalPlaces)) / Math.pow(10, decimalPlaces);
+    }
+
+    public static String formattedRound(double number, int decimalPlaces) {
+        return  decimalPlaces == 0 ? (round(number, decimalPlaces) + "").split("\\.")[0] : round(number, decimalPlaces) + "";
+    }
 }

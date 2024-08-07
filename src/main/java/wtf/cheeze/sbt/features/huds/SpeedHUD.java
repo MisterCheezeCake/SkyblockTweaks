@@ -162,7 +162,5 @@ public class SpeedHUD extends TextHUD {
                     .build();
         }
     }
-
-
 }
 

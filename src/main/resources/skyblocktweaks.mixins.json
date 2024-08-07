@@ -8,7 +8,7 @@
 		"DrawContextMixin",
 		"HandledScreenMixin",
 		"InGameHudMixin",
-		"InventoryScreenMixin",
+		"InventoryScreenMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

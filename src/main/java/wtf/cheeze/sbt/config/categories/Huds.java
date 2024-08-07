@@ -60,6 +60,9 @@ public class Huds {
     @SerialEntry
     public DrillFuelBar.Config drillFuelBar = new DrillFuelBar.Config();
 
+    @SerialEntry
+    public CoordinatesHUD.Config coordinates = new CoordinatesHUD.Config();
+
     public static ConfigCategory getCategory(ConfigImpl defaults, ConfigImpl config) {
         return ConfigCategory.createBuilder()
                 .name(Text.literal("HUDs"))
@@ -75,6 +78,7 @@ public class Huds {
                 .group(DamageReductionHUD.Config.getGroup(defaults, config))
                 .group(DrillFuelHUD.Config.getGroup(defaults, config))
                 .group(DrillFuelBar.Config.getGroup(defaults, config))
+                .group(CoordinatesHUD.Config.getGroup(defaults, config))
                 .build();
     }
 }
