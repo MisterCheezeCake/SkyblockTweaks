@@ -46,7 +46,7 @@ public class CoordinatesHUD extends TextHUD {
 
     @Override
     public String getName() {
-        return "Speed Percentage HUD";
+        return "Coordinates HUD";
     }
 
     public static class Config {
