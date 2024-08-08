@@ -18,8 +18,6 @@
  */
 package wtf.cheeze.sbt.utils.skyblock;
 
-import com.mojang.authlib.GameProfile;
-
 public class SkyblockUtils {
 
     public static SkyblockConstants.Rarity castStringToRarity(String input) {
@@ -34,6 +32,7 @@ public class SkyblockUtils {
             default -> null;
         };
     }
+
     public static SkyblockConstants.Slayers castStringToSlayerType(String input) {
         input = input.toLowerCase();
         return switch (input) {
@@ -45,5 +44,23 @@ public class SkyblockUtils {
             case "vampire", "vamp", "v", "rift", "riftstalker", "blood" -> SkyblockConstants.Slayers.VAMPIRE;
             default -> null;
         };
+    }
+
+    public static SkyblockConstants.Crops castStringToCrop(String input) {
+        input = input.toLowerCase();
+        return switch (input) {
+            case "wheat", "whe", "w" -> SkyblockConstants.Crops.WHEAT;
+            case "carrot", "car", "c" -> SkyblockConstants.Crops.CARROT;
+            case "potato", "pot" -> SkyblockConstants.Crops.POTATO;
+            case "pumpkin", "pum" -> SkyblockConstants.Crops.PUMPKIN;
+            case "melon", "mel" -> SkyblockConstants.Crops.MELON;
+            case "cane", "sugarcane", "sugar" -> SkyblockConstants.Crops.SUGAR_CANE;
+            case "cocoa", "coc", "beans", "cocoabeans" -> SkyblockConstants.Crops.COCOA_BEANS;
+            case "cactus", "cac" -> SkyblockConstants.Crops.CACTUS;
+            case "wart", "netherwart", "nether" -> SkyblockConstants.Crops.NETHER_WART;
+            case "mushroom", "mush" -> SkyblockConstants.Crops.MUSHROOM;
+            default -> null;
+        };
+
     }
 }

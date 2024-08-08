@@ -117,6 +117,4 @@ public class SkyblockTweaks implements ModInitializer {
 
 		});
 	}
-
-	public static HUD.AnchorPoint devNull;
 }

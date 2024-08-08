@@ -168,7 +168,7 @@ public class SBTCommand {
                                                                     var levelStart = IntegerArgumentType.getInteger(context, "level-start");
                                                                     var levelEnd = IntegerArgumentType.getInteger(context, "level-end");
 
-                                                                    if (levelStart < 0 || levelEnd < 0 || levelStart > 10 || levelEnd > 10 || levelStart >= levelEnd) {
+                                                                    if (levelStart < 0 || levelEnd < 0 || levelEnd > 10 || levelStart >= levelEnd) {
                                                                         context.getSource().sendFeedback(Text.of(PREFIX + " §cInvalid arguments"));
                                                                         return 0;
                                                                     }
@@ -186,13 +186,65 @@ public class SBTCommand {
                                             context.getSource().sendFeedback(Text.of(PREFIX + " §cInvalid arguments"));
                                             return 0;
                                         }))
+                                .then(literal("garden")
+                                        .then(argument("level-start", IntegerArgumentType.integer())
+                                                .then(argument("level-end", IntegerArgumentType.integer())
+                                                        .executes(context -> {
+                                                                    var levelStart = IntegerArgumentType.getInteger(context, "level-start");
+                                                                    var levelEnd = IntegerArgumentType.getInteger(context, "level-end");
 
+                                                                    if (levelStart < 0 || levelEnd < 0 || levelEnd > 15 || levelStart >= levelEnd) {
+                                                                        context.getSource().sendFeedback(Text.of(PREFIX + " §cInvalid arguments"));
+                                                                        return 0;
+                                                                    }
 
+                                                                    var newArr = Arrays.stream(SkyblockConstants.GARDEN_LEVELS).skip(levelStart).limit(levelEnd - levelStart).toArray();
+                                                                    var total = Arrays.stream(newArr).sum();
+                                                                    context.getSource().sendFeedback(Text.of(PREFIX + " §3Total Garden XP Required: §e" + TextUtils.formatNumber(total, ",")));
+                                                                    return 1;
+                                                                }
+                                                        )
+                                                ))
+                                        .executes(context -> {
+                                            context.getSource().sendFeedback(Text.of(PREFIX + " §cInvalid arguments"));
+                                            return 0;
+                                        })
+                                )
+                                .then(literal("crop")
+                                        .then(argument("crop", StringArgumentType.string()).suggests(CommandUtils.getArrayAsSuggestions(new String[]{"wheat", "pumpkin", "mushroom", "carrot", "potato", "melon", "cane", "cactus", "cocoa", "wart"}))
+                                                .then(argument("level-start", IntegerArgumentType.integer())
+                                                        .then(argument("level-end", IntegerArgumentType.integer())
+                                                                .executes(context -> {
+                                                                    var crop = SkyblockUtils.castStringToCrop(StringArgumentType.getString(context, "crop"));
+                                                                    if (crop == null) {
+                                                                        context.getSource().sendFeedback(Text.of(PREFIX + " §cInvalid crop"));
+                                                                        return 0;
+                                                                    }
+                                                                    var levelStart = IntegerArgumentType.getInteger(context, "level-start");
+                                                                    var levelEnd = IntegerArgumentType.getInteger(context, "level-end");
+
+                                                                    if (levelStart < 0 || levelEnd < 0 || levelEnd > 46 || levelStart >= levelEnd) {
+                                                                        context.getSource().sendFeedback(Text.of(PREFIX + " §cInvalid arguments"));
+                                                                        return 0;
+                                                                    }
+
+                                                                    var newArr = Arrays.stream(getCalcCropTable(crop)).skip(levelStart).limit(levelEnd - levelStart).toArray();
+                                                                    var total = Arrays.stream(newArr).sum();
+                                                                    context.getSource().sendFeedback(Text.of(PREFIX + " §3Total Crop XP Required: §e" + TextUtils.formatNumber(total, ",")));
+                                                                    return 1;
+                                                                }
+                                                        )
+                                                ))
+                                ).executes(context -> {
+                                                    context.getSource().sendFeedback(Text.of(PREFIX + " §cInvalid arguments"));
+                                                    return 0;
+                                                })
+                                ))
                                 .executes(context -> {
                                     context.getSource().sendFeedback(Text.of(PREFIX + " §cInvalid arguments"));
                                     return 0;
                                 })
-                        )
+
                         .executes(context -> {
                                     MinecraftClient mc = context.getSource().getClient();
                                     Screen screen = new SkyblockTweaksScreenMain(null);
@@ -204,35 +256,32 @@ public class SBTCommand {
     }
 
     private static int[] getCalcPetTable(SkyblockConstants.Rarity rarity) {
-        switch (rarity) {
-            case COMMON:
-                return SkyblockConstants.PET_LEVELS_COMMON;
-            case UNCOMMON:
-                return SkyblockConstants.PET_LEVELS_UNCOMMON;
-            case RARE:
-                return SkyblockConstants.PET_LEVELS_RARE;
-            case EPIC:
-                return SkyblockConstants.PET_LEVELS_EPIC;
-            case LEGENDARY, MYTHIC:
-                return SkyblockConstants.PET_LEVELS_LEGENDARY;
-            default:
-                return null;
-        }
+        return switch (rarity) {
+            case COMMON -> SkyblockConstants.PET_LEVELS_COMMON;
+            case UNCOMMON -> SkyblockConstants.PET_LEVELS_UNCOMMON;
+            case RARE -> SkyblockConstants.PET_LEVELS_RARE;
+            case EPIC -> SkyblockConstants.PET_LEVELS_EPIC;
+            case LEGENDARY, MYTHIC -> SkyblockConstants.PET_LEVELS_LEGENDARY;
+            default -> null;
+        };
     }
 
     private static int[] getCalcSlayerTable(SkyblockConstants.Slayers slayer) {
-        switch (slayer) {
-            case ZOMBIE:
-                return SkyblockConstants.SLAYER_LEVELS_ZOMBIE;
-            case SPIDER:
-                return SkyblockConstants.SLAYER_LEVELS_SPIDER;
-            case WOLF, ENDERMAN, BLAZE:
-                return SkyblockConstants.SLAYER_LEVELS_WEB;
-            case VAMPIRE:
-                return SkyblockConstants.SLAYER_LEVELS_VAMPIRE;
-            default:
-                return null;
-        }
+        return switch (slayer) {
+            case ZOMBIE -> SkyblockConstants.SLAYER_LEVELS_ZOMBIE;
+            case SPIDER -> SkyblockConstants.SLAYER_LEVELS_SPIDER;
+            case WOLF, ENDERMAN, BLAZE -> SkyblockConstants.SLAYER_LEVELS_WEB;
+            case VAMPIRE -> SkyblockConstants.SLAYER_LEVELS_VAMPIRE;
+        };
     }
 
+    private static int[] getCalcCropTable(SkyblockConstants.Crops crop) {
+        return switch (crop) {
+            case WHEAT, PUMPKIN, MUSHROOM -> SkyblockConstants.CROP_LEVELS_WPMS;
+            case CARROT, POTATO -> SkyblockConstants.CROP_LEVELS_CP;
+            case MELON -> SkyblockConstants.CROP_LEVELS_MELON;
+            case SUGAR_CANE, CACTUS -> SkyblockConstants.CROP_LEVELS_SCC;
+            case COCOA_BEANS, NETHER_WART -> SkyblockConstants.CROP_LEVELS_CBNW;
+        };
+    }
 }
