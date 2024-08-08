@@ -39,5 +39,6 @@ replay_*.log
 *.hprof
 *.jfr
 
+scripts/
 # still a draft
 CONTRIBUTING.md
