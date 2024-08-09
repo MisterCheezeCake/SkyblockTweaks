@@ -55,10 +55,10 @@ public class MenuHighlights {
         var matcher = PLAYER_COUNT_PATTERN.matcher(lines.getFirst().getString());
         if (!matcher.matches()) return;
         var playerCount = Integer.parseInt(matcher.group(1));
-        if (playerCount >= 60) context.fill(slot.x, slot.y, slot.x + 16, slot.y + 16, HIGHLIGHT_RED);
-        else if (playerCount >= 40) context.fill(slot.x, slot.y, slot.x + 16, slot.y + 16, HIGHLIGHT_ORANGE);
-        else if (playerCount >= 20) context.fill(slot.x, slot.y, slot.x + 16, slot.y + 16, HIGHLIGHT_YELLOW);
-        else context.fill(slot.x, slot.y, slot.x + 16, slot.y + 16, HIGHLIGHT_GREEN);
+        if (playerCount >= 60) highlight(context, slot, HIGHLIGHT_RED);
+        else if (playerCount >= 40) highlight(context, slot, HIGHLIGHT_ORANGE);
+        else if (playerCount >= 20) highlight(context, slot, HIGHLIGHT_YELLOW);
+        else highlight(context, slot, HIGHLIGHT_GREEN);
 
     }
     public static void tryDrawHighlightDH(DrawContext context, Slot slot) {
@@ -68,10 +68,10 @@ public class MenuHighlights {
         var matcher = PLAYER_COUNT_PATTERN_DH.matcher(lines.getFirst().getString());
         if (!matcher.matches()) return;
         var playerCount = Integer.parseInt(matcher.group(1));
-        if (playerCount >= 18) context.fill(slot.x, slot.y, slot.x + 16, slot.y + 16, HIGHLIGHT_RED);
-        else if (playerCount >= 12) context.fill(slot.x, slot.y, slot.x + 16, slot.y + 16, HIGHLIGHT_ORANGE);
-        else if (playerCount >= 6) context.fill(slot.x, slot.y, slot.x + 16, slot.y + 16, HIGHLIGHT_YELLOW);
-        else context.fill(slot.x, slot.y, slot.x + 16, slot.y + 16, HIGHLIGHT_GREEN);
+        if (playerCount >= 18) highlight(context, slot, HIGHLIGHT_RED);
+        else if (playerCount >= 12) highlight(context, slot, HIGHLIGHT_ORANGE);
+        else if (playerCount >= 6) highlight(context, slot, HIGHLIGHT_YELLOW);
+        else highlight(context, slot, HIGHLIGHT_GREEN);
     }
     public static void tryDrawHighlightHOTM(DrawContext context, Slot slot) {
         if (!SkyblockTweaks.CONFIG.config.hubSelectorHighlight.hotmHighlight) return;
@@ -79,15 +79,15 @@ public class MenuHighlights {
         for (var line: lines) {
             switch (line.getString()) {
                 case "ENABLED", "SELECTED" -> {
-                    context.fill(slot.x, slot.y, slot.x + 16, slot.y + 16, HIGHLIGHT_GREEN2);
+                    highlight(context, slot, HIGHLIGHT_GREEN2);
                     return;
                 }
                 case "DISABLED", "Click to select!" ->   {
-                    context.fill(slot.x, slot.y, slot.x + 16, slot.y + 16, HIGHLIGHT_RED2);
+                    highlight(context, slot, HIGHLIGHT_RED2);
                     return;
                 }
                 case "1 Token of the Mountain" -> {
-                    context.fill(slot.x, slot.y, slot.x + 16, slot.y + 16, HIGHLIGHT_GREY);
+                    highlight(context, slot, HIGHLIGHT_GREY);
                     return;
                 }
             }
@@ -97,9 +97,20 @@ public class MenuHighlights {
     public static void tryDrawHighlightWidget(DrawContext context, Slot slot) {
         if (!SkyblockTweaks.CONFIG.config.hubSelectorHighlight.widgetHighlight) return;
         var name = slot.getStack().getName().getString();
-        if (!name.contains("✔") && !name.contains("✖")) return;
-        if (name.contains("✔")) context.fill(slot.x, slot.y, slot.x + 16, slot.y + 16, HIGHLIGHT_GREEN2);
-        else context.fill(slot.x, slot.y, slot.x + 16, slot.y + 16, HIGHLIGHT_RED2);
+        if (!name.contains("✔") && !name.contains("✖")) {
+            if (name.equals("Third Column")) {
+                var fistLine = slot.getStack().getOrDefault(DataComponentTypes.LORE, LoreComponent.DEFAULT).lines().getFirst().getString();
+                if (fistLine.equals("Currently: ENABLED")) highlight(context, slot, HIGHLIGHT_GREEN2);
+                else highlight(context, slot, HIGHLIGHT_RED2);
+            }
+            return;
+        }
+        if (name.contains("✔")) highlight(context, slot, HIGHLIGHT_GREEN2);
+        else highlight(context, slot, HIGHLIGHT_RED2);
+    }
+
+    private static void highlight(DrawContext context, Slot slot, int color) {
+        context.fill(slot.x, slot.y, slot.x + 16, slot.y + 16, color);
     }
 
     public static class Config {
