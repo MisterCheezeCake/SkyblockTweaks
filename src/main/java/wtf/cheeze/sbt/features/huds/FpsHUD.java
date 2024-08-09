@@ -89,7 +89,7 @@ public class FpsHUD extends TextHUD {
         public float x = 0;
 
         @SerialEntry // Not handled by YACL Gui
-        public float y = 0.60f;
+        public float y = 0.55f;
 
         @SerialEntry
         public float scale = 1.0f;

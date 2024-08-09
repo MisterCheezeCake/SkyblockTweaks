@@ -47,8 +47,7 @@ public class SkyblockTweaks implements ModInitializer {
 	public static final SkyblockData DATA = new SkyblockData();
 	public static final SkyblockTweaksConfig CONFIG = new SkyblockTweaksConfig();
 	public static final ArrayList<HUD> HUDS = new ArrayList<HUD>();
-	//public static final Version VERSION = new Version(Version.VersionType.ALPHA, 0, 1, 0, 4);
-	public static final Version VERSION = new Version(Version.VersionType.UNSTABLE);
+	public static final Version VERSION = new Version(Version.VersionType.ALPHA, 0, 1, 0, 5);
 	public static final Gson GSON = new Gson();
 	public static final MinecraftClient mc = MinecraftClient.getInstance();
 
