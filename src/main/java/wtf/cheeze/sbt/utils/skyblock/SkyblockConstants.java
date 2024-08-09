@@ -1129,4 +1129,14 @@ public class SkyblockConstants {
         NETHER_WART
     }
 
+    public static enum Powder {
+        MITHRIL,
+        GEMSTONE,
+        GLACITE;
+
+        public String getDisplayName() {
+            return name().substring(0, 1).toUpperCase() + name().substring(1).toLowerCase();
+        }
+    }
+
 }

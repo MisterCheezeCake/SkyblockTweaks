@@ -26,6 +26,7 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.text.Text;
 import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.config.SkyblockTweaksScreenMain;
+import wtf.cheeze.sbt.features.CalcPowder;
 import wtf.cheeze.sbt.utils.skyblock.SkyblockConstants;
 import wtf.cheeze.sbt.utils.skyblock.SkyblockUtils;
 import wtf.cheeze.sbt.utils.TextUtils;
@@ -239,7 +240,43 @@ public class SBTCommand {
                                                     context.getSource().sendFeedback(Text.of(PREFIX + " §cInvalid arguments"));
                                                     return 0;
                                                 })
-                                ))
+                                )
+                                .then(literal("powder")
+                                        .then(argument("perk", StringArgumentType.string()).suggests(CommandUtils.getArrayAsSuggestions(CalcPowder.PERKS.keySet().toArray(new String[0])))
+                                                .then(argument("level-start", IntegerArgumentType.integer())
+                                                        .then(argument("level-end", IntegerArgumentType.integer())
+                                                                .executes(context -> {
+                                                                    var perk = CalcPowder.PERKS.get(StringArgumentType.getString(context, "perk"));
+                                                                    if (perk == null) {
+                                                                        context.getSource().sendFeedback(Text.of(PREFIX + " §cInvalid perk"));
+                                                                        return 0;
+                                                                    }
+                                                                    var levelStart = IntegerArgumentType.getInteger(context, "level-start");
+                                                                    var levelEnd = IntegerArgumentType.getInteger(context, "level-end");
+
+                                                                    if (levelStart < 0 || levelEnd < 0 || levelStart >= levelEnd) {
+                                                                        context.getSource().sendFeedback(Text.of(PREFIX + " §cInvalid arguments"));
+                                                                        return 0;
+                                                                    }
+                                                                    if (levelEnd > perk.max) {
+                                                                        context.getSource().sendFeedback(Text.of(PREFIX + " §cTargeted end level is higher than max (§e" + perk.max + "§c)"));
+                                                                        return 0;
+                                                                    }
+
+                                                                    var total = perk.costBetween(levelStart, levelEnd);
+                                                                    context.getSource().sendFeedback(Text.of(PREFIX + " §3Total " + perk.powder.getDisplayName() + " Powder Required: §e" + TextUtils.formatNumber(total, ",")));
+                                                                    return 1;
+                                                                }
+                                                        )
+                                                ))
+                                ).executes(context -> {
+                                    context.getSource().sendFeedback(Text.of(PREFIX + " §cInvalid arguments"));
+                                    return 0;
+                                })
+
+                                )
+
+                        )
                                 .executes(context -> {
                                     context.getSource().sendFeedback(Text.of(PREFIX + " §cInvalid arguments"));
                                     return 0;
