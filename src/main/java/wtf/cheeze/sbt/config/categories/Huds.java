@@ -63,6 +63,9 @@ public class Huds {
     @SerialEntry
     public CoordinatesHUD.Config coordinates = new CoordinatesHUD.Config();
 
+    @SerialEntry
+    public RealTimeHUD.Config time = new RealTimeHUD.Config();
+
     public static ConfigCategory getCategory(ConfigImpl defaults, ConfigImpl config) {
         return ConfigCategory.createBuilder()
                 .name(Text.literal("HUDs"))
@@ -79,6 +82,7 @@ public class Huds {
                 .group(DrillFuelHUD.Config.getGroup(defaults, config))
                 .group(DrillFuelBar.Config.getGroup(defaults, config))
                 .group(CoordinatesHUD.Config.getGroup(defaults, config))
+                .group(RealTimeHUD.Config.getGroup(defaults, config))
                 .build();
     }
 }

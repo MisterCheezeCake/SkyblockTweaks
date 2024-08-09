@@ -77,6 +77,7 @@ public class SkyblockTweaks implements ModInitializer {
 		HUDS.add(new ManaBar());
 
 		HUDS.add(new CoordinatesHUD());
+		HUDS.add(new RealTimeHUD());
 
 		HudRenderCallback.EVENT.register((context, tickCounter) -> {
 			HUDS.forEach(hud -> hud.render(context, false));
