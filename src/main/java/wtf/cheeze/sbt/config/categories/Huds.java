@@ -66,6 +66,9 @@ public class Huds {
     @SerialEntry
     public RealTimeHUD.Config time = new RealTimeHUD.Config();
 
+    @SerialEntry
+    public FpsHUD.Config fps = new FpsHUD.Config();
+
     public static ConfigCategory getCategory(ConfigImpl defaults, ConfigImpl config) {
         return ConfigCategory.createBuilder()
                 .name(Text.literal("HUDs"))
@@ -83,6 +86,7 @@ public class Huds {
                 .group(DrillFuelBar.Config.getGroup(defaults, config))
                 .group(CoordinatesHUD.Config.getGroup(defaults, config))
                 .group(RealTimeHUD.Config.getGroup(defaults, config))
+                .group(FpsHUD.Config.getGroup(defaults, config))
                 .build();
     }
 }
