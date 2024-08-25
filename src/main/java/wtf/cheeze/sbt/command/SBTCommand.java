@@ -27,9 +27,9 @@ import net.minecraft.text.Text;
 import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.config.SkyblockTweaksScreenMain;
 import wtf.cheeze.sbt.features.CalcPowder;
+import wtf.cheeze.sbt.utils.NumberUtils;
 import wtf.cheeze.sbt.utils.skyblock.SkyblockConstants;
 import wtf.cheeze.sbt.utils.skyblock.SkyblockUtils;
-import wtf.cheeze.sbt.utils.TextUtils;
 import wtf.cheeze.sbt.utils.hud.HudScreen;
 
 import java.util.Arrays;
@@ -78,7 +78,7 @@ public class SBTCommand {
 
                                                                     var newArr = Arrays.stream(SkyblockConstants.SKILL_LEVELS).skip(levelStart).limit(levelEnd - levelStart).toArray();
                                                                     var total = Arrays.stream(newArr).sum();
-                                                                    context.getSource().sendFeedback(Text.of(PREFIX + " §3Total Skill XP Required: §e" + TextUtils.formatNumber(total, ",")));
+                                                                    context.getSource().sendFeedback(Text.of(PREFIX + " §3Total Skill XP Required: §e" + NumberUtils.formatNumber(total, ",")));
                                                                     return 1;
                                                                 }
                                                         )
@@ -109,7 +109,7 @@ public class SBTCommand {
 
                                                                     var table = getCalcSlayerTable(slayer);
                                                                     var needed = table[levelEnd] - table[levelStart];
-                                                                    context.getSource().sendFeedback(Text.of(PREFIX + " §3Total Slayer XP Required: §e" + TextUtils.formatNumber(needed, ",")));
+                                                                    context.getSource().sendFeedback(Text.of(PREFIX + " §3Total Slayer XP Required: §e" + NumberUtils.formatNumber(needed, ",")));
                                                                     return 1;
                                                                 })
 
@@ -132,7 +132,7 @@ public class SBTCommand {
 
                                                                     var newArr = Arrays.stream(SkyblockConstants.DUNGEON_LEVELS).skip(levelStart).limit(levelEnd - levelStart).toArray();
                                                                     var total = Arrays.stream(newArr).sum();
-                                                                    context.getSource().sendFeedback(Text.of(PREFIX + " §3Total Dungeons XP Required: §e" + TextUtils.formatNumber(total, ",")));
+                                                                    context.getSource().sendFeedback(Text.of(PREFIX + " §3Total Dungeons XP Required: §e" + NumberUtils.formatNumber(total, ",")));
                                                                     return 1;
                                                                 }
                                                         )
@@ -166,7 +166,7 @@ public class SBTCommand {
 
                                                                     var newArr = Arrays.stream(getCalcPetTable(rarity)).skip(levelStart).limit(levelEnd - levelStart).toArray();
                                                                     var total = Arrays.stream(newArr).sum();
-                                                                    context.getSource().sendFeedback(Text.of(PREFIX + " §3Total Pet XP Required: §e" + TextUtils.formatNumber(total, ",")));
+                                                                    context.getSource().sendFeedback(Text.of(PREFIX + " §3Total Pet XP Required: §e" + NumberUtils.formatNumber(total, ",")));
                                                                     return 1;
                                                                 })
                                                         ).executes(context -> {
@@ -192,7 +192,7 @@ public class SBTCommand {
 
                                                                     var newArr = Arrays.stream(SkyblockConstants.HOTM_LEVELS).skip(levelStart).limit(levelEnd - levelStart).toArray();
                                                                     var total = Arrays.stream(newArr).sum();
-                                                                    context.getSource().sendFeedback(Text.of(PREFIX + " §3Total HOTM XP Required: §e" + TextUtils.formatNumber(total, ",")));
+                                                                    context.getSource().sendFeedback(Text.of(PREFIX + " §3Total HOTM XP Required: §e" + NumberUtils.formatNumber(total, ",")));
                                                                     return 1;
                                                                 }
                                                         )
@@ -217,7 +217,7 @@ public class SBTCommand {
 
                                                                     var newArr = Arrays.stream(SkyblockConstants.GARDEN_LEVELS).skip(levelStart).limit(levelEnd - levelStart).toArray();
                                                                     var total = Arrays.stream(newArr).sum();
-                                                                    context.getSource().sendFeedback(Text.of(PREFIX + " §3Total Garden XP Required: §e" + TextUtils.formatNumber(total, ",")));
+                                                                    context.getSource().sendFeedback(Text.of(PREFIX + " §3Total Garden XP Required: §e" + NumberUtils.formatNumber(total, ",")));
                                                                     return 1;
                                                                 }
                                                         )
@@ -247,7 +247,7 @@ public class SBTCommand {
 
                                                                     var newArr = Arrays.stream(getCalcCropTable(crop)).skip(levelStart).limit(levelEnd - levelStart).toArray();
                                                                     var total = Arrays.stream(newArr).sum();
-                                                                    context.getSource().sendFeedback(Text.of(PREFIX + " §3Total Crop XP Required: §e" + TextUtils.formatNumber(total, ",")));
+                                                                    context.getSource().sendFeedback(Text.of(PREFIX + " §3Total Crop XP Required: §e" + NumberUtils.formatNumber(total, ",")));
                                                                     return 1;
                                                                 }
                                                         )
@@ -280,7 +280,7 @@ public class SBTCommand {
                                                                     }
 
                                                                     var total = perk.costBetween(levelStart, levelEnd);
-                                                                    context.getSource().sendFeedback(Text.of(PREFIX + " §3Total " + perk.powder.getDisplayName() + " Powder Required: §e" + TextUtils.formatNumber(total, ",")));
+                                                                    context.getSource().sendFeedback(Text.of(PREFIX + " §3Total " + perk.powder.getDisplayName() + " Powder Required: §e" + NumberUtils.formatNumber(total, ",")));
                                                                     return 1;
                                                                 }
                                                         )

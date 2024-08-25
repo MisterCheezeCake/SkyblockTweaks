@@ -28,6 +28,7 @@ import net.minecraft.text.Text;
 import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SkyblockTweaksConfig;
+import wtf.cheeze.sbt.utils.NumberUtils;
 import wtf.cheeze.sbt.utils.TextUtils;
 import wtf.cheeze.sbt.utils.hud.HudInformation;
 import wtf.cheeze.sbt.utils.hud.TextHUD;
@@ -53,9 +54,9 @@ public class DrillFuelHUD extends TextHUD {
                 () -> SkyblockTweaks.CONFIG.config.huds.drillFuel.outlineColor,
                 () -> SkyblockTweaks.CONFIG.config.huds.drillFuel.mode,
                 () ->
-                        (TextUtils.formatNumber((int) SkyblockTweaks.DATA.drillFuel, SkyblockTweaks.CONFIG.config.huds.drillFuel.separator))
+                        (NumberUtils.formatNumber((int) SkyblockTweaks.DATA.drillFuel, SkyblockTweaks.CONFIG.config.huds.drillFuel.separator))
                         + "/"
-                        + (SkyblockTweaks.CONFIG.config.huds.drillFuel.abridgeSecondNumber ? TextUtils.addKOrM((int) SkyblockTweaks.DATA.maxDrillFuel, SkyblockTweaks.CONFIG.config.huds.drillFuel.separator) : TextUtils.formatNumber((int) SkyblockTweaks.DATA.maxDrillFuel, SkyblockTweaks.CONFIG.config.huds.drillFuel.separator))
+                        + (SkyblockTweaks.CONFIG.config.huds.drillFuel.abridgeSecondNumber ? NumberUtils.addKOrM((int) SkyblockTweaks.DATA.maxDrillFuel, SkyblockTweaks.CONFIG.config.huds.drillFuel.separator) : NumberUtils.formatNumber((int) SkyblockTweaks.DATA.maxDrillFuel, SkyblockTweaks.CONFIG.config.huds.drillFuel.separator))
         );
     }
     @Override

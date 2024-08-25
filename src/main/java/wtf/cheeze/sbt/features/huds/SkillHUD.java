@@ -31,7 +31,6 @@ import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SkyblockTweaksConfig;
 import wtf.cheeze.sbt.utils.NumberUtils;
-import wtf.cheeze.sbt.utils.TextUtils;
 import wtf.cheeze.sbt.utils.hud.HudInformation;
 import wtf.cheeze.sbt.utils.hud.HudLine;
 import wtf.cheeze.sbt.utils.hud.TextHUD;
@@ -77,7 +76,7 @@ public class SkillHUD extends TextHUD {
                     if (timeLeft <= 0) return "Skill HUD Placeholder Text";
                     if (this.percent == 0) {
                         if (this.total == 0) {
-                            return "+" + gained + " (" + TextUtils.formatNumber((int) progress, ",") + ")";
+                            return "+" + gained + " (" + NumberUtils.formatNumber((int) progress, ",") + ")";
                         } else {
                             if (SkyblockTweaks.CONFIG.config.huds.skills.skillMode == Mode.PERCENT) {
                                 var base = "+" + gained + " (" + NumberUtils.formatPercent(progress, total) + "%)";
@@ -87,7 +86,7 @@ public class SkillHUD extends TextHUD {
                                     return base;
                                 }
                             } else {
-                                var base = "+" + gained + " (" + TextUtils.formatNumber((int) progress, ",") + "/" + (SkyblockTweaks.CONFIG.config.huds.skills.abridgeDenominator ? TextUtils.addKOrM((int) total, ",") : TextUtils.formatNumber((int) total, ",")) + ")";
+                                var base = "+" + gained + " (" + NumberUtils.formatNumber((int) progress, ",") + "/" + (SkyblockTweaks.CONFIG.config.huds.skills.abridgeDenominator ? NumberUtils.addKOrM((int) total, ",") : NumberUtils.formatNumber((int) total, ",")) + ")";
                                 if (SkyblockTweaks.CONFIG.config.huds.skills.actionsLeft) {
                                     return base + " - " + actionsLeft(gained, progress, total) + " Left";
                                 } else {
@@ -102,7 +101,7 @@ public class SkillHUD extends TextHUD {
                             var table = getSkillTable(currentSkill);
                             var nextLevel = table[level];
                             var progressLevel = (percent / 100) * nextLevel;
-                            var base = "+" + gained + " (" + TextUtils.formatNumber((int) progressLevel, ",") + "/" + (SkyblockTweaks.CONFIG.config.huds.skills.abridgeDenominator ? TextUtils.addKOrM(nextLevel, ",") : TextUtils.formatNumber(nextLevel, ",")) + ")";
+                            var base = "+" + gained + " (" + NumberUtils.formatNumber((int) progressLevel, ",") + "/" + (SkyblockTweaks.CONFIG.config.huds.skills.abridgeDenominator ? NumberUtils.addKOrM(nextLevel, ",") : NumberUtils.formatNumber(nextLevel, ",")) + ")";
                             if (SkyblockTweaks.CONFIG.config.huds.skills.actionsLeft) {
                                 return base + " - " + actionsLeft(gained, progressLevel, nextLevel) + " Left";
                             } else {
@@ -124,7 +123,15 @@ public class SkillHUD extends TextHUD {
                         }
                     }
                 },
-                () -> IconDict.SKILL_ICONS.getOrDefault(currentSkill, IconDict.DEFAULT_ICON),
+                () -> {
+                    // This sometimes errors for a reason I cannot fathom
+                    try {
+                       return IconDict.SKILL_ICONS.getOrDefault(currentSkill, IconDict.DEFAULT_ICON);
+                    } catch (Exception e) {
+                        SkyblockTweaks.LOGGER.error("Error getting skill icon", e);
+                        return IconDict.DEFAULT_ICON;
+                    }
+                },
                 () -> timeLeft > 0
         );
     }

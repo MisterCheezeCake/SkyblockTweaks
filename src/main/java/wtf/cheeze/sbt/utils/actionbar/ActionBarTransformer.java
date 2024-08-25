@@ -28,6 +28,7 @@ import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SkyblockTweaksConfig;
 import wtf.cheeze.sbt.features.huds.SkillHUD;
+import wtf.cheeze.sbt.utils.NumberUtils;
 import wtf.cheeze.sbt.utils.TextUtils;
 
 import java.util.regex.Matcher;
@@ -130,12 +131,12 @@ public class ActionBarTransformer {
               } else if (skillLevelPatern.matcher(segment).matches()) {
                   Matcher matcher = skillLevelPatern.matcher(segment);
                   if (matcher.find()) {
-                      data.gainedXP = TextUtils.parseFloatWithKorM(matcher.group(1));
+                      data.gainedXP = NumberUtils.parseFloatWithKorM(matcher.group(1));
                       data.skillType = matcher.group(2);
                       if (matcher.group(3).contains("/")) {
                           String[] xp = matcher.group(3).split("/");
-                          data.totalXP = TextUtils.parseFloatWithKorM(xp[1]);
-                          data.nextLevelXP = TextUtils.parseFloatWithKorM(xp[0]);
+                          data.totalXP = NumberUtils.parseFloatWithKorM(xp[1]);
+                          data.nextLevelXP = NumberUtils.parseFloatWithKorM(xp[0]);
                           ((SkillHUD) SkyblockTweaks.HUDS.getFirst()).update(data.skillType, data.gainedXP, data.totalXP, data.nextLevelXP);
                       } else {
                           data.skillPercentage = Float.parseFloat(matcher.group(3).replace("%", ""));
@@ -158,7 +159,7 @@ public class ActionBarTransformer {
                   // Drill Fuel
                   String[] drillFuel = segment.split(" ")[0].split("/");
                   data.drillFuel = Integer.parseInt(drillFuel[0].replace(",", ""));
-                  data.maxDrillFuel = TextUtils.parseIntWithKorM(drillFuel[1]);
+                  data.maxDrillFuel = NumberUtils.parseIntWithKorM(drillFuel[1]);
                   if (!SkyblockTweaks.CONFIG.config.actionBarFilters.hideDrill) {
                       newText += SEPERATOR5 + unpadded;
                   }

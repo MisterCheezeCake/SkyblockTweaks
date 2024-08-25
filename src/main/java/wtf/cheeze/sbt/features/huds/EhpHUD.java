@@ -28,6 +28,7 @@ import net.minecraft.text.Text;
 import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SkyblockTweaksConfig;
+import wtf.cheeze.sbt.utils.NumberUtils;
 import wtf.cheeze.sbt.utils.hud.HudLine;
 import wtf.cheeze.sbt.utils.TextUtils;
 import wtf.cheeze.sbt.utils.hud.HudInformation;
@@ -52,7 +53,7 @@ public class EhpHUD extends TextHUD {
                 () -> SkyblockTweaks.CONFIG.config.huds.ehp.color,
                 () -> SkyblockTweaks.CONFIG.config.huds.ehp.outlineColor,
                 () -> SkyblockTweaks.CONFIG.config.huds.ehp.mode,
-                () -> TextUtils.formatNumber((int) SkyblockTweaks.DATA.effectiveHealth(), SkyblockTweaks.CONFIG.config.huds.ehp.separator) + (SkyblockTweaks.CONFIG.config.huds.ehp.icon ? "❤" : "")
+                () -> NumberUtils.formatNumber((int) SkyblockTweaks.DATA.effectiveHealth(), SkyblockTweaks.CONFIG.config.huds.ehp.separator) + (SkyblockTweaks.CONFIG.config.huds.ehp.icon ? "❤" : "")
         );
 
     }

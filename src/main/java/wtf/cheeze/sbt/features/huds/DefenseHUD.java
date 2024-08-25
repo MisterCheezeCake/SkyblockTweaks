@@ -28,6 +28,7 @@ import net.minecraft.text.Text;
 import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SkyblockTweaksConfig;
+import wtf.cheeze.sbt.utils.NumberUtils;
 import wtf.cheeze.sbt.utils.TextUtils;
 import wtf.cheeze.sbt.utils.hud.HudInformation;
 import wtf.cheeze.sbt.utils.hud.TextHUD;
@@ -53,7 +54,7 @@ public class DefenseHUD extends TextHUD {
                 () -> SkyblockTweaks.CONFIG.config.huds.defense.color,
                 () -> SkyblockTweaks.CONFIG.config.huds.defense.outlineColor,
                 () -> SkyblockTweaks.CONFIG.config.huds.defense.mode,
-                () -> TextUtils.formatNumber(SkyblockTweaks.DATA.defense, SkyblockTweaks.CONFIG.config.huds.defense.separator)+ (SkyblockTweaks.CONFIG.config.huds.defense.icon ? "❈" : "")
+                () -> NumberUtils.formatNumber(SkyblockTweaks.DATA.defense, SkyblockTweaks.CONFIG.config.huds.defense.separator)+ (SkyblockTweaks.CONFIG.config.huds.defense.icon ? "❈" : "")
         );
     }
     @Override

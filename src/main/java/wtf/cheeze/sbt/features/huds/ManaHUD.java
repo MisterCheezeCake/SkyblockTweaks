@@ -28,6 +28,7 @@ import net.minecraft.text.Text;
 import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SkyblockTweaksConfig;
+import wtf.cheeze.sbt.utils.NumberUtils;
 import wtf.cheeze.sbt.utils.TextUtils;
 import wtf.cheeze.sbt.utils.hud.HudInformation;
 import wtf.cheeze.sbt.utils.hud.TextHUD;
@@ -53,7 +54,7 @@ public class ManaHUD extends TextHUD {
                 () -> SkyblockTweaks.CONFIG.config.huds.mana.color,
                 () -> SkyblockTweaks.CONFIG.config.huds.mana.outlineColor,
                 () -> SkyblockTweaks.CONFIG.config.huds.mana.mode,
-                () -> TextUtils.formatNumber((int) SkyblockTweaks.DATA.mana, SkyblockTweaks.CONFIG.config.huds.mana.separator) + "/" + TextUtils.formatNumber((int) SkyblockTweaks.DATA.maxMana, SkyblockTweaks.CONFIG.config.huds.mana.separator) + (SkyblockTweaks.CONFIG.config.huds.mana.icon ? "✎" : "")
+                () -> NumberUtils.formatNumber((int) SkyblockTweaks.DATA.mana, SkyblockTweaks.CONFIG.config.huds.mana.separator) + "/" + NumberUtils.formatNumber((int) SkyblockTweaks.DATA.maxMana, SkyblockTweaks.CONFIG.config.huds.mana.separator) + (SkyblockTweaks.CONFIG.config.huds.mana.icon ? "✎" : "")
         );
     }
     @Override

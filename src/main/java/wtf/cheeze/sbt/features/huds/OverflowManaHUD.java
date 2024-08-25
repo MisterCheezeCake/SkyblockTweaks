@@ -28,6 +28,7 @@ import net.minecraft.text.Text;
 import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SkyblockTweaksConfig;
+import wtf.cheeze.sbt.utils.NumberUtils;
 import wtf.cheeze.sbt.utils.hud.HudLine;
 import wtf.cheeze.sbt.utils.TextUtils;
 import wtf.cheeze.sbt.utils.hud.HudInformation;
@@ -52,7 +53,7 @@ public class OverflowManaHUD extends TextHUD {
                 () -> SkyblockTweaks.CONFIG.config.huds.overflowMana.color,
                 () -> SkyblockTweaks.CONFIG.config.huds.overflowMana.outlineColor,
                 () -> SkyblockTweaks.CONFIG.config.huds.overflowMana.mode,
-                () -> TextUtils.formatNumber((int) SkyblockTweaks.DATA.overflowMana, SkyblockTweaks.CONFIG.config.huds.overflowMana.separator) + (SkyblockTweaks.CONFIG.config.huds.overflowMana.icon ? "ʬ" : "")
+                () -> NumberUtils.formatNumber((int) SkyblockTweaks.DATA.overflowMana, SkyblockTweaks.CONFIG.config.huds.overflowMana.separator) + (SkyblockTweaks.CONFIG.config.huds.overflowMana.icon ? "ʬ" : "")
         );
 
     }

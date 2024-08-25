@@ -28,6 +28,7 @@ import net.minecraft.text.Text;
 import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SkyblockTweaksConfig;
+import wtf.cheeze.sbt.utils.NumberUtils;
 import wtf.cheeze.sbt.utils.hud.HudLine;
 import wtf.cheeze.sbt.utils.TextUtils;
 import wtf.cheeze.sbt.utils.hud.HudInformation;
@@ -52,7 +53,7 @@ public class HealthHUD extends TextHUD {
                 () -> SkyblockTweaks.DATA.health > SkyblockTweaks.DATA.maxHealth ? SkyblockTweaks.CONFIG.config.huds.health.colorAbsorption : SkyblockTweaks.CONFIG.config.huds.health.color,
                 () -> SkyblockTweaks.CONFIG.config.huds.health.outlineColor,
                 () -> SkyblockTweaks.CONFIG.config.huds.health.mode,
-                () -> TextUtils.formatNumber((int) SkyblockTweaks.DATA.health, SkyblockTweaks.CONFIG.config.huds.health.separator) + "/" + TextUtils.formatNumber((int) SkyblockTweaks.DATA.maxHealth, SkyblockTweaks.CONFIG.config.huds.health.separator) + (SkyblockTweaks.CONFIG.config.huds.health.icon ? "❤" : "")
+                () -> NumberUtils.formatNumber((int) SkyblockTweaks.DATA.health, SkyblockTweaks.CONFIG.config.huds.health.separator) + "/" + NumberUtils.formatNumber((int) SkyblockTweaks.DATA.maxHealth, SkyblockTweaks.CONFIG.config.huds.health.separator) + (SkyblockTweaks.CONFIG.config.huds.health.icon ? "❤" : "")
         );
     }
     @Override
