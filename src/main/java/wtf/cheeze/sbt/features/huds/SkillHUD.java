@@ -238,7 +238,7 @@ public class SkillHUD extends TextHUD {
                     .binding(
                             defaults.huds.skills.enabled,
                             () -> config.huds.skills.enabled,
-                            value -> config.huds.skills.enabled = value
+                            value -> config.huds.skills.enabled = (Boolean) value
                     )
                     .build();
 
@@ -260,7 +260,7 @@ public class SkillHUD extends TextHUD {
                     .binding(
                             defaults.huds.skills.actionsLeft,
                             () -> config.huds.skills.actionsLeft,
-                            value -> config.huds.skills.actionsLeft = value
+                            value -> config.huds.skills.actionsLeft = (Boolean) value
                     )
                     .build();
             var abridgeDenominator = Option.<Boolean>createBuilder()
@@ -270,7 +270,7 @@ public class SkillHUD extends TextHUD {
                     .binding(
                             defaults.huds.skills.abridgeDenominator,
                             () -> config.huds.skills.abridgeDenominator,
-                            value -> config.huds.skills.abridgeDenominator = value
+                            value -> config.huds.skills.abridgeDenominator = (Boolean) value
                     )
                     .build();
 
