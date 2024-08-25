@@ -29,4 +29,10 @@ public class NumberUtils {
     public static String formattedRound(double number, int decimalPlaces) {
         return  decimalPlaces == 0 ? (round(number, decimalPlaces) + "").split("\\.")[0] : round(number, decimalPlaces) + "";
     }
+
+    public static String formatPercent(float progress, float total) {
+        return formattedRound(progress / total * 100, 2) + "%";
+    }
+
+
 }

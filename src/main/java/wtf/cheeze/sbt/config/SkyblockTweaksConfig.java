@@ -45,7 +45,7 @@ public class SkyblockTweaksConfig {
             (defaults, configThing, builder) -> {
                 this.config = configThing;
                 return builder
-                        .title(Text.literal("SkyBlockTweaks"))
+                        .title(Text.literal("SkyblockTweaks"))
                         .category(General.getCategory(defaults, configThing))
                         .category(Huds.getCategory(defaults, configThing));
 
@@ -57,7 +57,7 @@ public class SkyblockTweaksConfig {
                 (defaults, configThing, builder) -> {
                     this.config = configThing;
                     return builder
-                            .title(Text.literal("SkyBlockTweaks"))
+                            .title(Text.literal("SkyblockTweaks"))
                             .category(General.getCategory(defaults, configThing))
                             .category(Huds.getCategory(defaults, configThing));
 

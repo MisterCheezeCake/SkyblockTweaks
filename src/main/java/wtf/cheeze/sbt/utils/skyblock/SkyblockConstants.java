@@ -86,6 +86,62 @@ public class SkyblockConstants {
             6700000,
             7000000
     };
+
+    public static final int[] SOCIAL_LEVELS = {
+            50,
+            100,
+            150,
+            250,
+            500,
+            750,
+            1000,
+            1250,
+            1500,
+            2000,
+            2500,
+            3000,
+            3750,
+            4500,
+            6000,
+            8000,
+            10000,
+            12500,
+            15000,
+            20000,
+            25000,
+            30000,
+            35000,
+            40000,
+            50000,
+    };
+
+    public static final int[] RUNECRAFTING_LEVELS = {
+            50,
+            100,
+            125,
+            160,
+            200,
+            250,
+            315,
+            400,
+            500,
+            625,
+            785,
+            1000,
+            1250,
+            1565,
+            2000,
+            2500,
+            3125,
+            4000,
+            5000,
+            6250,
+            7850,
+            9800,
+            12250,
+            15300,
+            19100
+    };
     /**
      * Slayer experience. This is the TOTAL required experience to reach the level
      */
@@ -1127,6 +1183,20 @@ public class SkyblockConstants {
         CACTUS,
         MUSHROOM,
         NETHER_WART
+    }
+
+    public static enum Skills {
+        COMBAT,
+        MINING,
+        FARMING,
+        FORAGING,
+        FISHING,
+        ENCHANTING,
+        ALCHEMY,
+        TAMING,
+        CARPENTRY,
+        RUNECRAFTING,
+        SOCIAL
     }
 
     public static enum Powder {

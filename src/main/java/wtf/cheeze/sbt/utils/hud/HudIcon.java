@@ -26,7 +26,6 @@ public class HudIcon {
             case ITEM -> context.drawItem(iconStack, x, y);
         }
     }
-
     private static enum Mode {
         TEXTURE,
         ITEM

@@ -61,6 +61,23 @@ public class SkyblockUtils {
             case "mushroom", "mush" -> SkyblockConstants.Crops.MUSHROOM;
             default -> null;
         };
+    }
 
+    public static SkyblockConstants.Skills strictCastStringToSkill(String skill) {
+        skill = skill.toLowerCase();
+        return switch (skill) {
+            case "farming" -> SkyblockConstants.Skills.FARMING;
+            case "mining" -> SkyblockConstants.Skills.MINING;
+            case "combat" -> SkyblockConstants.Skills.COMBAT;
+            case "foraging" -> SkyblockConstants.Skills.FORAGING;
+            case "fishing" -> SkyblockConstants.Skills.FISHING;
+            case "enchanting" -> SkyblockConstants.Skills.ENCHANTING;
+            case "alchemy" -> SkyblockConstants.Skills.ALCHEMY;
+            case "taming" -> SkyblockConstants.Skills.TAMING;
+            case "carpentry" -> SkyblockConstants.Skills.CARPENTRY;
+            case "runecrafting" -> SkyblockConstants.Skills.RUNECRAFTING;
+            case "social" -> SkyblockConstants.Skills.SOCIAL;
+            default -> null;
+        };
     }
 }

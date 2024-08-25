@@ -26,7 +26,7 @@ import wtf.cheeze.sbt.utils.RenderUtils;
 /**
  * A HUD that displays a bar, code liberally inspired by SBA, but way simpler thanks to modern mc, bar textures taken directly from SBA
  */
-public abstract class BarHUD extends HUD{
+public abstract class BarHUD extends HUD {
     public static final Identifier UNFILLED = Identifier.of("skyblocktweaks", "unfill.png");
     public static final Identifier FILLED = Identifier.of("skyblocktweaks", "fill.png");
     public static final int BAR_WIDTH = 71;
@@ -86,16 +86,7 @@ public abstract class BarHUD extends HUD{
             default -> throw new IllegalStateException("Unexpected value: " + INFO.getAnchorPoint.get());
 
         }
-      //  return new BoundsRelative((float) INFO.getX.get(), (float) INFO.getY.get(), BAR_WIDTH * scale, BAR_HEIGHT * scale, scale);
     }
-
-//    @Override
-//    public void drawBackground(DrawContext context, int color) {
-//        var bounds = getCurrentBounds();
-//        int i = (int) (1 * bounds.scale);
-//        //int i = 1;
-//        context.fill(bounds.x , bounds.y, (int) (bounds.x + bounds.width), (int) (bounds.y + bounds.height), color);
-//    }
     private static int calculateFill(float current, float max) {
         if (current >= max) return BAR_WIDTH;
         var i = (int) (current / max * BAR_WIDTH);

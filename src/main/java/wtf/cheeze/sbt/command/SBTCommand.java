@@ -47,6 +47,22 @@ public class SBTCommand {
                 literal("sbt")
                         .then(CommandUtils.getScreenOpeningCommand("config", () -> SkyblockTweaks.CONFIG.getScreen(null)))
                         .then(CommandUtils.getScreenOpeningCommand("hud", () -> new HudScreen(Text.literal("SkyBlockTweaks"), SkyblockTweaks.HUDS, null)))
+                        .then(literal("debug")
+                                .executes(context -> {
+                                    var source = context.getSource();
+                                    source.sendFeedback(Text.literal(PREFIX +  " §3Debug Information"));
+                                    source.sendFeedback(getDebugText("Version", SkyblockTweaks.VERSION.getVersionString()));
+                                    source.sendFeedback(getDebugText("In Skyblock", SkyblockTweaks.DATA.inSB));
+                                    source.sendFeedback(getDebugText("Mode", SkyblockTweaks.DATA.mode));
+                                    source.sendFeedback(getDebugText("On Alpha Network", SkyblockTweaks.DATA.alphaNetwork));
+                                    source.sendFeedback(getDebugText("In Party", SkyblockTweaks.DATA.inParty));
+                                    source.sendFeedback(getDebugText("Am I The Leader", SkyblockTweaks.DATA.amITheLeader));
+                                    source.sendFeedback(getDebugText("Current Profile", SkyblockTweaks.DATA.currentProfile));
+                                    source.sendFeedback(getDebugText("Unique Profile ID", SkyblockTweaks.DATA.getCurrentProfileUnique()));
+
+                                    return 1;
+                                })
+                        )
                         .then(literal("calc")
                                 .then(literal("skill")
                                         .then(argument("level-start", IntegerArgumentType.integer())
@@ -321,4 +337,12 @@ public class SBTCommand {
             case COCOA_BEANS, NETHER_WART -> SkyblockConstants.CROP_LEVELS_CBNW;
         };
     }
+
+    private static Text getDebugText(String name, boolean value) {
+        return Text.of("§3" + name + ": §" + (value ? "a" : "c") + value);
+    }
+    private static Text getDebugText(String name, String value) {
+        return Text.of("§3" + name + ": §e" + value);
+    }
+
 }

@@ -19,22 +19,28 @@
 package wtf.cheeze.sbt.utils.skyblock;
 
 import net.azureaaron.hmapi.data.party.PartyRole;
+import net.azureaaron.hmapi.data.server.Environment;
 import net.azureaaron.hmapi.network.packet.s2c.ErrorS2CPacket;
+import net.azureaaron.hmapi.network.packet.s2c.HelloS2CPacket;
 import net.azureaaron.hmapi.network.packet.s2c.HypixelS2CPacket;
+import net.azureaaron.hmapi.network.packet.v1.s2c.LocationUpdateS2CPacket;
 import net.azureaaron.hmapi.network.packet.v2.s2c.PartyInfoS2CPacket;
 import net.minecraft.client.MinecraftClient;
 import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.utils.actionbar.ActionBarData;
 
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 
 public class SkyblockData {
     public boolean inSB = false;
+    public boolean alphaNetwork = false;
     public boolean inParty = false;
     public boolean amITheLeader = false;
 
-    public String zone;
+    public String currentProfile = null;
+    public String mode = null;
 
     public int defense = 0;
     public float maxHealth = 0;
@@ -45,6 +51,7 @@ public class SkyblockData {
 
     public float drillFuel = 0;
     public float maxDrillFuel = 0;
+
 
 
     public float getSpeed() {
@@ -61,6 +68,14 @@ public class SkyblockData {
 
     public boolean isThePlayerHoldingADrill() {
         return MinecraftClient.getInstance().player.getMainHandStack().getName().getString().contains("Drill");
+    }
+
+    /**
+     * Provides the profile ID with an appended "_ALPHA" if the player is in the alpha network
+     * We do this so that what players do on the Alpha network does not affect persistent data for their main profile
+     */
+    public String getCurrentProfileUnique() {
+        return alphaNetwork ?  currentProfile + "_ALPHA" : currentProfile;
     }
 
     public void update(ActionBarData data) {
@@ -89,6 +104,18 @@ public class SkyblockData {
                 }
                 amITheLeader = members.get(myUUID) == PartyRole.LEADER;
                 //SkyBlockTweaks.LOGGER.info("I am the leader: {}", amITheLeader);
+            }
+            case HelloS2CPacket(Environment environment) -> {
+                // Beta is alpha
+                SkyblockTweaks.LOGGER.info("Connected to Hypixel Mod API. Environment: {}", environment);
+                if (environment == Environment.BETA) {
+                    alphaNetwork = true;
+                } else {
+                    alphaNetwork = false;
+                }
+            }
+            case LocationUpdateS2CPacket(String serverName, Optional<String> serverType, Optional<String> lobbyName, Optional<String> mode, Optional<String> map) -> {
+                this.mode = mode.orElse(null);
             }
             case ErrorS2CPacket(var id, var errorReason) -> {
                 SkyblockTweaks.LOGGER.error("The Hypixel Mod API experienced an error. ID: {} Reason: {}", id, errorReason);

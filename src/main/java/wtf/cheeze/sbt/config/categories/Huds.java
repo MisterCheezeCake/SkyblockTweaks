@@ -69,10 +69,14 @@ public class Huds {
     @SerialEntry
     public FpsHUD.Config fps = new FpsHUD.Config();
 
+    @SerialEntry
+    public SkillHUD.Config skills = new SkillHUD.Config();
+
     public static ConfigCategory getCategory(ConfigImpl defaults, ConfigImpl config) {
         return ConfigCategory.createBuilder()
                 .name(Text.literal("HUDs"))
                 .tooltip(Text.literal("Settings for various HUDs"))
+                .group(SkillHUD.Config.getGroup(defaults, config))
                 .group(HealthHUD.Config.getGroup(defaults, config))
                 .group(HealthBar.Config.getGroup(defaults, config))
                 .group(ManaHUD.Config.getGroup(defaults, config))

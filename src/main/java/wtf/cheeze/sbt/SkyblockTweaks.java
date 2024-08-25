@@ -32,35 +32,40 @@ import org.slf4j.LoggerFactory;
 
 import wtf.cheeze.sbt.command.SBTCommand;
 import wtf.cheeze.sbt.config.SkyblockTweaksConfig;
+import wtf.cheeze.sbt.config.persistent.PersistentData;
 import wtf.cheeze.sbt.features.PartyCommands;
 import wtf.cheeze.sbt.features.huds.*;
 import wtf.cheeze.sbt.utils.*;
 import wtf.cheeze.sbt.utils.actionbar.ActionBarTransformer;
 import wtf.cheeze.sbt.utils.hud.HUD;
 import wtf.cheeze.sbt.utils.skyblock.ModAPIUtils;
+import wtf.cheeze.sbt.utils.skyblock.ProfileManager;
 import wtf.cheeze.sbt.utils.skyblock.SkyblockData;
 
 import java.util.ArrayList;
 
 public class SkyblockTweaks implements ModInitializer {
+	public static final Gson GSON = new Gson();
     public static final Logger LOGGER = LoggerFactory.getLogger("SkyBlockTweaks");
 	public static final SkyblockData DATA = new SkyblockData();
+	public static final PersistentData PD = PersistentData.load();
 	public static final SkyblockTweaksConfig CONFIG = new SkyblockTweaksConfig();
 	public static final ArrayList<HUD> HUDS = new ArrayList<HUD>();
 	public static final Version VERSION = new Version(Version.VersionType.ALPHA, 0, 1, 0, 5);
-	public static final Gson GSON = new Gson();
 	public static final MinecraftClient mc = MinecraftClient.getInstance();
+
 
 	@Override
 	public void onInitialize() {
-		boolean loaded = CONFIG.HANDLER.load();
 
-		if (!loaded) {
+		if (!CONFIG.HANDLER.load()) {
 			LOGGER.error("Failed to load config!");
 		}
 
 		// This fixes config not actually loading on initial startup... for some reason
 		CONFIG.getScreen(null);
+
+		HUDS.add(new SkillHUD());
 
 		HUDS.add(new SpeedHUD());
 		HUDS.add(new DefenseHUD());
@@ -88,6 +93,7 @@ public class SkyblockTweaks implements ModInitializer {
 		NotificationHandler.registerEvents();
 		ModAPIUtils.registerEvents();
 		PartyCommands.registerEvents();
+		ProfileManager.registerEvents();
 
 		UpdateChecker.checkForUpdates();
 
@@ -117,5 +123,8 @@ public class SkyblockTweaks implements ModInitializer {
 			}
 
 		});
+
+
+
 	}
 }

@@ -50,8 +50,8 @@ public class HudLine {
                 break;
             case OUTLINE:
                 if (useIcon.get()) {
-                    icon.get().render(context, x, y);
-                    RenderUtils.drawStringWithOutline(context, Text.literal(text.get()), x + 10, y, color.get(), outlineColor.get(), scale, true);
+                    icon.get().render(context, (int) (x /scale), (int) (y /scale));
+                    RenderUtils.drawStringWithOutline(context, Text.literal(text.get()), x + (int) (10 * scale), y, color.get(), outlineColor.get(), scale, true);
                 } else {
                     RenderUtils.drawStringWithOutline(context, Text.literal(text.get()), x, y, color.get(), outlineColor.get(), scale, true);
                 }
@@ -61,8 +61,10 @@ public class HudLine {
     private void render(DrawContext context, int x, int y, float scale, boolean shadow) {
 
         if (useIcon.get()) {
-            icon.get().render(context, x, y);
-            RenderUtils.drawString(context, Text.literal(text.get()), x + 10, y, color.get(), shadow, scale, true);
+            int i = (int) (1 * scale);
+//            context.fill(x - i, y - i, x + RenderUtils.getStringWidth(text.get()) + 10, y + 9, 1694433280);
+            icon.get().render(context, (int) (x /scale), (int) (y /scale));
+            RenderUtils.drawString(context, Text.literal(text.get()), x + (int) (10 * scale), y, color.get(), shadow, scale, true);
         } else {
             RenderUtils.drawString(context, Text.literal(text.get()), x, y, color.get(), shadow, scale, true);
         }

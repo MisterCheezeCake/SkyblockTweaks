@@ -27,6 +27,7 @@ import net.minecraft.text.Text;
 import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SkyblockTweaksConfig;
+import wtf.cheeze.sbt.features.huds.SkillHUD;
 import wtf.cheeze.sbt.utils.TextUtils;
 
 import java.util.regex.Matcher;
@@ -135,8 +136,10 @@ public class ActionBarTransformer {
                           String[] xp = matcher.group(3).split("/");
                           data.totalXP = TextUtils.parseFloatWithKorM(xp[1]);
                           data.nextLevelXP = TextUtils.parseFloatWithKorM(xp[0]);
+                          ((SkillHUD) SkyblockTweaks.HUDS.getFirst()).update(data.skillType, data.gainedXP, data.totalXP, data.nextLevelXP);
                       } else {
                           data.skillPercentage = Float.parseFloat(matcher.group(3).replace("%", ""));
+                          ((SkillHUD) SkyblockTweaks.HUDS.getFirst()).update(data.skillType, data.gainedXP, data.skillPercentage);
                       }
                   }
                   if (!SkyblockTweaks.CONFIG.config.actionBarFilters.hideSkill) {
@@ -180,7 +183,7 @@ public class ActionBarTransformer {
     public static void registerEvents() {
         ClientReceiveMessageEvents.MODIFY_GAME.register((message, overlay) -> {
             if (!overlay) return message;
-            //SkyBlockTweaks.LOGGER.info("Old: " + message.getString());
+            //SkyblockTweaks.LOGGER.info("Old: " + message.getString());
             var data = ActionBarTransformer.extractDataAndRunTransformation(message.getString());
             //SkyBlockTweaks.LOGGER.info("New: " + data.transformedText);
             SkyblockTweaks.DATA.update(data);

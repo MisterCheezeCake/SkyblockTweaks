@@ -32,5 +32,7 @@ public class ModAPIUtils {
             map.put(LocationUpdateS2CPacket.ID, 1);
         }));
         HypixelPacketEvents.PARTY_INFO.register(SkyblockTweaks.DATA::handlePacket);
+        HypixelPacketEvents.HELLO.register(SkyblockTweaks.DATA::handlePacket);
+        HypixelPacketEvents.LOCATION_UPDATE.register(SkyblockTweaks.DATA::handlePacket);
     }
 }
