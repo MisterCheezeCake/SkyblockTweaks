@@ -24,8 +24,10 @@ import dev.isxander.yacl3.api.OptionDescription;
 import dev.isxander.yacl3.api.OptionGroup;
 import dev.isxander.yacl3.api.controller.IntegerFieldControllerBuilder;
 import dev.isxander.yacl3.api.controller.StringControllerBuilder;
+import dev.isxander.yacl3.config.v2.api.SerialEntry;
 import net.azureaaron.hmapi.network.HypixelNetworking;
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents;
+import net.minecraft.text.HoverEvent;
 import net.minecraft.text.Text;
 import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.config.ConfigImpl;
@@ -36,10 +38,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
-public class PartyCommands {
+public class PartyFeatures {
 
     public static Pattern PARTY_PATTERN = Pattern.compile("Party > ([^:]+): !(.+)");
     public static Pattern BACKUP_UPDATE_PATTERN = Pattern.compile("The party was transferred to (.+) by .+");
+    public static Pattern BOOP_PATTERN = Pattern.compile("From (.*): Boop!");
 
     public static long lastPartyCommand = 0;
 
@@ -97,14 +100,30 @@ public class PartyCommands {
                 } else {
                     SkyblockTweaks.DATA.amITheLeader = false;
                 }
+            } else if (s.matches("From .*: Boop!")) {
+                if (!SkyblockTweaks.CONFIG.config.partyCommands.boopInvites) return;
+                var matcher = BOOP_PATTERN.matcher(s);
+                if (!matcher.matches()) return;
+                var n = matcher.group(1);
+                var name = n.contains(" ") ? n.split(" ")[1] : n;
+                SkyblockTweaks.mc.send(() -> SkyblockTweaks.mc.player.sendMessage(getInviteMessage(name), false));
             }
         });
     }
 
     public static class Config {
+        @SerialEntry
         public boolean enabled = true;
+        @SerialEntry
         public List<String> blockedUsers = new ArrayList<>();
+        @SerialEntry
         public int cooldown = 750;
+
+        @SerialEntry
+        public boolean boopInvites  = true;
+
+
+
 
         public static ListOption<String> getBlackList(ConfigImpl defaults, ConfigImpl config) {
             return ListOption.<String>createBuilder()
@@ -121,6 +140,7 @@ public class PartyCommands {
                     .build();
         }
         public static OptionGroup getGroup(ConfigImpl defaults, ConfigImpl config) {
+
             var enabled = Option.<Boolean>createBuilder()
                     .name(Text.literal("Enable Party Commands"))
                     .description(OptionDescription.of(Text.literal("Whether or not to enable party commands")))
@@ -142,15 +162,31 @@ public class PartyCommands {
                     )
                     .build();
 
+            var inviteBoop = Option.<Boolean>createBuilder()
+                    .name(Text.literal("Boop Invites"))
+                    .description(OptionDescription.of(Text.literal("Whether or not to prompt a party invite when booped by a player")))
+                    .controller(SkyblockTweaksConfig::generateBooleanController)
+                    .binding(
+                            defaults.partyCommands.boopInvites,
+                            () -> config.partyCommands.boopInvites,
+                            value -> config.partyCommands.boopInvites = (Boolean) value
+                    )
+                    .build();
+
 
             return OptionGroup.createBuilder()
-                    .name(Text.literal("Party Commands"))
-                    .description(OptionDescription.of(Text.literal("Settings for Party Commands")))
+                    .name(Text.literal("Party Features"))
+                    .description(OptionDescription.of(Text.literal("Settings for Party Features")))
                     .option(enabled)
                     .option(cooldown)
+                    .option(inviteBoop)
                     .build();
         }
 
+    }
+
+    private static Text getInviteMessage(String name) {
+        return TextUtils.getTextThatRunsCommand("§7[§aSkyblockTweaks§f§7] §bClick here to invite §e" + name + "§b to your party!","§3Click here to run §e/p " + name , "/p invite " + name);
     }
 
 

@@ -9,7 +9,7 @@ import net.minecraft.text.Text;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SkyblockTweaksConfig;
 import wtf.cheeze.sbt.features.MenuHighlights;
-import wtf.cheeze.sbt.features.PartyCommands;
+import wtf.cheeze.sbt.features.PartyFeatures;
 import wtf.cheeze.sbt.utils.Version;
 import wtf.cheeze.sbt.utils.actionbar.ActionBarTransformer;
 
@@ -21,8 +21,8 @@ public class General {
                 .option(Version.getStreamOption(defaults, config))
                 .group(InventoryTweaks.getGroup(defaults, config))
                 .group(MenuHighlights.Config.getGroup(defaults, config))
-                .group(PartyCommands.Config.getGroup(defaults, config))
-                .option(PartyCommands.Config.getBlackList(defaults, config))
+                .group(PartyFeatures.Config.getGroup(defaults, config))
+                .option(PartyFeatures.Config.getBlackList(defaults, config))
                 .group(HudTweaks.getGroup(defaults, config))
                 .group(ActionBarTransformer.Config.getGroup(defaults, config))
                 .build();

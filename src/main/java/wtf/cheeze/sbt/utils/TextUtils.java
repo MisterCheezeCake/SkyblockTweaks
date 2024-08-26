@@ -35,4 +35,12 @@ public class TextUtils {
             return style;
         });
     }
+
+    public static Text getTextThatRunsCommand(String text, String hovered, String command) {
+        return Text.literal(text).styled(style -> {
+            style = style.withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.literal(hovered)));
+            style = style.withClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, command));
+            return style;
+        });
+    }
 }
