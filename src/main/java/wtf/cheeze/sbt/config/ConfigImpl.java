@@ -21,6 +21,7 @@ package wtf.cheeze.sbt.config;
 import dev.isxander.yacl3.config.v2.api.SerialEntry;
 import wtf.cheeze.sbt.config.categories.General;
 import wtf.cheeze.sbt.config.categories.Huds;
+import wtf.cheeze.sbt.features.BrewingStandOverlay;
 import wtf.cheeze.sbt.features.MenuHighlights;
 import wtf.cheeze.sbt.features.PartyFeatures;
 import wtf.cheeze.sbt.utils.Version;
@@ -48,6 +49,9 @@ public class ConfigImpl {
 
     @SerialEntry
     public PartyFeatures.Config partyCommands = new PartyFeatures.Config();
+
+    @SerialEntry
+    public BrewingStandOverlay.Config brewingStandOverlay = new BrewingStandOverlay.Config();
 
     @SerialEntry
     public Huds huds = new Huds();

@@ -16,12 +16,15 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with SkyblockTweaks. If not, see <https://www.gnu.org/licenses/>.
  */
-package wtf.cheeze.sbt.utils;
+package wtf.cheeze.sbt.utils.render;
 
+import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.util.Window;
+import net.minecraft.client.render.*;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
+import net.minecraft.util.math.Vec3d;
 import wtf.cheeze.sbt.SkyblockTweaks;
 
 public class RenderUtils {
@@ -33,6 +36,7 @@ public class RenderUtils {
     public static void endScale(DrawContext context) {
         context.getMatrices().pop();
     }
+
     public static void drawString(DrawContext context, Text text, int x, int y, int color, boolean shadow, float scale) {
         beginScale(context, scale);
         drawString(context, text, (int) (x/scale), (int) (y/scale), color, shadow);
@@ -66,20 +70,6 @@ public class RenderUtils {
         drawString(context, text, x - width / 2, y, color, shadow);
     }
 
-    public static class ScreenBounds {
-        public int width;
-        public int height;
-        private ScreenBounds() {
-            Window window = MinecraftClient.getInstance().getWindow();
-            this.width = window.getScaledWidth();
-            this.height = window.getScaledHeight();
-        }
-    }
-
-    public static ScreenBounds getScreenBounds() {
-        return new ScreenBounds();
-    }
-
     public static int getStringWidth(Text text) {
         return SkyblockTweaks.mc.textRenderer.getWidth(text);
     }
@@ -93,16 +83,40 @@ public class RenderUtils {
     public static Color3f getColor3f(int color) {
         return new Color3f(color);
     }
-    public static class Color3f {
-
-        public float red;
-        public float green;
-        public float blue;
-
-        private Color3f(int color) {
-            this.red = (float) (color >> 16 & 255) / 255.0F;
-            this.green = (float) (color >> 8 & 255) / 255.0F;
-            this.blue = (float) (color & 255) / 255.0F;
-        }
+    public static ScreenBounds getScreenBounds() {
+        return new ScreenBounds();
     }
+
+    //    public static class Color4f extends Color3f {
+//        public float alpha;
+//
+//        private Color4f(int color) {
+//            super(color);
+//            this.alpha = (float) (color >> 24 & 255) / 255.0F;
+//        }
+//    }
+//    public static Color4f getColor4f(int color) {
+//        return new Color4f(color);
+//    }
+    // Adapted from Skyblocker
+//    private static void renderFilledInternal(WorldRenderContext context, Vec3d pos, Vec3d dimensions, Color3f color, float alpha, boolean throughWalls) {
+//        var matrices = context.matrixStack();
+//        var camera = context.camera().getPos();
+//        matrices.push();
+//        matrices.translate(-camera.x, -camera.y, -camera.z);
+//        var consumers = context.consumers();
+//        var buffer = consumers.getBuffer(throughWalls ? SkyblockerRenderLayers.FILLED_THROUGH_WALLS : SkyblockerRenderLayers.FILLED);
+//        WorldRenderer.renderFilledBox(matrices, buffer, pos.x, pos.y, pos.z, pos.x + dimensions.x, pos.y + dimensions.y, pos.z + dimensions.z, color.red, color.green, color.blue, alpha);
+//        matrices.pop();
+//    }
+//
+//
+//    public static final RenderLayer.MultiPhase FILLED = RenderLayer.of("filled", VertexFormats.POSITION_COLOR, VertexFormat.DrawMode.TRIANGLE_STRIP, RenderLayer.CUTOUT_BUFFER_SIZE, false, true, RenderLayer.MultiPhaseParameters.builder()
+//            .program(RenderPhase.COLOR_PROGRAM)
+//            .cull(RenderPhase.Cull.DISABLE_CULLING)
+//            .layering(RenderPhase.POLYGON_OFFSET_LAYERING)
+//            .transparency(DEFAULT_TRANSPARENCY)
+//            .depthTest(RenderPhase.DepthTest.LEQUAL_DEPTH_TEST)
+//            .build(false));
+
 }

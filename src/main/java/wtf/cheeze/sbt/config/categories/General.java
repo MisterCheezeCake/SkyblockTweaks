@@ -8,6 +8,7 @@ import dev.isxander.yacl3.config.v2.api.SerialEntry;
 import net.minecraft.text.Text;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SkyblockTweaksConfig;
+import wtf.cheeze.sbt.features.BrewingStandOverlay;
 import wtf.cheeze.sbt.features.MenuHighlights;
 import wtf.cheeze.sbt.features.PartyFeatures;
 import wtf.cheeze.sbt.utils.Version;
@@ -21,6 +22,7 @@ public class General {
                 .option(Version.getStreamOption(defaults, config))
                 .group(InventoryTweaks.getGroup(defaults, config))
                 .group(MenuHighlights.Config.getGroup(defaults, config))
+                .group(BrewingStandOverlay.Config.getGroup(defaults, config))
                 .group(PartyFeatures.Config.getGroup(defaults, config))
                 .option(PartyFeatures.Config.getBlackList(defaults, config))
                 .group(HudTweaks.getGroup(defaults, config))

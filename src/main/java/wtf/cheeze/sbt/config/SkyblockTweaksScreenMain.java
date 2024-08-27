@@ -26,7 +26,7 @@ import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import wtf.cheeze.sbt.SkyblockTweaks;
-import wtf.cheeze.sbt.utils.RenderUtils;
+import wtf.cheeze.sbt.utils.render.RenderUtils;
 import wtf.cheeze.sbt.utils.hud.HudScreen;
 
 public class SkyblockTweaksScreenMain extends Screen {

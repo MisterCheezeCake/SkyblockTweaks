@@ -3,9 +3,8 @@ package wtf.cheeze.sbt.utils.hud;
 import dev.isxander.yacl3.api.NameableEnum;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
-import wtf.cheeze.sbt.utils.RenderUtils;
+import wtf.cheeze.sbt.utils.render.RenderUtils;
 
 import java.util.function.Supplier;
 

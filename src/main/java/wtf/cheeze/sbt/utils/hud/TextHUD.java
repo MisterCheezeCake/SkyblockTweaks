@@ -20,7 +20,7 @@ package wtf.cheeze.sbt.utils.hud;
 
 import net.minecraft.client.gui.DrawContext;
 import wtf.cheeze.sbt.SkyblockTweaks;
-import wtf.cheeze.sbt.utils.RenderUtils;
+import wtf.cheeze.sbt.utils.render.RenderUtils;
 
 public abstract class TextHUD extends HUD {
     //public abstract String getText();

@@ -21,7 +21,7 @@ package wtf.cheeze.sbt.utils.hud;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.util.Identifier;
 import wtf.cheeze.sbt.SkyblockTweaks;
-import wtf.cheeze.sbt.utils.RenderUtils;
+import wtf.cheeze.sbt.utils.render.RenderUtils;
 
 /**
  * A HUD that displays a bar, code liberally inspired by SBA, but way simpler thanks to modern mc, bar textures taken directly from SBA
