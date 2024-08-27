@@ -87,36 +87,4 @@ public class RenderUtils {
         return new ScreenBounds();
     }
 
-    //    public static class Color4f extends Color3f {
-//        public float alpha;
-//
-//        private Color4f(int color) {
-//            super(color);
-//            this.alpha = (float) (color >> 24 & 255) / 255.0F;
-//        }
-//    }
-//    public static Color4f getColor4f(int color) {
-//        return new Color4f(color);
-//    }
-    // Adapted from Skyblocker
-//    private static void renderFilledInternal(WorldRenderContext context, Vec3d pos, Vec3d dimensions, Color3f color, float alpha, boolean throughWalls) {
-//        var matrices = context.matrixStack();
-//        var camera = context.camera().getPos();
-//        matrices.push();
-//        matrices.translate(-camera.x, -camera.y, -camera.z);
-//        var consumers = context.consumers();
-//        var buffer = consumers.getBuffer(throughWalls ? SkyblockerRenderLayers.FILLED_THROUGH_WALLS : SkyblockerRenderLayers.FILLED);
-//        WorldRenderer.renderFilledBox(matrices, buffer, pos.x, pos.y, pos.z, pos.x + dimensions.x, pos.y + dimensions.y, pos.z + dimensions.z, color.red, color.green, color.blue, alpha);
-//        matrices.pop();
-//    }
-//
-//
-//    public static final RenderLayer.MultiPhase FILLED = RenderLayer.of("filled", VertexFormats.POSITION_COLOR, VertexFormat.DrawMode.TRIANGLE_STRIP, RenderLayer.CUTOUT_BUFFER_SIZE, false, true, RenderLayer.MultiPhaseParameters.builder()
-//            .program(RenderPhase.COLOR_PROGRAM)
-//            .cull(RenderPhase.Cull.DISABLE_CULLING)
-//            .layering(RenderPhase.POLYGON_OFFSET_LAYERING)
-//            .transparency(DEFAULT_TRANSPARENCY)
-//            .depthTest(RenderPhase.DepthTest.LEQUAL_DEPTH_TEST)
-//            .build(false));
-
 }

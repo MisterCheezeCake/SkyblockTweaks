@@ -49,10 +49,11 @@ public class NumberUtils {
     public static float parseFloatWithKorM(String text) {
         text = text.toLowerCase();
         text = text.replaceAll(",", "");
-        var v = Float.parseFloat(text.substring(0, text.length() - 1));
         if (text.endsWith("k")) {
+            var v = Float.parseFloat(text.substring(0, text.length() - 1));
             return v * 1000;
         } else if (text.endsWith("m")) {
+            var v = Float.parseFloat(text.substring(0, text.length() - 1));
             return v * 1000000;
         } else {
             return Float.parseFloat(text);

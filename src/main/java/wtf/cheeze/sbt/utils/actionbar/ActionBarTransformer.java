@@ -31,6 +31,7 @@ import wtf.cheeze.sbt.features.huds.SkillHUD;
 import wtf.cheeze.sbt.utils.NumberUtils;
 import wtf.cheeze.sbt.utils.TextUtils;
 
+import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -174,8 +175,7 @@ public class ActionBarTransformer {
           data.transformedText = newText;
           return data;
       } catch (Exception e) {
-          SkyblockTweaks.LOGGER.error("Error parsing action bar text: " + actionBarText);
-          e.printStackTrace();
+          SkyblockTweaks.LOGGER.error("Error parsing action bar text: {}", actionBarText, e);
           SkyblockTweaks.LOGGER.warn("Some features may not work correctly. Please report this to MisterCheezeCake immediately.");
           return new ActionBarData();
       }
