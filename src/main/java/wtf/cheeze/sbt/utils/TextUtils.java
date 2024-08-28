@@ -18,9 +18,7 @@
  */
 package wtf.cheeze.sbt.utils;
 
-import net.minecraft.text.ClickEvent;
-import net.minecraft.text.HoverEvent;
-import net.minecraft.text.Text;
+import net.minecraft.text.*;
 
 public class TextUtils {
     public static final String SECTION  = "§";
@@ -42,5 +40,39 @@ public class TextUtils {
             style = style.withClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, command));
             return style;
         });
+    }
+
+    public static MutableText withColor(String text, int color) {
+        return Text.literal(text).styled(style -> style.withColor(color));
+    }
+    public static MutableText withColor(MutableText text, int color) {
+        return text.styled(style -> style.withColor(color));
+    }
+    public static MutableText withBold(MutableText text) {
+        return text.styled(style -> style.withBold(true));
+    }
+    public static MutableText withItalic(MutableText text) {
+        return text.styled(style -> style.withItalic(true));
+    }
+    public static MutableText withUnderlined(MutableText text) {
+        return text.styled(style -> style.withUnderline(true));
+    }
+    public static MutableText withStrikethrough(MutableText text) {
+        return text.styled(style -> style.withStrikethrough(true));
+    }
+    public static MutableText withObfuscated(MutableText text) {
+        return text.styled(style -> style.withObfuscated(true));
+    }
+
+
+
+
+
+    public static Text join(Text... texts) {
+        var result = Text.literal("");
+        for (var text : texts) {
+            result = result.append(text);
+        }
+        return result;
     }
 }
