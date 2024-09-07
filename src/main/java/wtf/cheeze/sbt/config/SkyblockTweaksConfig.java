@@ -47,6 +47,7 @@ public class SkyblockTweaksConfig {
                 return builder
                         .title(Text.literal("SkyblockTweaks"))
                         .category(General.getCategory(defaults, configThing))
+                        .category(Chat.getCategory(defaults, configThing))
                         .category(Huds.getCategory(defaults, configThing));
 
             });
@@ -59,12 +60,13 @@ public class SkyblockTweaksConfig {
                     return builder
                             .title(Text.literal("SkyblockTweaks"))
                             .category(General.getCategory(defaults, configThing))
+                            .category(Chat.getCategory(defaults, configThing))
                             .category(Huds.getCategory(defaults, configThing));
 
                 });
         return YACLInstance.generateScreen(parent);
-
     }
+
 
 
     public static ControllerBuilder generateBooleanController(Option<Boolean> opt) {

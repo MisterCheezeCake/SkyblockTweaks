@@ -18,7 +18,7 @@ public class General {
     public static ConfigCategory getCategory(ConfigImpl defaults, ConfigImpl config) {
         return ConfigCategory.createBuilder()
                 .name(Text.literal("General"))
-                .tooltip(Text.literal("General settings for SkyBlockTweaks"))
+                .tooltip(Text.literal("General settings for SkyblockTweaks"))
                 .option(Version.getStreamOption(defaults, config))
                 .group(InventoryTweaks.getGroup(defaults, config))
                 .group(MenuHighlights.Config.getGroup(defaults, config))
