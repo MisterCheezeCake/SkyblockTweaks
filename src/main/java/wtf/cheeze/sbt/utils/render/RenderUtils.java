@@ -79,6 +79,9 @@ public class RenderUtils {
     public static int getRelativeStringWidth(String text) {
         return (int) (SkyblockTweaks.mc.textRenderer.getWidth(text) / MinecraftClient.getInstance().getWindow().getScaledWidth());
     }
+    public static int getRelativeStringWidth(Text text) {
+        return (int) (SkyblockTweaks.mc.textRenderer.getWidth(text) / MinecraftClient.getInstance().getWindow().getScaledWidth());
+    }
 
     public static Color3f getColor3f(int color) {
         return new Color3f(color);

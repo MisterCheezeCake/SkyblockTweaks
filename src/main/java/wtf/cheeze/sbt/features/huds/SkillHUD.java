@@ -73,52 +73,52 @@ public class SkillHUD extends TextHUD {
                 () -> SkyblockTweaks.CONFIG.config.huds.skills.outlineColor,
                 () -> SkyblockTweaks.CONFIG.config.huds.skills.mode,
                 () -> {
-                    if (timeLeft <= 0) return "Skill HUD Placeholder Text";
+                    if (timeLeft <= 0) return Text.literal("Skill HUD Placeholder Text");
                     if (this.percent == 0) {
                         if (this.total == 0) {
-                            return "+" + gained + " (" + NumberUtils.formatNumber((int) progress, ",") + ")";
+                            return Text.literal("+" + gained + " (" + NumberUtils.formatNumber((int) progress, ",") + ")");
                         } else {
                             if (SkyblockTweaks.CONFIG.config.huds.skills.skillMode == Mode.PERCENT) {
                                 var base = "+" + gained + " (" + NumberUtils.formatPercent(progress, total) + "%)";
                                 if (SkyblockTweaks.CONFIG.config.huds.skills.actionsLeft) {
-                                    return base + " - " + actionsLeft(gained, progress, total) + " Left";
+                                    return Text.literal(base + " - " + actionsLeft(gained, progress, total) + " Left");
                                 } else {
-                                    return base;
+                                    return Text.literal(base);
                                 }
                             } else {
                                 var base = "+" + gained + " (" + NumberUtils.formatNumber((int) progress, ",") + "/" + (SkyblockTweaks.CONFIG.config.huds.skills.abridgeDenominator ? NumberUtils.addKOrM((int) total, ",") : NumberUtils.formatNumber((int) total, ",")) + ")";
                                 if (SkyblockTweaks.CONFIG.config.huds.skills.actionsLeft) {
-                                    return base + " - " + actionsLeft(gained, progress, total) + " Left";
+                                    return Text.literal(base + " - " + actionsLeft(gained, progress, total) + " Left");
                                 } else {
-                                    return base;
+                                    return Text.literal(base);
                                 }
                             }
                         }
                     } else {
                         if (SkyblockTweaks.CONFIG.config.huds.skills.skillMode == Mode.NUMBER) {
                             var level = tryAndGetSkillLevel(currentSkill);
-                            if (level == -1) return "+" + gained + " (" + percent + ")%";
+                            if (level == -1) return Text.literal("+" + gained + " (" + percent + ")%");
                             var table = getSkillTable(currentSkill);
                             var nextLevel = table[level];
                             var progressLevel = (percent / 100) * nextLevel;
                             var base = "+" + gained + " (" + NumberUtils.formatNumber((int) progressLevel, ",") + "/" + (SkyblockTweaks.CONFIG.config.huds.skills.abridgeDenominator ? NumberUtils.addKOrM(nextLevel, ",") : NumberUtils.formatNumber(nextLevel, ",")) + ")";
                             if (SkyblockTweaks.CONFIG.config.huds.skills.actionsLeft) {
-                                return base + " - " + actionsLeft(gained, progressLevel, nextLevel) + " Left";
+                                return Text.literal(base + " - " + actionsLeft(gained, progressLevel, nextLevel) + " Left");
                             } else {
-                                return base;
+                                return Text.literal(base);
                             }
 
                         } else {
                             var base = "+" + gained + " (" + percent + "%)";
                             if (SkyblockTweaks.CONFIG.config.huds.skills.actionsLeft) {
                                 var level = tryAndGetSkillLevel(currentSkill);
-                                if (level == -1) return base;
+                                if (level == -1) return Text.literal(base);
                                 var table = getSkillTable(currentSkill);
                                 var nextLevel = table[level];
                                 var progressLevel = (percent / 100) * nextLevel;
-                                return base + " - " + actionsLeft(gained, progressLevel, nextLevel) + " Left";
+                                return Text.literal(base + " - " + actionsLeft(gained, progressLevel, nextLevel) + " Left");
                             } else {
-                                return base;
+                                return Text.literal(base);
                             }
                         }
                     }

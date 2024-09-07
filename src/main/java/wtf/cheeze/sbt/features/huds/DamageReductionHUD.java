@@ -52,7 +52,7 @@ public class DamageReductionHUD extends TextHUD {
                 () -> SkyblockTweaks.CONFIG.config.huds.dr.color,
                 () -> SkyblockTweaks.CONFIG.config.huds.dr.outlineColor,
                 () -> SkyblockTweaks.CONFIG.config.huds.dr.mode,
-                () -> NumberUtils.round(SkyblockTweaks.DATA.damageReduction(), 1) + "%"
+                () -> Text.literal(NumberUtils.round(SkyblockTweaks.DATA.damageReduction(), 1) + "%")
         );
 
     }

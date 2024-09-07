@@ -54,7 +54,7 @@ public class ManaHUD extends TextHUD {
                 () -> SkyblockTweaks.CONFIG.config.huds.mana.color,
                 () -> SkyblockTweaks.CONFIG.config.huds.mana.outlineColor,
                 () -> SkyblockTweaks.CONFIG.config.huds.mana.mode,
-                () -> NumberUtils.formatNumber((int) SkyblockTweaks.DATA.mana, SkyblockTweaks.CONFIG.config.huds.mana.separator) + "/" + NumberUtils.formatNumber((int) SkyblockTweaks.DATA.maxMana, SkyblockTweaks.CONFIG.config.huds.mana.separator) + (SkyblockTweaks.CONFIG.config.huds.mana.icon ? "✎" : "")
+                () -> Text.literal(NumberUtils.formatNumber((int) SkyblockTweaks.DATA.mana, SkyblockTweaks.CONFIG.config.huds.mana.separator) + "/" + NumberUtils.formatNumber((int) SkyblockTweaks.DATA.maxMana, SkyblockTweaks.CONFIG.config.huds.mana.separator) + (SkyblockTweaks.CONFIG.config.huds.mana.icon ? "✎" : ""))
         );
     }
     @Override

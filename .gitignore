@@ -40,5 +40,8 @@ replay_*.log
 *.jfr
 
 scripts/
+# Don't include dev mixins
+src/main/java/wtf/cheeze/sbt/mixin/dev
+sbtdev.mixins.json
 # still a draft
 CONTRIBUTING.md

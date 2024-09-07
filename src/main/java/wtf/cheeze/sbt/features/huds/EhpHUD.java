@@ -53,7 +53,7 @@ public class EhpHUD extends TextHUD {
                 () -> SkyblockTweaks.CONFIG.config.huds.ehp.color,
                 () -> SkyblockTweaks.CONFIG.config.huds.ehp.outlineColor,
                 () -> SkyblockTweaks.CONFIG.config.huds.ehp.mode,
-                () -> NumberUtils.formatNumber((int) SkyblockTweaks.DATA.effectiveHealth(), SkyblockTweaks.CONFIG.config.huds.ehp.separator) + (SkyblockTweaks.CONFIG.config.huds.ehp.icon ? "❤" : "")
+                () -> Text.literal(NumberUtils.formatNumber((int) SkyblockTweaks.DATA.effectiveHealth(), SkyblockTweaks.CONFIG.config.huds.ehp.separator) + (SkyblockTweaks.CONFIG.config.huds.ehp.icon ? "❤" : ""))
         );
 
     }

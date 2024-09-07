@@ -13,14 +13,14 @@ public class HudLine {
     public Supplier<Integer> color;
     public Supplier<Integer> outlineColor;
     public Supplier<DrawMode> mode;
-    public Supplier<String> text;
+    public Supplier<Text> text;
     public Supplier<Boolean> useIcon;
 
     @Nullable
     // Make sure not to create a new instance of HudIcon every time you call this
     public Supplier<HudIcon> icon;
 
-    public HudLine(Supplier<Integer> getColor, Supplier<Integer> getOutlineColor, Supplier<DrawMode> getMode, Supplier<String> getText) {
+    public HudLine(Supplier<Integer> getColor, Supplier<Integer> getOutlineColor, Supplier<DrawMode> getMode, Supplier<Text> getText) {
         this.color = getColor;
         this.outlineColor = getOutlineColor;
         this.text = getText;
@@ -29,7 +29,7 @@ public class HudLine {
 
     }
 
-    public HudLine(Supplier<Integer> getColor, Supplier<Integer> getOutlineColor, Supplier<DrawMode> getMode, Supplier<String> getText, Supplier<HudIcon> icon, Supplier<Boolean> useIcon) {
+    public HudLine(Supplier<Integer> getColor, Supplier<Integer> getOutlineColor, Supplier<DrawMode> getMode, Supplier<Text> getText, Supplier<HudIcon> icon, Supplier<Boolean> useIcon) {
         this.color = getColor;
         this.outlineColor = getOutlineColor;
         this.text = getText;
@@ -50,9 +50,9 @@ public class HudLine {
             case OUTLINE:
                 if (useIcon.get()) {
                     icon.get().render(context, (int) (x /scale), (int) (y /scale));
-                    RenderUtils.drawStringWithOutline(context, Text.literal(text.get()), x + (int) (10 * scale), y, color.get(), outlineColor.get(), scale, true);
+                    RenderUtils.drawStringWithOutline(context, text.get(), x + (int) (10 * scale), y, color.get(), outlineColor.get(), scale, true);
                 } else {
-                    RenderUtils.drawStringWithOutline(context, Text.literal(text.get()), x, y, color.get(), outlineColor.get(), scale, true);
+                    RenderUtils.drawStringWithOutline(context, text.get(), x, y, color.get(), outlineColor.get(), scale, true);
                 }
         }
     }
@@ -63,9 +63,9 @@ public class HudLine {
             int i = (int) (1 * scale);
 //            context.fill(x - i, y - i, x + RenderUtils.getStringWidth(text.get()) + 10, y + 9, 1694433280);
             icon.get().render(context, (int) (x /scale), (int) (y /scale));
-            RenderUtils.drawString(context, Text.literal(text.get()), x + (int) (10 * scale), y, color.get(), shadow, scale, true);
+            RenderUtils.drawString(context, text.get(), x + (int) (10 * scale), y, color.get(), shadow, scale, true);
         } else {
-            RenderUtils.drawString(context, Text.literal(text.get()), x, y, color.get(), shadow, scale, true);
+            RenderUtils.drawString(context, text.get(), x, y, color.get(), shadow, scale, true);
         }
     }
 

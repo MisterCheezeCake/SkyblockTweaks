@@ -50,7 +50,7 @@ public class SpeedHUD extends TextHUD {
                 () -> SkyblockTweaks.CONFIG.config.huds.speed.color,
                 () -> SkyblockTweaks.CONFIG.config.huds.speed.outlineColor,
                 () -> SkyblockTweaks.CONFIG.config.huds.speed.mode,
-                () ->  (SkyblockTweaks.DATA.getSpeed()+"").split("\\.")[0] + "%"
+                () -> Text.literal((SkyblockTweaks.DATA.getSpeed()+"").split("\\.")[0] + "%")
         );
     }
     @Override

@@ -52,7 +52,7 @@ public class CoordinatesHUD extends TextHUD {
                 () -> SkyblockTweaks.CONFIG.config.huds.coordinates.color,
                 () -> SkyblockTweaks.CONFIG.config.huds.coordinates.outlineColor,
                 () -> SkyblockTweaks.CONFIG.config.huds.coordinates.mode,
-                () ->  String.format("X: %s Y: %s Z: %s" , NumberUtils.formattedRound(SkyblockTweaks.mc.player.getX(), SkyblockTweaks.CONFIG.config.huds.coordinates.decimalPlaces), NumberUtils.formattedRound(SkyblockTweaks.mc.player.getY(), SkyblockTweaks.CONFIG.config.huds.coordinates.decimalPlaces), NumberUtils.formattedRound(SkyblockTweaks.mc.player.getZ(), SkyblockTweaks.CONFIG.config.huds.coordinates.decimalPlaces))
+                () -> Text.literal(String.format("X: %s Y: %s Z: %s" , NumberUtils.formattedRound(SkyblockTweaks.mc.player.getX(), SkyblockTweaks.CONFIG.config.huds.coordinates.decimalPlaces), NumberUtils.formattedRound(SkyblockTweaks.mc.player.getY(), SkyblockTweaks.CONFIG.config.huds.coordinates.decimalPlaces), NumberUtils.formattedRound(SkyblockTweaks.mc.player.getZ(), SkyblockTweaks.CONFIG.config.huds.coordinates.decimalPlaces)))
         );
     }
     @Override

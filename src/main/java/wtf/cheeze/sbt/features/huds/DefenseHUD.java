@@ -54,7 +54,7 @@ public class DefenseHUD extends TextHUD {
                 () -> SkyblockTweaks.CONFIG.config.huds.defense.color,
                 () -> SkyblockTweaks.CONFIG.config.huds.defense.outlineColor,
                 () -> SkyblockTweaks.CONFIG.config.huds.defense.mode,
-                () -> NumberUtils.formatNumber(SkyblockTweaks.DATA.defense, SkyblockTweaks.CONFIG.config.huds.defense.separator)+ (SkyblockTweaks.CONFIG.config.huds.defense.icon ? "❈" : "")
+                () -> Text.literal(NumberUtils.formatNumber(SkyblockTweaks.DATA.defense, SkyblockTweaks.CONFIG.config.huds.defense.separator)+ (SkyblockTweaks.CONFIG.config.huds.defense.icon ? "❈" : ""))
         );
     }
     @Override

@@ -70,9 +70,9 @@ public class RealTimeHUD extends TextHUD {
                             amPM = SkyblockTweaks.CONFIG.config.huds.time.amPM ? "AM" : "";
                             if (hour == 0) hour = 12;
                         }
-                        return String.format("%d:%02d%s %s", hour, minute, secondString, amPM);
+                        return Text.literal(String.format("%d:%02d%s %s", hour, minute, secondString, amPM));
                     } else {
-                        return String.format("%02d:%02d%s", hour, minute, secondString);
+                        return Text.literal(String.format("%02d:%02d%s", hour, minute, secondString));
                     }
                 }
         );

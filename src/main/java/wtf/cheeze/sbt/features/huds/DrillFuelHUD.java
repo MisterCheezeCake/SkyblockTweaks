@@ -54,9 +54,9 @@ public class DrillFuelHUD extends TextHUD {
                 () -> SkyblockTweaks.CONFIG.config.huds.drillFuel.outlineColor,
                 () -> SkyblockTweaks.CONFIG.config.huds.drillFuel.mode,
                 () ->
-                        (NumberUtils.formatNumber((int) SkyblockTweaks.DATA.drillFuel, SkyblockTweaks.CONFIG.config.huds.drillFuel.separator))
+                        Text.literal((NumberUtils.formatNumber((int) SkyblockTweaks.DATA.drillFuel, SkyblockTweaks.CONFIG.config.huds.drillFuel.separator))
                         + "/"
-                        + (SkyblockTweaks.CONFIG.config.huds.drillFuel.abridgeSecondNumber ? NumberUtils.addKOrM((int) SkyblockTweaks.DATA.maxDrillFuel, SkyblockTweaks.CONFIG.config.huds.drillFuel.separator) : NumberUtils.formatNumber((int) SkyblockTweaks.DATA.maxDrillFuel, SkyblockTweaks.CONFIG.config.huds.drillFuel.separator))
+                        + (SkyblockTweaks.CONFIG.config.huds.drillFuel.abridgeSecondNumber ? NumberUtils.addKOrM((int) SkyblockTweaks.DATA.maxDrillFuel, SkyblockTweaks.CONFIG.config.huds.drillFuel.separator) : NumberUtils.formatNumber((int) SkyblockTweaks.DATA.maxDrillFuel, SkyblockTweaks.CONFIG.config.huds.drillFuel.separator)))
         );
     }
     @Override

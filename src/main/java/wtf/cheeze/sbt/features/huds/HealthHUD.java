@@ -53,7 +53,7 @@ public class HealthHUD extends TextHUD {
                 () -> SkyblockTweaks.DATA.health > SkyblockTweaks.DATA.maxHealth ? SkyblockTweaks.CONFIG.config.huds.health.colorAbsorption : SkyblockTweaks.CONFIG.config.huds.health.color,
                 () -> SkyblockTweaks.CONFIG.config.huds.health.outlineColor,
                 () -> SkyblockTweaks.CONFIG.config.huds.health.mode,
-                () -> NumberUtils.formatNumber((int) SkyblockTweaks.DATA.health, SkyblockTweaks.CONFIG.config.huds.health.separator) + "/" + NumberUtils.formatNumber((int) SkyblockTweaks.DATA.maxHealth, SkyblockTweaks.CONFIG.config.huds.health.separator) + (SkyblockTweaks.CONFIG.config.huds.health.icon ? "❤" : "")
+                () -> Text.literal(NumberUtils.formatNumber((int) SkyblockTweaks.DATA.health, SkyblockTweaks.CONFIG.config.huds.health.separator) + "/" + NumberUtils.formatNumber((int) SkyblockTweaks.DATA.maxHealth, SkyblockTweaks.CONFIG.config.huds.health.separator) + (SkyblockTweaks.CONFIG.config.huds.health.icon ? "❤" : ""))
         );
     }
     @Override

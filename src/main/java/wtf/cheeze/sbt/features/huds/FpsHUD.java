@@ -50,7 +50,7 @@ public class FpsHUD extends TextHUD {
                 () -> SkyblockTweaks.CONFIG.config.huds.fps.color,
                 () -> SkyblockTweaks.CONFIG.config.huds.fps.outlineColor,
                 () -> SkyblockTweaks.CONFIG.config.huds.fps.mode,
-                () ->  SkyblockTweaks.CONFIG.config.huds.fps.reverse ?  "FPS: " + SkyblockTweaks.mc.getCurrentFps() : SkyblockTweaks.mc.getCurrentFps() + " FPS"
+                () -> Text.literal(SkyblockTweaks.CONFIG.config.huds.fps.reverse ?  "FPS: " + SkyblockTweaks.mc.getCurrentFps() : SkyblockTweaks.mc.getCurrentFps() + " FPS")
 
         );
     }

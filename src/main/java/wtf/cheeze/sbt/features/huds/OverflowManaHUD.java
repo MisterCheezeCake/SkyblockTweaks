@@ -53,7 +53,7 @@ public class OverflowManaHUD extends TextHUD {
                 () -> SkyblockTweaks.CONFIG.config.huds.overflowMana.color,
                 () -> SkyblockTweaks.CONFIG.config.huds.overflowMana.outlineColor,
                 () -> SkyblockTweaks.CONFIG.config.huds.overflowMana.mode,
-                () -> NumberUtils.formatNumber((int) SkyblockTweaks.DATA.overflowMana, SkyblockTweaks.CONFIG.config.huds.overflowMana.separator) + (SkyblockTweaks.CONFIG.config.huds.overflowMana.icon ? "ʬ" : "")
+                () -> Text.literal(NumberUtils.formatNumber((int) SkyblockTweaks.DATA.overflowMana, SkyblockTweaks.CONFIG.config.huds.overflowMana.separator) + (SkyblockTweaks.CONFIG.config.huds.overflowMana.icon ? "ʬ" : ""))
         );
 
     }
