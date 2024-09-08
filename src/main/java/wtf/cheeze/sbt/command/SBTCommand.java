@@ -48,6 +48,33 @@ public class SBTCommand {
                         .then(CommandUtils.getScreenOpeningCommand("config", () -> SkyblockTweaks.CONFIG.getScreen(null)))
                         .then(CommandUtils.getScreenOpeningCommand("hud", () -> new HudScreen(Text.literal("SkyBlockTweaks"), SkyblockTweaks.HUDS, null)))
                         .then(literal("debug")
+                                .then(literal("forcevalue")
+                                        .then(argument("key", StringArgumentType.string())
+                                                .then(argument("value", StringArgumentType.string())
+                                                        .executes(context -> {
+                                                            var value = StringArgumentType.getString(context, "value");
+                                                            if (value.equals("null")) value = null;
+
+                                                            switch (StringArgumentType.getString(context, "key")) {
+                                                                case "inSB" -> SkyblockTweaks.DATA.inSB = Boolean.parseBoolean(value);
+                                                                case "alphaNetwork" -> SkyblockTweaks.DATA.alphaNetwork = Boolean.parseBoolean(value);
+                                                                case "inParty" -> SkyblockTweaks.DATA.inParty = Boolean.parseBoolean(value);
+                                                                case "amITheLeader" -> SkyblockTweaks.DATA.amITheLeader = Boolean.parseBoolean(value);
+                                                                case "currentProfile" -> SkyblockTweaks.DATA.currentProfile = value;
+                                                                case "mode" -> SkyblockTweaks.DATA.mode = value;
+                                                                default -> {
+                                                                    context.getSource().sendFeedback(Text.of(PREFIX + " §cInvalid key"));
+                                                                    return 0;
+                                                                }
+                                                            }
+                                                            context.getSource().sendFeedback(Text.of(PREFIX + " §3Set " + StringArgumentType.getString(context, "key") + " to " + value));
+                                                            return 1;
+                                                        })
+                                                )
+
+                                        )
+
+                                )
                                 .executes(context -> {
                                     var source = context.getSource();
                                     source.sendFeedback(Text.literal(PREFIX +  " §3Debug Information"));

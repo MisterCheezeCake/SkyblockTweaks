@@ -79,7 +79,7 @@ public class SkillHUD extends TextHUD {
                             return Text.literal("+" + gained + " (" + NumberUtils.formatNumber((int) progress, ",") + ")");
                         } else {
                             if (SkyblockTweaks.CONFIG.config.huds.skills.skillMode == Mode.PERCENT) {
-                                var base = "+" + gained + " (" + NumberUtils.formatPercent(progress, total) + "%)";
+                                var base = "+" + gained + " (" + NumberUtils.formatPercent(progress, total) + ")";
                                 if (SkyblockTweaks.CONFIG.config.huds.skills.actionsLeft) {
                                     return Text.literal(base + " - " + actionsLeft(gained, progress, total) + " Left");
                                 } else {
@@ -97,7 +97,7 @@ public class SkillHUD extends TextHUD {
                     } else {
                         if (SkyblockTweaks.CONFIG.config.huds.skills.skillMode == Mode.NUMBER) {
                             var level = tryAndGetSkillLevel(currentSkill);
-                            if (level == -1) return Text.literal("+" + gained + " (" + percent + ")%");
+                            if (level == -1) return Text.literal("+" + gained + " (" + percent + "%)");
                             var table = getSkillTable(currentSkill);
                             var nextLevel = table[level];
                             var progressLevel = (percent / 100) * nextLevel;

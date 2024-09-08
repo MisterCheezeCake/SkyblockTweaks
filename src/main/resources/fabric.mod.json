@@ -28,7 +28,8 @@
 		]
 	},
 	"mixins": [
-		"skyblocktweaks.mixins.json"
+		"skyblocktweaks.mixins.json",
+		"sbtdev.mixins.json"
 
 	],
 	"depends": {

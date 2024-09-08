@@ -8,8 +8,7 @@
 		"DrawContextMixin",
 		"HandledScreenMixin",
 		"InGameHudMixin",
-		"InventoryScreenMixin",
-		"dev.YggdrasilServicesKeyInfoMixin"
+		"InventoryScreenMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

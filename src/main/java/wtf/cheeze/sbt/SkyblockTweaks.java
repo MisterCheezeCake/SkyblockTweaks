@@ -33,7 +33,8 @@ import org.slf4j.LoggerFactory;
 import wtf.cheeze.sbt.command.SBTCommand;
 import wtf.cheeze.sbt.config.SkyblockTweaksConfig;
 import wtf.cheeze.sbt.config.persistent.PersistentData;
-import wtf.cheeze.sbt.features.PartyFeatures;
+import wtf.cheeze.sbt.features.chat.ChatProtections;
+import wtf.cheeze.sbt.features.chat.PartyFeatures;
 import wtf.cheeze.sbt.features.huds.*;
 import wtf.cheeze.sbt.utils.*;
 import wtf.cheeze.sbt.utils.actionbar.ActionBarTransformer;
@@ -93,6 +94,7 @@ public class SkyblockTweaks implements ModInitializer {
 		NotificationHandler.registerEvents();
 		ModAPIUtils.registerEvents();
 		PartyFeatures.registerEvents();
+		ChatProtections.registerEvents();
 		ProfileManager.registerEvents();
 
 		UpdateChecker.checkForUpdates();
