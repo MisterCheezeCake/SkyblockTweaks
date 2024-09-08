@@ -47,5 +47,4 @@ public class PersistentData {
             return new PersistentData();
         }
     }
-//    public DataImpl data = new DataImpl();
 }

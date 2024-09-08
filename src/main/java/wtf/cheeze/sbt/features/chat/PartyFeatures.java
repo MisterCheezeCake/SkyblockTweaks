@@ -78,13 +78,19 @@ public class PartyFeatures {
                         }
                         SkyblockTweaks.mc.getNetworkHandler().sendChatCommand("p settings allinvite");
                     }
+                    case "warp" -> {
+                        if (!SkyblockTweaks.DATA.amITheLeader) {
+                            return;
+                        }
+                        SkyblockTweaks.mc.getNetworkHandler().sendChatCommand("p warp");
+                    }
                     case "help" -> {
                         SkyblockTweaks.LOGGER.info(name);
                         if ((name.equals(SkyblockTweaks.mc.player.getName().getString()))) {
-                            SkyblockTweaks.mc.player.sendMessage(Text.of("§7[§aSkyblockTweaks§f§7] §fAvailable party commands: !ptme, !allinvite, !help"), false);
+                            SkyblockTweaks.mc.player.sendMessage(Text.of("§7[§aSkyblockTweaks§f§7] §fAvailable party commands: !ptme, !allinvite, !warp, !help"), false);
                             return;
                         }
-                        SkyblockTweaks.mc.getNetworkHandler().sendChatCommand("pc [SkyblockTweaks] Available party commands: !ptme, !allinvite, !help");
+                        SkyblockTweaks.mc.getNetworkHandler().sendChatCommand("pc [SkyblockTweaks] Available party commands: !ptme, !allinvite, !warp, !help");
                     }
                 }
             } else if (s.startsWith("The party was transferred to")) {
