@@ -72,6 +72,9 @@ public class Huds {
     @SerialEntry
     public SkillHUD.Config skills = new SkillHUD.Config();
 
+    @SerialEntry
+    public TickerHUD.Config ticker = new TickerHUD.Config();
+
     public static ConfigCategory getCategory(ConfigImpl defaults, ConfigImpl config) {
         return ConfigCategory.createBuilder()
                 .name(Text.literal("HUDs"))
@@ -91,6 +94,7 @@ public class Huds {
                 .group(CoordinatesHUD.Config.getGroup(defaults, config))
                 .group(RealTimeHUD.Config.getGroup(defaults, config))
                 .group(FpsHUD.Config.getGroup(defaults, config))
+                .group(TickerHUD.Config.getGroup(defaults, config))
                 .build();
     }
 }

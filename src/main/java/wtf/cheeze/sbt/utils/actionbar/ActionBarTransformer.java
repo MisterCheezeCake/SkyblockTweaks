@@ -167,6 +167,27 @@ public class ActionBarTransformer {
               } else if (segment.contains("second") || segment.contains("DPS")) {
                   // Trial of Fire
                   newText += SEPERATOR3 + unpadded;
+              } else if (segment.contains("ⓩ") || segment.contains("Ⓞ")){
+                  // Ornate/Florid: §e§lⓩⓩⓩ§6§lⓄⓄ
+                  // Regular: §a§lⓩ§2§lⓄⓄⓄ
+                  // Foil: §e§lⓄⓄ§7§lⓄⓄ
+                  data.maxTickers = segment.length();
+                  if (unpadded.contains("§6§l")) {
+                        var split = unpadded.split("§6§l") ;
+                      data.currentTickers = TextUtils.removeColorCodes(split[0]).length();
+                  } else if (unpadded.contains("§2§l")) {
+                      var split = unpadded.split("§2§l") ;
+                      data.currentTickers = TextUtils.removeColorCodes(split[0]).length();
+                  }
+                  else if (unpadded.contains("§7§l")) {
+                      var split = unpadded.split("§7§l") ;
+                      data.currentTickers = TextUtils.removeColorCodes(split[0]).length();
+                  }
+
+                  if (!SkyblockTweaks.CONFIG.config.actionBarFilters.hideTickers) {
+                        newText += SEPERATOR4 + unpadded;
+                  }
+
               } else {
                   newText += SEPERATOR5 + unpadded;
               }
@@ -186,7 +207,7 @@ public class ActionBarTransformer {
             if (!overlay) return message;
             //SkyblockTweaks.LOGGER.info("Old: " + message.getString());
             var data = ActionBarTransformer.extractDataAndRunTransformation(message.getString());
-            //SkyBlockTweaks.LOGGER.info("New: " + data.transformedText);
+            //SkyblockTweaks.LOGGER.info("New: " + data.transformedText);
             SkyblockTweaks.DATA.update(data);
             return Text.of(data.transformedText);
 
@@ -215,6 +236,10 @@ public class ActionBarTransformer {
 
         @SerialEntry
         public boolean hideSecrets = false;
+
+        @SerialEntry
+        public boolean hideTickers = false;
+
         public static OptionGroup getGroup(ConfigImpl defaults, ConfigImpl config) {
             var health = Option.<Boolean>createBuilder()
                     .name(Text.literal("Hide Health in Action Bar"))
@@ -286,6 +311,16 @@ public class ActionBarTransformer {
                             value -> config.actionBarFilters.hideSecrets = (Boolean) value
                     )
                     .build();
+            var tickers = Option.<Boolean>createBuilder()
+                    .name(Text.literal("Hide Tickers/Charges in Action Bar"))
+                    .description(OptionDescription.of(Text.literal("Hides the tickers/charges in the action bar")))
+                    .controller(SkyblockTweaksConfig::generateBooleanController)
+                    .binding(
+                            defaults.actionBarFilters.hideTickers,
+                            () -> config.actionBarFilters.hideTickers,
+                            value -> config.actionBarFilters.hideTickers = (Boolean) value
+                    )
+                    .build();
             return OptionGroup.createBuilder()
                     .name(Text.literal("Action Bar Filters"))
                     .description(OptionDescription.of(Text.literal("Filters out certain information from the action bar")))
@@ -296,7 +331,7 @@ public class ActionBarTransformer {
                     .option(skill)
                     .option(drill)
                     .option(secrets)
-                    .collapsed(true)
+                    .option(tickers)
                     .build();
         }
     }

@@ -52,6 +52,10 @@ public class SkyblockData {
     public float drillFuel = 0;
     public float maxDrillFuel = 0;
 
+    public int maxTickers = 0;
+    public int tickers = 0;
+    public boolean tickerActive = false;
+
 
 
     public float getSpeed() {
@@ -88,6 +92,13 @@ public class SkyblockData {
         if (data.overflowMana != null) this.overflowMana = data.overflowMana;
         if (data.drillFuel != null) this.drillFuel = data.drillFuel;
         if (data.maxDrillFuel != null) this.maxDrillFuel = data.maxDrillFuel;
+        if (data.maxTickers != null && data.currentTickers != null) {
+            this.maxTickers = data.maxTickers;
+            this.tickers = data.currentTickers;
+            this.tickerActive = true;
+        } else {
+            this.tickerActive = false;
+        }
     }
 
     public void handlePacket(HypixelS2CPacket packet) {

@@ -19,6 +19,9 @@
 	"license": "LGPL-3.0-or-later",
 	"icon": "assets/skyblocktweaks/icon.png",
 	"environment": "client",
+	"mixins": [
+		"skyblocktweaks.mixins.json"
+	],
 	"entrypoints": {
 		"main": [
           "wtf.cheeze.sbt.SkyblockTweaks"
@@ -27,11 +30,6 @@
 			"wtf.cheeze.sbt.config.ModMenu"
 		]
 	},
-	"mixins": [
-		"skyblocktweaks.mixins.json",
-		"sbtdev.mixins.json"
-
-	],
 	"depends": {
 		"fabricloader": ">=0.15.11",
 		"minecraft": "~1.21",

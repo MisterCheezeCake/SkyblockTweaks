@@ -24,13 +24,11 @@ import wtf.cheeze.sbt.SkyblockTweaks;
 /**
  * Represents the data that can be extracted from the action bar, and also contains the transformed text.
  * Not all fields are always present, and the mod does not use or parse the following fields:
- *      - Tickers
  *      - Race Fields
  *      - Location Alert Fields
  */
 public class ActionBarData {
     public String transformedText;
-
 
     @Nullable
     public Float maxHealth;
@@ -61,11 +59,16 @@ public class ActionBarData {
     @Nullable
     public String abilityName;
     @Nullable
-    public int abilityManaCost;
+    public Integer abilityManaCost;
     @Nullable
-    public int secretsFound;
+    public Integer secretsFound;
     @Nullable
-    public int secretsTotal;
+    public Integer secretsTotal;
+    @Nullable
+    public Integer maxTickers;
+    @Nullable
+    public Integer currentTickers;
+
 
     public String toJson() {
         return SkyblockTweaks.GSON.toJson(this);

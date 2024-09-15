@@ -32,7 +32,6 @@ public abstract class HUD  {
 
     public abstract String getName();
 
-    public abstract void render(DrawContext context, boolean fromHudScreen, boolean hovered);
 
     public abstract Bounds getCurrentBounds();
 
@@ -98,6 +97,8 @@ public abstract class HUD  {
     public static float getRelativeY(int y) {
         return (float) (y / MinecraftClient.getInstance().getWindow().getScaledHeight());
     }
+
+    public abstract void render(DrawContext context, boolean fromHudScreen, boolean hovered);
 
     public enum AnchorPoint implements NameableEnum {
         LEFT, CENTER, RIGHT;
