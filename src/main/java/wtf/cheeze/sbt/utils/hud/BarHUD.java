@@ -43,13 +43,13 @@ public abstract class BarHUD extends HUD {
         if (bounds.scale == 1.0f) {
             context.setShaderColor(colors.red, colors.green, colors.blue, 1.0f);
             context.drawTexture(UNFILLED, bounds.x, bounds.y, 0, 0, BAR_WIDTH, BAR_HEIGHT, BAR_WIDTH, BAR_HEIGHT);
-            context.drawTexture(FILLED, bounds.x, bounds.y, 0, 0, calculateFill((float) INFO.getFillNum.get(), (float) INFO.getMaxNum.get()), BAR_HEIGHT, BAR_WIDTH, BAR_HEIGHT);
+            context.drawTexture(FILLED, bounds.x, bounds.y, 0, 0, calculateFill((float) INFO.getFill.get()), BAR_HEIGHT, BAR_WIDTH, BAR_HEIGHT);
             context.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
         } else {
             RenderUtils.beginScale(context, bounds.scale);
             context.setShaderColor(colors.red, colors.green, colors.blue, 1.0f);
             context.drawTexture(UNFILLED, (int)(bounds.x/bounds.scale), (int)(bounds.y/bounds.scale), 0, 0, BAR_WIDTH, BAR_HEIGHT, BAR_WIDTH, BAR_HEIGHT);
-            context.drawTexture(FILLED, (int)(bounds.x/bounds.scale), (int)(bounds.y/bounds.scale), 0, 0, calculateFill((float) INFO.getFillNum.get(), (float) INFO.getMaxNum.get()), BAR_HEIGHT, BAR_WIDTH, BAR_HEIGHT);
+            context.drawTexture(FILLED, (int)(bounds.x/bounds.scale), (int)(bounds.y/bounds.scale), 0, 0, calculateFill((float) INFO.getFill.get()), BAR_HEIGHT, BAR_WIDTH, BAR_HEIGHT);
             context.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
             RenderUtils.endScale(context);
         }
@@ -87,9 +87,9 @@ public abstract class BarHUD extends HUD {
 
         }
     }
-    private static int calculateFill(float current, float max) {
-        if (current >= max) return BAR_WIDTH;
-        var i = (int) (current / max * BAR_WIDTH);
+    private static int calculateFill(float percent) {
+        if (percent >= 1.0f) return BAR_WIDTH;
+        var i = (int) (percent * BAR_WIDTH);
         return i;
     }
 

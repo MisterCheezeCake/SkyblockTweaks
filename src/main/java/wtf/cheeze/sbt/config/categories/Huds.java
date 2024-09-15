@@ -70,7 +70,10 @@ public class Huds {
     public FpsHUD.Config fps = new FpsHUD.Config();
 
     @SerialEntry
-    public SkillHUD.Config skills = new SkillHUD.Config();
+    public SkillHUDManager.SkillHUD.Config skills = new SkillHUDManager.SkillHUD.Config();
+
+    @SerialEntry
+    public SkillHUDManager.SkillBar.Config skillBar = new SkillHUDManager.SkillBar.Config();
 
     @SerialEntry
     public TickerHUD.Config ticker = new TickerHUD.Config();
@@ -79,7 +82,8 @@ public class Huds {
         return ConfigCategory.createBuilder()
                 .name(Text.literal("HUDs"))
                 .tooltip(Text.literal("Settings for various HUDs"))
-                .group(SkillHUD.Config.getGroup(defaults, config))
+                .group(SkillHUDManager.SkillHUD.Config.getGroup(defaults, config))
+                .group(SkillHUDManager.SkillBar.Config.getGroup(defaults, config))
                 .group(HealthHUD.Config.getGroup(defaults, config))
                 .group(HealthBar.Config.getGroup(defaults, config))
                 .group(ManaHUD.Config.getGroup(defaults, config))

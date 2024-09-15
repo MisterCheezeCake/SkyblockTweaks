@@ -42,13 +42,11 @@ public class HealthBar extends BarHUD {
                 () -> SkyblockTweaks.CONFIG.config.huds.healthBar.scale,
                 () -> SkyblockTweaks.CONFIG.config.huds.healthBar.anchor,
                 () -> SkyblockTweaks.DATA.health > SkyblockTweaks.DATA.maxHealth ? SkyblockTweaks.CONFIG.config.huds.healthBar.colorAbsorption : SkyblockTweaks.CONFIG.config.huds.healthBar.color,
-                () -> SkyblockTweaks.DATA.maxHealth,
-                () -> SkyblockTweaks.DATA.health,
+                () -> SkyblockTweaks.DATA.health / SkyblockTweaks.DATA.maxHealth,
                 x -> SkyblockTweaks.CONFIG.config.huds.healthBar.x = (float) x,
                 y -> SkyblockTweaks.CONFIG.config.huds.healthBar.y = (float) y,
                 scale -> SkyblockTweaks.CONFIG.config.huds.healthBar.scale = (float) scale,
                 anchor ->SkyblockTweaks.CONFIG.config.huds.healthBar.anchor= anchor
-
         );
     }
 

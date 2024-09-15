@@ -31,9 +31,7 @@ public class HudInformation {
     public Supplier<HUD.AnchorPoint> getAnchorPoint;
 
     @Nullable
-    public Supplier<Float> getMaxNum;
-    @Nullable
-    public Supplier<Float> getFillNum;
+    public Supplier<Float> getFill;
 
     @Nullable
     public Supplier<Integer> getColor;
@@ -54,14 +52,13 @@ public class HudInformation {
         this.setScale = scaleConsumer;
         this.setAnchorPoint = anchorPointConsumer;
     }
-    public HudInformation(Supplier<Float> xSupplier, Supplier<Float> ySupplier, Supplier<Float> scaleSupplier, Supplier<HUD.AnchorPoint> anchorPointSupplier, Supplier<Integer> colorSupplier, Supplier<Float> maxNumSupplier, Supplier<Float> fillNumSupplier, Consumer<Float> xConsumer, Consumer<Float> yConsumer, Consumer<Float> scaleConsumer, Consumer<HUD.AnchorPoint> anchorPointConsumer) {
+    public HudInformation(Supplier<Float> xSupplier, Supplier<Float> ySupplier, Supplier<Float> scaleSupplier, Supplier<HUD.AnchorPoint> anchorPointSupplier, Supplier<Integer> colorSupplier, Supplier<Float> fillSupplier, Consumer<Float> xConsumer, Consumer<Float> yConsumer, Consumer<Float> scaleConsumer, Consumer<HUD.AnchorPoint> anchorPointConsumer) {
         this.getX = xSupplier;
         this.getY = ySupplier;
         this.getScale = scaleSupplier;
         this.getAnchorPoint = anchorPointSupplier;
 
-        this.getMaxNum = maxNumSupplier;
-        this.getFillNum = fillNumSupplier;
+        this.getFill = fillSupplier;
         this.getColor = colorSupplier;
 
         this.setX = xConsumer;

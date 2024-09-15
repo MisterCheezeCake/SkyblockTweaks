@@ -40,6 +40,7 @@ public class SkyblockTweaksConfig {
                     .setPath(FabricLoader.getInstance().getConfigDir().resolve("skyblocktweaks-config.json"))
                     .build())
             .build();
+    // TODO: Fix this, it's a mess right now
     public ConfigImpl config;
     public YetAnotherConfigLib YACLInstance = YetAnotherConfigLib.create(HANDLER,
             (defaults, configThing, builder) -> {

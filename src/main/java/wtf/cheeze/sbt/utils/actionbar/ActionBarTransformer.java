@@ -27,7 +27,7 @@ import net.minecraft.text.Text;
 import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SkyblockTweaksConfig;
-import wtf.cheeze.sbt.features.huds.SkillHUD;
+import wtf.cheeze.sbt.features.huds.SkillHUDManager;
 import wtf.cheeze.sbt.utils.NumberUtils;
 import wtf.cheeze.sbt.utils.TextUtils;
 
@@ -138,10 +138,10 @@ public class ActionBarTransformer {
                           String[] xp = matcher.group(3).split("/");
                           data.totalXP = NumberUtils.parseFloatWithKorM(xp[1]);
                           data.nextLevelXP = NumberUtils.parseFloatWithKorM(xp[0]);
-                          ((SkillHUD) SkyblockTweaks.HUDS.getFirst()).update(data.skillType, data.gainedXP, data.totalXP, data.nextLevelXP);
+                          SkillHUDManager.INSTANCE.update(data.skillType, data.gainedXP, data.totalXP, data.nextLevelXP);
                       } else {
                           data.skillPercentage = Float.parseFloat(matcher.group(3).replace("%", ""));
-                          ((SkillHUD) SkyblockTweaks.HUDS.getFirst()).update(data.skillType, data.gainedXP, data.skillPercentage);
+                          SkillHUDManager.INSTANCE.update(data.skillType, data.gainedXP, data.skillPercentage);
                       }
                   }
                   if (!SkyblockTweaks.CONFIG.config.actionBarFilters.hideSkill) {

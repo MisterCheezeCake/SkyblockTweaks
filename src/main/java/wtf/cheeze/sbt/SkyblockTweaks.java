@@ -66,7 +66,8 @@ public class SkyblockTweaks implements ModInitializer {
 		// This fixes config not actually loading on initial startup... for some reason
 		CONFIG.getScreen(null);
 
-		HUDS.add(new SkillHUD());
+		HUDS.add(SkillHUDManager.INSTANCE.SKILL_HUD);
+		HUDS.add(SkillHUDManager.INSTANCE.SKILL_BAR);
 
 		HUDS.add(new SpeedHUD());
 		HUDS.add(new DefenseHUD());
