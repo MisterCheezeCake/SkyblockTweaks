@@ -23,8 +23,6 @@ public class General {
                 .group(InventoryTweaks.getGroup(defaults, config))
                 .group(MenuHighlights.Config.getGroup(defaults, config))
                 .group(BrewingStandOverlay.Config.getGroup(defaults, config))
-                .group(PartyFeatures.Config.getGroup(defaults, config))
-                .option(PartyFeatures.Config.getBlackList(defaults, config))
                 .group(HudTweaks.getGroup(defaults, config))
                 .group(ActionBarTransformer.Config.getGroup(defaults, config))
                 .build();

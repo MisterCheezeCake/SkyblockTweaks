@@ -109,6 +109,16 @@ public class MenuHighlights {
         else highlight(context, slot, HIGHLIGHT_RED2);
     }
 
+    public static void tryDrawHighlightTasks(DrawContext context, Slot slot) {
+        if (!SkyblockTweaks.CONFIG.config.hubSelectorHighlight.sblevelHighlight) return;
+        var lines = slot.getStack().getOrDefault(DataComponentTypes.LORE, LoreComponent.DEFAULT).lines();
+        for (var line: lines) {
+            var s = line.getString();
+            if (s.equals("Total Progress: 100%")) highlight(context, slot, HIGHLIGHT_GREEN2);
+            else if (s.contains("Total Progress: ")) highlight(context, slot, HIGHLIGHT_RED2);
+        }
+    }
+
     private static void highlight(DrawContext context, Slot slot, int color) {
         context.fill(slot.x, slot.y, slot.x + 16, slot.y + 16, color);
     }
@@ -125,6 +135,9 @@ public class MenuHighlights {
 
         @SerialEntry
         public boolean widgetHighlight = true;
+
+        @SerialEntry
+        public boolean sblevelHighlight = true;
 
         public static OptionGroup getGroup(ConfigImpl defaults, ConfigImpl config) {
             var enabled = Option.<Boolean>createBuilder()
@@ -168,6 +181,16 @@ public class MenuHighlights {
                                     value -> config.hubSelectorHighlight.widgetHighlight = (Boolean) value
                     )
                     .build();
+            var sblevelHighlight = Option.<Boolean>createBuilder()
+                    .name(Text.literal("Task Highlights"))
+                    .description(OptionDescription.of(Text.literal("Whether or not to highlight items in the /sblevel menu based on their completion status")))
+                    .controller(SkyblockTweaksConfig::generateBooleanController)
+                    .binding(
+                                    defaults.hubSelectorHighlight.sblevelHighlight,
+                                    () -> config.hubSelectorHighlight.sblevelHighlight,
+                                    value -> config.hubSelectorHighlight.sblevelHighlight = (Boolean) value
+                    )
+                    .build();
 
             return OptionGroup.createBuilder()
                     .name(Text.literal("Menu Highlights"))
@@ -176,6 +199,7 @@ public class MenuHighlights {
                     .option(enabledDungeon)
                     .option(hotmHighlight)
                     .option(widgetHighlight)
+                    .option(sblevelHighlight)
                     .build();
         }
     }

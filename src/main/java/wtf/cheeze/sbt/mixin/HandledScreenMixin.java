@@ -56,11 +56,12 @@ public abstract class HandledScreenMixin<T extends ScreenHandler> extends Screen
                 // We do this so it only attempts to handle Skyblock brewing stands, not vanilla ones
                 if (this.handler instanceof BrewingStandScreenHandler) return;
                 if (slot.id == 13) BrewingStandOverlay.render(handler.slots, context);
-
             }
         }
         if (title.contains("Widget") || title.contains("Setting")) {
             MenuHighlights.tryDrawHighlightWidget(context, slot);
+        } else if (title.startsWith("Tasks")) {
+            MenuHighlights.tryDrawHighlightTasks(context, slot);
         }
     }
 
