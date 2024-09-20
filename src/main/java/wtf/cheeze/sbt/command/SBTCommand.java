@@ -25,6 +25,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.text.Text;
 import wtf.cheeze.sbt.SkyblockTweaks;
+import wtf.cheeze.sbt.config.SBTConfig;
 import wtf.cheeze.sbt.config.SkyblockTweaksScreenMain;
 import wtf.cheeze.sbt.features.CalcPowder;
 import wtf.cheeze.sbt.utils.NumberUtils;
@@ -45,7 +46,7 @@ public class SBTCommand {
     public static void registerEvents() {
         ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> dispatcher.register(
                 literal("sbt")
-                        .then(CommandUtils.getScreenOpeningCommand("config", () -> SkyblockTweaks.CONFIG.getScreen(null)))
+                        .then(CommandUtils.getScreenOpeningCommand("config", () -> SBTConfig.getScreen(null)))
                         .then(CommandUtils.getScreenOpeningCommand("hud", () -> new HudScreen(Text.literal("SkyBlockTweaks"), SkyblockTweaks.HUDS, null)))
                         .then(literal("debug")
                                 .then(literal("forcevalue")

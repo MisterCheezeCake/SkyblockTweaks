@@ -29,13 +29,14 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import wtf.cheeze.sbt.SkyblockTweaks;
+import wtf.cheeze.sbt.config.SBTConfig;
 import wtf.cheeze.sbt.utils.ModifiedDrawContext;
 
 @Mixin(InGameHud.class)
 public abstract class InGameHudMixin {
     @WrapOperation(method = "renderOverlayMessage", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawTextWithBackground(Lnet/minecraft/client/font/TextRenderer;Lnet/minecraft/text/Text;IIII)I"))
     private int sbt$drawTextWithBackgroundNoShadowWrap(DrawContext instance, TextRenderer textRenderer, Text text, int x, int y, int width, int color, Operation<Integer> original) {
-        if (SkyblockTweaks.CONFIG.config.hudTweaks.noShadowActionBar) {
+        if (SBTConfig.get().hudTweaks.noShadowActionBar) {
             return ((ModifiedDrawContext) instance).sbt$drawTextWithBackgroundNoShadow(textRenderer, text, x, y, width, color);
         } else {
             return original.call(instance, textRenderer, text, x, y, width, color);
@@ -44,21 +45,21 @@ public abstract class InGameHudMixin {
 
     @Inject(method = "renderArmor" , at = @At("HEAD"), cancellable = true)
     private static void sbt$onRenderArmor(CallbackInfo ci) {
-        if (SkyblockTweaks.CONFIG.config.hudTweaks.noRenderArmor && SkyblockTweaks.DATA.inSB) {
+        if (SBTConfig.get().hudTweaks.noRenderArmor && SkyblockTweaks.DATA.inSB) {
             ci.cancel();
         }
     }
 
     @Inject(method = "renderHealthBar" , at = @At("HEAD"), cancellable = true)
     private void sbt$onRenderHealth(CallbackInfo ci) {
-        if (SkyblockTweaks.CONFIG.config.hudTweaks.noRenderHearts && SkyblockTweaks.DATA.inSB) {
+        if (SBTConfig.get().hudTweaks.noRenderHearts && SkyblockTweaks.DATA.inSB) {
             ci.cancel();
         }
     }
 
     @Inject(method = "renderFood" , at = @At("HEAD"), cancellable = true)
     private void sbt$onRenderFood(CallbackInfo ci) {
-        if (SkyblockTweaks.CONFIG.config.hudTweaks.noRenderHunger && SkyblockTweaks.DATA.inSB) {
+        if (SBTConfig.get().hudTweaks.noRenderHunger && SkyblockTweaks.DATA.inSB) {
             ci.cancel();
         }
     }

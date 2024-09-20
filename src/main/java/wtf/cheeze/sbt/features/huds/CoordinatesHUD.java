@@ -27,7 +27,7 @@ import dev.isxander.yacl3.config.v2.api.SerialEntry;
 import net.minecraft.text.Text;
 import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.config.ConfigImpl;
-import wtf.cheeze.sbt.config.SkyblockTweaksConfig;
+import wtf.cheeze.sbt.config.SBTConfig;
 import wtf.cheeze.sbt.utils.NumberUtils;
 import wtf.cheeze.sbt.utils.hud.HudLine;
 import wtf.cheeze.sbt.utils.hud.HudInformation;
@@ -39,26 +39,26 @@ public class CoordinatesHUD extends TextHUD {
 
     public CoordinatesHUD() {
         INFO = new HudInformation(
-                () -> SkyblockTweaks.CONFIG.config.huds.coordinates.x,
-                () -> SkyblockTweaks.CONFIG.config.huds.coordinates.y,
-                () -> SkyblockTweaks.CONFIG.config.huds.coordinates.scale,
-                () -> SkyblockTweaks.CONFIG.config.huds.coordinates.anchor,
-                x -> SkyblockTweaks.CONFIG.config.huds.coordinates.x = (float) x,
-                y -> SkyblockTweaks.CONFIG.config.huds.coordinates.y = (float) y,
-                scale -> SkyblockTweaks.CONFIG.config.huds.coordinates.scale = (float) scale,
-                anchor -> SkyblockTweaks.CONFIG.config.huds.coordinates.anchor = anchor
+                () -> SBTConfig.huds().coordinates.x,
+                () -> SBTConfig.huds().coordinates.y,
+                () -> SBTConfig.huds().coordinates.scale,
+                () -> SBTConfig.huds().coordinates.anchor,
+                x -> SBTConfig.huds().coordinates.x = (float) x,
+                y -> SBTConfig.huds().coordinates.y = (float) y,
+                scale -> SBTConfig.huds().coordinates.scale = (float) scale,
+                anchor -> SBTConfig.huds().coordinates.anchor = anchor
         );
         line = new HudLine(
-                () -> SkyblockTweaks.CONFIG.config.huds.coordinates.color,
-                () -> SkyblockTweaks.CONFIG.config.huds.coordinates.outlineColor,
-                () -> SkyblockTweaks.CONFIG.config.huds.coordinates.mode,
-                () -> Text.literal(String.format("X: %s Y: %s Z: %s" , NumberUtils.formattedRound(SkyblockTweaks.mc.player.getX(), SkyblockTweaks.CONFIG.config.huds.coordinates.decimalPlaces), NumberUtils.formattedRound(SkyblockTweaks.mc.player.getY(), SkyblockTweaks.CONFIG.config.huds.coordinates.decimalPlaces), NumberUtils.formattedRound(SkyblockTweaks.mc.player.getZ(), SkyblockTweaks.CONFIG.config.huds.coordinates.decimalPlaces)))
+                () -> SBTConfig.huds().coordinates.color,
+                () -> SBTConfig.huds().coordinates.outlineColor,
+                () -> SBTConfig.huds().coordinates.mode,
+                () -> Text.literal(String.format("X: %s Y: %s Z: %s" , NumberUtils.formattedRound(SkyblockTweaks.mc.player.getX(), SBTConfig.huds().coordinates.decimalPlaces), NumberUtils.formattedRound(SkyblockTweaks.mc.player.getY(), SBTConfig.huds().coordinates.decimalPlaces), NumberUtils.formattedRound(SkyblockTweaks.mc.player.getZ(), SBTConfig.huds().coordinates.decimalPlaces)))
         );
     }
     @Override
     public boolean shouldRender(boolean fromHudScreen) {
         if (!super.shouldRender(fromHudScreen)) return false;
-        if (((SkyblockTweaks.DATA.inSB  || SkyblockTweaks.CONFIG.config.huds.coordinates.showOutside) && SkyblockTweaks.CONFIG.config.huds.coordinates.enabled) || fromHudScreen) return true;
+        if (((SkyblockTweaks.DATA.inSB  || SBTConfig.huds().coordinates.showOutside) && SBTConfig.huds().coordinates.enabled) || fromHudScreen) return true;
         return false;
     }
 
@@ -102,7 +102,7 @@ public class CoordinatesHUD extends TextHUD {
             var enabled = Option.<Boolean>createBuilder()
                     .name(Text.literal("Enable Coordinates HUD"))
                     .description(OptionDescription.of(Text.literal("Enables the Coordinates HUD")))
-                    .controller(SkyblockTweaksConfig::generateBooleanController)
+                    .controller(SBTConfig::generateBooleanController)
                     .binding(
                             defaults.huds.coordinates.enabled,
                             () -> config.huds.coordinates.enabled,
@@ -113,7 +113,7 @@ public class CoordinatesHUD extends TextHUD {
             var outside = Option.<Boolean>createBuilder()
                     .name(Text.literal("Show outside of Skyblock"))
                     .description(OptionDescription.of(Text.literal("Whether to show the Coordinates HUD outside of Skyblock")))
-                    .controller(SkyblockTweaksConfig::generateBooleanController)
+                    .controller(SBTConfig::generateBooleanController)
                     .binding(
                             defaults.huds.coordinates.showOutside,
                             () -> config.huds.coordinates.showOutside,
@@ -162,7 +162,7 @@ public class CoordinatesHUD extends TextHUD {
             var mode = Option.<HudLine.DrawMode>createBuilder()
                     .name(Text.literal("Coordinates HUD Mode"))
                     .description(OptionDescription.of(Text.literal("The draw mode of the Coordinates HUD. Pure will render without shadow, Shadow will render with a shadow, and Outline will render with an outline\n§4Warning: §cOutline mode is still a work in progress and can cause annoying visual bugs in menus.")))
-                    .controller(SkyblockTweaksConfig::generateDrawModeController)
+                    .controller(SBTConfig::generateDrawModeController)
                     .binding(
                             defaults.huds.coordinates.mode,
                             () -> config.huds.coordinates.mode,
@@ -176,7 +176,7 @@ public class CoordinatesHUD extends TextHUD {
             var scale = Option.<Float>createBuilder()
                     .name(Text.literal("Coordinates HUD Scale"))
                     .description(OptionDescription.of(Text.literal("The scale of the Coordinates HUD")))
-                    .controller(SkyblockTweaksConfig::generateScaleController)
+                    .controller(SBTConfig::generateScaleController)
                     .binding(
                             defaults.huds.coordinates.scale,
                             () -> config.huds.coordinates.scale,

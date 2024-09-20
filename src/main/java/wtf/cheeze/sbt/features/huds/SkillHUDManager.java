@@ -11,7 +11,7 @@ import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.minecraft.text.Text;
 import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.config.ConfigImpl;
-import wtf.cheeze.sbt.config.SkyblockTweaksConfig;
+import wtf.cheeze.sbt.config.SBTConfig;
 import wtf.cheeze.sbt.utils.NumberUtils;
 import wtf.cheeze.sbt.utils.TextUtils;
 import wtf.cheeze.sbt.utils.hud.BarHUD;
@@ -71,35 +71,35 @@ public class SkillHUDManager {
                 }
             });
             INFO = new HudInformation(
-                    () -> SkyblockTweaks.CONFIG.config.huds.skills.x,
-                    () -> SkyblockTweaks.CONFIG.config.huds.skills.y,
-                    () -> SkyblockTweaks.CONFIG.config.huds.skills.scale,
-                    () -> SkyblockTweaks.CONFIG.config.huds.skills.anchor,
-                    x -> SkyblockTweaks.CONFIG.config.huds.skills.x = x,
-                    y -> SkyblockTweaks.CONFIG.config.huds.skills.y = y,
-                    scale -> SkyblockTweaks.CONFIG.config.huds.skills.scale = scale,
-                    anchor -> SkyblockTweaks.CONFIG.config.huds.skills.anchor = anchor
+                    () -> SBTConfig.huds().skills.x,
+                    () -> SBTConfig.huds().skills.y,
+                    () -> SBTConfig.huds().skills.scale,
+                    () -> SBTConfig.huds().skills.anchor,
+                    x -> SBTConfig.huds().skills.x = x,
+                    y -> SBTConfig.huds().skills.y = y,
+                    scale -> SBTConfig.huds().skills.scale = scale,
+                    anchor -> SBTConfig.huds().skills.anchor = anchor
             );
             line = new HudLine(
-                    () -> SkyblockTweaks.CONFIG.config.huds.skills.color,
-                    () -> SkyblockTweaks.CONFIG.config.huds.skills.outlineColor,
-                    () -> SkyblockTweaks.CONFIG.config.huds.skills.mode,
+                    () -> SBTConfig.huds().skills.color,
+                    () -> SBTConfig.huds().skills.outlineColor,
+                    () -> SBTConfig.huds().skills.mode,
                     () -> {
                         if (timeLeft <= 0) return Text.literal("Skill HUD Placeholder Text");
                         if (percent == 0) {
                             if (total == 0) {
                                 return Text.literal("+" + gained + " (" + NumberUtils.formatNumber((int) progress, ",") + ")");
                             } else {
-                                if (SkyblockTweaks.CONFIG.config.huds.skills.skillMode == Mode.PERCENT) {
+                                if (SBTConfig.huds().skills.skillMode == Mode.PERCENT) {
                                     var base = "+" + gained + " (" + NumberUtils.formatPercent(progress, total) + ")";
-                                    if (SkyblockTweaks.CONFIG.config.huds.skills.actionsLeft) {
+                                    if (SBTConfig.huds().skills.actionsLeft) {
                                         return Text.literal(base + " - " + actionsLeft(gained, progress, total) + " Left");
                                     } else {
                                         return Text.literal(base);
                                     }
                                 } else {
-                                    var base = "+" + gained + " (" + NumberUtils.formatNumber((int) progress, ",") + "/" + (SkyblockTweaks.CONFIG.config.huds.skills.abridgeDenominator ? NumberUtils.addKOrM((int) total, ",") : NumberUtils.formatNumber((int) total, ",")) + ")";
-                                    if (SkyblockTweaks.CONFIG.config.huds.skills.actionsLeft) {
+                                    var base = "+" + gained + " (" + NumberUtils.formatNumber((int) progress, ",") + "/" + (SBTConfig.huds().skills.abridgeDenominator ? NumberUtils.addKOrM((int) total, ",") : NumberUtils.formatNumber((int) total, ",")) + ")";
+                                    if (SBTConfig.huds().skills.actionsLeft) {
                                         return Text.literal(base + " - " + actionsLeft(gained, progress, total) + " Left");
                                     } else {
                                         return Text.literal(base);
@@ -107,14 +107,14 @@ public class SkillHUDManager {
                                 }
                             }
                         } else {
-                            if (SkyblockTweaks.CONFIG.config.huds.skills.skillMode == Mode.NUMBER) {
+                            if (SBTConfig.huds().skills.skillMode == Mode.NUMBER) {
                                 var level = tryAndGetSkillLevel(currentSkill);
                                 if (level == -1) return Text.literal("+" + gained + " (" + percent + "%)");
                                 var table = getSkillTable(currentSkill);
                                 var nextLevel = table[level];
                                 var progressLevel = (percent / 100) * nextLevel;
-                                var base = "+" + gained + " (" + NumberUtils.formatNumber((int) progressLevel, ",") + "/" + (SkyblockTweaks.CONFIG.config.huds.skills.abridgeDenominator ? NumberUtils.addKOrM(nextLevel, ",") : NumberUtils.formatNumber(nextLevel, ",")) + ")";
-                                if (SkyblockTweaks.CONFIG.config.huds.skills.actionsLeft) {
+                                var base = "+" + gained + " (" + NumberUtils.formatNumber((int) progressLevel, ",") + "/" + (SBTConfig.huds().skills.abridgeDenominator ? NumberUtils.addKOrM(nextLevel, ",") : NumberUtils.formatNumber(nextLevel, ",")) + ")";
+                                if (SBTConfig.huds().skills.actionsLeft) {
                                     return Text.literal(base + " - " + actionsLeft(gained, progressLevel, nextLevel) + " Left");
                                 } else {
                                     return Text.literal(base);
@@ -122,7 +122,7 @@ public class SkillHUDManager {
 
                             } else {
                                 var base = "+" + gained + " (" + percent + "%)";
-                                if (SkyblockTweaks.CONFIG.config.huds.skills.actionsLeft) {
+                                if (SBTConfig.huds().skills.actionsLeft) {
                                     var level = tryAndGetSkillLevel(currentSkill);
                                     if (level == -1) return Text.literal(base);
                                     var table = getSkillTable(currentSkill);
@@ -177,7 +177,7 @@ public class SkillHUDManager {
         public boolean shouldRender(boolean fromHudScreen) {
             if (!super.shouldRender(fromHudScreen)) return false;
             if (timeLeft <= 0 && !fromHudScreen) return false;
-            return (SkyblockTweaks.DATA.inSB && SkyblockTweaks.CONFIG.config.huds.skills.enabled) || fromHudScreen;
+            return (SkyblockTweaks.DATA.inSB && SBTConfig.huds().skills.enabled) || fromHudScreen;
         }
 
         public enum Mode implements NameableEnum {
@@ -233,7 +233,7 @@ public class SkillHUDManager {
                 var enabled = Option.<Boolean>createBuilder()
                         .name(Text.literal("Enable Skill Progress HUD"))
                         .description(OptionDescription.of(Text.literal("Enables the Skill Progress HUD")))
-                        .controller(SkyblockTweaksConfig::generateBooleanController)
+                        .controller(SBTConfig::generateBooleanController)
                         .binding(
                                 defaults.huds.skills.enabled,
                                 () -> config.huds.skills.enabled,
@@ -255,7 +255,7 @@ public class SkillHUDManager {
                 var actionsLeft = Option.<Boolean>createBuilder()
                         .name(Text.literal("Skill Progress HUD Actions Left"))
                         .description(OptionDescription.of(Text.literal("Shows the amount of actions left to level up in the Skill Progress HUD")))
-                        .controller(SkyblockTweaksConfig::generateBooleanController)
+                        .controller(SBTConfig::generateBooleanController)
                         .binding(
                                 defaults.huds.skills.actionsLeft,
                                 () -> config.huds.skills.actionsLeft,
@@ -265,7 +265,7 @@ public class SkillHUDManager {
                 var abridgeDenominator = Option.<Boolean>createBuilder()
                         .name(Text.literal("Skill Progress HUD Abridge Denominator"))
                         .description(OptionDescription.of(Text.literal("Abridges the denominator in the Skill Progress HUD")))
-                        .controller(SkyblockTweaksConfig::generateBooleanController)
+                        .controller(SBTConfig::generateBooleanController)
                         .binding(
                                 defaults.huds.skills.abridgeDenominator,
                                 () -> config.huds.skills.abridgeDenominator,
@@ -299,7 +299,7 @@ public class SkillHUDManager {
                 var mode = Option.<HudLine.DrawMode>createBuilder()
                         .name(Text.literal("Skill Progress HUD Mode"))
                         .description(OptionDescription.of(Text.literal("The draw mode of the Skill Progress HUD. Pure will render without shadow, Shadow will render with a shadow, and Outline will render with an outline\n§4Warning: §cOutline mode is still a work in progress and can cause annoying visual bugs in menus.")))
-                        .controller(SkyblockTweaksConfig::generateDrawModeController)
+                        .controller(SBTConfig::generateDrawModeController)
                         .binding(
                                 defaults.huds.skills.mode,
                                 () -> config.huds.skills.mode,
@@ -312,7 +312,7 @@ public class SkillHUDManager {
                 var scale = Option.<Float>createBuilder()
                         .name(Text.literal("Skill Progress HUD Scale"))
                         .description(OptionDescription.of(Text.literal("The scale of the Skill Progress HUD")))
-                        .controller(SkyblockTweaksConfig::generateScaleController)
+                        .controller(SBTConfig::generateScaleController)
                         .binding(
                                 defaults.huds.skills.scale,
                                 () -> config.huds.skills.scale,
@@ -340,11 +340,11 @@ public class SkillHUDManager {
     public class SkillBar extends BarHUD {
         public SkillBar() {
             INFO = new HudInformation(
-                    () -> SkyblockTweaks.CONFIG.config.huds.skillBar.x,
-                    () -> SkyblockTweaks.CONFIG.config.huds.skillBar.y,
-                    () -> SkyblockTweaks.CONFIG.config.huds.skillBar.scale,
-                    () -> SkyblockTweaks.CONFIG.config.huds.skillBar.anchor,
-                    () -> SkyblockTweaks.CONFIG.config.huds.skillBar.color,
+                    () -> SBTConfig.huds().skillBar.x,
+                    () -> SBTConfig.huds().skillBar.y,
+                    () -> SBTConfig.huds().skillBar.scale,
+                    () -> SBTConfig.huds().skillBar.anchor,
+                    () -> SBTConfig.huds().skillBar.color,
                     () -> {
                         if (percent != 0) {
                             return percent/100f;
@@ -352,10 +352,10 @@ public class SkillHUDManager {
                             return progress / total;
                         }
                     },
-                    x -> SkyblockTweaks.CONFIG.config.huds.skillBar.x = (float) x,
-                    y -> SkyblockTweaks.CONFIG.config.huds.skillBar.y = (float) y,
-                    scale -> SkyblockTweaks.CONFIG.config.huds.skillBar.scale = (float) scale,
-                    anchor -> SkyblockTweaks.CONFIG.config.huds.skillBar.anchor = anchor
+                    x -> SBTConfig.huds().skillBar.x = (float) x,
+                    y -> SBTConfig.huds().skillBar.y = (float) y,
+                    scale -> SBTConfig.huds().skillBar.scale = (float) scale,
+                    anchor -> SBTConfig.huds().skillBar.anchor = anchor
 
             );
         }
@@ -371,7 +371,7 @@ public class SkillHUDManager {
             if (timeLeft <= 0 && !fromHudScreen) return false;
             // Don't display at max level
             if  (percent == 0 && total == 0 ) return false;
-            return (SkyblockTweaks.DATA.inSB && SkyblockTweaks.CONFIG.config.huds.skillBar.enabled) || fromHudScreen;
+            return (SkyblockTweaks.DATA.inSB && SBTConfig.huds().skillBar.enabled) || fromHudScreen;
         }
 
         public static class Config {
@@ -397,7 +397,7 @@ public class SkillHUDManager {
                 var enabled = Option.<Boolean>createBuilder()
                         .name(Text.literal("Enable Skill XP Bar"))
                         .description(OptionDescription.of(Text.literal("Enables the Skill XP Bar")))
-                        .controller(SkyblockTweaksConfig::generateBooleanController)
+                        .controller(SBTConfig::generateBooleanController)
                         .binding(
                                 defaults.huds.skillBar.enabled,
                                 () -> config.huds.skillBar.enabled,
@@ -419,7 +419,7 @@ public class SkillHUDManager {
                 var scale = Option.<Float>createBuilder()
                         .name(Text.literal("Skill XP Bar Scale"))
                         .description(OptionDescription.of(Text.literal("The scale of the Skill XP Bar")))
-                        .controller(SkyblockTweaksConfig::generateScaleController)
+                        .controller(SBTConfig::generateScaleController)
                         .binding(
                                 defaults.huds.skillBar.scale,
                                 () -> config.huds.skillBar.scale,

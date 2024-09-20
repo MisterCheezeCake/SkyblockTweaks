@@ -26,7 +26,7 @@ import dev.isxander.yacl3.config.v2.api.SerialEntry;
 import net.minecraft.text.Text;
 import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.config.ConfigImpl;
-import wtf.cheeze.sbt.config.SkyblockTweaksConfig;
+import wtf.cheeze.sbt.config.SBTConfig;
 import wtf.cheeze.sbt.utils.TextUtils;
 import wtf.cheeze.sbt.utils.hud.BarHUD;
 import wtf.cheeze.sbt.utils.hud.HudInformation;
@@ -37,16 +37,16 @@ public class DrillFuelBar extends BarHUD {
 
     public DrillFuelBar() {
         INFO = new HudInformation(
-                () -> SkyblockTweaks.CONFIG.config.huds.drillFuelBar.x,
-                () -> SkyblockTweaks.CONFIG.config.huds.drillFuelBar.y,
-                () -> SkyblockTweaks.CONFIG.config.huds.drillFuelBar.scale,
-                () -> SkyblockTweaks.CONFIG.config.huds.drillFuelBar.anchor,
-                () -> SkyblockTweaks.CONFIG.config.huds.drillFuelBar.color,
+                () -> SBTConfig.huds().drillFuelBar.x,
+                () -> SBTConfig.huds().drillFuelBar.y,
+                () -> SBTConfig.huds().drillFuelBar.scale,
+                () -> SBTConfig.huds().drillFuelBar.anchor,
+                () -> SBTConfig.huds().drillFuelBar.color,
                 () -> SkyblockTweaks.DATA.drillFuel / SkyblockTweaks.DATA.maxDrillFuel,
-                x -> SkyblockTweaks.CONFIG.config.huds.drillFuelBar.x = (float) x,
-                y -> SkyblockTweaks.CONFIG.config.huds.drillFuelBar.y = (float) y,
-                scale -> SkyblockTweaks.CONFIG.config.huds.drillFuelBar.scale = (float) scale,
-                anchor -> SkyblockTweaks.CONFIG.config.huds.drillFuelBar.anchor = anchor
+                x -> SBTConfig.huds().drillFuelBar.x = (float) x,
+                y -> SBTConfig.huds().drillFuelBar.y = (float) y,
+                scale -> SBTConfig.huds().drillFuelBar.scale = (float) scale,
+                anchor -> SBTConfig.huds().drillFuelBar.anchor = anchor
 
         );
     }
@@ -59,7 +59,7 @@ public class DrillFuelBar extends BarHUD {
     @Override
     public boolean shouldRender(boolean fromHudScreen) {
         if (!super.shouldRender(fromHudScreen)) return false;
-        if ((SkyblockTweaks.DATA.inSB && SkyblockTweaks.CONFIG.config.huds.drillFuelBar.enabled) && SkyblockTweaks.DATA.isThePlayerHoldingADrill() || fromHudScreen) return true;
+        if ((SkyblockTweaks.DATA.inSB && SBTConfig.huds().drillFuelBar.enabled) && SkyblockTweaks.DATA.isThePlayerHoldingADrill() || fromHudScreen) return true;
         return false;
     }
 
@@ -86,7 +86,7 @@ public class DrillFuelBar extends BarHUD {
             var enabled = Option.<Boolean>createBuilder()
                     .name(Text.literal("Enable Drill Fuel Bar"))
                     .description(OptionDescription.of(Text.literal("Enables the Drill Fuel Bar")))
-                    .controller(SkyblockTweaksConfig::generateBooleanController)
+                    .controller(SBTConfig::generateBooleanController)
                     .binding(
                             defaults.huds.drillFuelBar.enabled,
                             () -> config.huds.drillFuelBar.enabled,
@@ -108,7 +108,7 @@ public class DrillFuelBar extends BarHUD {
             var scale = Option.<Float>createBuilder()
                     .name(Text.literal("Drill Fuel Bar Scale"))
                     .description(OptionDescription.of(Text.literal("The scale of the Drill Fuel Bar")))
-                    .controller(SkyblockTweaksConfig::generateScaleController)
+                    .controller(SBTConfig::generateScaleController)
                     .binding(
                             defaults.huds.drillFuelBar.scale,
                             () -> config.huds.drillFuelBar.scale,

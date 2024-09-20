@@ -1,12 +1,13 @@
 package wtf.cheeze.sbt.utils;
 
 import wtf.cheeze.sbt.SkyblockTweaks;
+import wtf.cheeze.sbt.config.SBTConfig;
 
 public class UpdateChecker {
     public static final String REMOTE_VERSION_FILE = "https://raw.githubusercontent.com/MisterCheezeCake/RemoteData/main/SBT/updateInfo.json";
 
     public static void checkForUpdates() {
-        if (SkyblockTweaks.CONFIG.config.notificationStream != Version.NotificationStream.NONE && SkyblockTweaks.VERSION.STREAM != Version.VersionType.UNSTABLE) {
+        if (SBTConfig.get().notificationStream != Version.NotificationStream.NONE && SkyblockTweaks.VERSION.STREAM != Version.VersionType.UNSTABLE) {
             try {
                 SkyblockTweaks.LOGGER.info("Checking for updates");
                 var result = HTTPUtils.get(REMOTE_VERSION_FILE);
@@ -16,7 +17,7 @@ public class UpdateChecker {
                     SkyblockTweaks.LOGGER.error("Failed to parse remote version file");
                 } else {
                     if (remote.enabled != false) {
-                        switch (SkyblockTweaks.CONFIG.config.notificationStream) {
+                        switch (SBTConfig.get().notificationStream) {
                             case Version.NotificationStream.ALPHA -> {
                                 if (remote.latestAlpha == null) {
                                     break;

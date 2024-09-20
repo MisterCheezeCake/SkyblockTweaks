@@ -4,14 +4,13 @@ import dev.isxander.yacl3.api.Option;
 import dev.isxander.yacl3.api.OptionDescription;
 import dev.isxander.yacl3.api.OptionGroup;
 import dev.isxander.yacl3.config.v2.api.SerialEntry;
-import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.text.Text;
 import net.minecraft.util.collection.DefaultedList;
 import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.config.ConfigImpl;
-import wtf.cheeze.sbt.config.SkyblockTweaksConfig;
+import wtf.cheeze.sbt.config.SBTConfig;
 import wtf.cheeze.sbt.utils.render.RenderUtils;
 
 public class BrewingStandOverlay {
@@ -22,7 +21,7 @@ public class BrewingStandOverlay {
     private static final float Z_OFFSET = 250.0f;
 
     public static void render(DefaultedList<Slot> slots, DrawContext context) {
-        if (!SkyblockTweaks.CONFIG.config.brewingStandOverlay.enabled) return;
+        if (!SBTConfig.get().brewingStandOverlay.enabled) return;
 
         var slot13 = slots.get(13);
         var slot24 = slots.get(24);
@@ -63,7 +62,7 @@ public class BrewingStandOverlay {
             var enabled = Option.<Boolean>createBuilder()
                     .name(Text.literal("Brewing Stand Overlay"))
                     .description(OptionDescription.of(Text.literal("Enables the overlay for the brewing stand")))
-                    .controller(SkyblockTweaksConfig::generateBooleanController)
+                    .controller(SBTConfig::generateBooleanController)
                     .binding(
                             defaults.brewingStandOverlay.enabled,
                             () -> config.brewingStandOverlay.enabled,

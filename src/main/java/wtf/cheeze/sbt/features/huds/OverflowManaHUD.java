@@ -27,7 +27,7 @@ import dev.isxander.yacl3.config.v2.api.SerialEntry;
 import net.minecraft.text.Text;
 import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.config.ConfigImpl;
-import wtf.cheeze.sbt.config.SkyblockTweaksConfig;
+import wtf.cheeze.sbt.config.SBTConfig;
 import wtf.cheeze.sbt.utils.NumberUtils;
 import wtf.cheeze.sbt.utils.hud.HudLine;
 import wtf.cheeze.sbt.utils.TextUtils;
@@ -40,27 +40,27 @@ public class OverflowManaHUD extends TextHUD {
 
     public OverflowManaHUD() {
         INFO = new HudInformation(
-                () -> SkyblockTweaks.CONFIG.config.huds.overflowMana.x,
-                () -> SkyblockTweaks.CONFIG.config.huds.overflowMana.y,
-                () -> SkyblockTweaks.CONFIG.config.huds.overflowMana.scale,
-                () -> SkyblockTweaks.CONFIG.config.huds.overflowMana.anchor,
-                x -> SkyblockTweaks.CONFIG.config.huds.overflowMana.x = (float) x,
-                y -> SkyblockTweaks.CONFIG.config.huds.overflowMana.y = (float) y,
-                scale -> SkyblockTweaks.CONFIG.config.huds.overflowMana.scale = (float) scale,
-                anchor -> SkyblockTweaks.CONFIG.config.huds.overflowMana.anchor = anchor
+                () -> SBTConfig.huds().overflowMana.x,
+                () -> SBTConfig.huds().overflowMana.y,
+                () -> SBTConfig.huds().overflowMana.scale,
+                () -> SBTConfig.huds().overflowMana.anchor,
+                x -> SBTConfig.huds().overflowMana.x = (float) x,
+                y -> SBTConfig.huds().overflowMana.y = (float) y,
+                scale -> SBTConfig.huds().overflowMana.scale = (float) scale,
+                anchor -> SBTConfig.huds().overflowMana.anchor = anchor
         );
         line = new HudLine(
-                () -> SkyblockTweaks.CONFIG.config.huds.overflowMana.color,
-                () -> SkyblockTweaks.CONFIG.config.huds.overflowMana.outlineColor,
-                () -> SkyblockTweaks.CONFIG.config.huds.overflowMana.mode,
-                () -> Text.literal(NumberUtils.formatNumber((int) SkyblockTweaks.DATA.overflowMana, SkyblockTweaks.CONFIG.config.huds.overflowMana.separator) + (SkyblockTweaks.CONFIG.config.huds.overflowMana.icon ? "ʬ" : ""))
+                () -> SBTConfig.huds().overflowMana.color,
+                () -> SBTConfig.huds().overflowMana.outlineColor,
+                () -> SBTConfig.huds().overflowMana.mode,
+                () -> Text.literal(NumberUtils.formatNumber((int) SkyblockTweaks.DATA.overflowMana, SBTConfig.huds().overflowMana.separator) + (SBTConfig.huds().overflowMana.icon ? "ʬ" : ""))
         );
 
     }
     @Override
     public boolean shouldRender(boolean fromHudScreen) {
         if (!super.shouldRender(fromHudScreen)) return false;
-        if ((SkyblockTweaks.DATA.inSB && SkyblockTweaks.CONFIG.config.huds.overflowMana.enabled && (!SkyblockTweaks.CONFIG.config.huds.overflowMana.hideWhenZero || SkyblockTweaks.DATA.overflowMana != 0)) || fromHudScreen) return true;
+        if ((SkyblockTweaks.DATA.inSB && SBTConfig.huds().overflowMana.enabled && (!SBTConfig.huds().overflowMana.hideWhenZero || SkyblockTweaks.DATA.overflowMana != 0)) || fromHudScreen) return true;
         return false;
     }
 
@@ -108,7 +108,7 @@ public class OverflowManaHUD extends TextHUD {
             var enabled = Option.<Boolean>createBuilder()
                     .name(Text.literal("Enable Overflow Mana HUD"))
                     .description(OptionDescription.of(Text.literal("Enables the Overflow Mana HUD")))
-                    .controller(SkyblockTweaksConfig::generateBooleanController)
+                    .controller(SBTConfig::generateBooleanController)
                     .binding(
                             defaults.huds.overflowMana.enabled,
                             () -> config.huds.overflowMana.enabled,
@@ -118,7 +118,7 @@ public class OverflowManaHUD extends TextHUD {
             var hideWhenZero = Option.<Boolean>createBuilder()
                     .name(Text.literal("Hide Overflow Mana HUD when Zero"))
                     .description(OptionDescription.of(Text.literal("Hides the Overflow Mana HUD when the value is zero")))
-                    .controller(SkyblockTweaksConfig::generateBooleanController)
+                    .controller(SBTConfig::generateBooleanController)
                     .binding(
                             defaults.huds.overflowMana.hideWhenZero,
                             () -> config.huds.overflowMana.hideWhenZero,
@@ -151,7 +151,7 @@ public class OverflowManaHUD extends TextHUD {
             var mode = Option.<HudLine.DrawMode>createBuilder()
                     .name(Text.literal("Overflow Mana HUD Mode"))
                     .description(OptionDescription.of(Text.literal("The draw mode of the Overflow Mana HUD. Pure will render without shadow, Shadow will render with a shadow, and Outline will render with an outline\n§4Warning: §cOutline mode is still a work in progress and can cause annoying visual bugs in menus.")))
-                    .controller(SkyblockTweaksConfig::generateDrawModeController)
+                    .controller(SBTConfig::generateDrawModeController)
                     .binding(
                             defaults.huds.overflowMana.mode,
                             () -> config.huds.overflowMana.mode,
@@ -165,7 +165,7 @@ public class OverflowManaHUD extends TextHUD {
             var icon = Option.<Boolean>createBuilder()
                     .name(Text.literal("Overflow Mana HUD Icon"))
                     .description(OptionDescription.of(Text.literal("Enables the icon (ʬ) in the Overflow Mana HUD")))
-                    .controller(SkyblockTweaksConfig::generateBooleanController)
+                    .controller(SBTConfig::generateBooleanController)
                     .binding(
                             defaults.huds.overflowMana.icon,
                             () -> config.huds.overflowMana.icon,
@@ -185,7 +185,7 @@ public class OverflowManaHUD extends TextHUD {
             var scale = Option.<Float>createBuilder()
                     .name(Text.literal("Overflow Mana HUD Scale"))
                     .description(OptionDescription.of(Text.literal("The scale of the Overflow Mana HUD")))
-                    .controller(SkyblockTweaksConfig::generateScaleController)
+                    .controller(SBTConfig::generateScaleController)
                     .binding(
                             defaults.huds.overflowMana.scale,
                             () -> config.huds.overflowMana.scale,

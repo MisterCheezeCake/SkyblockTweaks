@@ -29,6 +29,7 @@ import net.minecraft.text.Text;
 import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
 import wtf.cheeze.sbt.SkyblockTweaks;
+import wtf.cheeze.sbt.config.SBTConfig;
 
 import java.util.ArrayList;
 import java.util.function.Predicate;
@@ -218,7 +219,7 @@ public class HudScreen extends Screen {
         @Override
         public void close() {
             MinecraftClient.getInstance().setScreen(parent);
-            SkyblockTweaks.CONFIG.HANDLER.save();
+            SBTConfig.HANDLER.save();
         }
         @Override
         public boolean mouseDragged(double mouseX, double mouseY, int button, double deltaX, double deltaY) {

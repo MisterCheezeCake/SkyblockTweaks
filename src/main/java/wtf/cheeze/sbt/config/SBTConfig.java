@@ -32,40 +32,31 @@ import wtf.cheeze.sbt.config.categories.*;
 import wtf.cheeze.sbt.utils.hud.HudLine;
 
 
-public class SkyblockTweaksConfig {
+public class SBTConfig {
 
-    public final ConfigClassHandler<ConfigImpl> HANDLER = ConfigClassHandler.createBuilder(ConfigImpl.class)
+    public static final ConfigClassHandler<ConfigImpl> HANDLER = ConfigClassHandler.createBuilder(ConfigImpl.class)
             .id(Identifier.of("skyblocktweaks", "config"))
             .serializer(config -> GsonConfigSerializerBuilder.create(config).appendGsonBuilder(builder -> builder.setFieldNamingPolicy(FieldNamingPolicy.IDENTITY))
                     .setPath(FabricLoader.getInstance().getConfigDir().resolve("skyblocktweaks-config.json"))
                     .build())
             .build();
-    // TODO: Fix this, it's a mess right now
-    public ConfigImpl config;
-    public YetAnotherConfigLib YACLInstance = YetAnotherConfigLib.create(HANDLER,
-            (defaults, configThing, builder) -> {
-                this.config = configThing;
-                return builder
-                        .title(Text.literal("SkyblockTweaks"))
-                        .category(General.getCategory(defaults, configThing))
-                        .category(Chat.getCategory(defaults, configThing))
-                        .category(Huds.getCategory(defaults, configThing));
-
-            });
-
-
-    public Screen getScreen(Screen parent) {
-        YACLInstance = YetAnotherConfigLib.create(HANDLER,
+    public static Screen getScreen(Screen parent) {
+        return YetAnotherConfigLib.create(HANDLER,
                 (defaults, configThing, builder) -> {
-                    this.config = configThing;
                     return builder
                             .title(Text.literal("SkyblockTweaks"))
                             .category(General.getCategory(defaults, configThing))
                             .category(Chat.getCategory(defaults, configThing))
                             .category(Huds.getCategory(defaults, configThing));
 
-                });
-        return YACLInstance.generateScreen(parent);
+                }).generateScreen(parent);
+    }
+
+    public static ConfigImpl get() {
+        return HANDLER.instance();
+    }
+    public static Huds huds() {
+        return get().huds;
     }
 
 

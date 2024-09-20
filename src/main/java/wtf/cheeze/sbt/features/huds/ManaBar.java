@@ -26,7 +26,7 @@ import dev.isxander.yacl3.config.v2.api.SerialEntry;
 import net.minecraft.text.Text;
 import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.config.ConfigImpl;
-import wtf.cheeze.sbt.config.SkyblockTweaksConfig;
+import wtf.cheeze.sbt.config.SBTConfig;
 import wtf.cheeze.sbt.utils.TextUtils;
 import wtf.cheeze.sbt.utils.hud.BarHUD;
 import wtf.cheeze.sbt.utils.hud.HudInformation;
@@ -37,16 +37,16 @@ public class ManaBar extends BarHUD {
 
     public ManaBar() {
         INFO = new HudInformation(
-                () -> SkyblockTweaks.CONFIG.config.huds.manaBar.x,
-                () -> SkyblockTweaks.CONFIG.config.huds.manaBar.y,
-                () -> SkyblockTweaks.CONFIG.config.huds.manaBar.scale,
-                () -> SkyblockTweaks.CONFIG.config.huds.manaBar.anchor,
-                () -> SkyblockTweaks.CONFIG.config.huds.manaBar.color,
+                () -> SBTConfig.huds().manaBar.x,
+                () -> SBTConfig.huds().manaBar.y,
+                () -> SBTConfig.huds().manaBar.scale,
+                () -> SBTConfig.huds().manaBar.anchor,
+                () -> SBTConfig.huds().manaBar.color,
                 () -> SkyblockTweaks.DATA.mana / SkyblockTweaks.DATA.maxMana,
-                x -> SkyblockTweaks.CONFIG.config.huds.manaBar.x = (float) x,
-                y -> SkyblockTweaks.CONFIG.config.huds.manaBar.y = (float) y,
-                scale -> SkyblockTweaks.CONFIG.config.huds.manaBar.scale = (float) scale,
-                anchor -> SkyblockTweaks.CONFIG.config.huds.manaBar.anchor = anchor
+                x -> SBTConfig.huds().manaBar.x = (float) x,
+                y -> SBTConfig.huds().manaBar.y = (float) y,
+                scale -> SBTConfig.huds().manaBar.scale = (float) scale,
+                anchor -> SBTConfig.huds().manaBar.anchor = anchor
 
         );
     }
@@ -59,7 +59,7 @@ public class ManaBar extends BarHUD {
     @Override
     public boolean shouldRender(boolean fromHudScreen) {
         if (!super.shouldRender(fromHudScreen)) return false;
-        if ((SkyblockTweaks.DATA.inSB && SkyblockTweaks.CONFIG.config.huds.manaBar.enabled) || fromHudScreen) return true;
+        if ((SkyblockTweaks.DATA.inSB && SBTConfig.huds().manaBar.enabled) || fromHudScreen) return true;
         return false;
     }
 
@@ -86,7 +86,7 @@ public class ManaBar extends BarHUD {
             var enabled = Option.<Boolean>createBuilder()
                     .name(Text.literal("Enable Mana Bar"))
                     .description(OptionDescription.of(Text.literal("Enables the Mana Bar")))
-                    .controller(SkyblockTweaksConfig::generateBooleanController)
+                    .controller(SBTConfig::generateBooleanController)
                     .binding(
                             defaults.huds.manaBar.enabled,
                             () -> config.huds.manaBar.enabled,
@@ -108,7 +108,7 @@ public class ManaBar extends BarHUD {
             var scale = Option.<Float>createBuilder()
                     .name(Text.literal("Mana Bar Scale"))
                     .description(OptionDescription.of(Text.literal("The scale of the Mana Bar")))
-                    .controller(SkyblockTweaksConfig::generateScaleController)
+                    .controller(SBTConfig::generateScaleController)
                     .binding(
                             defaults.huds.manaBar.scale,
                             () -> config.huds.manaBar.scale,

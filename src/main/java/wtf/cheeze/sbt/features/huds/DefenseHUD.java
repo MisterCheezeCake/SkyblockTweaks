@@ -27,7 +27,7 @@ import dev.isxander.yacl3.config.v2.api.SerialEntry;
 import net.minecraft.text.Text;
 import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.config.ConfigImpl;
-import wtf.cheeze.sbt.config.SkyblockTweaksConfig;
+import wtf.cheeze.sbt.config.SBTConfig;
 import wtf.cheeze.sbt.utils.NumberUtils;
 import wtf.cheeze.sbt.utils.TextUtils;
 import wtf.cheeze.sbt.utils.hud.HudInformation;
@@ -40,27 +40,27 @@ public class DefenseHUD extends TextHUD {
 
     public DefenseHUD() {
         INFO = new HudInformation(
-                () -> SkyblockTweaks.CONFIG.config.huds.defense.x,
-                () -> SkyblockTweaks.CONFIG.config.huds.defense.y,
-                () -> SkyblockTweaks.CONFIG.config.huds.defense.scale,
-                () -> SkyblockTweaks.CONFIG.config.huds.defense.anchor,
-                x -> SkyblockTweaks.CONFIG.config.huds.defense.x = (float) x,
-                y -> SkyblockTweaks.CONFIG.config.huds.defense.y = (float) y,
-                scale -> SkyblockTweaks.CONFIG.config.huds.defense.scale = (float) scale,
-                anchor -> SkyblockTweaks.CONFIG.config.huds.defense.anchor = anchor
+                () -> SBTConfig.huds().defense.x,
+                () -> SBTConfig.huds().defense.y,
+                () -> SBTConfig.huds().defense.scale,
+                () -> SBTConfig.huds().defense.anchor,
+                x -> SBTConfig.huds().defense.x = (float) x,
+                y -> SBTConfig.huds().defense.y = (float) y,
+                scale -> SBTConfig.huds().defense.scale = (float) scale,
+                anchor -> SBTConfig.huds().defense.anchor = anchor
         );
 
         line = new HudLine(
-                () -> SkyblockTweaks.CONFIG.config.huds.defense.color,
-                () -> SkyblockTweaks.CONFIG.config.huds.defense.outlineColor,
-                () -> SkyblockTweaks.CONFIG.config.huds.defense.mode,
-                () -> Text.literal(NumberUtils.formatNumber(SkyblockTweaks.DATA.defense, SkyblockTweaks.CONFIG.config.huds.defense.separator)+ (SkyblockTweaks.CONFIG.config.huds.defense.icon ? "❈" : ""))
+                () -> SBTConfig.huds().defense.color,
+                () -> SBTConfig.huds().defense.outlineColor,
+                () -> SBTConfig.huds().defense.mode,
+                () -> Text.literal(NumberUtils.formatNumber(SkyblockTweaks.DATA.defense, SBTConfig.huds().defense.separator)+ (SBTConfig.huds().defense.icon ? "❈" : ""))
         );
     }
     @Override
     public boolean shouldRender(boolean fromHudScreen) {
         if (!super.shouldRender(fromHudScreen)) return false;
-        if ((SkyblockTweaks.DATA.inSB && SkyblockTweaks.CONFIG.config.huds.defense.enabled) || fromHudScreen) return true;
+        if ((SkyblockTweaks.DATA.inSB && SBTConfig.huds().defense.enabled) || fromHudScreen) return true;
         return false;
     }
 
@@ -106,7 +106,7 @@ public class DefenseHUD extends TextHUD {
             var enabled = Option.<Boolean>createBuilder()
                     .name(Text.literal("Enable Defense HUD"))
                     .description(OptionDescription.of(Text.literal("Enables the Defense HUD")))
-                    .controller(SkyblockTweaksConfig::generateBooleanController)
+                    .controller(SBTConfig::generateBooleanController)
                     .binding(
                             defaults.huds.defense.enabled,
                             () -> config.huds.defense.enabled,
@@ -141,7 +141,7 @@ public class DefenseHUD extends TextHUD {
             var mode = Option.<HudLine.DrawMode>createBuilder()
                     .name(Text.literal("Defense HUD Mode"))
                     .description(OptionDescription.of(Text.literal("The draw mode of the Defense HUD. Pure will render without shadow, Shadow will render with a shadow, and Outline will render with an outline\n§4Warning: §cOutline mode is still a work in progress and can cause annoying visual bugs in menus.")))
-                    .controller(SkyblockTweaksConfig::generateDrawModeController)
+                    .controller(SBTConfig::generateDrawModeController)
                     .binding(
                             defaults.huds.defense.mode,
                             () -> config.huds.defense.mode,
@@ -155,7 +155,7 @@ public class DefenseHUD extends TextHUD {
             var icon = Option.<Boolean>createBuilder()
                     .name(Text.literal("Defense HUD Icon"))
                     .description(OptionDescription.of(Text.literal("Enables the icon (❈) in the Defense HUD")))
-                    .controller(SkyblockTweaksConfig::generateBooleanController)
+                    .controller(SBTConfig::generateBooleanController)
                     .binding(
                             defaults.huds.defense.icon,
                             () -> config.huds.defense.icon,
@@ -175,7 +175,7 @@ public class DefenseHUD extends TextHUD {
             var scale = Option.<Float>createBuilder()
                     .name(Text.literal("Defense HUD Scale"))
                     .description(OptionDescription.of(Text.literal("The scale of the Defense HUD")))
-                    .controller(SkyblockTweaksConfig::generateScaleController)
+                    .controller(SBTConfig::generateScaleController)
                     .binding(
                             defaults.huds.defense.scale,
                             () -> config.huds.defense.scale,

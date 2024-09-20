@@ -31,7 +31,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import wtf.cheeze.sbt.command.SBTCommand;
-import wtf.cheeze.sbt.config.SkyblockTweaksConfig;
+import wtf.cheeze.sbt.config.SBTConfig;
 import wtf.cheeze.sbt.config.persistent.PersistentData;
 import wtf.cheeze.sbt.features.chat.ChatProtections;
 import wtf.cheeze.sbt.features.chat.PartyFeatures;
@@ -50,7 +50,6 @@ public class SkyblockTweaks implements ModInitializer {
     public static final Logger LOGGER = LoggerFactory.getLogger("SkyblockTweaks");
 	public static final SkyblockData DATA = new SkyblockData();
 	public static final PersistentData PD = PersistentData.load();
-	public static final SkyblockTweaksConfig CONFIG = new SkyblockTweaksConfig();
 	public static final ArrayList<HUD> HUDS = new ArrayList<HUD>();
 	public static final Version VERSION = new Version(Version.VersionType.ALPHA, 0, 1, 0, 6);
 	public static final MinecraftClient mc = MinecraftClient.getInstance();
@@ -59,13 +58,7 @@ public class SkyblockTweaks implements ModInitializer {
 	@Override
 	public void onInitialize() {
 
-		if (!CONFIG.HANDLER.load()) {
-			LOGGER.error("Failed to load config!");
-		}
-
-		// This fixes config not actually loading on initial startup... for some reason
-		CONFIG.getScreen(null);
-
+		SBTConfig.HANDLER.load();
 		HUDS.add(SkillHUDManager.INSTANCE.SKILL_HUD);
 		HUDS.add(SkillHUDManager.INSTANCE.SKILL_BAR);
 

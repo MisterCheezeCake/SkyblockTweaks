@@ -30,7 +30,7 @@ import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents;
 import net.minecraft.text.Text;
 import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.config.ConfigImpl;
-import wtf.cheeze.sbt.config.SkyblockTweaksConfig;
+import wtf.cheeze.sbt.config.SBTConfig;
 import wtf.cheeze.sbt.utils.TextUtils;
 
 import java.util.ArrayList;
@@ -49,17 +49,17 @@ public class PartyFeatures {
         ClientReceiveMessageEvents.GAME.register((message, overlay) -> {
 
             if (overlay) return;
-            if (!SkyblockTweaks.CONFIG.config.partyCommands.enabled) return;
+            if (!SBTConfig.get().partyCommands.enabled) return;
             var s = TextUtils.removeColorCodes(message.getString());
             if (s.startsWith("Party >")) {
                 var matcher = PARTY_PATTERN.matcher(s);
                 if (!matcher.matches()) return;
-                if (System.currentTimeMillis() - lastPartyCommand < SkyblockTweaks.CONFIG.config.partyCommands.cooldown) return;
+                if (System.currentTimeMillis() - lastPartyCommand < SBTConfig.get().partyCommands.cooldown) return;
                 HypixelNetworking.sendPartyInfoC2SPacket(2);
                 lastPartyCommand = System.currentTimeMillis();
                 var name = matcher.group(1);
                 if (name.contains(" ")) name = name.split(" ")[1];
-                if (SkyblockTweaks.CONFIG.config.partyCommands.blockedUsers.contains(name)) {
+                if (SBTConfig.get().partyCommands.blockedUsers.contains(name)) {
                     SkyblockTweaks.LOGGER.info("Blocked user tried to use party commands: " + name);
                     return;
                 }
@@ -106,7 +106,7 @@ public class PartyFeatures {
                     SkyblockTweaks.DATA.amITheLeader = false;
                 }
             } else if (s.matches("From .*: Boop!")) {
-                if (!SkyblockTweaks.CONFIG.config.partyCommands.boopInvites) return;
+                if (!SBTConfig.get().partyCommands.boopInvites) return;
                 var matcher = BOOP_PATTERN.matcher(s);
                 if (!matcher.matches()) return;
                 var n = matcher.group(1);
@@ -149,7 +149,7 @@ public class PartyFeatures {
             var enabled = Option.<Boolean>createBuilder()
                     .name(Text.literal("Enable Party Commands"))
                     .description(OptionDescription.of(Text.literal("Whether or not to enable party commands")))
-                    .controller(SkyblockTweaksConfig::generateBooleanController)
+                    .controller(SBTConfig::generateBooleanController)
                     .binding(
                             defaults.partyCommands.enabled,
                             () -> config.partyCommands.enabled,
@@ -170,7 +170,7 @@ public class PartyFeatures {
             var inviteBoop = Option.<Boolean>createBuilder()
                     .name(Text.literal("Boop Invites"))
                     .description(OptionDescription.of(Text.literal("Whether or not to prompt a party invite when booped by a player")))
-                    .controller(SkyblockTweaksConfig::generateBooleanController)
+                    .controller(SBTConfig::generateBooleanController)
                     .binding(
                             defaults.partyCommands.boopInvites,
                             () -> config.partyCommands.boopInvites,

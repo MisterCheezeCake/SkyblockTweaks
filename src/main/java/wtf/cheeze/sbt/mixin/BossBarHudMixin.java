@@ -25,12 +25,13 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import wtf.cheeze.sbt.SkyblockTweaks;
+import wtf.cheeze.sbt.config.SBTConfig;
 
 @Mixin(BossBarHud.class)
 public abstract class BossBarHudMixin {
     @Inject(method = "render", at = @At("HEAD"), cancellable = true)
     private void sbt$onRender(DrawContext context, CallbackInfo ci) {
-        if (SkyblockTweaks.CONFIG.config.hudTweaks.noRenderBossBar) {
+        if (SBTConfig.get().hudTweaks.noRenderBossBar) {
             ci.cancel();
         }
     }

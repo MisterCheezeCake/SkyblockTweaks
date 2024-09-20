@@ -7,10 +7,9 @@ import dev.isxander.yacl3.api.OptionGroup;
 import dev.isxander.yacl3.config.v2.api.SerialEntry;
 import net.minecraft.text.Text;
 import wtf.cheeze.sbt.config.ConfigImpl;
-import wtf.cheeze.sbt.config.SkyblockTweaksConfig;
+import wtf.cheeze.sbt.config.SBTConfig;
 import wtf.cheeze.sbt.features.BrewingStandOverlay;
 import wtf.cheeze.sbt.features.MenuHighlights;
-import wtf.cheeze.sbt.features.chat.PartyFeatures;
 import wtf.cheeze.sbt.utils.Version;
 import wtf.cheeze.sbt.utils.actionbar.ActionBarTransformer;
 
@@ -40,7 +39,7 @@ public class General {
             var noRenderPotionHud = Option.<Boolean>createBuilder()
                     .name(Text.literal("Disable Potion HUD"))
                     .description(OptionDescription.of(Text.literal("Disables rendering of the potion HUD in your inventory")))
-                    .controller(SkyblockTweaksConfig::generateBooleanController)
+                    .controller(SBTConfig::generateBooleanController)
                     .binding(
                             defaults.inventory.noRenderPotionHud,
                             () -> config.inventory.noRenderPotionHud,
@@ -50,7 +49,7 @@ public class General {
             var redirectRecipeBook = Option.<Boolean>createBuilder()
                     .name(Text.literal("Redirect Recipe Book Clicks"))
                     .description(OptionDescription.of(Text.literal("Redirects the recipe book button to the SkyBlock recipe book")))
-                    .controller(SkyblockTweaksConfig::generateBooleanController)
+                    .controller(SBTConfig::generateBooleanController)
                     .binding(
                             defaults.inventory.redirectRecipeBook,
                             () -> config.inventory.redirectRecipeBook,
@@ -87,7 +86,7 @@ public class General {
             var noShadowActionBar = Option.<Boolean>createBuilder()
                     .name(Text.literal("Disable Action Bar Shadow"))
                     .description(OptionDescription.of(Text.literal("Removes the shadow from the action bar")))
-                    .controller(SkyblockTweaksConfig::generateBooleanController)
+                    .controller(SBTConfig::generateBooleanController)
                     .binding(
                             defaults.hudTweaks.noShadowActionBar,
                             () -> config.hudTweaks.noShadowActionBar,
@@ -98,7 +97,7 @@ public class General {
             var noRenderBossBar = Option.<Boolean>createBuilder()
                     .name(Text.literal("Disable Boss Bar"))
                     .description(OptionDescription.of(Text.literal("Disables rendering of boss bars")))
-                    .controller(SkyblockTweaksConfig::generateBooleanController)
+                    .controller(SBTConfig::generateBooleanController)
                     .binding(
                             defaults.hudTweaks.noRenderBossBar,
                             () -> config.hudTweaks.noRenderBossBar,
@@ -111,7 +110,7 @@ public class General {
             var noRenderHearts = Option.<Boolean>createBuilder()
                     .name(Text.literal("Disable Hearts"))
                     .description(OptionDescription.of(Text.literal("Disables rendering of health hearts ")))
-                    .controller(SkyblockTweaksConfig::generateBooleanController)
+                    .controller(SBTConfig::generateBooleanController)
                     .binding(
                             defaults.hudTweaks.noRenderHearts,
                             () -> config.hudTweaks.noRenderHearts,
@@ -121,7 +120,7 @@ public class General {
             var noRenderArmor = Option.<Boolean>createBuilder()
                     .name(Text.literal("Disable Armor Bar"))
                     .description(OptionDescription.of(Text.literal("Disables rendering of the armor bar")))
-                    .controller(SkyblockTweaksConfig::generateBooleanController)
+                    .controller(SBTConfig::generateBooleanController)
                     .binding(
                             defaults.hudTweaks.noRenderArmor,
                             () -> config.hudTweaks.noRenderArmor,
@@ -132,7 +131,7 @@ public class General {
             var noRenderHunger = Option.<Boolean>createBuilder()
                     .name(Text.literal("Disable Hunger Bar"))
                     .description(OptionDescription.of(Text.literal("Disables rendering of the hunger bar")))
-                    .controller(SkyblockTweaksConfig::generateBooleanController)
+                    .controller(SBTConfig::generateBooleanController)
                     .binding(
                             defaults.hudTweaks.noRenderHunger,
                             () -> config.hudTweaks.noRenderHunger,

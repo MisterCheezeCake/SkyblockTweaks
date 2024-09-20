@@ -26,7 +26,7 @@ import dev.isxander.yacl3.config.v2.api.SerialEntry;
 import net.minecraft.text.Text;
 import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.config.ConfigImpl;
-import wtf.cheeze.sbt.config.SkyblockTweaksConfig;
+import wtf.cheeze.sbt.config.SBTConfig;
 import wtf.cheeze.sbt.utils.TextUtils;
 import wtf.cheeze.sbt.utils.hud.BarHUD;
 import wtf.cheeze.sbt.utils.hud.HudInformation;
@@ -37,16 +37,16 @@ public class HealthBar extends BarHUD {
 
     public HealthBar() {
         INFO = new HudInformation(
-                () -> SkyblockTweaks.CONFIG.config.huds.healthBar.x,
-                () -> SkyblockTweaks.CONFIG.config.huds.healthBar.y,
-                () -> SkyblockTweaks.CONFIG.config.huds.healthBar.scale,
-                () -> SkyblockTweaks.CONFIG.config.huds.healthBar.anchor,
-                () -> SkyblockTweaks.DATA.health > SkyblockTweaks.DATA.maxHealth ? SkyblockTweaks.CONFIG.config.huds.healthBar.colorAbsorption : SkyblockTweaks.CONFIG.config.huds.healthBar.color,
+                () -> SBTConfig.huds().healthBar.x,
+                () -> SBTConfig.huds().healthBar.y,
+                () -> SBTConfig.huds().healthBar.scale,
+                () -> SBTConfig.huds().healthBar.anchor,
+                () -> SkyblockTweaks.DATA.health > SkyblockTweaks.DATA.maxHealth ? SBTConfig.huds().healthBar.colorAbsorption : SBTConfig.huds().healthBar.color,
                 () -> SkyblockTweaks.DATA.health / SkyblockTweaks.DATA.maxHealth,
-                x -> SkyblockTweaks.CONFIG.config.huds.healthBar.x = (float) x,
-                y -> SkyblockTweaks.CONFIG.config.huds.healthBar.y = (float) y,
-                scale -> SkyblockTweaks.CONFIG.config.huds.healthBar.scale = (float) scale,
-                anchor ->SkyblockTweaks.CONFIG.config.huds.healthBar.anchor= anchor
+                x -> SBTConfig.huds().healthBar.x = (float) x,
+                y -> SBTConfig.huds().healthBar.y = (float) y,
+                scale -> SBTConfig.huds().healthBar.scale = (float) scale,
+                anchor ->SBTConfig.huds().healthBar.anchor= anchor
         );
     }
 
@@ -58,7 +58,7 @@ public class HealthBar extends BarHUD {
     @Override
     public boolean shouldRender(boolean fromHudScreen) {
         if (!super.shouldRender(fromHudScreen)) return false;
-        if ((SkyblockTweaks.DATA.inSB && SkyblockTweaks.CONFIG.config.huds.healthBar.enabled) || fromHudScreen) return true;
+        if ((SkyblockTweaks.DATA.inSB && SBTConfig.huds().healthBar.enabled) || fromHudScreen) return true;
         return false;
     }
 
@@ -88,7 +88,7 @@ public class HealthBar extends BarHUD {
             var enabled = Option.<Boolean>createBuilder()
                     .name(Text.literal("Enable Health Bar"))
                     .description(OptionDescription.of(Text.literal("Enables the Health Bar")))
-                    .controller(SkyblockTweaksConfig::generateBooleanController)
+                    .controller(SBTConfig::generateBooleanController)
                     .binding(
                             defaults.huds.healthBar.enabled,
                             () -> config.huds.healthBar.enabled,
@@ -120,7 +120,7 @@ public class HealthBar extends BarHUD {
             var scale = Option.<Float>createBuilder()
                     .name(Text.literal("Health Bar Scale"))
                     .description(OptionDescription.of(Text.literal("The scale of the Health Bar")))
-                    .controller(SkyblockTweaksConfig::generateScaleController)
+                    .controller(SBTConfig::generateScaleController)
                     .binding(
                             defaults.huds.healthBar.scale,
                             () -> config.huds.healthBar.scale,

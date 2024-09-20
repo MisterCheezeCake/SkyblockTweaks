@@ -8,7 +8,7 @@ import net.fabricmc.fabric.api.client.message.v1.ClientSendMessageEvents;
 import net.minecraft.text.Text;
 import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.config.ConfigImpl;
-import wtf.cheeze.sbt.config.SkyblockTweaksConfig;
+import wtf.cheeze.sbt.config.SBTConfig;
 import wtf.cheeze.sbt.utils.TimedValue;
 
 import java.util.regex.Pattern;
@@ -23,7 +23,7 @@ public class ChatProtections {
 
     public static void registerEvents() {
         ClientSendMessageEvents.ALLOW_COMMAND.register((message) -> {
-            if (message.startsWith("coopadd") && !message.trim().equals("coopadd") && SkyblockTweaks.CONFIG.config.chatProtections.coop) {
+            if (message.startsWith("coopadd") && !message.trim().equals("coopadd") && SBTConfig.get().chatProtections.coop) {
 
                 if (lastMessageCoop.getValue() != null && lastMessageCoop.getValue().equals(message)) {
                     return true;
@@ -31,7 +31,7 @@ public class ChatProtections {
                 lastMessageCoop = TimedValue.of(message, 5000);
                 SkyblockTweaks.mc.player.sendMessage(Text.literal(String.format(BASE_COOP_MESSAGE, message.split(" ")[1])));
                 return false;
-            } else if (SkyblockTweaks.CONFIG.config.chatProtections.ip) {
+            } else if (SBTConfig.get().chatProtections.ip) {
                 var i = checkIp(message);
                    if (i != 0) {
                        return handleIpMessage(message, i == 2);
@@ -40,7 +40,7 @@ public class ChatProtections {
             return true;
             });
         ClientSendMessageEvents.ALLOW_CHAT.register((message) -> {
-            if (SkyblockTweaks.CONFIG.config.chatProtections.ip) {
+            if (SBTConfig.get().chatProtections.ip) {
                 var i = checkIp(message);
                 if (i != 0) {
                     return handleIpMessage(message, i == 2);
@@ -87,7 +87,7 @@ public class ChatProtections {
             var coop = Option.<Boolean>createBuilder()
                     .name(Text.literal("Coop Add Confirmation"))
                     .description(OptionDescription.of(Text.literal("Requires confirmation before actually sending a /coopadd request")))
-                    .controller(SkyblockTweaksConfig::generateBooleanController)
+                    .controller(SBTConfig::generateBooleanController)
                     .binding(
                             defaults.chatProtections.coop,
                             () -> config.chatProtections.coop,
@@ -97,7 +97,7 @@ public class ChatProtections {
             var ip = Option.<Boolean>createBuilder()
                     .name(Text.literal("IP Protection"))
                     .description(OptionDescription.of(Text.literal("Warns you before sending a message containing an ip address")))
-                    .controller(SkyblockTweaksConfig::generateBooleanController)
+                    .controller(SBTConfig::generateBooleanController)
                     .binding(
                             defaults.chatProtections.ip,
                             () -> config.chatProtections.ip,

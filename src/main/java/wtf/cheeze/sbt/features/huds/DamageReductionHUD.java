@@ -26,7 +26,7 @@ import dev.isxander.yacl3.config.v2.api.SerialEntry;
 import net.minecraft.text.Text;
 import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.config.ConfigImpl;
-import wtf.cheeze.sbt.config.SkyblockTweaksConfig;
+import wtf.cheeze.sbt.config.SBTConfig;
 import wtf.cheeze.sbt.utils.hud.HudLine;
 import wtf.cheeze.sbt.utils.NumberUtils;
 import wtf.cheeze.sbt.utils.TextUtils;
@@ -39,19 +39,19 @@ public class DamageReductionHUD extends TextHUD {
 
     public DamageReductionHUD() {
         INFO = new HudInformation(
-                () -> SkyblockTweaks.CONFIG.config.huds.dr.x,
-                () -> SkyblockTweaks.CONFIG.config.huds.dr.y,
-                () -> SkyblockTweaks.CONFIG.config.huds.dr.scale,
-                () -> SkyblockTweaks.CONFIG.config.huds.dr.anchor,
-                x -> SkyblockTweaks.CONFIG.config.huds.dr.x = (float) x,
-                y -> SkyblockTweaks.CONFIG.config.huds.dr.y = (float) y,
-                scale -> SkyblockTweaks.CONFIG.config.huds.dr.scale = (float) scale,
-                anchor -> SkyblockTweaks.CONFIG.config.huds.dr.anchor = anchor
+                () -> SBTConfig.huds().dr.x,
+                () -> SBTConfig.huds().dr.y,
+                () -> SBTConfig.huds().dr.scale,
+                () -> SBTConfig.huds().dr.anchor,
+                x -> SBTConfig.huds().dr.x = (float) x,
+                y -> SBTConfig.huds().dr.y = (float) y,
+                scale -> SBTConfig.huds().dr.scale = (float) scale,
+                anchor -> SBTConfig.huds().dr.anchor = anchor
         );
         line = new HudLine(
-                () -> SkyblockTweaks.CONFIG.config.huds.dr.color,
-                () -> SkyblockTweaks.CONFIG.config.huds.dr.outlineColor,
-                () -> SkyblockTweaks.CONFIG.config.huds.dr.mode,
+                () -> SBTConfig.huds().dr.color,
+                () -> SBTConfig.huds().dr.outlineColor,
+                () -> SBTConfig.huds().dr.mode,
                 () -> Text.literal(NumberUtils.round(SkyblockTweaks.DATA.damageReduction(), 1) + "%")
         );
 
@@ -59,7 +59,7 @@ public class DamageReductionHUD extends TextHUD {
     @Override
     public boolean shouldRender(boolean fromHudScreen) {
         if (!super.shouldRender(fromHudScreen)) return false;
-        if ((SkyblockTweaks.DATA.inSB && SkyblockTweaks.CONFIG.config.huds.dr.enabled) || fromHudScreen) return true;
+        if ((SkyblockTweaks.DATA.inSB && SBTConfig.huds().dr.enabled) || fromHudScreen) return true;
         return false;
     }
 
@@ -100,7 +100,7 @@ public class DamageReductionHUD extends TextHUD {
             var enabled = Option.<Boolean>createBuilder()
                     .name(Text.literal("Enable Damage Reduction HUD"))
                     .description(OptionDescription.of(Text.literal("Enables the Damage Reduction HUD")))
-                    .controller(SkyblockTweaksConfig::generateBooleanController)
+                    .controller(SBTConfig::generateBooleanController)
                     .binding(
                             defaults.huds.dr.enabled,
                             () -> config.huds.dr.enabled,
@@ -133,7 +133,7 @@ public class DamageReductionHUD extends TextHUD {
             var mode = Option.<HudLine.DrawMode>createBuilder()
                     .name(Text.literal("Damage Reduction HUD Mode"))
                     .description(OptionDescription.of(Text.literal("The draw mode of the Damage Reduction HUD. Pure will render without shadow, Shadow will render with a shadow, and Outline will render with an outline\n§4Warning: §cOutline mode is still a work in progress and can cause annoying visual bugs in menus.")))
-                    .controller(SkyblockTweaksConfig::generateDrawModeController)
+                    .controller(SBTConfig::generateDrawModeController)
                     .binding(
                             defaults.huds.dr.mode,
                             () -> config.huds.dr.mode,
@@ -147,7 +147,7 @@ public class DamageReductionHUD extends TextHUD {
             var scale = Option.<Float>createBuilder()
                     .name(Text.literal("Damage Reduction HUD Scale"))
                     .description(OptionDescription.of(Text.literal("The scale of the Damage Reduction HUD")))
-                    .controller(SkyblockTweaksConfig::generateScaleController)
+                    .controller(SBTConfig::generateScaleController)
                     .binding(
                             defaults.huds.dr.scale,
                             () -> config.huds.dr.scale,

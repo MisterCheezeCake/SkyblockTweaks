@@ -25,12 +25,13 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import wtf.cheeze.sbt.SkyblockTweaks;
+import wtf.cheeze.sbt.config.SBTConfig;
 
 @Mixin(AbstractInventoryScreen.class)
 public abstract class AbstractInventoryScreenMixin {
     @Inject(method = "drawStatusEffects", at = @At("HEAD"), cancellable = true)
     private void sbt$onDrawStatusEffects(DrawContext context, int mouseX, int mouseY, CallbackInfo ci){
-        if (SkyblockTweaks.CONFIG.config.inventory.noRenderPotionHud && SkyblockTweaks.DATA.inSB) {
+        if (SBTConfig.get().inventory.noRenderPotionHud && SkyblockTweaks.DATA.inSB) {
             ci.cancel();
         }
     }

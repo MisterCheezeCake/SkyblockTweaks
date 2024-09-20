@@ -50,7 +50,7 @@ public class SkyblockTweaksScreenMain extends Screen {
         var leftColumn = centerx - 100;
         var rightColumn = centerx + 5;
         configButton = ButtonWidget.builder(Text.literal("Open Config"), button -> {
-            mc.send(() -> mc.setScreen(SkyblockTweaks.CONFIG.getScreen(this)));
+            mc.send(() -> mc.setScreen(SBTConfig.getScreen(this)));
         }).dimensions(centerx - 100, 55, 200, 20).build();
         hudButton = ButtonWidget.builder(Text.literal("Edit HUD Positions"), button -> {
             mc.send(() -> mc.setScreen(new HudScreen(Text.literal("SkyBlockTweaks"), SkyblockTweaks.HUDS, this)));

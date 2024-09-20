@@ -26,7 +26,7 @@ import dev.isxander.yacl3.config.v2.api.SerialEntry;
 import net.minecraft.text.Text;
 import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.config.ConfigImpl;
-import wtf.cheeze.sbt.config.SkyblockTweaksConfig;
+import wtf.cheeze.sbt.config.SBTConfig;
 import wtf.cheeze.sbt.utils.hud.HudLine;
 import wtf.cheeze.sbt.utils.hud.HudInformation;
 import wtf.cheeze.sbt.utils.hud.TextHUD;
@@ -37,27 +37,27 @@ public class FpsHUD extends TextHUD {
 
     public FpsHUD() {
         INFO = new HudInformation(
-                () -> SkyblockTweaks.CONFIG.config.huds.fps.x,
-                () -> SkyblockTweaks.CONFIG.config.huds.fps.y,
-                () -> SkyblockTweaks.CONFIG.config.huds.fps.scale,
-                () -> SkyblockTweaks.CONFIG.config.huds.fps.anchor,
-                x -> SkyblockTweaks.CONFIG.config.huds.fps.x = (float) x,
-                y -> SkyblockTweaks.CONFIG.config.huds.fps.y = (float) y,
-                scale -> SkyblockTweaks.CONFIG.config.huds.fps.scale = (float) scale,
-                anchor -> SkyblockTweaks.CONFIG.config.huds.fps.anchor = anchor
+                () -> SBTConfig.huds().fps.x,
+                () -> SBTConfig.huds().fps.y,
+                () -> SBTConfig.huds().fps.scale,
+                () -> SBTConfig.huds().fps.anchor,
+                x -> SBTConfig.huds().fps.x = (float) x,
+                y -> SBTConfig.huds().fps.y = (float) y,
+                scale -> SBTConfig.huds().fps.scale = (float) scale,
+                anchor -> SBTConfig.huds().fps.anchor = anchor
         );
         line = new HudLine(
-                () -> SkyblockTweaks.CONFIG.config.huds.fps.color,
-                () -> SkyblockTweaks.CONFIG.config.huds.fps.outlineColor,
-                () -> SkyblockTweaks.CONFIG.config.huds.fps.mode,
-                () -> Text.literal(SkyblockTweaks.CONFIG.config.huds.fps.reverse ?  "FPS: " + SkyblockTweaks.mc.getCurrentFps() : SkyblockTweaks.mc.getCurrentFps() + " FPS")
+                () -> SBTConfig.huds().fps.color,
+                () -> SBTConfig.huds().fps.outlineColor,
+                () -> SBTConfig.huds().fps.mode,
+                () -> Text.literal(SBTConfig.huds().fps.reverse ?  "FPS: " + SkyblockTweaks.mc.getCurrentFps() : SkyblockTweaks.mc.getCurrentFps() + " FPS")
 
         );
     }
     @Override
     public boolean shouldRender(boolean fromHudScreen) {
         if (!super.shouldRender(fromHudScreen)) return false;
-        if (((SkyblockTweaks.DATA.inSB  || SkyblockTweaks.CONFIG.config.huds.fps.showOutside) && SkyblockTweaks.CONFIG.config.huds.fps.enabled) || fromHudScreen) return true;
+        if (((SkyblockTweaks.DATA.inSB  || SBTConfig.huds().fps.showOutside) && SBTConfig.huds().fps.enabled) || fromHudScreen) return true;
         return false;
     }
 
@@ -101,7 +101,7 @@ public class FpsHUD extends TextHUD {
             var enabled = Option.<Boolean>createBuilder()
                     .name(Text.literal("Enable FPS HUD"))
                     .description(OptionDescription.of(Text.literal("Enables the FPS HUD")))
-                    .controller(SkyblockTweaksConfig::generateBooleanController)
+                    .controller(SBTConfig::generateBooleanController)
                     .binding(
                             defaults.huds.fps.enabled,
                             () -> config.huds.fps.enabled,
@@ -112,7 +112,7 @@ public class FpsHUD extends TextHUD {
             var outside = Option.<Boolean>createBuilder()
                     .name(Text.literal("Show outside of Skyblock"))
                     .description(OptionDescription.of(Text.literal("Whether to show the FPS HUD outside of Skyblock")))
-                    .controller(SkyblockTweaksConfig::generateBooleanController)
+                    .controller(SBTConfig::generateBooleanController)
                     .binding(
                             defaults.huds.fps.showOutside,
                             () -> config.huds.fps.showOutside,
@@ -123,7 +123,7 @@ public class FpsHUD extends TextHUD {
             var reverse = Option.<Boolean>createBuilder()
                     .name(Text.literal("Reverse FPS HUD"))
                     .description(OptionDescription.of(Text.literal("Whether to show the FPS as 'FPS: 123' instead of '123 FPS'")))
-                    .controller(SkyblockTweaksConfig::generateBooleanController)
+                    .controller(SBTConfig::generateBooleanController)
                     .binding(
                             defaults.huds.fps.reverse,
                             () -> config.huds.fps.reverse,
@@ -156,7 +156,7 @@ public class FpsHUD extends TextHUD {
             var mode = Option.<HudLine.DrawMode>createBuilder()
                     .name(Text.literal("FPS HUD Mode"))
                     .description(OptionDescription.of(Text.literal("The draw mode of the FPS HUD. Pure will render without shadow, Shadow will render with a shadow, and Outline will render with an outline\n§4Warning: §cOutline mode is still a work in progress and can cause annoying visual bugs in menus.")))
-                    .controller(SkyblockTweaksConfig::generateDrawModeController)
+                    .controller(SBTConfig::generateDrawModeController)
                     .binding(
                             defaults.huds.fps.mode,
                             () -> config.huds.fps.mode,
@@ -170,7 +170,7 @@ public class FpsHUD extends TextHUD {
             var scale = Option.<Float>createBuilder()
                     .name(Text.literal("FPS HUD Scale"))
                     .description(OptionDescription.of(Text.literal("The scale of the FPS HUD")))
-                    .controller(SkyblockTweaksConfig::generateScaleController)
+                    .controller(SBTConfig::generateScaleController)
                     .binding(
                             defaults.huds.fps.scale,
                             () -> config.huds.fps.scale,

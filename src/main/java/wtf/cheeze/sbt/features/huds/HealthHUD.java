@@ -27,7 +27,7 @@ import dev.isxander.yacl3.config.v2.api.SerialEntry;
 import net.minecraft.text.Text;
 import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.config.ConfigImpl;
-import wtf.cheeze.sbt.config.SkyblockTweaksConfig;
+import wtf.cheeze.sbt.config.SBTConfig;
 import wtf.cheeze.sbt.utils.NumberUtils;
 import wtf.cheeze.sbt.utils.hud.HudLine;
 import wtf.cheeze.sbt.utils.TextUtils;
@@ -40,26 +40,26 @@ public class HealthHUD extends TextHUD {
 
     public HealthHUD() {
         INFO = new HudInformation(
-                () -> SkyblockTweaks.CONFIG.config.huds.health.x,
-                () -> SkyblockTweaks.CONFIG.config.huds.health.y,
-                () -> SkyblockTweaks.CONFIG.config.huds.health.scale,
-                () -> SkyblockTweaks.CONFIG.config.huds.health.anchor,
-                x -> SkyblockTweaks.CONFIG.config.huds.health.x = (float) x,
-                y -> SkyblockTweaks.CONFIG.config.huds.health.y = (float) y,
-                scale -> SkyblockTweaks.CONFIG.config.huds.health.scale = (float) scale,
-                anchor -> SkyblockTweaks.CONFIG.config.huds.health.anchor = anchor
+                () -> SBTConfig.huds().health.x,
+                () -> SBTConfig.huds().health.y,
+                () -> SBTConfig.huds().health.scale,
+                () -> SBTConfig.huds().health.anchor,
+                x -> SBTConfig.huds().health.x = (float) x,
+                y -> SBTConfig.huds().health.y = (float) y,
+                scale -> SBTConfig.huds().health.scale = (float) scale,
+                anchor -> SBTConfig.huds().health.anchor = anchor
         );
         line = new HudLine(
-                () -> SkyblockTweaks.DATA.health > SkyblockTweaks.DATA.maxHealth ? SkyblockTweaks.CONFIG.config.huds.health.colorAbsorption : SkyblockTweaks.CONFIG.config.huds.health.color,
-                () -> SkyblockTweaks.CONFIG.config.huds.health.outlineColor,
-                () -> SkyblockTweaks.CONFIG.config.huds.health.mode,
-                () -> Text.literal(NumberUtils.formatNumber((int) SkyblockTweaks.DATA.health, SkyblockTweaks.CONFIG.config.huds.health.separator) + "/" + NumberUtils.formatNumber((int) SkyblockTweaks.DATA.maxHealth, SkyblockTweaks.CONFIG.config.huds.health.separator) + (SkyblockTweaks.CONFIG.config.huds.health.icon ? "❤" : ""))
+                () -> SkyblockTweaks.DATA.health > SkyblockTweaks.DATA.maxHealth ? SBTConfig.huds().health.colorAbsorption : SBTConfig.huds().health.color,
+                () -> SBTConfig.huds().health.outlineColor,
+                () -> SBTConfig.huds().health.mode,
+                () -> Text.literal(NumberUtils.formatNumber((int) SkyblockTweaks.DATA.health, SBTConfig.huds().health.separator) + "/" + NumberUtils.formatNumber((int) SkyblockTweaks.DATA.maxHealth, SBTConfig.huds().health.separator) + (SBTConfig.huds().health.icon ? "❤" : ""))
         );
     }
     @Override
     public boolean shouldRender(boolean fromHudScreen) {
         if (!super.shouldRender(fromHudScreen)) return false;
-        if ((SkyblockTweaks.DATA.inSB && SkyblockTweaks.CONFIG.config.huds.health.enabled) || fromHudScreen) return true;
+        if ((SkyblockTweaks.DATA.inSB && SBTConfig.huds().health.enabled) || fromHudScreen) return true;
         return false;
     }
 
@@ -106,7 +106,7 @@ public class HealthHUD extends TextHUD {
             var enabled = Option.<Boolean>createBuilder()
                     .name(Text.literal("Enable Health HUD"))
                     .description(OptionDescription.of(Text.literal("Enables the Health HUD")))
-                    .controller(SkyblockTweaksConfig::generateBooleanController)
+                    .controller(SBTConfig::generateBooleanController)
                     .binding(
                             defaults.huds.health.enabled,
                             () -> config.huds.health.enabled,
@@ -150,7 +150,7 @@ public class HealthHUD extends TextHUD {
             var mode = Option.<HudLine.DrawMode>createBuilder()
                     .name(Text.literal("Health HUD Mode"))
                     .description(OptionDescription.of(Text.literal("The draw mode of the Health HUD. Pure will render without shadow, Shadow will render with a shadow, and Outline will render with an outline\n§4Warning: §cOutline mode is still a work in progress and can cause annoying visual bugs in menus.")))
-                    .controller(SkyblockTweaksConfig::generateDrawModeController)
+                    .controller(SBTConfig::generateDrawModeController)
                     .binding(
                             defaults.huds.health.mode,
                             () -> config.huds.health.mode,
@@ -164,7 +164,7 @@ public class HealthHUD extends TextHUD {
             var icon = Option.<Boolean>createBuilder()
                     .name(Text.literal("Health HUD Icon"))
                     .description(OptionDescription.of(Text.literal("Enables the icon (❤) in the Health HUD")))
-                    .controller(SkyblockTweaksConfig::generateBooleanController)
+                    .controller(SBTConfig::generateBooleanController)
                     .binding(
                             defaults.huds.health.icon,
                             () -> config.huds.health.icon,
@@ -184,7 +184,7 @@ public class HealthHUD extends TextHUD {
             var scale = Option.<Float>createBuilder()
                     .name(Text.literal("Health HUD Scale"))
                     .description(OptionDescription.of(Text.literal("The scale of the Health HUD")))
-                    .controller(SkyblockTweaksConfig::generateScaleController)
+                    .controller(SBTConfig::generateScaleController)
                     .binding(
                             defaults.huds.health.scale,
                             () -> config.huds.health.scale,
