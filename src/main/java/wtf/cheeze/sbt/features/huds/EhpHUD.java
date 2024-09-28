@@ -24,6 +24,7 @@ import dev.isxander.yacl3.api.OptionGroup;
 import dev.isxander.yacl3.api.controller.ColorControllerBuilder;
 import dev.isxander.yacl3.api.controller.StringControllerBuilder;
 import dev.isxander.yacl3.config.v2.api.SerialEntry;
+import net.minecraft.client.resource.language.I18n;
 import net.minecraft.text.Text;
 import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.config.ConfigImpl;
@@ -102,8 +103,8 @@ public class EhpHUD extends TextHUD {
 
         public static OptionGroup getGroup(ConfigImpl defaults, ConfigImpl config) {
             var enabled = Option.<Boolean>createBuilder()
-                    .name(Text.literal("Enable Effective Health HUD"))
-                    .description(OptionDescription.of(Text.literal("Enables the Effective Health HUD")))
+                    .name(key("ehp.enabled"))
+                    .description(keyD("ehp.enabled"))
                     .controller(SBTConfig::generateBooleanController)
                     .binding(
                             defaults.huds.ehp.enabled,
@@ -112,8 +113,8 @@ public class EhpHUD extends TextHUD {
                     )
                     .build();
             var outline = Option.<Color>createBuilder()
-                    .name(Text.literal("Effective Health HUD Outline Color"))
-                    .description(OptionDescription.of(Text.literal("The outline color of the Effective Health HUD")))
+                    .name(key("ehp.outlineColor"))
+                    .description(keyD("ehp.outlineColor"))
                     .controller(ColorControllerBuilder::create)
                     .available(config.huds.ehp.mode == HudLine.DrawMode.OUTLINE)
                     .binding(
@@ -126,8 +127,8 @@ public class EhpHUD extends TextHUD {
                     )
                     .build();
             var mode = Option.<HudLine.DrawMode>createBuilder()
-                    .name(Text.literal("Effective Health HUD Mode"))
-                    .description(OptionDescription.of(Text.literal("The draw mode of the Effective Health HUD. Pure will render without shadow, Shadow will render with a shadow, and Outline will render with an outline\n§4Warning: §cOutline mode is still a work in progress and can cause annoying visual bugs in menus.")))
+                    .name(key("ehp.mode"))
+                    .description(keyD("ehp.mode"))
                     .controller(SBTConfig::generateDrawModeController)
                     .binding(
                             defaults.huds.ehp.mode,
@@ -141,8 +142,8 @@ public class EhpHUD extends TextHUD {
                     .build();
 
             var color = Option.<Color>createBuilder()
-                    .name(Text.literal("Effective Health HUD Color"))
-                    .description(OptionDescription.of(Text.literal("The color of the Effective Health HUD")))
+                    .name(key("ehp.color"))
+                    .description(keyD("ehp.color"))
                     .controller(ColorControllerBuilder::create)
                     .binding(
                             new Color(defaults.huds.ehp.color),
@@ -152,8 +153,8 @@ public class EhpHUD extends TextHUD {
                     )
                     .build();
             var icon = Option.<Boolean>createBuilder()
-                    .name(Text.literal("Effective Health HUD Icon"))
-                    .description(OptionDescription.of(Text.literal("Enables the icon (❤) in the Effective Health HUD")))
+                    .name(key("ehp.icon"))
+                    .description(keyD("ehp.icon"))
                     .controller(SBTConfig::generateBooleanController)
                     .binding(
                             defaults.huds.ehp.icon,
@@ -162,8 +163,8 @@ public class EhpHUD extends TextHUD {
                     )
                     .build();
             var separator = Option.<String>createBuilder()
-                    .name(Text.literal("Effective Health HUD Separator"))
-                    .description(OptionDescription.of(Text.literal("The separator for the Effective Health HUD")))
+                    .name(key("ehp.separator"))
+                    .description(keyD("ehp.separator"))
                     .controller(StringControllerBuilder::create)
                     .binding(
                             defaults.huds.ehp.separator,
@@ -172,8 +173,8 @@ public class EhpHUD extends TextHUD {
                     )
                     .build();
             var scale = Option.<Float>createBuilder()
-                    .name(Text.literal("Effective Health HUD Scale"))
-                    .description(OptionDescription.of(Text.literal("The scale of the Effective Health HUD")))
+                    .name(key("ehp.scale"))
+                    .description(keyD("ehp.scale"))
                     .controller(SBTConfig::generateScaleController)
                     .binding(
                             defaults.huds.ehp.scale,
@@ -184,8 +185,8 @@ public class EhpHUD extends TextHUD {
 
 
             return OptionGroup.createBuilder()
-                    .name(Text.literal("Effective Health HUD"))
-                    .description(OptionDescription.of(Text.literal("Settings for the Effective Health HUD")))
+                    .name(key("ehp"))
+                    .description(keyD("ehp"))
                     .option(enabled)
                     .option(mode)
                     .option(color)

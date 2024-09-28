@@ -105,8 +105,8 @@ public class DrillFuelHUD extends TextHUD {
 
         public static OptionGroup getGroup(ConfigImpl defaults, ConfigImpl config) {
             var enabled = Option.<Boolean>createBuilder()
-                    .name(Text.literal("Enable Drill Fuel HUD"))
-                    .description(OptionDescription.of(Text.literal("Enables the Drill Fuel HUD")))
+                    .name(key("drillFuel.enabled"))
+                    .description(keyD("drillFuel.enabled"))
                     .controller(SBTConfig::generateBooleanController)
                     .binding(
                             defaults.huds.drillFuel.enabled,
@@ -115,8 +115,8 @@ public class DrillFuelHUD extends TextHUD {
                     )
                     .build();
             var secondNo = Option.<Boolean>createBuilder()
-                    .name(Text.literal("Abridge Max Fuel"))
-                    .description(OptionDescription.of(Text.literal("Replaces thousands with k in the max fuel in the Drill Fuel HUD")))
+                    .name(key("drillFuel.abridgeSecondNumber"))
+                    .description(keyD("drillFuel.abridgeSecondNumber"))
                     .controller(SBTConfig::generateBooleanController)
                     .binding(
                             defaults.huds.drillFuel.abridgeSecondNumber,
@@ -125,8 +125,8 @@ public class DrillFuelHUD extends TextHUD {
                     )
                     .build();
             var color = Option.<Color>createBuilder()
-                    .name(Text.literal("Drill Fuel HUD Color"))
-                    .description(OptionDescription.of(Text.literal("The color of the Drill Fuel HUD")))
+                    .name(key("drillFuel.color"))
+                    .description(keyD("drillFuel.color"))
                     .controller(ColorControllerBuilder::create)
                     .binding(
                             new Color(defaults.huds.drillFuel.color),
@@ -136,8 +136,8 @@ public class DrillFuelHUD extends TextHUD {
                     )
                     .build();
             var outline = Option.<Color>createBuilder()
-                    .name(Text.literal("Drill Fuel HUD Outline Color"))
-                    .description(OptionDescription.of(Text.literal("The outline color of the Drill Fuel HUD")))
+                    .name(key("drillFuel.outlineColor"))
+                    .description(keyD("drillFuel.outlineColor"))
                     .controller(ColorControllerBuilder::create)
                     .available(config.huds.drillFuel.mode == HudLine.DrawMode.OUTLINE)
                     .binding(
@@ -147,8 +147,8 @@ public class DrillFuelHUD extends TextHUD {
                     )
                     .build();
             var mode = Option.<HudLine.DrawMode>createBuilder()
-                    .name(Text.literal("Drill Fuel HUD Mode"))
-                    .description(OptionDescription.of(Text.literal("The draw mode of the Drill Fuel HUD. Pure will render without shadow, Shadow will render with a shadow, and Outline will render with an outline\n§4Warning: §cOutline mode is still a work in progress and can cause annoying visual bugs in menus.")))
+                    .name(key("drillFuel.mode"))
+                    .description(keyD("drillFuel.mode"))
                     .controller(SBTConfig::generateDrawModeController)
                     .binding(
                             defaults.huds.drillFuel.mode,
@@ -161,8 +161,8 @@ public class DrillFuelHUD extends TextHUD {
                     )
                     .build();
             var separator = Option.<String>createBuilder()
-                    .name(Text.literal("Drill Fuel HUD Separator"))
-                    .description(OptionDescription.of(Text.literal("The separator for the Drill Fuel HUD")))
+                    .name(key("drillFuel.separator"))
+                    .description(keyD("drillFuel.separator"))
                     .controller(StringControllerBuilder::create)
                     .binding(
                             defaults.huds.drillFuel.separator,
@@ -171,8 +171,8 @@ public class DrillFuelHUD extends TextHUD {
                     )
                     .build();
             var scale = Option.<Float>createBuilder()
-                    .name(Text.literal("Drill Fuel HUD Scale"))
-                    .description(OptionDescription.of(Text.literal("The scale of the Drill Fuel HUD")))
+                    .name(key("drillFuel.scale"))
+                    .description(keyD("drillFuel.scale"))
                     .controller(SBTConfig::generateScaleController)
                     .binding(
                             defaults.huds.drillFuel.scale,
@@ -182,8 +182,8 @@ public class DrillFuelHUD extends TextHUD {
                     .build();
 
             return OptionGroup.createBuilder()
-                    .name(Text.literal("Drill Fuel HUD"))
-                    .description(OptionDescription.of(Text.literal("Settings for the Drill Fuel HUD")))
+                    .name(key("drillFuel"))
+                    .description(keyD("drillFuel"))
                     .option(enabled)
                     .option(secondNo)
                     .option(mode)

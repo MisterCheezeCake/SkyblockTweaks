@@ -27,6 +27,7 @@ import dev.isxander.yacl3.api.controller.StringControllerBuilder;
 import dev.isxander.yacl3.config.v2.api.SerialEntry;
 import net.azureaaron.hmapi.network.HypixelNetworking;
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents;
+import net.minecraft.client.resource.language.I18n;
 import net.minecraft.text.Text;
 import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.config.ConfigImpl;
@@ -36,6 +37,8 @@ import wtf.cheeze.sbt.utils.TextUtils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
+import static wtf.cheeze.sbt.config.categories.Chat.key;
+import static wtf.cheeze.sbt.config.categories.Chat.keyD;
 
 public class PartyFeatures {
 
@@ -132,8 +135,8 @@ public class PartyFeatures {
 
         public static ListOption<String> getBlackList(ConfigImpl defaults, ConfigImpl config) {
             return ListOption.<String>createBuilder()
-                    .name(Text.literal("Party Commands Blocked Users"))
-                    .description(OptionDescription.of(Text.literal("Users that are blocked from using party commands")))
+                    .name(key("partyFeatures.blockedUsers"))
+                    .description(keyD("partyFeatures.blockedUsers"))
                     .binding(
                             defaults.partyCommands.blockedUsers,
                             () -> config.partyCommands.blockedUsers,
@@ -147,8 +150,8 @@ public class PartyFeatures {
         public static OptionGroup getGroup(ConfigImpl defaults, ConfigImpl config) {
 
             var enabled = Option.<Boolean>createBuilder()
-                    .name(Text.literal("Enable Party Commands"))
-                    .description(OptionDescription.of(Text.literal("Whether or not to enable party commands")))
+                    .name(key("partyFeatures.enabled"))
+                    .description(keyD("partyFeatures.enabled"))
                     .controller(SBTConfig::generateBooleanController)
                     .binding(
                             defaults.partyCommands.enabled,
@@ -157,8 +160,8 @@ public class PartyFeatures {
                     )
                     .build();
             var cooldown = Option.<Integer>createBuilder()
-                    .name(Text.literal("Command Cooldown"))
-                    .description(OptionDescription.of(Text.literal("The cooldown in milliseconds between party commands")))
+                    .name(key("partyFeatures.cooldown"))
+                    .description(keyD("partyFeatures.cooldown"))
                     .controller(opt -> IntegerFieldControllerBuilder.create(opt).min(0).max(10000))
                     .binding(
                             defaults.partyCommands.cooldown,
@@ -168,8 +171,8 @@ public class PartyFeatures {
                     .build();
 
             var inviteBoop = Option.<Boolean>createBuilder()
-                    .name(Text.literal("Boop Invites"))
-                    .description(OptionDescription.of(Text.literal("Whether or not to prompt a party invite when booped by a player")))
+                    .name(key("partyFeatures.boopInvites"))
+                    .description(keyD("partyFeatures.boopInvites"))
                     .controller(SBTConfig::generateBooleanController)
                     .binding(
                             defaults.partyCommands.boopInvites,
@@ -179,13 +182,14 @@ public class PartyFeatures {
                     .build();
 
 
-            return OptionGroup.createBuilder()
-                    .name(Text.literal("Party Features"))
-                    .description(OptionDescription.of(Text.literal("Settings for Party Features")))
+            return  OptionGroup.createBuilder()
+                    .name(key("partyFeatures"))
+                    .description(keyD("partyFeatures"))
                     .option(enabled)
                     .option(cooldown)
                     .option(inviteBoop)
                     .build();
+
         }
 
     }

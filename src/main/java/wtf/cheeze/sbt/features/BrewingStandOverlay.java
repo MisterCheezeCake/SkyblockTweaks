@@ -11,6 +11,7 @@ import net.minecraft.util.collection.DefaultedList;
 import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SBTConfig;
+import wtf.cheeze.sbt.config.categories.General;
 import wtf.cheeze.sbt.utils.render.RenderUtils;
 
 public class BrewingStandOverlay {
@@ -60,8 +61,8 @@ public class BrewingStandOverlay {
 
         public static OptionGroup getGroup(ConfigImpl defaults, ConfigImpl config) {
             var enabled = Option.<Boolean>createBuilder()
-                    .name(Text.literal("Brewing Stand Overlay"))
-                    .description(OptionDescription.of(Text.literal("Enables the overlay for the brewing stand")))
+                    .name(General.key("brewingStandOverlay.enabled"))
+                    .description(General.keyD("brewingStandOverlay.enabled"))
                     .controller(SBTConfig::generateBooleanController)
                     .binding(
                             defaults.brewingStandOverlay.enabled,
@@ -71,8 +72,8 @@ public class BrewingStandOverlay {
                     .build();
 
             return OptionGroup.createBuilder()
-                    .name(Text.literal("Brewing Stand Overlay"))
-                    .description(OptionDescription.of(Text.literal("Options for the brewing stand overlay")))
+                    .name(General.key("brewingStandOverlay"))
+                    .description(General.keyD("brewingStandOverlay"))
                     .option(enabled)
                     .build();
 

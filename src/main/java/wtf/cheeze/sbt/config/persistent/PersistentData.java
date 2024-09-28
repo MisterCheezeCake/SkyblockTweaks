@@ -15,6 +15,7 @@ import java.util.HashMap;
  * We use these instead of the cute names so that profiles, even across accounts, will never inherit the persistent data of another
  */
 public class PersistentData {
+
     public HashMap<String, ProfileData> profiles = new HashMap<String, ProfileData>();
     private static final Path configPath = FabricLoader.getInstance().getConfigDir().resolve("skyblocktweaks-persistent.json");
 

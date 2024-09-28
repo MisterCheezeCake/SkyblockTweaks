@@ -23,6 +23,7 @@ import dev.isxander.yacl3.api.OptionDescription;
 import dev.isxander.yacl3.api.OptionGroup;
 import dev.isxander.yacl3.api.controller.ColorControllerBuilder;
 import dev.isxander.yacl3.config.v2.api.SerialEntry;
+import net.minecraft.client.resource.language.I18n;
 import net.minecraft.text.Text;
 import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.config.ConfigImpl;
@@ -99,8 +100,8 @@ public class FpsHUD extends TextHUD {
 
         public static OptionGroup getGroup(ConfigImpl defaults, ConfigImpl config) {
             var enabled = Option.<Boolean>createBuilder()
-                    .name(Text.literal("Enable FPS HUD"))
-                    .description(OptionDescription.of(Text.literal("Enables the FPS HUD")))
+                    .name(key("fps.enabled"))
+                    .description(keyD("fps.enabled"))
                     .controller(SBTConfig::generateBooleanController)
                     .binding(
                             defaults.huds.fps.enabled,
@@ -110,8 +111,8 @@ public class FpsHUD extends TextHUD {
                     .build();
 
             var outside = Option.<Boolean>createBuilder()
-                    .name(Text.literal("Show outside of Skyblock"))
-                    .description(OptionDescription.of(Text.literal("Whether to show the FPS HUD outside of Skyblock")))
+                    .name(key("fps.showOutside"))
+                    .description(keyD("fps.showOutside"))
                     .controller(SBTConfig::generateBooleanController)
                     .binding(
                             defaults.huds.fps.showOutside,
@@ -121,8 +122,8 @@ public class FpsHUD extends TextHUD {
                     .build();
 
             var reverse = Option.<Boolean>createBuilder()
-                    .name(Text.literal("Reverse FPS HUD"))
-                    .description(OptionDescription.of(Text.literal("Whether to show the FPS as 'FPS: 123' instead of '123 FPS'")))
+                    .name(key("fps.reverse"))
+                    .description(keyD("fps.reverse"))
                     .controller(SBTConfig::generateBooleanController)
                     .binding(
                             defaults.huds.fps.reverse,
@@ -131,8 +132,8 @@ public class FpsHUD extends TextHUD {
                     )
                     .build();
             var color = Option.<Color>createBuilder()
-                    .name(Text.literal("FPS HUD Color"))
-                    .description(OptionDescription.of(Text.literal("The color of the FPS HUD")))
+                    .name(key("fps.color"))
+                    .description(keyD("fps.color"))
                     .controller(ColorControllerBuilder::create)
                     .binding(
                             new Color(defaults.huds.fps.color),
@@ -142,8 +143,8 @@ public class FpsHUD extends TextHUD {
                     )
                     .build();
             var outline = Option.<Color>createBuilder()
-                    .name(Text.literal("FPS HUD Outline Color"))
-                    .description(OptionDescription.of(Text.literal("The outline color of the FPS HUD")))
+                    .name(key("fps.outlineColor"))
+                    .description(keyD("fps.outlineColor"))
                     .controller(ColorControllerBuilder::create)
                     .available(config.huds.fps.mode == HudLine.DrawMode.OUTLINE)
                     .binding(
@@ -154,8 +155,8 @@ public class FpsHUD extends TextHUD {
                     )
                     .build();
             var mode = Option.<HudLine.DrawMode>createBuilder()
-                    .name(Text.literal("FPS HUD Mode"))
-                    .description(OptionDescription.of(Text.literal("The draw mode of the FPS HUD. Pure will render without shadow, Shadow will render with a shadow, and Outline will render with an outline\n§4Warning: §cOutline mode is still a work in progress and can cause annoying visual bugs in menus.")))
+                    .name(key("fps.mode"))
+                    .description(keyD("fps.mode"))
                     .controller(SBTConfig::generateDrawModeController)
                     .binding(
                             defaults.huds.fps.mode,
@@ -168,8 +169,8 @@ public class FpsHUD extends TextHUD {
                     )
                     .build();
             var scale = Option.<Float>createBuilder()
-                    .name(Text.literal("FPS HUD Scale"))
-                    .description(OptionDescription.of(Text.literal("The scale of the FPS HUD")))
+                    .name(key("fps.scale"))
+                    .description(keyD("fps.scale"))
                     .controller(SBTConfig::generateScaleController)
                     .binding(
                             defaults.huds.fps.scale,
@@ -179,8 +180,8 @@ public class FpsHUD extends TextHUD {
                     .build();
 
             return OptionGroup.createBuilder()
-                    .name(Text.literal("FPS HUD"))
-                    .description(OptionDescription.of(Text.literal("Settings for the FPS HUD")))
+                    .name(key("fps"))
+                    .description(keyD("fps"))
                     .option(enabled)
                     .option(outside)
                     .option(reverse)

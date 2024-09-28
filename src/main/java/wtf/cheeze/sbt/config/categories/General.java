@@ -16,8 +16,8 @@ import wtf.cheeze.sbt.utils.actionbar.ActionBarTransformer;
 public class General {
     public static ConfigCategory getCategory(ConfigImpl defaults, ConfigImpl config) {
         return ConfigCategory.createBuilder()
-                .name(Text.literal("General"))
-                .tooltip(Text.literal("General settings for SkyblockTweaks"))
+                .name(Text.translatable("sbt.config.general"))
+                .tooltip(Text.translatable("sbt.config.general.desc"))
                 .option(Version.getStreamOption(defaults, config))
                 .group(InventoryTweaks.getGroup(defaults, config))
                 .group(MenuHighlights.Config.getGroup(defaults, config))
@@ -25,6 +25,15 @@ public class General {
                 .group(HudTweaks.getGroup(defaults, config))
                 .group(ActionBarTransformer.Config.getGroup(defaults, config))
                 .build();
+    }
+
+    public static final String BASE_KEY = "sbt.config.general.";
+
+    public static Text key(String key) {
+        return Text.translatable(BASE_KEY + key);
+    }
+    public static OptionDescription keyD(String key) {
+        return OptionDescription.of(Text.translatable(BASE_KEY + key + ".desc"));
     }
 
     // These are subclassed because their features live in mixins and so can't control their own config
@@ -37,8 +46,8 @@ public class General {
 
         public static OptionGroup getGroup(ConfigImpl defaults, ConfigImpl config) {
             var noRenderPotionHud = Option.<Boolean>createBuilder()
-                    .name(Text.literal("Disable Potion HUD"))
-                    .description(OptionDescription.of(Text.literal("Disables rendering of the potion HUD in your inventory")))
+                    .name(key("inventory.noRenderPotionHud"))
+                    .description(keyD("inventory.noRenderPotionHud"))
                     .controller(SBTConfig::generateBooleanController)
                     .binding(
                             defaults.inventory.noRenderPotionHud,
@@ -47,8 +56,8 @@ public class General {
                     )
                     .build();
             var redirectRecipeBook = Option.<Boolean>createBuilder()
-                    .name(Text.literal("Redirect Recipe Book Clicks"))
-                    .description(OptionDescription.of(Text.literal("Redirects the recipe book button to the SkyBlock recipe book")))
+                    .name(key("inventory.redirectRecipeBook"))
+                    .description(keyD("inventory.redirectRecipeBook"))
                     .controller(SBTConfig::generateBooleanController)
                     .binding(
                             defaults.inventory.redirectRecipeBook,
@@ -58,8 +67,8 @@ public class General {
                     .build();
 
             return OptionGroup.createBuilder()
-                    .name(Text.literal("Inventory Tweaks"))
-                    .description(OptionDescription.of(Text.literal("Various tweaks to the inventory screen")))
+                    .name(key("inventory"))
+                    .description(keyD("inventory"))
                     .option(noRenderPotionHud)
                     .option(redirectRecipeBook)
                     .build();
@@ -84,8 +93,8 @@ public class General {
 
         public static OptionGroup getGroup(ConfigImpl defaults, ConfigImpl config) {
             var noShadowActionBar = Option.<Boolean>createBuilder()
-                    .name(Text.literal("Disable Action Bar Shadow"))
-                    .description(OptionDescription.of(Text.literal("Removes the shadow from the action bar")))
+                    .name(key("hudTweaks.noShadowActionBar"))
+                    .description(keyD("hudTweaks.noShadowActionBar"))
                     .controller(SBTConfig::generateBooleanController)
                     .binding(
                             defaults.hudTweaks.noShadowActionBar,
@@ -95,8 +104,8 @@ public class General {
                     .build();
 
             var noRenderBossBar = Option.<Boolean>createBuilder()
-                    .name(Text.literal("Disable Boss Bar"))
-                    .description(OptionDescription.of(Text.literal("Disables rendering of boss bars")))
+                    .name(key("hudTweaks.noRenderBossBar"))
+                    .description(keyD("hudTweaks.noRenderBossBar"))
                     .controller(SBTConfig::generateBooleanController)
                     .binding(
                             defaults.hudTweaks.noRenderBossBar,
@@ -108,8 +117,8 @@ public class General {
 
 
             var noRenderHearts = Option.<Boolean>createBuilder()
-                    .name(Text.literal("Disable Hearts"))
-                    .description(OptionDescription.of(Text.literal("Disables rendering of health hearts ")))
+                    .name(key("hudTweaks.noRenderHearts"))
+                    .description(keyD("hudTweaks.noRenderHearts"))
                     .controller(SBTConfig::generateBooleanController)
                     .binding(
                             defaults.hudTweaks.noRenderHearts,
@@ -118,8 +127,8 @@ public class General {
                     )
                     .build();
             var noRenderArmor = Option.<Boolean>createBuilder()
-                    .name(Text.literal("Disable Armor Bar"))
-                    .description(OptionDescription.of(Text.literal("Disables rendering of the armor bar")))
+                    .name(key("hudTweaks.noRenderArmor"))
+                    .description(keyD("hudTweaks.noRenderArmor"))
                     .controller(SBTConfig::generateBooleanController)
                     .binding(
                             defaults.hudTweaks.noRenderArmor,
@@ -129,8 +138,8 @@ public class General {
                     .build();
 
             var noRenderHunger = Option.<Boolean>createBuilder()
-                    .name(Text.literal("Disable Hunger Bar"))
-                    .description(OptionDescription.of(Text.literal("Disables rendering of the hunger bar")))
+                    .name(key("hudTweaks.noRenderHunger"))
+                    .description(keyD("hudTweaks.noRenderHunger"))
                     .controller(SBTConfig::generateBooleanController)
                     .binding(
                             defaults.hudTweaks.noRenderHunger,
@@ -140,8 +149,8 @@ public class General {
                     .build();
 
             return OptionGroup.createBuilder()
-                    .name(Text.literal("HUD Tweaks"))
-                    .description(OptionDescription.of(Text.literal("Various tweaks to Minecraft's HUD")))
+                    .name(key("hudTweaks"))
+                    .description(keyD("hudTweaks"))
                     .option(noShadowActionBar)
                     .option(noRenderBossBar)
                     .option(noRenderHearts)

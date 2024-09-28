@@ -98,8 +98,8 @@ public class DamageReductionHUD extends TextHUD {
 
         public static OptionGroup getGroup(ConfigImpl defaults, ConfigImpl config) {
             var enabled = Option.<Boolean>createBuilder()
-                    .name(Text.literal("Enable Damage Reduction HUD"))
-                    .description(OptionDescription.of(Text.literal("Enables the Damage Reduction HUD")))
+                    .name(key("dr.enabled"))
+                    .description(keyD("dr.enabled"))
                     .controller(SBTConfig::generateBooleanController)
                     .binding(
                             defaults.huds.dr.enabled,
@@ -108,8 +108,8 @@ public class DamageReductionHUD extends TextHUD {
                     )
                     .build();
             var color = Option.<Color>createBuilder()
-                    .name(Text.literal("Damage Reduction HUD Color"))
-                    .description(OptionDescription.of(Text.literal("The color of the Damage Reduction HUD")))
+                    .name(key("dr.color"))
+                    .description(keyD("dr.color"))
                     .controller(ColorControllerBuilder::create)
                     .binding(
                             new Color(defaults.huds.dr.color),
@@ -119,8 +119,8 @@ public class DamageReductionHUD extends TextHUD {
                     )
                     .build();
             var outline = Option.<Color>createBuilder()
-                    .name(Text.literal("Damage Reduction HUD Outline Color"))
-                    .description(OptionDescription.of(Text.literal("The outline color of the Damage Reduction HUD")))
+                    .name(key("dr.outlineColor"))
+                    .description(keyD("dr.outlineColor"))
                     .controller(ColorControllerBuilder::create)
                     .available(config.huds.dr.mode == HudLine.DrawMode.OUTLINE)
                     .binding(
@@ -131,8 +131,8 @@ public class DamageReductionHUD extends TextHUD {
                     )
                     .build();
             var mode = Option.<HudLine.DrawMode>createBuilder()
-                    .name(Text.literal("Damage Reduction HUD Mode"))
-                    .description(OptionDescription.of(Text.literal("The draw mode of the Damage Reduction HUD. Pure will render without shadow, Shadow will render with a shadow, and Outline will render with an outline\n§4Warning: §cOutline mode is still a work in progress and can cause annoying visual bugs in menus.")))
+                    .name(key("dr.mode"))
+                    .description(keyD("dr.mode"))
                     .controller(SBTConfig::generateDrawModeController)
                     .binding(
                             defaults.huds.dr.mode,
@@ -145,8 +145,8 @@ public class DamageReductionHUD extends TextHUD {
                     )
                     .build();
             var scale = Option.<Float>createBuilder()
-                    .name(Text.literal("Damage Reduction HUD Scale"))
-                    .description(OptionDescription.of(Text.literal("The scale of the Damage Reduction HUD")))
+                    .name(key("dr.scale"))
+                    .description(keyD("dr.scale"))
                     .controller(SBTConfig::generateScaleController)
                     .binding(
                             defaults.huds.dr.scale,
@@ -156,8 +156,8 @@ public class DamageReductionHUD extends TextHUD {
                     .build();
 
             return OptionGroup.createBuilder()
-                    .name(Text.literal("Damage Reduction HUD"))
-                    .description(OptionDescription.of(Text.literal("Settings for the Damage Reduction HUD")))
+                    .name(key("dr"))
+                    .description(keyD("dr"))
                     .option(enabled)
                     .option(mode)
                     .option(color)

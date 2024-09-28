@@ -24,6 +24,7 @@ import dev.isxander.yacl3.api.OptionGroup;
 import dev.isxander.yacl3.api.controller.ColorControllerBuilder;
 import dev.isxander.yacl3.api.controller.StringControllerBuilder;
 import dev.isxander.yacl3.config.v2.api.SerialEntry;
+import net.minecraft.client.resource.language.I18n;
 import net.minecraft.text.Text;
 import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.config.ConfigImpl;
@@ -104,8 +105,8 @@ public class HealthHUD extends TextHUD {
 
         public static OptionGroup getGroup(ConfigImpl defaults, ConfigImpl config) {
             var enabled = Option.<Boolean>createBuilder()
-                    .name(Text.literal("Enable Health HUD"))
-                    .description(OptionDescription.of(Text.literal("Enables the Health HUD")))
+                    .name(key("health.enabled"))
+                    .description(keyD("health.enabled"))
                     .controller(SBTConfig::generateBooleanController)
                     .binding(
                             defaults.huds.health.enabled,
@@ -114,8 +115,8 @@ public class HealthHUD extends TextHUD {
                     )
                     .build();
             var color = Option.<Color>createBuilder()
-                    .name(Text.literal("Health HUD Color"))
-                    .description(OptionDescription.of(Text.literal("The color of the Health HUD")))
+                    .name(key("health.color"))
+                    .description(keyD("health.color"))
                     .controller(ColorControllerBuilder::create)
                     .binding(
                             new Color(defaults.huds.health.color),
@@ -125,8 +126,8 @@ public class HealthHUD extends TextHUD {
                     )
                     .build();
             var colorAbsorption = Option.<Color>createBuilder()
-                    .name(Text.literal("Health HUD Absorption Color"))
-                    .description(OptionDescription.of(Text.literal("The color of the Health HUD when you have absorption")))
+                    .name(key("health.colorAbsorption"))
+                    .description(keyD("health.colorAbsorption"))
                     .controller(ColorControllerBuilder::create)
                     .binding(
                             new Color(defaults.huds.health.colorAbsorption),
@@ -136,8 +137,8 @@ public class HealthHUD extends TextHUD {
                     )
                     .build();
             var outline = Option.<Color>createBuilder()
-                    .name(Text.literal("Health HUD Outline Color"))
-                    .description(OptionDescription.of(Text.literal("The outline color of the Health HUD")))
+                    .name(key("health.outlineColor"))
+                    .description(keyD("health.outlineColor"))
                     .controller(ColorControllerBuilder::create)
                     .available(config.huds.health.mode == HudLine.DrawMode.OUTLINE)
                     .binding(
@@ -148,8 +149,8 @@ public class HealthHUD extends TextHUD {
                     )
                     .build();
             var mode = Option.<HudLine.DrawMode>createBuilder()
-                    .name(Text.literal("Health HUD Mode"))
-                    .description(OptionDescription.of(Text.literal("The draw mode of the Health HUD. Pure will render without shadow, Shadow will render with a shadow, and Outline will render with an outline\n§4Warning: §cOutline mode is still a work in progress and can cause annoying visual bugs in menus.")))
+                    .name(key("health.mode"))
+                    .description(keyD("health.mode"))
                     .controller(SBTConfig::generateDrawModeController)
                     .binding(
                             defaults.huds.health.mode,
@@ -162,8 +163,8 @@ public class HealthHUD extends TextHUD {
                     )
                     .build();
             var icon = Option.<Boolean>createBuilder()
-                    .name(Text.literal("Health HUD Icon"))
-                    .description(OptionDescription.of(Text.literal("Enables the icon (❤) in the Health HUD")))
+                    .name(key("health.icon"))
+                    .description(keyD("health.icon"))
                     .controller(SBTConfig::generateBooleanController)
                     .binding(
                             defaults.huds.health.icon,
@@ -172,8 +173,8 @@ public class HealthHUD extends TextHUD {
                     )
                     .build();
             var separator = Option.<String>createBuilder()
-                    .name(Text.literal("Health HUD Separator"))
-                    .description(OptionDescription.of(Text.literal("The separator for the Health HUD")))
+                    .name(key("health.separator"))
+                    .description(keyD("health.separator"))
                     .controller(StringControllerBuilder::create)
                     .binding(
                             defaults.huds.health.separator,
@@ -182,8 +183,8 @@ public class HealthHUD extends TextHUD {
                     )
                     .build();
             var scale = Option.<Float>createBuilder()
-                    .name(Text.literal("Health HUD Scale"))
-                    .description(OptionDescription.of(Text.literal("The scale of the Health HUD")))
+                    .name(key("health.scale"))
+                    .description(keyD("health.scale"))
                     .controller(SBTConfig::generateScaleController)
                     .binding(
                             defaults.huds.health.scale,
@@ -192,8 +193,8 @@ public class HealthHUD extends TextHUD {
                     )
                     .build();
             return OptionGroup.createBuilder()
-                    .name(Text.literal("Health HUD"))
-                    .description(OptionDescription.of(Text.literal("Settings for the Health HUD")))
+                    .name(key("health"))
+                    .description(keyD("health"))
                     .option(enabled)
                     .option(mode)
                     .option(color)

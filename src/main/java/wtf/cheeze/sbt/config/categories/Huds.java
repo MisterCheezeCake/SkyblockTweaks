@@ -80,8 +80,8 @@ public class Huds {
 
     public static ConfigCategory getCategory(ConfigImpl defaults, ConfigImpl config) {
         return ConfigCategory.createBuilder()
-                .name(Text.literal("HUDs"))
-                .tooltip(Text.literal("Settings for various HUDs"))
+                .name(Text.translatable("sbt.config.huds"))
+                .tooltip(Text.translatable("sbt.config.huds.desc"))
                 .group(SkillHUDManager.SkillHUD.Config.getGroup(defaults, config))
                 .group(SkillHUDManager.SkillBar.Config.getGroup(defaults, config))
                 .group(HealthHUD.Config.getGroup(defaults, config))

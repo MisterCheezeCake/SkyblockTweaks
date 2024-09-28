@@ -23,6 +23,7 @@ import dev.isxander.yacl3.api.OptionDescription;
 import dev.isxander.yacl3.api.OptionGroup;
 import dev.isxander.yacl3.api.controller.ColorControllerBuilder;
 import dev.isxander.yacl3.config.v2.api.SerialEntry;
+import net.minecraft.client.resource.language.I18n;
 import net.minecraft.text.Text;
 import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.config.ConfigImpl;
@@ -86,8 +87,8 @@ public class HealthBar extends BarHUD {
 
         public static OptionGroup getGroup(ConfigImpl defaults, ConfigImpl config) {
             var enabled = Option.<Boolean>createBuilder()
-                    .name(Text.literal("Enable Health Bar"))
-                    .description(OptionDescription.of(Text.literal("Enables the Health Bar")))
+                    .name(key("healthBar.enabled"))
+                    .description(keyD("healthBar.enabled"))
                     .controller(SBTConfig::generateBooleanController)
                     .binding(
                             defaults.huds.healthBar.enabled,
@@ -96,8 +97,8 @@ public class HealthBar extends BarHUD {
                     )
                     .build();
             var color = Option.<Color>createBuilder()
-                    .name(Text.literal("Health Bar Color"))
-                    .description(OptionDescription.of(Text.literal("The color of the Health Bar")))
+                    .name(key("healthBar.color"))
+                    .description(keyD("healthBar.color"))
                     .controller(ColorControllerBuilder::create)
                     .binding(
                             new Color(defaults.huds.healthBar.color),
@@ -107,8 +108,8 @@ public class HealthBar extends BarHUD {
                     )
                     .build();
             var absorbColor = Option.<Color>createBuilder()
-                    .name(Text.literal("Health Bar Absorption Color"))
-                    .description(OptionDescription.of(Text.literal("The color of the Health Bar when you have absorption")))
+                    .name(key("healthBar.colorAbsorption"))
+                    .description(keyD("healthBar.colorAbsorption"))
                     .controller(ColorControllerBuilder::create)
                     .binding(
                             new Color(defaults.huds.healthBar.colorAbsorption),
@@ -118,8 +119,8 @@ public class HealthBar extends BarHUD {
                     )
                     .build();
             var scale = Option.<Float>createBuilder()
-                    .name(Text.literal("Health Bar Scale"))
-                    .description(OptionDescription.of(Text.literal("The scale of the Health Bar")))
+                    .name(key("healthBar.scale"))
+                    .description(keyD("healthBar.scale"))
                     .controller(SBTConfig::generateScaleController)
                     .binding(
                             defaults.huds.healthBar.scale,
@@ -128,8 +129,8 @@ public class HealthBar extends BarHUD {
                     )
                     .build();
             return OptionGroup.createBuilder()
-                    .name(Text.literal("Health Bar"))
-                    .description(OptionDescription.of(Text.literal("Settings for the Health Bar")))
+                    .name(key("healthBar"))
+                    .description(keyD("healthBar"))
                     .option(enabled)
                     .option(color)
                     .option(absorbColor)

@@ -23,6 +23,7 @@ import com.mojang.brigadier.arguments.StringArgumentType;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.screen.ingame.GenericContainerScreen;
 import net.minecraft.text.Text;
 import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.config.SBTConfig;
@@ -75,6 +76,35 @@ public class SBTCommand {
 
                                         )
 
+                                )
+                                .then(literal("dumpComponents")
+                                        .then(literal("hand")
+                                        .executes(context -> {
+                                            var components =  SkyblockTweaks.mc.player.getMainHandStack().getComponents();
+                                            components.forEach((component) -> {
+                                                context.getSource().sendFeedback(Text.of(PREFIX + " §3" + component.toString()));
+                                            });
+                                            return 1;
+                                        }))
+                                        .then(literal("slot")
+                                                .then(argument("number" , IntegerArgumentType.integer())
+                                                        .executes(context -> {
+                                                            new Thread(() -> {
+                                                                try {
+                                                                    Thread.sleep(1500);
+                                                                    var screen = (GenericContainerScreen) SkyblockTweaks.mc.currentScreen;
+                                                                    var components = screen.getScreenHandler().getSlot(IntegerArgumentType.getInteger(context, "number")).getStack().getComponents();
+                                                                    components.forEach((component) -> {
+                                                                        context.getSource().sendFeedback(Text.of(PREFIX + " §3" + component.toString()));
+                                                                    });
+                                                                } catch (Exception e) {
+                                                                    SkyblockTweaks.LOGGER.error("Error while sleeping", e);
+                                                                }
+
+                                                            }).start();
+                                                            return 1;
+                                                        })
+                                        )
                                 )
                                 .executes(context -> {
                                     var source = context.getSource();
@@ -325,7 +355,7 @@ public class SBTCommand {
                                     context.getSource().sendFeedback(Text.of(PREFIX + " §cInvalid arguments"));
                                     return 0;
                                 })
-
+                        )
                         .executes(context -> {
                                     MinecraftClient mc = context.getSource().getClient();
                                     Screen screen = new SkyblockTweaksScreenMain(null);

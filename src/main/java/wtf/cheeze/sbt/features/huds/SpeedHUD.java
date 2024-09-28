@@ -92,8 +92,8 @@ public class SpeedHUD extends TextHUD {
 
         public static OptionGroup getGroup(ConfigImpl defaults, ConfigImpl config) {
             var enabled = Option.<Boolean>createBuilder()
-                    .name(Text.literal("Enable Speed HUD"))
-                    .description(OptionDescription.of(Text.literal("Enables the Speed HUD")))
+                    .name(key("speed.enabled"))
+                    .description(keyD("speed.enabled"))
                     .controller(SBTConfig::generateBooleanController)
                     .binding(
                             defaults.huds.speed.enabled,
@@ -103,8 +103,8 @@ public class SpeedHUD extends TextHUD {
                     .build();
 
             var color = Option.<Color>createBuilder()
-                    .name(Text.literal("Speed HUD Color"))
-                    .description(OptionDescription.of(Text.literal("The color of the Speed HUD")))
+                    .name(key("speed.color"))
+                    .description(keyD("speed.color"))
                     .controller(ColorControllerBuilder::create)
                     .binding(
                             new Color(defaults.huds.speed.color),
@@ -114,8 +114,8 @@ public class SpeedHUD extends TextHUD {
                     )
                     .build();
             var outline = Option.<Color>createBuilder()
-                    .name(Text.literal("Speed HUD Outline Color"))
-                    .description(OptionDescription.of(Text.literal("The outline color of the Speed HUD")))
+                    .name(key("speed.outlineColor"))
+                    .description(keyD("speed.outlineColor"))
                     .controller(ColorControllerBuilder::create)
                     .available(config.huds.speed.mode == HudLine.DrawMode.OUTLINE)
                     .binding(
@@ -126,8 +126,8 @@ public class SpeedHUD extends TextHUD {
                     )
                     .build();
             var mode = Option.<HudLine.DrawMode>createBuilder()
-                    .name(Text.literal("Speed HUD Mode"))
-                    .description(OptionDescription.of(Text.literal("The draw mode of the Speed HUD. Pure will render without shadow, Shadow will render with a shadow, and Outline will render with an outline\n§4Warning: §cOutline mode is still a work in progress and can cause annoying visual bugs in menus.")))
+                    .name(key("speed.mode"))
+                    .description(keyD("speed.mode"))
                     .controller(SBTConfig::generateDrawModeController)
                     .binding(
                             defaults.huds.speed.mode,
@@ -140,8 +140,8 @@ public class SpeedHUD extends TextHUD {
                     )
                     .build();
             var scale = Option.<Float>createBuilder()
-                    .name(Text.literal("Speed HUD Scale"))
-                    .description(OptionDescription.of(Text.literal("The scale of the Speed HUD")))
+                    .name(key("speed.scale"))
+                    .description(keyD("speed.scale"))
                     .controller(SBTConfig::generateScaleController)
                     .binding(
                             defaults.huds.speed.scale,
@@ -151,8 +151,8 @@ public class SpeedHUD extends TextHUD {
                     .build();
 
             return OptionGroup.createBuilder()
-                    .name(Text.literal("Speed HUD"))
-                    .description(OptionDescription.of(Text.literal("Settings for the Speed HUD")))
+                    .name(key("speed"))
+                    .description(keyD("speed"))
                     .option(enabled)
                     .option(mode)
                     .option(color)

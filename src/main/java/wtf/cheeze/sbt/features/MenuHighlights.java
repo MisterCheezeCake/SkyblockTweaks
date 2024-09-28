@@ -32,6 +32,8 @@ import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SBTConfig;
 
 import java.util.regex.Pattern;
+import static wtf.cheeze.sbt.config.categories.General.key;
+import static wtf.cheeze.sbt.config.categories.General.keyD;
 
 public class MenuHighlights {
 
@@ -141,8 +143,8 @@ public class MenuHighlights {
 
         public static OptionGroup getGroup(ConfigImpl defaults, ConfigImpl config) {
             var enabled = Option.<Boolean>createBuilder()
-                    .name(Text.literal("Hub Selector Highlights"))
-                    .description(OptionDescription.of(Text.literal("Whether or not to highlight hubs in the hub selector based on their capacity")))
+                    .name(key("menuHighlights.enabledRegular"))
+                    .description(keyD("menuHighlights.enabledRegular"))
                     .controller(SBTConfig::generateBooleanController)
                     .binding(
                                     defaults.hubSelectorHighlight.enabledRegular,
@@ -151,8 +153,8 @@ public class MenuHighlights {
                     )
                     .build();
             var enabledDungeon = Option.<Boolean>createBuilder()
-                    .name(Text.literal("Dungeon Hub Selector Highlights"))
-                    .description(OptionDescription.of(Text.literal("Whether or not to highlight hubs in the dungeon hub selector based on their capacity")))
+                    .name(key("menuHighlights.enabledDungeon"))
+                    .description(keyD("menuHighlights.enabledDungeon"))
                     .controller(SBTConfig::generateBooleanController)
                     .binding(
                                     defaults.hubSelectorHighlight.enabledDungeon,
@@ -161,8 +163,8 @@ public class MenuHighlights {
                     )
                     .build();
             var hotmHighlight = Option.<Boolean>createBuilder()
-                    .name(Text.literal("HOTM Highlights"))
-                    .description(OptionDescription.of(Text.literal("Whether or not to highlight HOTM perks based on their status (enabled/disabled)")))
+                    .name(key("menuHighlights.hotmHighlight"))
+                    .description(keyD("menuHighlights.hotmHighlight"))
                     .controller(SBTConfig::generateBooleanController)
                     .binding(
                                     defaults.hubSelectorHighlight.hotmHighlight,
@@ -172,8 +174,8 @@ public class MenuHighlights {
                     .build();
 
             var widgetHighlight = Option.<Boolean>createBuilder()
-                    .name(Text.literal("Widget Highlights"))
-                    .description(OptionDescription.of(Text.literal("Whether or not to highlight items in the /widgets menu based on their status (enabled/disabled)")))
+                    .name(key("menuHighlights.widgetHighlight"))
+                    .description(keyD("menuHighlights.widgetHighlight"))
                     .controller(SBTConfig::generateBooleanController)
                     .binding(
                                     defaults.hubSelectorHighlight.widgetHighlight,
@@ -182,8 +184,8 @@ public class MenuHighlights {
                     )
                     .build();
             var sblevelHighlight = Option.<Boolean>createBuilder()
-                    .name(Text.literal("Task Highlights"))
-                    .description(OptionDescription.of(Text.literal("Whether or not to highlight items in the /sblevel menu based on their completion status")))
+                    .name(key("menuHighlights.sblevelHighlight"))
+                    .description(keyD("menuHighlights.sblevelHighlight"))
                     .controller(SBTConfig::generateBooleanController)
                     .binding(
                                     defaults.hubSelectorHighlight.sblevelHighlight,
@@ -193,8 +195,8 @@ public class MenuHighlights {
                     .build();
 
             return OptionGroup.createBuilder()
-                    .name(Text.literal("Menu Highlights"))
-                    .description(OptionDescription.of(Text.literal("Settings for Menu Highlights and coloring")))
+                    .name(key("menuHighlights"))
+                    .description(keyD("menuHighlights"))
                     .option(enabled)
                     .option(enabledDungeon)
                     .option(hotmHighlight)

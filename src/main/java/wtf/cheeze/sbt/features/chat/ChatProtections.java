@@ -1,7 +1,6 @@
 package wtf.cheeze.sbt.features.chat;
 
 import dev.isxander.yacl3.api.Option;
-import dev.isxander.yacl3.api.OptionDescription;
 import dev.isxander.yacl3.api.OptionGroup;
 import dev.isxander.yacl3.config.v2.api.SerialEntry;
 import net.fabricmc.fabric.api.client.message.v1.ClientSendMessageEvents;
@@ -10,6 +9,8 @@ import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SBTConfig;
 import wtf.cheeze.sbt.utils.TimedValue;
+import static wtf.cheeze.sbt.config.categories.Chat.key;
+import static wtf.cheeze.sbt.config.categories.Chat.keyD;
 
 import java.util.regex.Pattern;
 
@@ -85,8 +86,8 @@ public class ChatProtections {
         public static OptionGroup getGroup(ConfigImpl defaults, ConfigImpl config) {
 
             var coop = Option.<Boolean>createBuilder()
-                    .name(Text.literal("Coop Add Confirmation"))
-                    .description(OptionDescription.of(Text.literal("Requires confirmation before actually sending a /coopadd request")))
+                    .name(key("chatProtections.coop"))
+                    .description(keyD("chatProtections.coop"))
                     .controller(SBTConfig::generateBooleanController)
                     .binding(
                             defaults.chatProtections.coop,
@@ -95,8 +96,8 @@ public class ChatProtections {
                     )
                     .build();
             var ip = Option.<Boolean>createBuilder()
-                    .name(Text.literal("IP Protection"))
-                    .description(OptionDescription.of(Text.literal("Warns you before sending a message containing an ip address")))
+                    .name(key("chatProtections.ip"))
+                    .description(keyD("chatProtections.ip"))
                     .controller(SBTConfig::generateBooleanController)
                     .binding(
                             defaults.chatProtections.ip,
@@ -106,8 +107,8 @@ public class ChatProtections {
                     .build();
 
             return OptionGroup.createBuilder()
-                    .name(Text.literal("Chat Protections"))
-                    .description(OptionDescription.of(Text.literal("Settings for chat related features")))
+                    .name(key("chatProtections"))
+                    .description(keyD("chatProtections"))
                     .option(coop)
                     .option(ip)
                     .build();

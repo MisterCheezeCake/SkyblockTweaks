@@ -79,8 +79,8 @@ public class TickerHUD extends AbstractTickerHUD {
 
         public static OptionGroup getGroup(ConfigImpl defaults, ConfigImpl config) {
             var enabled = Option.<Boolean>createBuilder()
-                    .name(Text.literal("Enable Ticker HUD"))
-                    .description(OptionDescription.of(Text.literal("Enables the Ticker/Charges HUD")))
+                    .name(key("ticker.enabled"))
+                    .description(keyD("ticker.enabled"))
                     .controller(SBTConfig::generateBooleanController)
                     .binding(
                             defaults.huds.ticker.enabled,
@@ -89,8 +89,8 @@ public class TickerHUD extends AbstractTickerHUD {
                     )
                     .build();
             var scale = Option.<Float>createBuilder()
-                    .name(Text.literal("Ticker HUD Scale"))
-                    .description(OptionDescription.of(Text.literal("The scale of the Mana Bar")))
+                    .name(key("ticker.scale"))
+                    .description(keyD("ticker.scale"))
                     .controller(SBTConfig::generateScaleController)
                     .binding(
                             defaults.huds.ticker.scale,
@@ -100,8 +100,8 @@ public class TickerHUD extends AbstractTickerHUD {
                     .build();
 
             return OptionGroup.createBuilder()
-                    .name(Text.literal("Ticker/Charges HUD"))
-                    .description(OptionDescription.of(Text.literal("Settings for the Ticker/Charges HUD")))
+                    .name(key("ticker"))
+                    .description(keyD("ticker"))
                     .option(enabled)
                     .option(scale)
                     .collapsed(true)

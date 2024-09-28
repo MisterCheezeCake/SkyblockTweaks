@@ -100,8 +100,8 @@ public class CoordinatesHUD extends TextHUD {
 
         public static OptionGroup getGroup(ConfigImpl defaults, ConfigImpl config) {
             var enabled = Option.<Boolean>createBuilder()
-                    .name(Text.literal("Enable Coordinates HUD"))
-                    .description(OptionDescription.of(Text.literal("Enables the Coordinates HUD")))
+                    .name(key("coordinates.enabled"))
+                    .description(keyD("coordinates.enabled"))
                     .controller(SBTConfig::generateBooleanController)
                     .binding(
                             defaults.huds.coordinates.enabled,
@@ -111,8 +111,8 @@ public class CoordinatesHUD extends TextHUD {
                     .build();
 
             var outside = Option.<Boolean>createBuilder()
-                    .name(Text.literal("Show outside of Skyblock"))
-                    .description(OptionDescription.of(Text.literal("Whether to show the Coordinates HUD outside of Skyblock")))
+                    .name(key("coordinates.showOutside"))
+                    .description(keyD("coordinates.showOutside"))
                     .controller(SBTConfig::generateBooleanController)
                     .binding(
                             defaults.huds.coordinates.showOutside,
@@ -121,8 +121,8 @@ public class CoordinatesHUD extends TextHUD {
                     )
                     .build();
             var decimalPlaces = Option.<Integer>createBuilder()
-                    .name(Text.literal("Decimal Places"))
-                    .description(OptionDescription.of(Text.literal("The number of decimal places to show in the Coordinates HUD")))
+                    .name(key("coordinates.decimalPlaces"))
+                    .description(keyD("coordinates.decimalPlaces"))
                     .controller(
                             opt -> IntegerSliderControllerBuilder.create(opt)
                                     .step(1)
@@ -137,8 +137,8 @@ public class CoordinatesHUD extends TextHUD {
                     .build();
 
             var color = Option.<Color>createBuilder()
-                    .name(Text.literal("Coordinates HUD Color"))
-                    .description(OptionDescription.of(Text.literal("The color of the Coordinates HUD")))
+                    .name(key("coordinates.color"))
+                    .description(keyD("coordinates.color"))
                     .controller(ColorControllerBuilder::create)
                     .binding(
                             new Color(defaults.huds.coordinates.color),
@@ -148,8 +148,8 @@ public class CoordinatesHUD extends TextHUD {
                     )
                     .build();
             var outline = Option.<Color>createBuilder()
-                    .name(Text.literal("Coordinates HUD Outline Color"))
-                    .description(OptionDescription.of(Text.literal("The outline color of the Coordinates HUD")))
+                    .name(key("coordinates.outlineColor"))
+                    .description(keyD("coordinates.outlineColor"))
                     .controller(ColorControllerBuilder::create)
                     .available(config.huds.coordinates.mode == HudLine.DrawMode.OUTLINE)
                     .binding(
@@ -160,8 +160,8 @@ public class CoordinatesHUD extends TextHUD {
                     )
                     .build();
             var mode = Option.<HudLine.DrawMode>createBuilder()
-                    .name(Text.literal("Coordinates HUD Mode"))
-                    .description(OptionDescription.of(Text.literal("The draw mode of the Coordinates HUD. Pure will render without shadow, Shadow will render with a shadow, and Outline will render with an outline\n§4Warning: §cOutline mode is still a work in progress and can cause annoying visual bugs in menus.")))
+                    .name(key("coordinates.mode"))
+                    .description(keyD("coordinates.mode"))
                     .controller(SBTConfig::generateDrawModeController)
                     .binding(
                             defaults.huds.coordinates.mode,
@@ -174,8 +174,8 @@ public class CoordinatesHUD extends TextHUD {
                     )
                     .build();
             var scale = Option.<Float>createBuilder()
-                    .name(Text.literal("Coordinates HUD Scale"))
-                    .description(OptionDescription.of(Text.literal("The scale of the Coordinates HUD")))
+                    .name(key("coordinates.scale"))
+                    .description(keyD("coordinates.scale"))
                     .controller(SBTConfig::generateScaleController)
                     .binding(
                             defaults.huds.coordinates.scale,
@@ -185,8 +185,8 @@ public class CoordinatesHUD extends TextHUD {
                     .build();
 
             return OptionGroup.createBuilder()
-                    .name(Text.literal("Coordinates HUD"))
-                    .description(OptionDescription.of(Text.literal("Settings for the Coordinates HUD")))
+                    .name(key("coordinates"))
+                    .description(keyD("coordinates"))
                     .option(enabled)
                     .option(outside)
                     .option(decimalPlaces)

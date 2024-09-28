@@ -23,6 +23,7 @@ import dev.isxander.yacl3.api.OptionDescription;
 import dev.isxander.yacl3.api.OptionGroup;
 import dev.isxander.yacl3.api.controller.ColorControllerBuilder;
 import dev.isxander.yacl3.config.v2.api.SerialEntry;
+import net.minecraft.client.resource.language.I18n;
 import net.minecraft.text.Text;
 import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.config.ConfigImpl;
@@ -47,7 +48,6 @@ public class ManaBar extends BarHUD {
                 y -> SBTConfig.huds().manaBar.y = (float) y,
                 scale -> SBTConfig.huds().manaBar.scale = (float) scale,
                 anchor -> SBTConfig.huds().manaBar.anchor = anchor
-
         );
     }
 
@@ -82,10 +82,11 @@ public class ManaBar extends BarHUD {
         @SerialEntry
         public AnchorPoint anchor = AnchorPoint.LEFT;
 
+
         public static OptionGroup getGroup(ConfigImpl defaults, ConfigImpl config) {
             var enabled = Option.<Boolean>createBuilder()
-                    .name(Text.literal("Enable Mana Bar"))
-                    .description(OptionDescription.of(Text.literal("Enables the Mana Bar")))
+                    .name(key("manaBar.enabled"))
+                    .description(keyD("manaBar.enabled"))
                     .controller(SBTConfig::generateBooleanController)
                     .binding(
                             defaults.huds.manaBar.enabled,
@@ -95,8 +96,8 @@ public class ManaBar extends BarHUD {
                     .build();
 
             var color = Option.<Color>createBuilder()
-                    .name(Text.literal("Mana Bar Color"))
-                    .description(OptionDescription.of(Text.literal("The color of the Mana Bar")))
+                    .name(key("manaBar.color"))
+                    .description(keyD("manaBar.color"))
                     .controller(ColorControllerBuilder::create)
                     .binding(
                             new Color(defaults.huds.manaBar.color),
@@ -106,8 +107,8 @@ public class ManaBar extends BarHUD {
                     )
                     .build();
             var scale = Option.<Float>createBuilder()
-                    .name(Text.literal("Mana Bar Scale"))
-                    .description(OptionDescription.of(Text.literal("The scale of the Mana Bar")))
+                    .name(key("manaBar.scale"))
+                    .description(keyD("manaBar.scale"))
                     .controller(SBTConfig::generateScaleController)
                     .binding(
                             defaults.huds.manaBar.scale,
@@ -116,8 +117,8 @@ public class ManaBar extends BarHUD {
                     )
                     .build();
             return OptionGroup.createBuilder()
-                    .name(Text.literal("Mana Bar"))
-                    .description(OptionDescription.of(Text.literal("Settings for the Mana Bar")))
+                    .name(key("manaBar"))
+                    .description(keyD("manaBar"))
                     .option(enabled)
                     .option(color)
                     .option(scale)

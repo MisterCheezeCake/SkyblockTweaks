@@ -31,6 +31,8 @@ public class SkillHUDManager {
 
     public static final SkillHUDManager INSTANCE = new SkillHUDManager();
 
+    private SkillHUDManager() {}
+
     public final SkillHUD SKILL_HUD = new SkillHUD();
     public final SkillBar SKILL_BAR = new SkillBar();
 
@@ -231,8 +233,8 @@ public class SkillHUDManager {
 
             public static OptionGroup getGroup(ConfigImpl defaults, ConfigImpl config) {
                 var enabled = Option.<Boolean>createBuilder()
-                        .name(Text.literal("Enable Skill Progress HUD"))
-                        .description(OptionDescription.of(Text.literal("Enables the Skill Progress HUD")))
+                        .name(key("skills.enabled"))
+                        .description(keyD("skills.enabled"))
                         .controller(SBTConfig::generateBooleanController)
                         .binding(
                                 defaults.huds.skills.enabled,
@@ -242,8 +244,8 @@ public class SkillHUDManager {
                         .build();
 
                 var skillMode = Option.<Mode>createBuilder()
-                        .name(Text.literal("Skill Progress HUD Mode"))
-                        .description(OptionDescription.of(Text.literal("The mode of the Skill Progress HUD.\nDefault will show the progress based on how Hypixel does by default\nNumber always will show the progress as a number\nPercent will always show the progress as a percentage")))
+                        .name(key("skills.skillMode"))
+                        .description(keyD("skills.skillMode"))
                         .controller(opt -> EnumControllerBuilder.create(opt).enumClass(Mode.class))
                         .binding(
                                 defaults.huds.skills.skillMode,
@@ -253,8 +255,8 @@ public class SkillHUDManager {
                         .build();
 
                 var actionsLeft = Option.<Boolean>createBuilder()
-                        .name(Text.literal("Skill Progress HUD Actions Left"))
-                        .description(OptionDescription.of(Text.literal("Shows the amount of actions left to level up in the Skill Progress HUD")))
+                        .name(key("skills.actionsLeft"))
+                        .description(keyD("skills.actionsLeft"))
                         .controller(SBTConfig::generateBooleanController)
                         .binding(
                                 defaults.huds.skills.actionsLeft,
@@ -263,8 +265,8 @@ public class SkillHUDManager {
                         )
                         .build();
                 var abridgeDenominator = Option.<Boolean>createBuilder()
-                        .name(Text.literal("Skill Progress HUD Abridge Denominator"))
-                        .description(OptionDescription.of(Text.literal("Abridges the denominator in the Skill Progress HUD")))
+                        .name(key("skills.abridgeDenominator"))
+                        .description(keyD("skills.abridgeDenominator"))
                         .controller(SBTConfig::generateBooleanController)
                         .binding(
                                 defaults.huds.skills.abridgeDenominator,
@@ -274,8 +276,8 @@ public class SkillHUDManager {
                         .build();
 
                 var color = Option.<Color>createBuilder()
-                        .name(Text.literal("Skill Progress HUD Color"))
-                        .description(OptionDescription.of(Text.literal("The color of the Skill Progress HUD")))
+                        .name(key("skills.color"))
+                        .description(keyD("skills.color"))
                         .controller(ColorControllerBuilder::create)
                         .binding(
                                 new Color(defaults.huds.skills.color),
@@ -285,8 +287,8 @@ public class SkillHUDManager {
                         )
                         .build();
                 var outline = Option.<Color>createBuilder()
-                        .name(Text.literal("Skill Progress HUD Outline Color"))
-                        .description(OptionDescription.of(Text.literal("The outline color of the Skill Progress HUD")))
+                        .name(key("skills.outlineColor"))
+                        .description(keyD("skills.outlineColor"))
                         .controller(ColorControllerBuilder::create)
                         .available(config.huds.skills.mode == HudLine.DrawMode.OUTLINE)
                         .binding(
@@ -297,8 +299,8 @@ public class SkillHUDManager {
                         )
                         .build();
                 var mode = Option.<HudLine.DrawMode>createBuilder()
-                        .name(Text.literal("Skill Progress HUD Mode"))
-                        .description(OptionDescription.of(Text.literal("The draw mode of the Skill Progress HUD. Pure will render without shadow, Shadow will render with a shadow, and Outline will render with an outline\n§4Warning: §cOutline mode is still a work in progress and can cause annoying visual bugs in menus.")))
+                        .name(key("skills.mode"))
+                        .description(keyD("skills.mode"))
                         .controller(SBTConfig::generateDrawModeController)
                         .binding(
                                 defaults.huds.skills.mode,
@@ -310,8 +312,8 @@ public class SkillHUDManager {
                         )
                         .build();
                 var scale = Option.<Float>createBuilder()
-                        .name(Text.literal("Skill Progress HUD Scale"))
-                        .description(OptionDescription.of(Text.literal("The scale of the Skill Progress HUD")))
+                        .name(key("skills.scale"))
+                        .description(keyD("skills.scale"))
                         .controller(SBTConfig::generateScaleController)
                         .binding(
                                 defaults.huds.skills.scale,
@@ -321,8 +323,8 @@ public class SkillHUDManager {
                         .build();
 
                 return OptionGroup.createBuilder()
-                        .name(Text.literal("Skill Progress HUD"))
-                        .description(OptionDescription.of(Text.literal("Settings for the Skill Progress HUD")))
+                        .name(key("skills"))
+                        .description(keyD("skills"))
                         .option(enabled)
                         .option(skillMode)
                         .option(actionsLeft)
@@ -395,8 +397,8 @@ public class SkillHUDManager {
 
             public static OptionGroup getGroup(ConfigImpl defaults, ConfigImpl config) {
                 var enabled = Option.<Boolean>createBuilder()
-                        .name(Text.literal("Enable Skill XP Bar"))
-                        .description(OptionDescription.of(Text.literal("Enables the Skill XP Bar")))
+                        .name(key("skillBar.enabled"))
+                        .description(keyD("skillBar.enabled"))
                         .controller(SBTConfig::generateBooleanController)
                         .binding(
                                 defaults.huds.skillBar.enabled,
@@ -406,8 +408,8 @@ public class SkillHUDManager {
                         .build();
 
                 var color = Option.<Color>createBuilder()
-                        .name(Text.literal("Skill XP Bar Color"))
-                        .description(OptionDescription.of(Text.literal("The color of the Skill XP Bar")))
+                        .name(key("skillBar.color"))
+                        .description(keyD("skillBar.color"))
                         .controller(ColorControllerBuilder::create)
                         .binding(
                                 new Color(defaults.huds.skillBar.color),
@@ -417,8 +419,8 @@ public class SkillHUDManager {
                         )
                         .build();
                 var scale = Option.<Float>createBuilder()
-                        .name(Text.literal("Skill XP Bar Scale"))
-                        .description(OptionDescription.of(Text.literal("The scale of the Skill XP Bar")))
+                        .name(key("skillBar.scale"))
+                        .description(keyD("skillBar.scale"))
                         .controller(SBTConfig::generateScaleController)
                         .binding(
                                 defaults.huds.skillBar.scale,
@@ -427,8 +429,8 @@ public class SkillHUDManager {
                         )
                         .build();
                 return OptionGroup.createBuilder()
-                        .name(Text.literal("Skill XP Bar"))
-                        .description(OptionDescription.of(Text.literal("Settings for the Skill XP Bar")))
+                        .name(key("skillBar"))
+                        .description(keyD("skillBar"))
                         .option(enabled)
                         .option(color)
                         .option(scale)

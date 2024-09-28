@@ -24,6 +24,7 @@ import dev.isxander.yacl3.api.OptionDescription;
 import dev.isxander.yacl3.api.controller.EnumControllerBuilder;
 import net.minecraft.text.Text;
 import wtf.cheeze.sbt.config.ConfigImpl;
+import wtf.cheeze.sbt.config.categories.General;
 
 import java.util.regex.Pattern;
 
@@ -184,8 +185,8 @@ public class Version {
 
     public static Option getStreamOption(ConfigImpl defaults, ConfigImpl config) {
         return Option.<NotificationStream>createBuilder()
-                .name(Text.literal("Update Notification Type"))
-                .description(OptionDescription.of(Text.literal("What updates you want to be notified about. Alpha will notify you about all updates, Beta will notify you about beta and release updates, Release will only notify you about release updates, and None will disable notifications.")))
+                .name(General.key("notificationStream"))
+                .description(General.keyD("notificationStream"))
                 .controller(opt -> EnumControllerBuilder.create(opt).enumClass(NotificationStream.class))
                 .binding(
                         defaults.notificationStream,

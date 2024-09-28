@@ -19,6 +19,7 @@
 package wtf.cheeze.sbt.utils.hud;
 
 import dev.isxander.yacl3.api.NameableEnum;
+import dev.isxander.yacl3.api.OptionDescription;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.text.Text;
@@ -98,6 +99,13 @@ public abstract class HUD  {
         return (float) (y / MinecraftClient.getInstance().getWindow().getScaledHeight());
     }
 
+    private static final String BASE_KEY = "sbt.config.huds.";
+    public static Text key(String key) {
+        return Text.translatable(BASE_KEY + key);
+    }
+    public static OptionDescription keyD(String key) {
+        return OptionDescription.of(Text.translatable(BASE_KEY + key + ".desc"));
+    }
     public abstract void render(DrawContext context, boolean fromHudScreen, boolean hovered);
 
     public enum AnchorPoint implements NameableEnum {

@@ -18,13 +18,9 @@
  */
 package wtf.cheeze.sbt.utils.render;
 
-import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.render.*;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
-import net.minecraft.util.math.Vec3d;
 import wtf.cheeze.sbt.SkyblockTweaks;
 
 public class RenderUtils {

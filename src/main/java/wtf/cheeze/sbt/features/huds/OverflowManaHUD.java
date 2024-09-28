@@ -24,6 +24,7 @@ import dev.isxander.yacl3.api.OptionGroup;
 import dev.isxander.yacl3.api.controller.ColorControllerBuilder;
 import dev.isxander.yacl3.api.controller.StringControllerBuilder;
 import dev.isxander.yacl3.config.v2.api.SerialEntry;
+import net.minecraft.client.resource.language.I18n;
 import net.minecraft.text.Text;
 import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.config.ConfigImpl;
@@ -106,8 +107,8 @@ public class OverflowManaHUD extends TextHUD {
 
         public static OptionGroup getGroup(ConfigImpl defaults, ConfigImpl config) {
             var enabled = Option.<Boolean>createBuilder()
-                    .name(Text.literal("Enable Overflow Mana HUD"))
-                    .description(OptionDescription.of(Text.literal("Enables the Overflow Mana HUD")))
+                    .name(key("overflowMana.enabled"))
+                    .description(keyD("overflowMana.enabled"))
                     .controller(SBTConfig::generateBooleanController)
                     .binding(
                             defaults.huds.overflowMana.enabled,
@@ -116,8 +117,8 @@ public class OverflowManaHUD extends TextHUD {
                     )
                     .build();
             var hideWhenZero = Option.<Boolean>createBuilder()
-                    .name(Text.literal("Hide Overflow Mana HUD when Zero"))
-                    .description(OptionDescription.of(Text.literal("Hides the Overflow Mana HUD when the value is zero")))
+                    .name(key("overflowMana.hideWhenZero"))
+                    .description(keyD("overflowMana.hideWhenZero"))
                     .controller(SBTConfig::generateBooleanController)
                     .binding(
                             defaults.huds.overflowMana.hideWhenZero,
@@ -126,8 +127,8 @@ public class OverflowManaHUD extends TextHUD {
                     )
                     .build();
             var color = Option.<Color>createBuilder()
-                    .name(Text.literal("Overflow Mana HUD Color"))
-                    .description(OptionDescription.of(Text.literal("The color of the Overflow Mana HUD")))
+                    .name(key("overflowMana.color"))
+                    .description(keyD("overflowMana.color"))
                     .controller(ColorControllerBuilder::create)
                     .binding(
                             new Color(defaults.huds.overflowMana.color),
@@ -137,8 +138,8 @@ public class OverflowManaHUD extends TextHUD {
                     )
                     .build();
             var outline = Option.<Color>createBuilder()
-                    .name(Text.literal("Overflow Mana HUD Outline Color"))
-                    .description(OptionDescription.of(Text.literal("The outline color of the Overflow Mana HUD")))
+                    .name(key("overflowMana.outlineColor"))
+                    .description(keyD("overflowMana.outlineColor"))
                     .controller(ColorControllerBuilder::create)
                     .available(config.huds.overflowMana.mode == HudLine.DrawMode.OUTLINE)
                     .binding(
@@ -149,8 +150,8 @@ public class OverflowManaHUD extends TextHUD {
                     )
                     .build();
             var mode = Option.<HudLine.DrawMode>createBuilder()
-                    .name(Text.literal("Overflow Mana HUD Mode"))
-                    .description(OptionDescription.of(Text.literal("The draw mode of the Overflow Mana HUD. Pure will render without shadow, Shadow will render with a shadow, and Outline will render with an outline\n§4Warning: §cOutline mode is still a work in progress and can cause annoying visual bugs in menus.")))
+                    .name(key("overflowMana.mode"))
+                    .description(keyD("overflowMana.mode"))
                     .controller(SBTConfig::generateDrawModeController)
                     .binding(
                             defaults.huds.overflowMana.mode,
@@ -163,8 +164,8 @@ public class OverflowManaHUD extends TextHUD {
                     )
                     .build();
             var icon = Option.<Boolean>createBuilder()
-                    .name(Text.literal("Overflow Mana HUD Icon"))
-                    .description(OptionDescription.of(Text.literal("Enables the icon (ʬ) in the Overflow Mana HUD")))
+                    .name(key("overflowMana.icon"))
+                    .description(keyD("overflowMana.icon"))
                     .controller(SBTConfig::generateBooleanController)
                     .binding(
                             defaults.huds.overflowMana.icon,
@@ -173,8 +174,8 @@ public class OverflowManaHUD extends TextHUD {
                     )
                     .build();
             var separator = Option.<String>createBuilder()
-                    .name(Text.literal("Overflow Mana HUD Separator"))
-                    .description(OptionDescription.of(Text.literal("The separator for the Overflow Mana HUD")))
+                    .name(key("overflowMana.separator"))
+                    .description(keyD("overflowMana.separator"))
                     .controller(StringControllerBuilder::create)
                     .binding(
                             defaults.huds.overflowMana.separator,
@@ -183,8 +184,8 @@ public class OverflowManaHUD extends TextHUD {
                     )
                     .build();
             var scale = Option.<Float>createBuilder()
-                    .name(Text.literal("Overflow Mana HUD Scale"))
-                    .description(OptionDescription.of(Text.literal("The scale of the Overflow Mana HUD")))
+                    .name(key("overflowMana.scale"))
+                    .description(keyD("overflowMana.scale"))
                     .controller(SBTConfig::generateScaleController)
                     .binding(
                             defaults.huds.overflowMana.scale,
@@ -193,8 +194,8 @@ public class OverflowManaHUD extends TextHUD {
                     )
                     .build();
             return OptionGroup.createBuilder()
-                    .name(Text.literal("Overflow Mana HUD"))
-                    .description(OptionDescription.of(Text.literal("Settings for the Overflow Mana HUD")))
+                    .name(key("overflowMana"))
+                    .description(keyD("overflowMana"))
                     .option(enabled)
                     .option(hideWhenZero)
                     .option(mode)

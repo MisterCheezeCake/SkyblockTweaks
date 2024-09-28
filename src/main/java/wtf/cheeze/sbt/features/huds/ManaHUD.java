@@ -24,6 +24,7 @@ import dev.isxander.yacl3.api.OptionGroup;
 import dev.isxander.yacl3.api.controller.ColorControllerBuilder;
 import dev.isxander.yacl3.api.controller.StringControllerBuilder;
 import dev.isxander.yacl3.config.v2.api.SerialEntry;
+import net.minecraft.client.resource.language.I18n;
 import net.minecraft.text.Text;
 import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.config.ConfigImpl;
@@ -110,8 +111,8 @@ public class ManaHUD extends TextHUD {
 
         public static OptionGroup getGroup(ConfigImpl defaults, ConfigImpl config) {
             var enabled = Option.<Boolean>createBuilder()
-                    .name(Text.literal("Enable Mana HUD"))
-                    .description(OptionDescription.of(Text.literal("Enables the Mana HUD")))
+                    .name(key("mana.enabled"))
+                    .description(keyD("mana.enabled"))
                     .controller(SBTConfig::generateBooleanController)
                     .binding(
                             defaults.huds.mana.enabled,
@@ -120,8 +121,8 @@ public class ManaHUD extends TextHUD {
                     )
                     .build();
             var color = Option.<Color>createBuilder()
-                    .name(Text.literal("Mana HUD Color"))
-                    .description(OptionDescription.of(Text.literal("The color of the Mana HUD")))
+                    .name(key("mana.color"))
+                    .description(keyD("mana.color"))
                     .controller(ColorControllerBuilder::create)
                     .binding(
                             new Color(defaults.huds.mana.color),
@@ -131,8 +132,8 @@ public class ManaHUD extends TextHUD {
                     )
                     .build();
             var outline = Option.<Color>createBuilder()
-                    .name(Text.literal("Mana HUD Outline Color"))
-                    .description(OptionDescription.of(Text.literal("The outline color of the Mana HUD")))
+                    .name(key("mana.outlineColor"))
+                    .description(keyD("mana.outlineColor"))
                     .controller(ColorControllerBuilder::create)
                     .available(config.huds.mana.mode == HudLine.DrawMode.OUTLINE)
                     .binding(
@@ -143,8 +144,8 @@ public class ManaHUD extends TextHUD {
                     )
                     .build();
             var mode = Option.<HudLine.DrawMode>createBuilder()
-                    .name(Text.literal("Mana HUD Mode"))
-                    .description(OptionDescription.of(Text.literal("The draw mode of the Mana HUD. Pure will render without shadow, Shadow will render with a shadow, and Outline will render with an outline\n§4Warning: §cOutline mode is still a work in progress and can cause annoying visual bugs in menus.")))
+                    .name(key("mana.mode"))
+                    .description(keyD("mana.mode"))
                     .controller(SBTConfig::generateDrawModeController)
                     .binding(
                             defaults.huds.mana.mode,
@@ -157,8 +158,8 @@ public class ManaHUD extends TextHUD {
                     )
                     .build();
             var icon = Option.<Boolean>createBuilder()
-                    .name(Text.literal("Mana HUD Icon"))
-                    .description(OptionDescription.of(Text.literal("Enables the icon (✎) in the Mana HUD")))
+                    .name(key("mana.icon"))
+                    .description(keyD("mana.icon"))
                     .controller(SBTConfig::generateBooleanController)
                     .binding(
                             defaults.huds.mana.icon,
@@ -167,8 +168,8 @@ public class ManaHUD extends TextHUD {
                     )
                     .build();
             var separator = Option.<String>createBuilder()
-                    .name(Text.literal("Mana HUD Separator"))
-                    .description(OptionDescription.of(Text.literal("The separator for the Mana HUD")))
+                    .name(key("mana.separator"))
+                    .description(keyD("mana.separator"))
                     .controller(StringControllerBuilder::create)
                     .binding(
                             defaults.huds.mana.separator,
@@ -177,8 +178,8 @@ public class ManaHUD extends TextHUD {
                     )
                     .build();
             var scale = Option.<Float>createBuilder()
-                    .name(Text.literal("Mana HUD Scale"))
-                    .description(OptionDescription.of(Text.literal("The scale of the Mana HUD")))
+                    .name(key("mana.scale"))
+                    .description(keyD("mana.scale"))
                     .controller(SBTConfig::generateScaleController)
                     .binding(
                             defaults.huds.mana.scale,
@@ -187,8 +188,8 @@ public class ManaHUD extends TextHUD {
                     )
                     .build();
             return OptionGroup.createBuilder()
-                    .name(Text.literal("Mana HUD"))
-                    .description(OptionDescription.of(Text.literal("Settings for the Mana HUD")))
+                    .name(key("mana"))
+                    .description(keyD("mana"))
                     .option(enabled)
                     .option(mode)
                     .option(color)

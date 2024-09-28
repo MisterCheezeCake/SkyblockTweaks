@@ -30,6 +30,8 @@ import wtf.cheeze.sbt.config.SBTConfig;
 import wtf.cheeze.sbt.features.huds.SkillHUDManager;
 import wtf.cheeze.sbt.utils.NumberUtils;
 import wtf.cheeze.sbt.utils.TextUtils;
+import static wtf.cheeze.sbt.config.categories.General.key;
+import static wtf.cheeze.sbt.config.categories.General.keyD;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -47,15 +49,18 @@ import java.util.regex.Pattern;
 /**
  * Parses and modifies the action bar text
  * Inspired by the SkyBlockAddons Action Bar Parser
+ * TODO: Switch more things in here to regex
  */
+
 public class ActionBarTransformer {
     public static final String SEPERATOR3 = "   ";
     public static final String SEPERATOR4 = "     ";
     public static final String SEPERATOR5 = "     ";
     public static final String SEPERATOR12 = "            ";
-    private static Pattern manaAbilityPattern = Pattern.compile("-(\\d+) Mana \\((.+)\\)");
-    private static Pattern skillLevelPatern = Pattern.compile("\\+(\\d+\\.?\\d*) (.+) \\((.+)\\)");
-    private static Pattern secretsPattern = Pattern.compile("(\\d+)/(\\d+) Secrets");
+    private static final Pattern manaAbilityPattern = Pattern.compile("-(\\d+) Mana \\((.+)\\)");
+    //private static Pattern skillLevelPatern = Pattern.compile("\\+(\\d+\\.?\\d*) (.+) \\((.+)\\)");
+    private static final Pattern skillLevelPatern = Pattern.compile("\\+([\\d,]+\\.?\\d*) (.+) \\((.+)\\)");
+    private static final Pattern secretsPattern = Pattern.compile("(\\d+)/(\\d+) Secrets");
 
     public static ActionBarData extractDataAndRunTransformation(String actionBarText) {
       try {
@@ -130,7 +135,7 @@ public class ActionBarTransformer {
 
               } else if (skillLevelPatern.matcher(segment).matches()) {
                   Matcher matcher = skillLevelPatern.matcher(segment);
-                  if (matcher.find()) {
+                  if (matcher.find() && !matcher.group(2).contains("SkyBlock XP")) {
                       data.gainedXP = NumberUtils.parseFloatWithKorM(matcher.group(1));
                       data.skillType = matcher.group(2);
                       if (matcher.group(3).contains("/")) {
@@ -142,8 +147,10 @@ public class ActionBarTransformer {
                           data.skillPercentage = Float.parseFloat(matcher.group(3).replace("%", ""));
                           SkillHUDManager.INSTANCE.update(data.skillType, data.gainedXP, data.skillPercentage);
                       }
-                  }
-                  if (!SBTConfig.get().actionBarFilters.hideSkill) {
+                      if (!SBTConfig.get().actionBarFilters.hideSkill) {
+                          newText += SEPERATOR5 + unpadded;
+                      }
+                  } else {
                       newText += SEPERATOR5 + unpadded;
                   }
               } else if (segment.contains("Secrets")) {
@@ -204,7 +211,7 @@ public class ActionBarTransformer {
     public static void registerEvents() {
         ClientReceiveMessageEvents.MODIFY_GAME.register((message, overlay) -> {
             if (!overlay) return message;
-            //SkyblockTweaks.LOGGER.info("Old: " + message.getString());
+           // SkyblockTweaks.LOGGER.info("Old: " + message.getString());
             var data = ActionBarTransformer.extractDataAndRunTransformation(message.getString());
             //SkyblockTweaks.LOGGER.info("New: " + data.transformedText);
             SkyblockTweaks.DATA.update(data);
@@ -241,8 +248,8 @@ public class ActionBarTransformer {
 
         public static OptionGroup getGroup(ConfigImpl defaults, ConfigImpl config) {
             var health = Option.<Boolean>createBuilder()
-                    .name(Text.literal("Hide Health in Action Bar"))
-                    .description(OptionDescription.of(Text.literal("Hides the health in the action bar")))
+                    .name(key("actionBarFilters.hideHealth"))
+                    .description(keyD("actionBarFilters.hideHealth"))
                     .controller(SBTConfig::generateBooleanController)
                     .binding(
                             defaults.actionBarFilters.hideHealth,
@@ -251,8 +258,8 @@ public class ActionBarTransformer {
                     )
                     .build();
             var defense = Option.<Boolean>createBuilder()
-                    .name(Text.literal("Hide Defense in Action Bar"))
-                    .description(OptionDescription.of(Text.literal("Hides the defense in the action bar")))
+                    .name(key("actionBarFilters.hideDefense"))
+                    .description(keyD("actionBarFilters.hideDefense"))
                     .controller(SBTConfig::generateBooleanController)
                     .binding(
                             defaults.actionBarFilters.hideDefense,
@@ -261,8 +268,8 @@ public class ActionBarTransformer {
                     )
                     .build();
             var mana = Option.<Boolean>createBuilder()
-                    .name(Text.literal("Hide Mana in Action Bar"))
-                    .description(OptionDescription.of(Text.literal("Hides the mana in the action bar")))
+                    .name(key("actionBarFilters.hideMana"))
+                    .description(keyD("actionBarFilters.hideMana"))
                     .controller(SBTConfig::generateBooleanController)
                     .binding(
                             defaults.actionBarFilters.hideMana,
@@ -271,8 +278,8 @@ public class ActionBarTransformer {
                     )
                     .build();
             var ability = Option.<Boolean>createBuilder()
-                    .name(Text.literal("Hide Ability Use in Action Bar"))
-                    .description(OptionDescription.of(Text.literal("Hides the ability use in the action bar")))
+                    .name(key("actionBarFilters.hideAbilityUse"))
+                    .description(keyD("actionBarFilters.hideAbilityUse"))
                     .controller(SBTConfig::generateBooleanController)
                     .binding(
                             defaults.actionBarFilters.hideAbilityUse,
@@ -281,8 +288,8 @@ public class ActionBarTransformer {
                     )
                     .build();
             var skill = Option.<Boolean>createBuilder()
-                    .name(Text.literal("Hide Skill in Action Bar"))
-                    .description(OptionDescription.of(Text.literal("Hides the skill in the action bar")))
+                    .name(key("actionBarFilters.hideSkill"))
+                    .description(keyD("actionBarFilters.hideSkill"))
                     .controller(SBTConfig::generateBooleanController)
                     .binding(
                             defaults.actionBarFilters.hideSkill,
@@ -291,8 +298,8 @@ public class ActionBarTransformer {
                     )
                     .build();
             var drill = Option.<Boolean>createBuilder()
-                    .name(Text.literal("Hide Drill Fuel in Action Bar"))
-                    .description(OptionDescription.of(Text.literal("Hides the drill fuel in the action bar")))
+                    .name(key("actionBarFilters.hideDrill"))
+                    .description(keyD("actionBarFilters.hideDrill"))
                     .controller(SBTConfig::generateBooleanController)
                     .binding(
                             defaults.actionBarFilters.hideDrill,
@@ -301,8 +308,8 @@ public class ActionBarTransformer {
                     )
                     .build();
             var secrets = Option.<Boolean>createBuilder()
-                    .name(Text.literal("Hide Secrets in Action Bar"))
-                    .description(OptionDescription.of(Text.literal("Hides the secrets display in the action bar")))
+                    .name(key("actionBarFilters.hideSecrets"))
+                    .description(keyD("actionBarFilters.hideSecrets"))
                     .controller(SBTConfig::generateBooleanController)
                     .binding(
                             defaults.actionBarFilters.hideSecrets,
@@ -311,8 +318,8 @@ public class ActionBarTransformer {
                     )
                     .build();
             var tickers = Option.<Boolean>createBuilder()
-                    .name(Text.literal("Hide Tickers/Charges in Action Bar"))
-                    .description(OptionDescription.of(Text.literal("Hides the tickers/charges in the action bar")))
+                    .name(key("actionBarFilters.hideTickers"))
+                    .description(keyD("actionBarFilters.hideTickers"))
                     .controller(SBTConfig::generateBooleanController)
                     .binding(
                             defaults.actionBarFilters.hideTickers,
@@ -321,8 +328,8 @@ public class ActionBarTransformer {
                     )
                     .build();
             return OptionGroup.createBuilder()
-                    .name(Text.literal("Action Bar Filters"))
-                    .description(OptionDescription.of(Text.literal("Filters out certain information from the action bar")))
+                    .name(key("actionBarFilters"))
+                    .description(keyD("actionBarFilters"))
                     .option(health)
                     .option(defense)
                     .option(mana)

@@ -104,8 +104,8 @@ public class DefenseHUD extends TextHUD {
 
         public static OptionGroup getGroup(ConfigImpl defaults, ConfigImpl config) {
             var enabled = Option.<Boolean>createBuilder()
-                    .name(Text.literal("Enable Defense HUD"))
-                    .description(OptionDescription.of(Text.literal("Enables the Defense HUD")))
+                    .name(key("defense.enabled"))
+                    .description(keyD("defense.enabled"))
                     .controller(SBTConfig::generateBooleanController)
                     .binding(
                             defaults.huds.defense.enabled,
@@ -114,8 +114,8 @@ public class DefenseHUD extends TextHUD {
                     )
                     .build();
             var color = Option.<Color>createBuilder()
-                    .name(Text.literal("Defense HUD Color"))
-                    .description(OptionDescription.of(Text.literal("The color of the Defense HUD")))
+                    .name(key("defense.color"))
+                    .description(keyD("defense.color"))
                     .controller(ColorControllerBuilder::create)
                     .binding(
                             new Color(defaults.huds.defense.color),
@@ -125,8 +125,8 @@ public class DefenseHUD extends TextHUD {
                     )
                     .build();
             var outline = Option.<Color>createBuilder()
-                    .name(Text.literal("Defense HUD Outline Color"))
-                    .description(OptionDescription.of(Text.literal("The outline color of the Defense HUD")))
+                    .name(key("defense.outlineColor"))
+                    .description(keyD("defense.outlineColor"))
                     .controller(ColorControllerBuilder::create)
                     .available(config.huds.defense.mode == HudLine.DrawMode.OUTLINE)
                     .binding(
@@ -134,13 +134,11 @@ public class DefenseHUD extends TextHUD {
                             () ->  new Color(config.huds.defense.outlineColor),
                             value -> config.huds.defense.outlineColor = value.getRGB()
 
-
-
                     )
                     .build();
             var mode = Option.<HudLine.DrawMode>createBuilder()
-                    .name(Text.literal("Defense HUD Mode"))
-                    .description(OptionDescription.of(Text.literal("The draw mode of the Defense HUD. Pure will render without shadow, Shadow will render with a shadow, and Outline will render with an outline\n§4Warning: §cOutline mode is still a work in progress and can cause annoying visual bugs in menus.")))
+                    .name(key("defense.mode"))
+                    .description(keyD("defense.mode"))
                     .controller(SBTConfig::generateDrawModeController)
                     .binding(
                             defaults.huds.defense.mode,
@@ -153,8 +151,8 @@ public class DefenseHUD extends TextHUD {
                     )
                     .build();
             var icon = Option.<Boolean>createBuilder()
-                    .name(Text.literal("Defense HUD Icon"))
-                    .description(OptionDescription.of(Text.literal("Enables the icon (❈) in the Defense HUD")))
+                    .name(key("defense.icon"))
+                    .description(keyD("defense.icon"))
                     .controller(SBTConfig::generateBooleanController)
                     .binding(
                             defaults.huds.defense.icon,
@@ -163,8 +161,8 @@ public class DefenseHUD extends TextHUD {
                     )
                     .build();
             var separator = Option.<String>createBuilder()
-                    .name(Text.literal("Defense HUD Separator"))
-                    .description(OptionDescription.of(Text.literal("The separator for the Defense HUD")))
+                    .name(key("defense.separator"))
+                    .description(keyD("defense.separator"))
                     .controller(StringControllerBuilder::create)
                     .binding(
                             defaults.huds.defense.separator,
@@ -173,8 +171,8 @@ public class DefenseHUD extends TextHUD {
                     )
                     .build();
             var scale = Option.<Float>createBuilder()
-                    .name(Text.literal("Defense HUD Scale"))
-                    .description(OptionDescription.of(Text.literal("The scale of the Defense HUD")))
+                    .name(key("defense.scale"))
+                    .description(keyD("defense.scale"))
                     .controller(SBTConfig::generateScaleController)
                     .binding(
                             defaults.huds.defense.scale,
@@ -184,8 +182,8 @@ public class DefenseHUD extends TextHUD {
                     .build();
 
             return OptionGroup.createBuilder()
-                    .name(Text.literal("Defense HUD"))
-                    .description(OptionDescription.of(Text.literal("Settings for the Defense HUD")))
+                    .name(key("defense"))
+                    .description(keyD("defense"))
                     .option(enabled)
                     .option(mode)
                     .option(color)

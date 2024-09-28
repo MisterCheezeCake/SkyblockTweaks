@@ -129,8 +129,8 @@ public class RealTimeHUD extends TextHUD {
 
         public static OptionGroup getGroup(ConfigImpl defaults, ConfigImpl config) {
             var enabled = Option.<Boolean>createBuilder()
-                    .name(Text.literal("Enable Real Time HUD"))
-                    .description(OptionDescription.of(Text.literal("Enables the Real Time HUD")))
+                    .name(key("time.enabled"))
+                    .description(keyD("time.enabled"))
                     .controller(SBTConfig::generateBooleanController)
                     .binding(
                             defaults.huds.time.enabled,
@@ -140,8 +140,8 @@ public class RealTimeHUD extends TextHUD {
                     .build();
 
             var outside = Option.<Boolean>createBuilder()
-                    .name(Text.literal("Show outside of Skyblock"))
-                    .description(OptionDescription.of(Text.literal("Whether to show the Real Time HUD outside of Skyblock")))
+                    .name(key("time.showOutside"))
+                    .description(keyD("time.showOutside"))
                     .controller(SBTConfig::generateBooleanController)
                     .binding(
                             defaults.huds.time.showOutside,
@@ -151,8 +151,8 @@ public class RealTimeHUD extends TextHUD {
                     .build();
 
             var seconds = Option.<Boolean>createBuilder()
-                    .name(Text.literal("Show Seconds"))
-                    .description(OptionDescription.of(Text.literal("Whether to show the seconds in the Real Time HUD")))
+                    .name(key("time.seconds"))
+                    .description(keyD("time.seconds"))
                     .controller(SBTConfig::generateBooleanController)
                     .binding(
                             defaults.huds.time.seconds,
@@ -162,8 +162,8 @@ public class RealTimeHUD extends TextHUD {
                     .build();
 
             var amPM = Option.<Boolean>createBuilder()
-                    .name(Text.literal("Show AM/PM"))
-                    .description(OptionDescription.of(Text.literal("Whether to show AM/PM in the Real Time HUD")))
+                    .name(key("time.amPM"))
+                    .description(keyD("time.amPM"))
                     .controller(SBTConfig::generateBooleanController)
                     .binding(
                             defaults.huds.time.amPM,
@@ -173,8 +173,8 @@ public class RealTimeHUD extends TextHUD {
                     .available(config.huds.time.twelveHour)
                     .build();
             var twelveHour = Option.<Boolean>createBuilder()
-                    .name(Text.literal("12 Hour Time"))
-                    .description(OptionDescription.of(Text.literal("Whether to use the 12 hour format in the Real Time HUD")))
+                    .name(key("time.twelveHour"))
+                    .description(keyD("time.twelveHour"))
                     .controller(SBTConfig::generateBooleanController)
                     .binding(
                             defaults.huds.time.twelveHour,
@@ -187,8 +187,8 @@ public class RealTimeHUD extends TextHUD {
                     .build();
 
             var color = Option.<Color>createBuilder()
-                    .name(Text.literal("Real Time HUD Color"))
-                    .description(OptionDescription.of(Text.literal("The color of the Real Time HUD")))
+                    .name(key("time.color"))
+                    .description(keyD("time.color"))
                     .controller(ColorControllerBuilder::create)
                     .binding(
                             new Color(defaults.huds.time.color),
@@ -198,8 +198,8 @@ public class RealTimeHUD extends TextHUD {
                     )
                     .build();
             var outline = Option.<Color>createBuilder()
-                    .name(Text.literal("Real Time HUD Outline Color"))
-                    .description(OptionDescription.of(Text.literal("The outline color of the Real Time HUD")))
+                    .name(key("time.outlineColor"))
+                    .description(keyD("time.outlineColor"))
                     .controller(ColorControllerBuilder::create)
                     .available(config.huds.time.mode == HudLine.DrawMode.OUTLINE)
                     .binding(
@@ -210,8 +210,8 @@ public class RealTimeHUD extends TextHUD {
                     )
                     .build();
             var mode = Option.<HudLine.DrawMode>createBuilder()
-                    .name(Text.literal("Real Time HUD Mode"))
-                    .description(OptionDescription.of(Text.literal("The draw mode of the Real Time HUD. Pure will render without shadow, Shadow will render with a shadow, and Outline will render with an outline\n§4Warning: §cOutline mode is still a work in progress and can cause annoying visual bugs in menus.")))
+                    .name(key("time.mode"))
+                    .description(keyD("time.mode"))
                     .controller(SBTConfig::generateDrawModeController)
                     .binding(
                             defaults.huds.time.mode,
@@ -224,8 +224,8 @@ public class RealTimeHUD extends TextHUD {
                     )
                     .build();
             var scale = Option.<Float>createBuilder()
-                    .name(Text.literal("Real Time HUD Scale"))
-                    .description(OptionDescription.of(Text.literal("The scale of the Real Time HUD")))
+                    .name(key("time.scale"))
+                    .description(keyD("time.scale"))
                     .controller(SBTConfig::generateScaleController)
                     .binding(
                             defaults.huds.time.scale,
@@ -235,8 +235,8 @@ public class RealTimeHUD extends TextHUD {
                     .build();
 
             return OptionGroup.createBuilder()
-                    .name(Text.literal("Real Time HUD"))
-                    .description(OptionDescription.of(Text.literal("Settings for the Real Time HUD")))
+                    .name(key("time"))
+                    .description(keyD("time"))
                     .option(enabled)
                     .option(outside)
                     .option(seconds)

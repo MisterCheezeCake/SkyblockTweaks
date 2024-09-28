@@ -84,8 +84,8 @@ public class DrillFuelBar extends BarHUD {
 
         public static OptionGroup getGroup(ConfigImpl defaults, ConfigImpl config) {
             var enabled = Option.<Boolean>createBuilder()
-                    .name(Text.literal("Enable Drill Fuel Bar"))
-                    .description(OptionDescription.of(Text.literal("Enables the Drill Fuel Bar")))
+                    .name(key("drillFuelBar.enabled"))
+                    .description(keyD("drillFuelBar.enabled"))
                     .controller(SBTConfig::generateBooleanController)
                     .binding(
                             defaults.huds.drillFuelBar.enabled,
@@ -95,8 +95,8 @@ public class DrillFuelBar extends BarHUD {
                     .build();
 
             var color = Option.<Color>createBuilder()
-                    .name(Text.literal("Drill Fuel Bar Color"))
-                    .description(OptionDescription.of(Text.literal("The color of the Drill Fuel Bar")))
+                    .name(key("drillFuelBar.color"))
+                    .description(keyD("drillFuelBar.color"))
                     .controller(ColorControllerBuilder::create)
                     .binding(
                             new Color(defaults.huds.drillFuelBar.color),
@@ -106,8 +106,8 @@ public class DrillFuelBar extends BarHUD {
                     )
                     .build();
             var scale = Option.<Float>createBuilder()
-                    .name(Text.literal("Drill Fuel Bar Scale"))
-                    .description(OptionDescription.of(Text.literal("The scale of the Drill Fuel Bar")))
+                    .name(key("drillFuelBar.scale"))
+                    .description(keyD("drillFuelBar.scale"))
                     .controller(SBTConfig::generateScaleController)
                     .binding(
                             defaults.huds.drillFuelBar.scale,
@@ -116,8 +116,8 @@ public class DrillFuelBar extends BarHUD {
                     )
                     .build();
             return OptionGroup.createBuilder()
-                    .name(Text.literal("Drill Fuel Bar"))
-                    .description(OptionDescription.of(Text.literal("Settings for the Drill Fuel Bar")))
+                    .name(key("drillFuelBar"))
+                    .description(keyD("drillFuelBar"))
                     .option(enabled)
                     .option(color)
                     .option(scale)
