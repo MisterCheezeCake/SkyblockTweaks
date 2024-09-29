@@ -16,17 +16,25 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with SkyblockTweaks. If not, see <https://www.gnu.org/licenses/>.
  */
-package wtf.cheeze.sbt.utils.render;
+package wtf.cheeze.sbt.config;
 
-public class Color3f {
+import dev.isxander.yacl3.api.YetAnotherConfigLib;
+import dev.isxander.yacl3.gui.YACLScreen;
+import net.minecraft.client.gui.screen.Screen;
 
-    public float red;
-    public float green;
-    public float blue;
+import java.util.function.Supplier;
 
-    Color3f (int color) {
-        this.red = (float) (color >> 16 & 255) / 255.0F;
-        this.green = (float) (color >> 8 & 255) / 255.0F;
-        this.blue = (float) (color & 255) / 255.0F;
+public class GlobalSearchYaclScreen extends YACLScreen {
+
+    private final Supplier<Screen> parentSupplier;
+
+    public GlobalSearchYaclScreen(YetAnotherConfigLib config, Supplier<Screen> parent) {
+        super(config, null);
+        this.parentSupplier = parent;
+    }
+
+    @Override
+    public void close() {
+        this.client.setScreen(parentSupplier.get());
     }
 }

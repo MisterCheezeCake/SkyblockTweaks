@@ -199,4 +199,3 @@ public class Version {
         return "https://modrinth.com/mod/sbt/version/" + name;
     }
 }
-

@@ -51,6 +51,25 @@ public class SBTConfig {
 
                 }).generateScreen(parent);
     }
+    public static Screen getGlobalSearchScreen(Screen parent) {
+        return YetAnotherConfigLib.create(HANDLER,
+                (defaults, configThing, builder) -> {
+                    return builder
+                            .title(Text.literal("SkyblockTweaks"))
+                            .category(GlobalSearchCategory.getCategory(defaults, configThing));
+
+                }).generateScreen(parent);
+    }
+    public static Screen getSpecialGlobalSearchScreen(Screen bigParent) {
+        var yacl = YetAnotherConfigLib.create(HANDLER,
+                (defaults, configThing, builder) -> {
+                    return builder
+                            .title(Text.literal("SkyblockTweaks"))
+                            .category(GlobalSearchCategory.getCategory(defaults, configThing));
+
+                });
+        return new GlobalSearchYaclScreen(yacl, () -> getScreen(bigParent));
+    }
 
     public static ConfigImpl get() {
         return HANDLER.instance();

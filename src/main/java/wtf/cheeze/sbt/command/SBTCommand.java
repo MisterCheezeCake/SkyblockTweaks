@@ -47,7 +47,21 @@ public class SBTCommand {
     public static void registerEvents() {
         ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> dispatcher.register(
                 literal("sbt")
-                        .then(CommandUtils.getScreenOpeningCommand("config", () -> SBTConfig.getScreen(null)))
+                        .then(literal("config")
+                                .then(literal("search")
+                                        .executes(context -> {
+                                            MinecraftClient mc = context.getSource().getClient();
+                                            Screen screen = SBTConfig.getGlobalSearchScreen(null);
+                                            mc.send(() -> mc.setScreen(screen));
+                                            return 1;
+                                        })
+                                )
+                        .executes(context -> {
+                            MinecraftClient mc = context.getSource().getClient();
+                            Screen screen = SBTConfig.getScreen(null);
+                            mc.send(() -> mc.setScreen(screen));
+                            return 1;
+                        }))
                         .then(CommandUtils.getScreenOpeningCommand("hud", () -> new HudScreen(Text.literal("SkyBlockTweaks"), SkyblockTweaks.HUDS, null)))
                         .then(literal("debug")
                                 .then(literal("forcevalue")

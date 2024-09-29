@@ -16,17 +16,15 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with SkyblockTweaks. If not, see <https://www.gnu.org/licenses/>.
  */
-package wtf.cheeze.sbt.utils.render;
+package wtf.cheeze.sbt.mixin;
 
-public class Color3f {
+import dev.isxander.yacl3.gui.YACLScreen;
+import net.minecraft.client.gui.screen.Screen;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.gen.Accessor;
 
-    public float red;
-    public float green;
-    public float blue;
-
-    Color3f (int color) {
-        this.red = (float) (color >> 16 & 255) / 255.0F;
-        this.green = (float) (color >> 8 & 255) / 255.0F;
-        this.blue = (float) (color & 255) / 255.0F;
-    }
+@Mixin(YACLScreen.class)
+public interface YACLScreenAccessor {
+    @Accessor("parent")
+    Screen sbt$getParent();
 }

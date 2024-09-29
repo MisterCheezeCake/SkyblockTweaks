@@ -18,6 +18,7 @@ public class General {
         return ConfigCategory.createBuilder()
                 .name(Text.translatable("sbt.config.general"))
                 .tooltip(Text.translatable("sbt.config.general.desc"))
+                .option(GlobalSearchCategory.getOpenGlobalSearchButton(defaults, config))
                 .option(Version.getStreamOption(defaults, config))
                 .group(InventoryTweaks.getGroup(defaults, config))
                 .group(MenuHighlights.Config.getGroup(defaults, config))

@@ -71,8 +71,8 @@
   "sbt.config.general.menuHighlights.sblevelHighlight.desc": "Whether or not to highlight items in the /sblevel menu based on their completion status",
   "sbt.config.general.menuHighlights.widgetHighlight": "Widget Highlights",
   "sbt.config.general.menuHighlights.widgetHighlight.desc": "Whether or not to highlight items in the /widgets menu based on their status (enabled/disabled)",
-  "sbt.config.general.notificationSream": "Update Notification Type",
-  "sbt.config.general.notificationSream.desc": "What updates you want to be notified about. Alpha will notify you about all updates, Beta will notify you about beta and release updates, Release will only notify you about release updates, and None will disable notifications.",
+  "sbt.config.general.notificationStream": "Update Notification Type",
+  "sbt.config.general.notificationStream.desc": "What updates you want to be notified about. Alpha will notify you about all updates, Beta will notify you about beta and release updates, Release will only notify you about release updates, and None will disable notifications.",
   "sbt.config.huds": "HUDs",
   "sbt.config.huds.coordinates": "Coordinates HUD",
   "sbt.config.huds.coordinates.color": "Coordinates HUD Color",
@@ -308,5 +308,10 @@
   "sbt.config.huds.time.showOutside": "Show outside of Skyblock",
   "sbt.config.huds.time.showOutside.desc": "Whether to show the Real Time HUD outside of Skyblock",
   "sbt.config.huds.time.twelveHour": "12 Hour Time",
-  "sbt.config.huds.time.twelveHour.desc": "Whether to use the 12 hour format in the Real Time HUD"
+  "sbt.config.huds.time.twelveHour.desc": "Whether to use the 12 hour format in the Real Time HUD",
+  "sbt.config.globalSearch": "All Options",
+  "sbt.config.globalSearch.desc": "Contains all SBT options in a single searchable category",
+  "sbt.config.globalSearch.open": "Open Global Search",
+  "sbt.config.globalSearch.open.desc": "Opens a menu with everything in a single category for easy searching",
+  "sbt.config.globalSearch.open.text": "Open"
 }

@@ -8,7 +8,8 @@
 		"DrawContextMixin",
 		"HandledScreenMixin",
 		"InGameHudMixin",
-		"InventoryScreenMixin"
+		"InventoryScreenMixin",
+		"YACLScreenAccessor"
 	],
 	"injectors": {
 		"defaultRequire": 1
