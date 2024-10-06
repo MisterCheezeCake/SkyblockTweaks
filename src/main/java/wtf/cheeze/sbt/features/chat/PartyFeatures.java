@@ -44,6 +44,7 @@ public class PartyFeatures {
     public static Pattern BACKUP_UPDATE_PATTERN = Pattern.compile("The party was transferred to (.+) by .+");
     public static Pattern BOOP_PATTERN = Pattern.compile("From (.*): Boop!");
 
+    public static boolean verboseDebug = false;
     public static long lastPartyCommand = 0;
 
     public static void registerEvents() {
@@ -54,48 +55,68 @@ public class PartyFeatures {
             var s = TextUtils.removeColorCodes(message.getString());
             if (s.startsWith("Party >")) {
                 var matcher = PARTY_PATTERN.matcher(s);
-                if (!matcher.matches()) return;
-                if (System.currentTimeMillis() - lastPartyCommand < SBTConfig.get().partyCommands.cooldown) return;
+                if (!matcher.matches()) {
+                    if (verboseDebug) sendDebugMessage("Party message did not match pattern");
+                    return;
+                }
+                if (System.currentTimeMillis() - lastPartyCommand < SBTConfig.get().partyCommands.cooldown) {
+                    if (verboseDebug) sendDebugMessage("Party command on cooldown");
+                    return;
+                }
                 HypixelNetworking.sendPartyInfoC2SPacket(2);
                 lastPartyCommand = System.currentTimeMillis();
                 var name = matcher.group(1);
-                if (name.contains(" ")) name = name.split(" ")[1];
+                if (verboseDebug) sendDebugMessage("Initial Name Field Is '" + name + "'");
+                if (name.contains(" ")) {
+                    name = name.split(" ")[1];
+                    if (verboseDebug) sendDebugMessage("Name Changed To '" + name + "'");
+                }
                 if (SBTConfig.get().partyCommands.blockedUsers.contains(name)) {
                     SkyblockTweaks.LOGGER.info("Blocked user tried to use party commands: " + name);
+                    if (verboseDebug) sendDebugMessage("Blocked user tried to use party commands: " + name);
                     return;
                 }
                 var msg = matcher.group(2);
+                if (verboseDebug) sendDebugMessage("Message Field Is '" + msg + "'");
                 var args = msg.split(" ");
+                if (verboseDebug) sendDebugMessage("Arg0 is '" + args[0]+"'");
                 switch (args[0]) {
                     case "pt", "ptme" -> {
                         if (!SkyblockTweaks.DATA.amITheLeader) {
+                            if (verboseDebug) sendDebugMessage("Party Transfer Requested, but I am not the leader.");
                             return;
                         }
+                        if (verboseDebug) sendDebugMessage("Sending '/p transfer " + name + "'");
                         SkyblockTweaks.mc.getNetworkHandler().sendChatCommand("p transfer " + name);
                     }
                     case "allinv", "allinvite" -> {
                         if (!SkyblockTweaks.DATA.amITheLeader) {
+                            if (verboseDebug) sendDebugMessage("All Invite Requested, but I am not the leader.");
                             return;
                         }
+                        if (verboseDebug) sendDebugMessage("Sending '/p settings allinvite'");
                         SkyblockTweaks.mc.getNetworkHandler().sendChatCommand("p settings allinvite");
                     }
                     case "warp" -> {
                         if (!SkyblockTweaks.DATA.amITheLeader) {
+                            if (verboseDebug) sendDebugMessage("Warp Requested, but I am not the leader.");
                             return;
                         }
+                        if (verboseDebug) sendDebugMessage("Sending '/p warp'");
                         SkyblockTweaks.mc.getNetworkHandler().sendChatCommand("p warp");
                     }
                     case "help" -> {
-                        SkyblockTweaks.LOGGER.info(name);
                         if ((name.equals(SkyblockTweaks.mc.player.getName().getString()))) {
                             SkyblockTweaks.mc.player.sendMessage(Text.of("§7[§aSkyblockTweaks§f§7] §fAvailable party commands: !ptme, !allinvite, !warp, !help"), false);
                             return;
                         }
+                        if (verboseDebug) sendDebugMessage("Sending help message");
                         SkyblockTweaks.mc.getNetworkHandler().sendChatCommand("pc [SkyblockTweaks] Available party commands: !ptme, !allinvite, !warp, !help");
                     }
                 }
             } else if (s.startsWith("The party was transferred to")) {
                 // This is here in case the packet api fails for some reason
+                if (verboseDebug) sendDebugMessage("Backup Update Message Received");
                 var matcher = BACKUP_UPDATE_PATTERN.matcher(s);
                 if (!matcher.matches()) return;
                 var name = matcher.group(1);
@@ -194,6 +215,9 @@ public class PartyFeatures {
 
     private static Text getInviteMessage(String name) {
         return TextUtils.getTextThatRunsCommand("§7[§aSkyblockTweaks§f§7] §bClick here to invite §e" + name + "§b to your party!","§3Click here to run §e/p " + name , "/p invite " + name);
+    }
+    private static void sendDebugMessage(String message) {
+        SkyblockTweaks.mc.player.sendMessage(Text.of("§7[§2SBT Party Debugger§f§7]§3 " + message), false);
     }
 
 

@@ -20,7 +20,9 @@ package wtf.cheeze.sbt.command;
 
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
+import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
+import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.ingame.GenericContainerScreen;
@@ -29,6 +31,7 @@ import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.config.SBTConfig;
 import wtf.cheeze.sbt.config.SkyblockTweaksScreenMain;
 import wtf.cheeze.sbt.features.CalcPowder;
+import wtf.cheeze.sbt.features.chat.PartyFeatures;
 import wtf.cheeze.sbt.utils.NumberUtils;
 import wtf.cheeze.sbt.utils.skyblock.SkyblockConstants;
 import wtf.cheeze.sbt.utils.skyblock.SkyblockUtils;
@@ -43,6 +46,234 @@ import static net.fabricmc.fabric.api.client.command.v2.ClientCommandManager.lit
 public class SBTCommand {
 
     public static String PREFIX = "§7[§aSkyblockTweaks§f§7]";
+    private static final LiteralArgumentBuilder<FabricClientCommandSource> calc = literal("calc")
+            .then(literal("skill")
+                    .then(argument("level-start", IntegerArgumentType.integer())
+                            .then(argument("level-end", IntegerArgumentType.integer())
+                                    .executes(context -> {
+                                                var levelStart = IntegerArgumentType.getInteger(context, "level-start");
+                                                var levelEnd = IntegerArgumentType.getInteger(context, "level-end");
+
+                                                if (levelStart < 0 || levelEnd < 0 || levelStart > 60 || levelEnd > 60 || levelStart >= levelEnd) {
+                                                    context.getSource().sendFeedback(Text.of(PREFIX + " §cInvalid arguments"));
+                                                    return 0;
+                                                }
+
+                                                var newArr = Arrays.stream(SkyblockConstants.SKILL_LEVELS).skip(levelStart).limit(levelEnd - levelStart).toArray();
+                                                var total = Arrays.stream(newArr).sum();
+                                                context.getSource().sendFeedback(Text.of(PREFIX + " §3Total Skill XP Required: §e" + NumberUtils.formatNumber(total, ",")));
+                                                return 1;
+                                            }
+                                    )
+                            )).executes(context -> {
+                        context.getSource().sendFeedback(Text.of(PREFIX + " §cInvalid arguments"));
+                        return 0;
+                    })
+            )
+            .then(literal("slayer")
+                    .then(argument("type", StringArgumentType.string()).suggests(CommandUtils.getArrayAsSuggestions(new String[]{"zombie", "spider", "wolf", "enderman", "blaze", "vampire"}))
+                            .then(argument("level-start", IntegerArgumentType.integer())
+                                    .then(argument("level-end", IntegerArgumentType.integer())
+                                            .executes(context -> {
+                                                var slayer = SkyblockUtils.castStringToSlayerType(StringArgumentType.getString(context, "type"));
+                                                if (slayer == null) {
+                                                    context.getSource().sendFeedback(Text.of(PREFIX + " §cInvalid slayer type"));
+                                                    return 0;
+
+                                                }
+                                                var levelStart = IntegerArgumentType.getInteger(context, "level-start");
+                                                var levelEnd = IntegerArgumentType.getInteger(context, "level-end");
+                                                var cap = slayer == SkyblockConstants.Slayers.VAMPIRE ? 5 : 9;
+
+                                                if (levelStart > levelEnd || levelEnd < 0 || levelStart < 0 || levelStart > cap || levelEnd > cap) {
+                                                    context.getSource().sendFeedback(Text.of(PREFIX + " §cInvalid arguments"));
+                                                    return 0;
+                                                }
+
+                                                var table = getCalcSlayerTable(slayer);
+                                                var needed = table[levelEnd] - table[levelStart];
+                                                context.getSource().sendFeedback(Text.of(PREFIX + " §3Total Slayer XP Required: §e" + NumberUtils.formatNumber(needed, ",")));
+                                                return 1;
+                                            })
+
+                                    ))).executes(context -> {
+                        context.getSource().sendFeedback(Text.of(PREFIX + " §cInvalid arguments"));
+                        return 0;
+                    })
+            )
+            .then(literal("dungeon")
+                    .then(argument("level-start", IntegerArgumentType.integer())
+                            .then(argument("level-end", IntegerArgumentType.integer())
+                                    .executes(context -> {
+                                                var levelStart = IntegerArgumentType.getInteger(context, "level-start");
+                                                var levelEnd = IntegerArgumentType.getInteger(context, "level-end");
+
+                                                if (levelStart < 0 || levelEnd < 0 || levelStart > 50 || levelEnd > 50 || levelStart >= levelEnd) {
+                                                    context.getSource().sendFeedback(Text.of(PREFIX + " §cInvalid arguments"));
+                                                    return 0;
+                                                }
+
+                                                var newArr = Arrays.stream(SkyblockConstants.DUNGEON_LEVELS).skip(levelStart).limit(levelEnd - levelStart).toArray();
+                                                var total = Arrays.stream(newArr).sum();
+                                                context.getSource().sendFeedback(Text.of(PREFIX + " §3Total Dungeons XP Required: §e" + NumberUtils.formatNumber(total, ",")));
+                                                return 1;
+                                            }
+                                    )
+                            ))
+                    .executes(context -> {
+                        context.getSource().sendFeedback(Text.of(PREFIX + " §cInvalid arguments"));
+                        return 0;
+                    })
+
+            )
+            .then(literal("pet")
+                    .then(argument("rarity", StringArgumentType.string()).suggests(CommandUtils.getArrayAsSuggestions(new String[]{"common", "uncommon", "rare", "epic", "legendary", "mythic"}))
+                            .then(argument("level-start", IntegerArgumentType.integer())
+                                    .then(argument("level-end", IntegerArgumentType.integer())
+                                            .executes(context -> {
+                                                var rarity = SkyblockUtils.castStringToRarity(StringArgumentType.getString(context, "rarity"));
+                                                if (rarity == null) {
+                                                    context.getSource().sendFeedback(Text.of(PREFIX + " §cInvalid rarity"));
+                                                    return 0;
+                                                }
+                                                var levelStart = IntegerArgumentType.getInteger(context, "level-start");
+                                                var levelEnd = IntegerArgumentType.getInteger(context, "level-end");
+
+                                                var cap = (rarity == SkyblockConstants.Rarity.LEGENDARY || rarity == SkyblockConstants.Rarity.MYTHIC) ? 200 : 100;
+
+
+                                                if (levelStart < 0 || levelEnd < 0 || levelStart > cap || levelEnd > cap || levelStart >= levelEnd) {
+                                                    context.getSource().sendFeedback(Text.of(PREFIX + " §cInvalid arguments"));
+                                                    return 0;
+                                                }
+
+                                                var newArr = Arrays.stream(getCalcPetTable(rarity)).skip(levelStart).limit(levelEnd - levelStart).toArray();
+                                                var total = Arrays.stream(newArr).sum();
+                                                context.getSource().sendFeedback(Text.of(PREFIX + " §3Total Pet XP Required: §e" + NumberUtils.formatNumber(total, ",")));
+                                                return 1;
+                                            })
+                                    ).executes(context -> {
+                                        context.getSource().sendFeedback(Text.of(PREFIX + " §cInvalid arguments"));
+                                        return 0;
+                                    })))
+                    .executes(context -> {
+                        context.getSource().sendFeedback(Text.of(PREFIX + " §cInvalid arguments"));
+                        return 0;
+                    })
+            )
+            .then(literal("hotm")
+                    .then(argument("level-start", IntegerArgumentType.integer())
+                            .then(argument("level-end", IntegerArgumentType.integer())
+                                    .executes(context -> {
+                                                var levelStart = IntegerArgumentType.getInteger(context, "level-start");
+                                                var levelEnd = IntegerArgumentType.getInteger(context, "level-end");
+
+                                                if (levelStart < 0 || levelEnd < 0 || levelEnd > 10 || levelStart >= levelEnd) {
+                                                    context.getSource().sendFeedback(Text.of(PREFIX + " §cInvalid arguments"));
+                                                    return 0;
+                                                }
+
+                                                var newArr = Arrays.stream(SkyblockConstants.HOTM_LEVELS).skip(levelStart).limit(levelEnd - levelStart).toArray();
+                                                var total = Arrays.stream(newArr).sum();
+                                                context.getSource().sendFeedback(Text.of(PREFIX + " §3Total HOTM XP Required: §e" + NumberUtils.formatNumber(total, ",")));
+                                                return 1;
+                                            }
+                                    )
+
+
+                            ))
+                    .executes(context -> {
+                        context.getSource().sendFeedback(Text.of(PREFIX + " §cInvalid arguments"));
+                        return 0;
+                    }))
+            .then(literal("garden")
+                    .then(argument("level-start", IntegerArgumentType.integer())
+                            .then(argument("level-end", IntegerArgumentType.integer())
+                                    .executes(context -> {
+                                                var levelStart = IntegerArgumentType.getInteger(context, "level-start");
+                                                var levelEnd = IntegerArgumentType.getInteger(context, "level-end");
+
+                                                if (levelStart < 0 || levelEnd < 0 || levelEnd > 15 || levelStart >= levelEnd) {
+                                                    context.getSource().sendFeedback(Text.of(PREFIX + " §cInvalid arguments"));
+                                                    return 0;
+                                                }
+
+                                                var newArr = Arrays.stream(SkyblockConstants.GARDEN_LEVELS).skip(levelStart).limit(levelEnd - levelStart).toArray();
+                                                var total = Arrays.stream(newArr).sum();
+                                                context.getSource().sendFeedback(Text.of(PREFIX + " §3Total Garden XP Required: §e" + NumberUtils.formatNumber(total, ",")));
+                                                return 1;
+                                            }
+                                    )
+                            ))
+                    .executes(context -> {
+                        context.getSource().sendFeedback(Text.of(PREFIX + " §cInvalid arguments"));
+                        return 0;
+                    })
+            )
+            .then(literal("crop")
+                    .then(argument("crop", StringArgumentType.string()).suggests(CommandUtils.getArrayAsSuggestions(new String[]{"wheat", "pumpkin", "mushroom", "carrot", "potato", "melon", "cane", "cactus", "cocoa", "wart"}))
+                            .then(argument("level-start", IntegerArgumentType.integer())
+                                    .then(argument("level-end", IntegerArgumentType.integer())
+                                            .executes(context -> {
+                                                        var crop = SkyblockUtils.castStringToCrop(StringArgumentType.getString(context, "crop"));
+                                                        if (crop == null) {
+                                                            context.getSource().sendFeedback(Text.of(PREFIX + " §cInvalid crop"));
+                                                            return 0;
+                                                        }
+                                                        var levelStart = IntegerArgumentType.getInteger(context, "level-start");
+                                                        var levelEnd = IntegerArgumentType.getInteger(context, "level-end");
+
+                                                        if (levelStart < 0 || levelEnd < 0 || levelEnd > 46 || levelStart >= levelEnd) {
+                                                            context.getSource().sendFeedback(Text.of(PREFIX + " §cInvalid arguments"));
+                                                            return 0;
+                                                        }
+
+                                                        var newArr = Arrays.stream(getCalcCropTable(crop)).skip(levelStart).limit(levelEnd - levelStart).toArray();
+                                                        var total = Arrays.stream(newArr).sum();
+                                                        context.getSource().sendFeedback(Text.of(PREFIX + " §3Total Crop XP Required: §e" + NumberUtils.formatNumber(total, ",")));
+                                                        return 1;
+                                                    }
+                                            )
+                                    ))
+                    ).executes(context -> {
+                        context.getSource().sendFeedback(Text.of(PREFIX + " §cInvalid arguments"));
+                        return 0;
+                    })
+            )
+            .then(literal("powder")
+                    .then(argument("perk", StringArgumentType.string()).suggests(CommandUtils.getArrayAsSuggestions(CalcPowder.PERKS.keySet().toArray(new String[0])))
+                            .then(argument("level-start", IntegerArgumentType.integer())
+                                    .then(argument("level-end", IntegerArgumentType.integer())
+                                            .executes(context -> {
+                                                        var perk = CalcPowder.PERKS.get(StringArgumentType.getString(context, "perk"));
+                                                        if (perk == null) {
+                                                            context.getSource().sendFeedback(Text.of(PREFIX + " §cInvalid perk"));
+                                                            return 0;
+                                                        }
+                                                        var levelStart = IntegerArgumentType.getInteger(context, "level-start");
+                                                        var levelEnd = IntegerArgumentType.getInteger(context, "level-end");
+
+                                                        if (levelStart < 0 || levelEnd < 0 || levelStart >= levelEnd) {
+                                                            context.getSource().sendFeedback(Text.of(PREFIX + " §cInvalid arguments"));
+                                                            return 0;
+                                                        }
+                                                        if (levelEnd > perk.max) {
+                                                            context.getSource().sendFeedback(Text.of(PREFIX + " §cTargeted end level is higher than max (§e" + perk.max + "§c)"));
+                                                            return 0;
+                                                        }
+
+                                                        var total = perk.costBetween(levelStart, levelEnd);
+                                                        context.getSource().sendFeedback(Text.of(PREFIX + " §3Total " + perk.powder.getDisplayName() + " Powder Required: §e" + NumberUtils.formatNumber(total, ",")));
+                                                        return 1;
+                                                    }
+                                            )
+                                    ))
+                    ).executes(context -> {
+                        context.getSource().sendFeedback(Text.of(PREFIX + " §cInvalid arguments"));
+                        return 0;
+                    })
+
+            );
 
     public static void registerEvents() {
         ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> dispatcher.register(
@@ -91,6 +322,17 @@ public class SBTCommand {
                                         )
 
                                 )
+                                .then(literal("partycommands").executes(context -> {
+                                    if (PartyFeatures.verboseDebug) {
+                                        PartyFeatures.verboseDebug = false;
+                                        context.getSource().sendFeedback(Text.of(PREFIX + " §cDisabled party command debug"));
+                                    } else {
+                                        PartyFeatures.verboseDebug = true;
+                                        context.getSource().sendFeedback(Text.of(PREFIX + " §aEnabled party command debug"));
+                                    }
+                                    return 1;
+                                }))
+
                                 .then(literal("dumpComponents")
                                         .then(literal("hand")
                                         .executes(context -> {
@@ -120,7 +362,7 @@ public class SBTCommand {
                                                         })
                                         )
                                 )
-                                .executes(context -> {
+                                ).executes(context -> {
                                     var source = context.getSource();
                                     source.sendFeedback(Text.literal(PREFIX +  " §3Debug Information"));
                                     source.sendFeedback(getDebugText("Version", SkyblockTweaks.VERSION.getVersionString()));
@@ -135,241 +377,12 @@ public class SBTCommand {
                                     return 1;
                                 })
                         )
-                        .then(literal("calc")
-                                .then(literal("skill")
-                                        .then(argument("level-start", IntegerArgumentType.integer())
-                                                .then(argument("level-end", IntegerArgumentType.integer())
-                                                        .executes(context -> {
-                                                                    var levelStart = IntegerArgumentType.getInteger(context, "level-start");
-                                                                    var levelEnd = IntegerArgumentType.getInteger(context, "level-end");
-
-                                                                    if (levelStart < 0 || levelEnd < 0 || levelStart > 60 || levelEnd > 60 || levelStart >= levelEnd) {
-                                                                        context.getSource().sendFeedback(Text.of(PREFIX + " §cInvalid arguments"));
-                                                                        return 0;
-                                                                    }
-
-                                                                    var newArr = Arrays.stream(SkyblockConstants.SKILL_LEVELS).skip(levelStart).limit(levelEnd - levelStart).toArray();
-                                                                    var total = Arrays.stream(newArr).sum();
-                                                                    context.getSource().sendFeedback(Text.of(PREFIX + " §3Total Skill XP Required: §e" + NumberUtils.formatNumber(total, ",")));
-                                                                    return 1;
-                                                                }
-                                                        )
-                                                )).executes(context -> {
-                                            context.getSource().sendFeedback(Text.of(PREFIX + " §cInvalid arguments"));
-                                            return 0;
-                                        })
-                                )
-                                .then(literal("slayer")
-                                        .then(argument("type", StringArgumentType.string()).suggests(CommandUtils.getArrayAsSuggestions(new String[]{"zombie", "spider", "wolf", "enderman", "blaze", "vampire"}))
-                                                .then(argument("level-start", IntegerArgumentType.integer())
-                                                        .then(argument("level-end", IntegerArgumentType.integer())
-                                                                .executes(context -> {
-                                                                    var slayer = SkyblockUtils.castStringToSlayerType(StringArgumentType.getString(context, "type"));
-                                                                    if (slayer == null) {
-                                                                        context.getSource().sendFeedback(Text.of(PREFIX + " §cInvalid slayer type"));
-                                                                        return 0;
-
-                                                                    }
-                                                                    var levelStart = IntegerArgumentType.getInteger(context, "level-start");
-                                                                    var levelEnd = IntegerArgumentType.getInteger(context, "level-end");
-                                                                    var cap = slayer == SkyblockConstants.Slayers.VAMPIRE ? 5 : 9;
-
-                                                                    if (levelStart > levelEnd || levelEnd < 0 || levelStart < 0 || levelStart > cap || levelEnd > cap) {
-                                                                        context.getSource().sendFeedback(Text.of(PREFIX + " §cInvalid arguments"));
-                                                                        return 0;
-                                                                    }
-
-                                                                    var table = getCalcSlayerTable(slayer);
-                                                                    var needed = table[levelEnd] - table[levelStart];
-                                                                    context.getSource().sendFeedback(Text.of(PREFIX + " §3Total Slayer XP Required: §e" + NumberUtils.formatNumber(needed, ",")));
-                                                                    return 1;
-                                                                })
-
-                                                        ))).executes(context -> {
-                                            context.getSource().sendFeedback(Text.of(PREFIX + " §cInvalid arguments"));
-                                            return 0;
-                                        })
-                                )
-                                .then(literal("dungeon")
-                                        .then(argument("level-start", IntegerArgumentType.integer())
-                                                .then(argument("level-end", IntegerArgumentType.integer())
-                                                        .executes(context -> {
-                                                                    var levelStart = IntegerArgumentType.getInteger(context, "level-start");
-                                                                    var levelEnd = IntegerArgumentType.getInteger(context, "level-end");
-
-                                                                    if (levelStart < 0 || levelEnd < 0 || levelStart > 50 || levelEnd > 50 || levelStart >= levelEnd) {
-                                                                        context.getSource().sendFeedback(Text.of(PREFIX + " §cInvalid arguments"));
-                                                                        return 0;
-                                                                    }
-
-                                                                    var newArr = Arrays.stream(SkyblockConstants.DUNGEON_LEVELS).skip(levelStart).limit(levelEnd - levelStart).toArray();
-                                                                    var total = Arrays.stream(newArr).sum();
-                                                                    context.getSource().sendFeedback(Text.of(PREFIX + " §3Total Dungeons XP Required: §e" + NumberUtils.formatNumber(total, ",")));
-                                                                    return 1;
-                                                                }
-                                                        )
-                                                ))
-                                        .executes(context -> {
-                                            context.getSource().sendFeedback(Text.of(PREFIX + " §cInvalid arguments"));
-                                            return 0;
-                                        })
-
-                                )
-                                .then(literal("pet")
-                                        .then(argument("rarity", StringArgumentType.string()).suggests(CommandUtils.getArrayAsSuggestions(new String[]{"common", "uncommon", "rare", "epic", "legendary", "mythic"}))
-                                                .then(argument("level-start", IntegerArgumentType.integer())
-                                                        .then(argument("level-end", IntegerArgumentType.integer())
-                                                                .executes(context -> {
-                                                                    var rarity = SkyblockUtils.castStringToRarity(StringArgumentType.getString(context, "rarity"));
-                                                                    if (rarity == null) {
-                                                                        context.getSource().sendFeedback(Text.of(PREFIX + " §cInvalid rarity"));
-                                                                        return 0;
-                                                                    }
-                                                                    var levelStart = IntegerArgumentType.getInteger(context, "level-start");
-                                                                    var levelEnd = IntegerArgumentType.getInteger(context, "level-end");
-
-                                                                    var cap = (rarity == SkyblockConstants.Rarity.LEGENDARY || rarity == SkyblockConstants.Rarity.MYTHIC) ? 200 : 100;
-
-
-                                                                    if (levelStart < 0 || levelEnd < 0 || levelStart > cap || levelEnd > cap || levelStart >= levelEnd) {
-                                                                        context.getSource().sendFeedback(Text.of(PREFIX + " §cInvalid arguments"));
-                                                                        return 0;
-                                                                    }
-
-                                                                    var newArr = Arrays.stream(getCalcPetTable(rarity)).skip(levelStart).limit(levelEnd - levelStart).toArray();
-                                                                    var total = Arrays.stream(newArr).sum();
-                                                                    context.getSource().sendFeedback(Text.of(PREFIX + " §3Total Pet XP Required: §e" + NumberUtils.formatNumber(total, ",")));
-                                                                    return 1;
-                                                                })
-                                                        ).executes(context -> {
-                                                            context.getSource().sendFeedback(Text.of(PREFIX + " §cInvalid arguments"));
-                                                            return 0;
-                                                        })))
-                                        .executes(context -> {
-                                            context.getSource().sendFeedback(Text.of(PREFIX + " §cInvalid arguments"));
-                                            return 0;
-                                        })
-                                )
-                                .then(literal("hotm")
-                                        .then(argument("level-start", IntegerArgumentType.integer())
-                                                .then(argument("level-end", IntegerArgumentType.integer())
-                                                        .executes(context -> {
-                                                                    var levelStart = IntegerArgumentType.getInteger(context, "level-start");
-                                                                    var levelEnd = IntegerArgumentType.getInteger(context, "level-end");
-
-                                                                    if (levelStart < 0 || levelEnd < 0 || levelEnd > 10 || levelStart >= levelEnd) {
-                                                                        context.getSource().sendFeedback(Text.of(PREFIX + " §cInvalid arguments"));
-                                                                        return 0;
-                                                                    }
-
-                                                                    var newArr = Arrays.stream(SkyblockConstants.HOTM_LEVELS).skip(levelStart).limit(levelEnd - levelStart).toArray();
-                                                                    var total = Arrays.stream(newArr).sum();
-                                                                    context.getSource().sendFeedback(Text.of(PREFIX + " §3Total HOTM XP Required: §e" + NumberUtils.formatNumber(total, ",")));
-                                                                    return 1;
-                                                                }
-                                                        )
-
-
-                                                ))
-                                        .executes(context -> {
-                                            context.getSource().sendFeedback(Text.of(PREFIX + " §cInvalid arguments"));
-                                            return 0;
-                                        }))
-                                .then(literal("garden")
-                                        .then(argument("level-start", IntegerArgumentType.integer())
-                                                .then(argument("level-end", IntegerArgumentType.integer())
-                                                        .executes(context -> {
-                                                                    var levelStart = IntegerArgumentType.getInteger(context, "level-start");
-                                                                    var levelEnd = IntegerArgumentType.getInteger(context, "level-end");
-
-                                                                    if (levelStart < 0 || levelEnd < 0 || levelEnd > 15 || levelStart >= levelEnd) {
-                                                                        context.getSource().sendFeedback(Text.of(PREFIX + " §cInvalid arguments"));
-                                                                        return 0;
-                                                                    }
-
-                                                                    var newArr = Arrays.stream(SkyblockConstants.GARDEN_LEVELS).skip(levelStart).limit(levelEnd - levelStart).toArray();
-                                                                    var total = Arrays.stream(newArr).sum();
-                                                                    context.getSource().sendFeedback(Text.of(PREFIX + " §3Total Garden XP Required: §e" + NumberUtils.formatNumber(total, ",")));
-                                                                    return 1;
-                                                                }
-                                                        )
-                                                ))
-                                        .executes(context -> {
-                                            context.getSource().sendFeedback(Text.of(PREFIX + " §cInvalid arguments"));
-                                            return 0;
-                                        })
-                                )
-                                .then(literal("crop")
-                                        .then(argument("crop", StringArgumentType.string()).suggests(CommandUtils.getArrayAsSuggestions(new String[]{"wheat", "pumpkin", "mushroom", "carrot", "potato", "melon", "cane", "cactus", "cocoa", "wart"}))
-                                                .then(argument("level-start", IntegerArgumentType.integer())
-                                                        .then(argument("level-end", IntegerArgumentType.integer())
-                                                                .executes(context -> {
-                                                                    var crop = SkyblockUtils.castStringToCrop(StringArgumentType.getString(context, "crop"));
-                                                                    if (crop == null) {
-                                                                        context.getSource().sendFeedback(Text.of(PREFIX + " §cInvalid crop"));
-                                                                        return 0;
-                                                                    }
-                                                                    var levelStart = IntegerArgumentType.getInteger(context, "level-start");
-                                                                    var levelEnd = IntegerArgumentType.getInteger(context, "level-end");
-
-                                                                    if (levelStart < 0 || levelEnd < 0 || levelEnd > 46 || levelStart >= levelEnd) {
-                                                                        context.getSource().sendFeedback(Text.of(PREFIX + " §cInvalid arguments"));
-                                                                        return 0;
-                                                                    }
-
-                                                                    var newArr = Arrays.stream(getCalcCropTable(crop)).skip(levelStart).limit(levelEnd - levelStart).toArray();
-                                                                    var total = Arrays.stream(newArr).sum();
-                                                                    context.getSource().sendFeedback(Text.of(PREFIX + " §3Total Crop XP Required: §e" + NumberUtils.formatNumber(total, ",")));
-                                                                    return 1;
-                                                                }
-                                                        )
-                                                ))
-                                ).executes(context -> {
-                                                    context.getSource().sendFeedback(Text.of(PREFIX + " §cInvalid arguments"));
-                                                    return 0;
-                                                })
-                                )
-                                .then(literal("powder")
-                                        .then(argument("perk", StringArgumentType.string()).suggests(CommandUtils.getArrayAsSuggestions(CalcPowder.PERKS.keySet().toArray(new String[0])))
-                                                .then(argument("level-start", IntegerArgumentType.integer())
-                                                        .then(argument("level-end", IntegerArgumentType.integer())
-                                                                .executes(context -> {
-                                                                    var perk = CalcPowder.PERKS.get(StringArgumentType.getString(context, "perk"));
-                                                                    if (perk == null) {
-                                                                        context.getSource().sendFeedback(Text.of(PREFIX + " §cInvalid perk"));
-                                                                        return 0;
-                                                                    }
-                                                                    var levelStart = IntegerArgumentType.getInteger(context, "level-start");
-                                                                    var levelEnd = IntegerArgumentType.getInteger(context, "level-end");
-
-                                                                    if (levelStart < 0 || levelEnd < 0 || levelStart >= levelEnd) {
-                                                                        context.getSource().sendFeedback(Text.of(PREFIX + " §cInvalid arguments"));
-                                                                        return 0;
-                                                                    }
-                                                                    if (levelEnd > perk.max) {
-                                                                        context.getSource().sendFeedback(Text.of(PREFIX + " §cTargeted end level is higher than max (§e" + perk.max + "§c)"));
-                                                                        return 0;
-                                                                    }
-
-                                                                    var total = perk.costBetween(levelStart, levelEnd);
-                                                                    context.getSource().sendFeedback(Text.of(PREFIX + " §3Total " + perk.powder.getDisplayName() + " Powder Required: §e" + NumberUtils.formatNumber(total, ",")));
-                                                                    return 1;
-                                                                }
-                                                        )
-                                                ))
-                                ).executes(context -> {
-                                    context.getSource().sendFeedback(Text.of(PREFIX + " §cInvalid arguments"));
-                                    return 0;
-                                })
-
-                                )
-
-                        )
+                        .then(calc)
                                 .executes(context -> {
                                     context.getSource().sendFeedback(Text.of(PREFIX + " §cInvalid arguments"));
                                     return 0;
                                 })
-                        )
+
                         .executes(context -> {
                                     MinecraftClient mc = context.getSource().getClient();
                                     Screen screen = new SkyblockTweaksScreenMain(null);

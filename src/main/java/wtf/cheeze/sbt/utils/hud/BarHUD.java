@@ -27,8 +27,8 @@ import wtf.cheeze.sbt.utils.render.RenderUtils;
  * A HUD that displays a bar, code liberally inspired by SBA, but way simpler thanks to modern mc, bar textures taken directly from SBA
  */
 public abstract class BarHUD extends HUD {
-    public static final Identifier UNFILLED = Identifier.of("skyblocktweaks", "unfill.png");
-    public static final Identifier FILLED = Identifier.of("skyblocktweaks", "fill.png");
+    public static final Identifier UNFILLED = Identifier.of("skyblocktweaks", "bars/unfilled.png");
+    public static final Identifier FILLED = Identifier.of("skyblocktweaks", "bars/filled.png");
     public static final int BAR_WIDTH = 71;
     public static final int BAR_HEIGHT = 5;
 

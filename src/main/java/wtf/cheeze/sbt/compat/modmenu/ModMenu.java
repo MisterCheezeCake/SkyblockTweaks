@@ -16,14 +16,15 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with SkyblockTweaks. If not, see <https://www.gnu.org/licenses/>.
  */
-package wtf.cheeze.sbt.config;
+package wtf.cheeze.sbt.compat.modmenu;
 
 import com.terraformersmc.modmenu.api.ConfigScreenFactory;
 import com.terraformersmc.modmenu.api.ModMenuApi;
+import wtf.cheeze.sbt.config.SkyblockTweaksScreenMain;
 
 public final class ModMenu implements ModMenuApi {
     @Override
     public ConfigScreenFactory<?> getModConfigScreenFactory() {
-        return (parent -> new SkyblockTweaksScreenMain(parent));
+        return (SkyblockTweaksScreenMain::new);
     }
 }

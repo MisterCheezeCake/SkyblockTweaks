@@ -27,8 +27,8 @@ import wtf.cheeze.sbt.utils.render.RenderUtils;
  * The abstract representation of the ticker HUD, for the implementation, see {@link wtf.cheeze.sbt.features.huds.TickerHUD}
  */
 public abstract class AbstractTickerHUD extends HUD{
-    private static final Identifier FULL = Identifier.of("skyblocktweaks", "ticker_full.png");
-    private static final Identifier BLANK = Identifier.of("skyblocktweaks", "ticker_blank.png");
+    private static final Identifier FULL = Identifier.of("skyblocktweaks", "tickers/full.png");
+    private static final Identifier BLANK = Identifier.of("skyblocktweaks", "tickers/blank.png");
     private static final int DIMENSION = 9;
 
     public abstract int getMax(boolean fromHudScreen);

@@ -27,7 +27,7 @@
           "wtf.cheeze.sbt.SkyblockTweaks"
 		],
 		"modmenu": [
-			"wtf.cheeze.sbt.config.ModMenu"
+			"wtf.cheeze.sbt.compat.modmenu.ModMenu"
 		]
 	},
 	"depends": {

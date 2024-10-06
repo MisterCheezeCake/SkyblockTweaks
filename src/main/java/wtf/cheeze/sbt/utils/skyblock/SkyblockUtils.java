@@ -77,7 +77,7 @@ public class SkyblockUtils {
             case "carpentry" -> SkyblockConstants.Skills.CARPENTRY;
             case "runecrafting" -> SkyblockConstants.Skills.RUNECRAFTING;
             case "social" -> SkyblockConstants.Skills.SOCIAL;
-            default -> null;
+            default -> SkyblockConstants.Skills.UNKNOWN;
         };
     }
 }

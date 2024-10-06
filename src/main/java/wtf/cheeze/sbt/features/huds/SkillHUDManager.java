@@ -49,7 +49,13 @@ public class SkillHUDManager {
 
     public static final SkillHUDManager INSTANCE = new SkillHUDManager();
 
-    private SkillHUDManager() {}
+    private SkillHUDManager() {
+        ClientTickEvents.END_CLIENT_TICK.register(client -> {
+            if (timeLeft > 0) {
+                timeLeft--;
+            }
+        });
+    }
 
     public final SkillHUD SKILL_HUD = new SkillHUD();
     public final SkillBar SKILL_BAR = new SkillBar();
@@ -57,7 +63,7 @@ public class SkillHUDManager {
     private static final int PERSIST_TICKS = 60;
 
     private int timeLeft = 0;
-    private SkyblockConstants.Skills currentSkill;
+    private SkyblockConstants.Skills currentSkill = SkyblockConstants.Skills.UNKNOWN;
     private float gained = 0;
     private float total = 0;
     private float progress = 0;
@@ -85,11 +91,6 @@ public class SkillHUDManager {
 
     public class SkillHUD extends TextHUD {
         public SkillHUD() {
-            ClientTickEvents.END_CLIENT_TICK.register(client -> {
-                if (timeLeft > 0) {
-                    timeLeft--;
-                }
-            });
             INFO = new HudInformation(
                     () -> SBTConfig.huds().skills.x,
                     () -> SBTConfig.huds().skills.y,
@@ -176,7 +177,7 @@ public class SkillHUDManager {
 
         private static int[] getSkillTable(SkyblockConstants.Skills skill) {
             return switch (skill) {
-                case FARMING, FISHING, FORAGING, MINING, COMBAT, ENCHANTING, ALCHEMY, TAMING, CARPENTRY ->
+                case FARMING, FISHING, FORAGING, MINING, COMBAT, ENCHANTING, ALCHEMY, TAMING, CARPENTRY, UNKNOWN ->
                         SkyblockConstants.SKILL_LEVELS;
                 case RUNECRAFTING -> SkyblockConstants.RUNECRAFTING_LEVELS;
                 case SOCIAL -> SkyblockConstants.SOCIAL_LEVELS;
@@ -388,10 +389,11 @@ public class SkillHUDManager {
         @Override
         public boolean shouldRender(boolean fromHudScreen) {
             if (!super.shouldRender(fromHudScreen)) return false;
-            if (timeLeft <= 0 && !fromHudScreen) return false;
+            if (fromHudScreen) return true;
+            if (timeLeft <= 0) return false;
             // Don't display at max level
             if  (percent == 0 && total == 0 ) return false;
-            return (SkyblockTweaks.DATA.inSB && SBTConfig.huds().skillBar.enabled) || fromHudScreen;
+            return (SkyblockTweaks.DATA.inSB && SBTConfig.huds().skillBar.enabled);
         }
 
         public static class Config {

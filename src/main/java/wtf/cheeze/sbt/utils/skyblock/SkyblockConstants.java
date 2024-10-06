@@ -1185,6 +1185,10 @@ public class SkyblockConstants {
         NETHER_WART
     }
 
+    /**
+     * Skills
+     * Unknown is used rather than null when no skill is known to prevent NPEs
+     */
     public static enum Skills {
         COMBAT,
         MINING,
@@ -1196,7 +1200,8 @@ public class SkyblockConstants {
         TAMING,
         CARPENTRY,
         RUNECRAFTING,
-        SOCIAL
+        SOCIAL,
+        UNKNOWN
     }
 
     public static enum Powder {
