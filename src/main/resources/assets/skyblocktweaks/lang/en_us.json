@@ -313,7 +313,5 @@
   "sbt.config.globalSearch.desc": "Contains all SBT options in a single searchable category",
   "sbt.config.globalSearch.open": "Open Global Search",
   "sbt.config.globalSearch.open.desc": "Opens a menu with everything in a single category for easy searching",
-  "sbt.config.globalSearch.open.text": "Open",
-  "limelightExtension.skyblocktweaks.limelight_warps": "SBT - Warps",
-  "limelightExtension.skyblocktweaks.limelight_warps.desc": "Adds Skyblock warps to the Limelight menu"
+  "sbt.config.globalSearch.open.text": "Open"
 }
