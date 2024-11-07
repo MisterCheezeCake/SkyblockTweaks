@@ -68,10 +68,6 @@ public class TextUtils {
         return text.substring(0, 1).toUpperCase() + text.substring(1);
     }
 
-
-
-
-
     public static Text join(Text... texts) {
         var result = Text.literal("");
         for (var text : texts) {

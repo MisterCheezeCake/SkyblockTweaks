@@ -19,7 +19,7 @@
 package wtf.cheeze.sbt.utils.skyblock;
 
 import net.minecraft.util.Identifier;
-import wtf.cheeze.sbt.utils.hud.HudIcon;
+import wtf.cheeze.sbt.hud.HudIcon;
 
 import java.util.Map;
 

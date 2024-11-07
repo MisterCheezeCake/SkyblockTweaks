@@ -20,66 +20,58 @@ package wtf.cheeze.sbt.utils;
 
 import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.config.SBTConfig;
+import wtf.cheeze.sbt.utils.Version.NotificationStream;
 
 public class UpdateChecker {
-    public static final String REMOTE_VERSION_FILE = "https://raw.githubusercontent.com/MisterCheezeCake/RemoteData/main/SBT/updateInfo.json";
+    public static final String REMOTE_VERSION_FILE = "https://raw.githubusercontent.com/MisterCheezeCake/RemoteData/refs/heads/main/SBT/updateNew.json";
 
     public static void checkForUpdates() {
-        if (SBTConfig.get().notificationStream != Version.NotificationStream.NONE && SkyblockTweaks.VERSION.STREAM != Version.VersionType.UNSTABLE) {
+        if (SBTConfig.get().notificationStream != NotificationStream.NONE && SkyblockTweaks.VERSION.STREAM != Version.VersionType.UNSTABLE) {
             try {
                 SkyblockTweaks.LOGGER.info("Checking for updates");
                 var result = HTTPUtils.get(REMOTE_VERSION_FILE);
-                //LOGGER.info(result);
                 Version.RemoteVersionFile remote = SkyblockTweaks.GSON.fromJson(result, Version.RemoteVersionFile.class);
                 if (remote == null) {
                     SkyblockTweaks.LOGGER.error("Failed to parse remote version file");
                 } else {
-                    if (remote.enabled != false) {
+                    if (remote.enabled) {
                         switch (SBTConfig.get().notificationStream) {
-                            case Version.NotificationStream.ALPHA -> {
+                            case NotificationStream.ALPHA -> {
                                 if (remote.latestAlpha == null) {
                                     break;
                                 }
-                                var version = new Version(remote.latestAlpha.versionString);
-                                var comparison = Version.compareVersions(version, SkyblockTweaks.VERSION);
-                                if (comparison == Version.VersionComparison.GREATER) {
-                                    var link = Version.getModrinthLink(remote.latestAlpha.modrinthName);
-                                    var message = TextUtils.getTextThatLinksToURL("§7[§aSkyblockTweaks§f§7] §3Update §e" + remote.latestAlpha.modrinthName + " §3is available! §2[Download]", "§3Click to open Modrinth in your browser", link);
-                                    NotificationHandler.NOTIFICATION_QUEUE.add(message);
-                                }
+                                internalRun(remote.latestAlpha.get(SkyblockTweaks.mc.getGameVersion()));
                             }
-                            case Version.NotificationStream.BETA -> {
+                            case NotificationStream.BETA -> {
                                 if (remote.latestBeta == null) {
                                     break;
                                 }
-                                var version = new Version(remote.latestBeta.versionString);
-                                var comparison = Version.compareVersions(version, SkyblockTweaks.VERSION);
-                                if (comparison == Version.VersionComparison.GREATER) {
-                                    var link = Version.getModrinthLink(remote.latestBeta.modrinthName);
-                                    var message = TextUtils.getTextThatLinksToURL("§7[§aSkyblockTweaks§f§7] §3Update §e" + remote.latestBeta.modrinthName + " §3is available! §2[Download]", "§3Click to open Modrinth in your browser", link);
-                                    NotificationHandler.NOTIFICATION_QUEUE.add(message);
-                                }
-
+                                internalRun(remote.latestBeta.get(SkyblockTweaks.mc.getGameVersion()));
                             }
-                            case Version.NotificationStream.RELEASE -> {
+                            case NotificationStream.RELEASE -> {
                                 if (remote.latestRelease == null) {
                                     break;
                                 }
-                                var version = new Version(remote.latestRelease.versionString);
-                                var comparison = Version.compareVersions(version, SkyblockTweaks.VERSION);
-                                if (comparison == Version.VersionComparison.GREATER) {
-                                    var link = Version.getModrinthLink(remote.latestRelease.modrinthName);
-                                    var message = TextUtils.getTextThatLinksToURL("§7[§aSkyblockTweaks§f§7] §3Update §e" + remote.latestRelease.modrinthName + " §3is available! §2[Download]", "§3Click to open Modrinth in your browser", link);
-                                    NotificationHandler.NOTIFICATION_QUEUE.add(message);
-                                }
-
+                                internalRun(remote.latestRelease.get(SkyblockTweaks.mc.getGameVersion()));
                             }
                         }
                     }
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+               SkyblockTweaks.LOGGER.error("Failed to check for updates", e);
             }
         }
     }
+
+    private static void internalRun(Version.RemoteVersion remoteVersion) {
+        var version = new Version(remoteVersion.versionString);
+        var comparison = Version.compareVersions(version, SkyblockTweaks.VERSION);
+        if (comparison == Version.VersionComparison.GREATER) {
+            var link = Version.getModrinthLink(remoteVersion.modrinthName);
+            var message = TextUtils.getTextThatLinksToURL("§7[§aSkyblockTweaks§f§7] §3Update §e" + remoteVersion.versionString + " §3is available! §2[Download]", "§3Click to open Modrinth in your browser", link);
+            NotificationHandler.NOTIFICATION_QUEUE.add(message);
+        }
+    }
+
+
 }

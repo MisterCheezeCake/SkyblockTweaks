@@ -16,11 +16,21 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with SkyblockTweaks. If not, see <https://www.gnu.org/licenses/>.
  */
-package wtf.cheeze.sbt.utils;
+package wtf.cheeze.sbt.hud.bounds;
 
-import net.minecraft.client.font.TextRenderer;
-import net.minecraft.text.Text;
+public class BoundsRelative {
+    public float x;
+    public float y;
+    public float width;
+    public float height;
+    public float scale = 1.0f;
 
-public interface ModifiedDrawContext {
-    int sbt$drawTextWithBackgroundNoShadow(TextRenderer textRenderer, Text text, int x, int y, int width, int color);
+    public BoundsRelative(float x, float y, float width, float height, float scale) {
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
+        this.scale = scale;
+    }
 }
+

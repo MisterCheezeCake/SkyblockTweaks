@@ -21,16 +21,19 @@ package wtf.cheeze.sbt.mixin;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.ColorHelper;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import wtf.cheeze.sbt.utils.ModifiedDrawContext;
+import org.spongepowered.asm.mixin.Unique;
+import wtf.cheeze.sbt.utils.render.SBTDrawContext;
 
 import java.util.Objects;
 
 @Mixin(DrawContext.class)
-public abstract class DrawContextMixin implements ModifiedDrawContext {
+public abstract class DrawContextMixin implements SBTDrawContext {
     @Shadow
     private MinecraftClient client;
 
@@ -40,13 +43,25 @@ public abstract class DrawContextMixin implements ModifiedDrawContext {
     @Shadow
     public abstract int drawText(TextRenderer textRenderer, Text text, int x, int y, int color, boolean shadow);
 
+    @Shadow @Final private VertexConsumerProvider.Immediate vertexConsumers;
+
     @Override
     public int sbt$drawTextWithBackgroundNoShadow(TextRenderer textRenderer, Text text, int x, int y, int width, int color) {
         int i = this.client.options.getTextBackgroundColor(0.0F);
         if (i != 0) {
             Objects.requireNonNull(textRenderer);
-            this.fill(x -2, y-2 ,  x + width + 2, y + 9 + 2, ColorHelper.Argb.mixColor(i, color));
+            this.fill(x -2, y-2 , x + width + 2, y + 9 + 2, ColorHelper./*? if >=1.21.3 {*/mix/*?} else {*//*Argb.mixColor*//*?}*/(i, color));
         }
         return this.drawText(textRenderer, text, x, y, color, false);
     }
+
+    /**
+     * You may ask yourself, "Why is this not an accessor?" The answer is that I really did not want to deal with mixins only existing on one version, and this works fine
+     */
+    //? if >=1.21.3 {
+    @Override
+    public VertexConsumerProvider.Immediate sbt$getVertexConsumers() {
+        return this.vertexConsumers;
+    }
+    //?}
 }

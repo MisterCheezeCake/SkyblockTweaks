@@ -18,22 +18,37 @@
  */
 package wtf.cheeze.sbt.mixin;
 
+import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.screen.ingame.AbstractInventoryScreen;
+//? if =1.21.1
+/*import net.minecraft.client.gui.screen.ingame.AbstractInventoryScreen;*/
+//? if >=1.21.3 {
+import net.minecraft.client.gui.screen.ingame.InventoryScreen;
+import net.minecraft.client.gui.screen.ingame.StatusEffectsDisplay;
+//?}
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
+//? if =1.21.1 {
+/*import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+*///?}
 import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.config.SBTConfig;
 
-@Mixin(AbstractInventoryScreen.class)
+@Mixin(/*? if >=1.21.3 {*/InventoryScreen.class /*?} else {*/ /*AbstractInventoryScreen.class *//*?}*/)
 public abstract class AbstractInventoryScreenMixin {
-    @Inject(method = "drawStatusEffects", at = @At("HEAD"), cancellable = true)
+    //? if >=1.21.3 {
+    @WrapWithCondition(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/ingame/StatusEffectsDisplay;drawStatusEffects(Lnet/minecraft/client/gui/DrawContext;IIF)V"))
+    private boolean sbt$onDrawStatusEffects(StatusEffectsDisplay instance, DrawContext context, int mouseX, int mouseY, float tickDelta){
+        return !SBTConfig.get().inventory.noRenderPotionHud || !SkyblockTweaks.DATA.inSB;
+    }
+    //?} else {
+    /*@Inject(method = "drawStatusEffects", at = @At("HEAD"), cancellable = true)
     private void sbt$onDrawStatusEffects(DrawContext context, int mouseX, int mouseY, CallbackInfo ci){
         if (SBTConfig.get().inventory.noRenderPotionHud && SkyblockTweaks.DATA.inSB) {
             ci.cancel();
         }
     }
+    *///?}
 
 }

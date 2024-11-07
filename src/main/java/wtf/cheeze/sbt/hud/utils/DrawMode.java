@@ -16,20 +16,17 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with SkyblockTweaks. If not, see <https://www.gnu.org/licenses/>.
  */
-package wtf.cheeze.sbt.utils.hud;
+package wtf.cheeze.sbt.hud.utils;
 
-public class Bounds {
-    public int x;
-    public int y;
-    public float width;
-    public float height;
-    public float scale = 1.0f;
+import dev.isxander.yacl3.api.NameableEnum;
+import net.minecraft.text.Text;
+import wtf.cheeze.sbt.utils.TextUtils;
 
-    public Bounds(int x, int y, float width, float height, float scale) {
-        this.x = x;
-        this.y = y;
-        this.width = width;
-        this.height = height;
-        this.scale = scale;
+public enum DrawMode implements NameableEnum {
+    PURE, SHADOW, OUTLINE;
+
+    @Override
+    public Text getDisplayName() {
+        return Text.literal(TextUtils.firstLetterUppercase(name().toLowerCase()));
     }
 }

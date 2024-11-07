@@ -1,9 +1,9 @@
 plugins {
-	id("fabric-loom") version "1.7-SNAPSHOT"
+	id("fabric-loom") version "1.8-SNAPSHOT"
 	id("maven-publish")
 }
 
-version = property("mod_version")!!
+version = property("mod_version")!! as String + "+mc" + property("minecraft_version")!!
 group = property("maven_group")!!
 
 base {
@@ -24,6 +24,7 @@ repositories {
 			includeGroup("net.azureaaron")
 		}
 	}
+	maven("https://pkgs.dev.azure.com/djtheredstoner/DevAuth/_packaging/public/maven/v1")
 }
 
 dependencies {
@@ -34,6 +35,8 @@ dependencies {
 	modImplementation ("dev.isxander:yet-another-config-lib:${property("yacl_version")}")
 	modImplementation ("com.terraformersmc:modmenu:${property("modmenu_version")}")
 	include(modImplementation("net.azureaaron:hm-api:${property("hmapi_version")}") as Any)
+	modRuntimeOnly("me.djtheredstoner:DevAuth-fabric:1.2.1") 
+
 
 }
 tasks.processResources {
@@ -55,6 +58,7 @@ java {
 }
 
 tasks.named<Jar>("jar") {
+
 	from("LICENSE") {
 		rename { "${it}_${project.base.archivesName.get()}" }
 	}

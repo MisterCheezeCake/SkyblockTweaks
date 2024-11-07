@@ -19,6 +19,7 @@
 package wtf.cheeze.sbt;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import net.fabricmc.api.ModInitializer;
 
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
@@ -32,13 +33,15 @@ import org.slf4j.LoggerFactory;
 
 import wtf.cheeze.sbt.command.SBTCommand;
 import wtf.cheeze.sbt.config.SBTConfig;
+import wtf.cheeze.sbt.config.migration.BarColorTransformation;
+import wtf.cheeze.sbt.config.migration.MigrationManager;
 import wtf.cheeze.sbt.config.persistent.PersistentData;
 import wtf.cheeze.sbt.features.chat.ChatProtections;
 import wtf.cheeze.sbt.features.chat.PartyFeatures;
 import wtf.cheeze.sbt.features.huds.*;
 import wtf.cheeze.sbt.utils.*;
 import wtf.cheeze.sbt.utils.actionbar.ActionBarTransformer;
-import wtf.cheeze.sbt.utils.hud.HUD;
+import wtf.cheeze.sbt.hud.HUD;
 import wtf.cheeze.sbt.utils.skyblock.ModAPIUtils;
 import wtf.cheeze.sbt.utils.skyblock.ProfileManager;
 import wtf.cheeze.sbt.utils.skyblock.SkyblockData;
@@ -46,19 +49,26 @@ import wtf.cheeze.sbt.utils.skyblock.SkyblockData;
 import java.util.ArrayList;
 
 public class SkyblockTweaks implements ModInitializer {
-	public static final Gson GSON = new Gson();
+	public static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     public static final Logger LOGGER = LoggerFactory.getLogger("SkyblockTweaks");
 	public static final SkyblockData DATA = new SkyblockData();
 	public static final PersistentData PD = PersistentData.load();
 	public static final ArrayList<HUD> HUDS = new ArrayList<HUD>();
-	public static final Version VERSION = new Version(Version.VersionType.ALPHA, 0, 1, 0, 7);
+	public static final Version VERSION = new Version(Version.VersionType.ALPHA, 0, 1, 0, 8);
 	public static final MinecraftClient mc = MinecraftClient.getInstance();
 
 
 	@Override
 	public void onInitialize() {
 
+		MigrationManager.handleMigrations();
+
+
 		SBTConfig.HANDLER.load();
+
+		MigrationManager.runTransformation(BarColorTransformation.INSTANCE);
+
+
 		HUDS.add(SkillHUDManager.INSTANCE.SKILL_HUD);
 		HUDS.add(SkillHUDManager.INSTANCE.SKILL_BAR);
 
@@ -80,7 +90,6 @@ public class SkyblockTweaks implements ModInitializer {
 		HUDS.add(new FpsHUD());
 
 		HUDS.add(new TickerHUD());
-
 
 		HudRenderCallback.EVENT.register((context, tickCounter) -> {
 			HUDS.forEach(hud -> hud.render(context, false));

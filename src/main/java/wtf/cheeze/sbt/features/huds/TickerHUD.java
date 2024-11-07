@@ -19,16 +19,15 @@
 package wtf.cheeze.sbt.features.huds;
 
 import dev.isxander.yacl3.api.Option;
-import dev.isxander.yacl3.api.OptionDescription;
 import dev.isxander.yacl3.api.OptionGroup;
 import dev.isxander.yacl3.config.v2.api.SerialEntry;
-import net.minecraft.text.Text;
 import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SBTConfig;
+import wtf.cheeze.sbt.hud.utils.AnchorPoint;
 import wtf.cheeze.sbt.utils.TextUtils;
-import wtf.cheeze.sbt.utils.hud.AbstractTickerHUD;
-import wtf.cheeze.sbt.utils.hud.HudInformation;
+import wtf.cheeze.sbt.hud.bases.AbstractTickerHUD;
+import wtf.cheeze.sbt.hud.utils.HudInformation;
 
 public class TickerHUD extends AbstractTickerHUD {
 

@@ -20,7 +20,10 @@ package wtf.cheeze.sbt.utils.render;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.render.RenderLayer;
+import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.text.Text;
+import net.minecraft.util.Identifier;
 import wtf.cheeze.sbt.SkyblockTweaks;
 
 public class RenderUtils {
@@ -33,37 +36,46 @@ public class RenderUtils {
         context.getMatrices().pop();
     }
 
-    public static void drawString(DrawContext context, Text text, int x, int y, int color, boolean shadow, float scale) {
+    public static void drawText(DrawContext context, Text text, int x, int y, int color, boolean shadow, float scale) {
         beginScale(context, scale);
-        drawString(context, text, (int) (x/scale), (int) (y/scale), color, shadow);
+        drawText(context, text, (int) (x/scale), (int) (y/scale), color, shadow);
         endScale(context);
     }
-    public static void drawString(DrawContext context, Text text, int x, int y, int color, boolean shadow, float scale, boolean imHandlingTheScaleMyself) {
-        drawString(context, text, (int) (x/scale), (int) (y/scale), color, shadow);
+    public static void drawText(DrawContext context, Text text, int x, int y, int color, boolean shadow, float scale, boolean imHandlingTheScaleMyself) {
+        drawText(context, text, (int) (x/scale), (int) (y/scale), color, shadow);
     }
-    public static void drawString(DrawContext context, Text text, int x, int y, int color, boolean shadow) {
+    public static void drawText(DrawContext context, Text text, int x, int y, int color, boolean shadow) {
         context.drawText(SkyblockTweaks.mc.textRenderer, text, x, y, color, shadow);
     }
-    public static void drawStringWithOutline (DrawContext context, Text text, int x, int y, int color, int outlineColor) {
+    public static void drawTextWithOutline(DrawContext context, Text text, int x, int y, int color, int outlineColor) {
         // TODO: This currently renders weirdly, fix it
-        SkyblockTweaks.mc.textRenderer.drawWithOutline(text.asOrderedText(), x, y, color, outlineColor, context.getMatrices().peek().getPositionMatrix(), context.getVertexConsumers(), 15728880);
+        SkyblockTweaks.mc.textRenderer.drawWithOutline(
+                text.asOrderedText(),
+                x, y, color, outlineColor,
+                context.getMatrices().peek().getPositionMatrix(),
+                //? if =1.21.1 {
+                /*context.getVertexConsumers(),
+                 *///?} else {
+                getVertexConsumers(context),
+                //?}
+                15728880);
     }
-    public static void drawStringWithOutline (DrawContext context, Text text, int x, int y, int color, int outlineColor, float scale) {
+    public static void drawTextWithOutline(DrawContext context, Text text, int x, int y, int color, int outlineColor, float scale) {
         beginScale(context, scale);
-        drawStringWithOutline(context, text, (int) (x/scale), (int) (y/scale), color, outlineColor);
+        drawTextWithOutline(context, text, (int) (x/scale), (int) (y/scale), color, outlineColor);
         endScale(context);
     }
-    public static void drawStringWithOutline (DrawContext context, Text text, int x, int y, int color, int outlineColor, float scale, boolean imHandlingTheScaleMyself) {
-        drawStringWithOutline(context, text, (int) (x/scale), (int) (y/scale), color, outlineColor);
+    public static void drawTextWithOutline(DrawContext context, Text text, int x, int y, int color, int outlineColor, float scale, boolean imHandlingTheScaleMyself) {
+        drawTextWithOutline(context, text, (int) (x/scale), (int) (y/scale), color, outlineColor);
     }
 
-    public static void drawCenteredString(DrawContext context, Text text, int x, int y, int color, boolean shadow, float scale) {
+    public static void drawCenteredText(DrawContext context, Text text, int x, int y, int color, boolean shadow, float scale) {
         int width = (int) (getStringWidth(text) * scale);
-        drawString(context, text, x - width / 2, y, color, shadow, scale);
+        drawText(context, text, x - width / 2, y, color, shadow, scale);
     }
-    public static void drawCenteredString(DrawContext context, Text text, int x, int y, int color, boolean shadow) {
+    public static void drawCenteredText(DrawContext context, Text text, int x, int y, int color, boolean shadow) {
         int width = getStringWidth(text);
-        drawString(context, text, x - width / 2, y, color, shadow);
+        drawText(context, text, x - width / 2, y, color, shadow);
     }
 
     public static int getStringWidth(Text text) {
@@ -72,12 +84,34 @@ public class RenderUtils {
     public static int getStringWidth(String text) {
         return SkyblockTweaks.mc.textRenderer.getWidth(text);
     }
+
     public static int getRelativeStringWidth(String text) {
         return (int) (SkyblockTweaks.mc.textRenderer.getWidth(text) / MinecraftClient.getInstance().getWindow().getScaledWidth());
     }
     public static int getRelativeStringWidth(Text text) {
         return (int) (SkyblockTweaks.mc.textRenderer.getWidth(text) / MinecraftClient.getInstance().getWindow().getScaledWidth());
     }
+
+    public static void drawTexture(DrawContext context, Identifier texture, int x, int y, int width, int height, int textureWidth, int textureHeight) {
+        //? if =1.21.1 {
+        /*context.drawTexture(texture, x, y, 0, 0, width, height, textureWidth, textureHeight);
+         *///?} else {
+        context.drawTexture(RenderLayer::getGuiTextured, texture, x, y, 0, 0, width, height, textureWidth, textureHeight);
+        //?}
+    }
+//    public static void drawTextureWithColor(DrawContext context, Identifier texture, int x, int y, int width, int height, int textureWidth, int textureHeight, int color) {
+//        //? if <1.21.1 {
+//        /*context.drawTexture(texture, x, y, 0, 0, width, height, textureWidth, textureHeight, color);
+//         *///?} else {
+//        context.drawTexture(RenderLayer::getGuiTextured, texture, x, y, 0, 0, width, height, textureWidth, textureHeight, color);
+//        //?}
+//    }
+
+    //? if >=1.21.3 {
+    public static VertexConsumerProvider.Immediate getVertexConsumers(DrawContext context) {
+        return ((SBTDrawContext) context).sbt$getVertexConsumers();
+    }
+    //?}
 
     public static Color3f getColor3f(int color) {
         return new Color3f(color);

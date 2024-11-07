@@ -40,9 +40,9 @@ import static wtf.cheeze.sbt.config.categories.Chat.keyD;
 
 public class PartyFeatures {
 
-    public static Pattern PARTY_PATTERN = Pattern.compile("Party > ([^:]+): !(.+)");
-    public static Pattern BACKUP_UPDATE_PATTERN = Pattern.compile("The party was transferred to (.+) by .+");
-    public static Pattern BOOP_PATTERN = Pattern.compile("From (.*): Boop!");
+    public static final Pattern PARTY_PATTERN = Pattern.compile("Party > ([^:]+): !(.+)");
+    public static final Pattern BACKUP_UPDATE_PATTERN = Pattern.compile("The party was transferred to (.+) by .+");
+    public static final Pattern BOOP_PATTERN = Pattern.compile("From (.*): Boop!");
 
     public static boolean verboseDebug = false;
     public static long lastPartyCommand = 0;

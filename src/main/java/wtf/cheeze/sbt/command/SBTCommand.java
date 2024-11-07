@@ -35,7 +35,7 @@ import wtf.cheeze.sbt.features.chat.PartyFeatures;
 import wtf.cheeze.sbt.utils.NumberUtils;
 import wtf.cheeze.sbt.utils.skyblock.SkyblockConstants;
 import wtf.cheeze.sbt.utils.skyblock.SkyblockUtils;
-import wtf.cheeze.sbt.utils.hud.HudScreen;
+import wtf.cheeze.sbt.hud.HudScreen;
 
 import java.util.Arrays;
 

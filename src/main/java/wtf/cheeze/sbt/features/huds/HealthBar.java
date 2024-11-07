@@ -19,18 +19,17 @@
 package wtf.cheeze.sbt.features.huds;
 
 import dev.isxander.yacl3.api.Option;
-import dev.isxander.yacl3.api.OptionDescription;
 import dev.isxander.yacl3.api.OptionGroup;
 import dev.isxander.yacl3.api.controller.ColorControllerBuilder;
 import dev.isxander.yacl3.config.v2.api.SerialEntry;
-import net.minecraft.client.resource.language.I18n;
-import net.minecraft.text.Text;
 import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SBTConfig;
+import wtf.cheeze.sbt.hud.utils.AnchorPoint;
 import wtf.cheeze.sbt.utils.TextUtils;
-import wtf.cheeze.sbt.utils.hud.BarHUD;
-import wtf.cheeze.sbt.utils.hud.HudInformation;
+import wtf.cheeze.sbt.hud.bases.BarHUD;
+import wtf.cheeze.sbt.hud.utils.HudInformation;
+import wtf.cheeze.sbt.utils.render.Colors;
 
 import java.awt.Color;
 
@@ -77,10 +76,10 @@ public class HealthBar extends BarHUD {
         public float scale = 1.0f;
 
         @SerialEntry
-        public int color = 16733525;
+        public int color = Colors.RED;
 
         @SerialEntry
-        public int colorAbsorption = 16755200;
+        public int colorAbsorption = Colors.ORANGE;
 
         @SerialEntry
         public AnchorPoint anchor = AnchorPoint.LEFT;

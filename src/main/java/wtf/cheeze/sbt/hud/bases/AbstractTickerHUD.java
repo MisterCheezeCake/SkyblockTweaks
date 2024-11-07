@@ -16,25 +16,28 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with SkyblockTweaks. If not, see <https://www.gnu.org/licenses/>.
  */
-package wtf.cheeze.sbt.utils.hud;
+package wtf.cheeze.sbt.hud.bases;
 
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.util.Identifier;
 import wtf.cheeze.sbt.SkyblockTweaks;
+import wtf.cheeze.sbt.hud.bounds.Bounds;
+import wtf.cheeze.sbt.hud.bounds.BoundsRelative;
+import wtf.cheeze.sbt.hud.HUD;
 import wtf.cheeze.sbt.utils.render.RenderUtils;
 
 /**
  * The abstract representation of the ticker HUD, for the implementation, see {@link wtf.cheeze.sbt.features.huds.TickerHUD}
  */
-public abstract class AbstractTickerHUD extends HUD{
+public abstract class AbstractTickerHUD extends HUD {
     private static final Identifier FULL = Identifier.of("skyblocktweaks", "tickers/full.png");
     private static final Identifier BLANK = Identifier.of("skyblocktweaks", "tickers/blank.png");
     private static final int DIMENSION = 9;
 
+
     public abstract int getMax(boolean fromHudScreen);
     public abstract int getUsable(boolean fromHudScreen);
     public abstract int getMax();
-
 
     @Override
     public void render(DrawContext context, boolean fromHudScreen, boolean hovered) {
@@ -54,10 +57,10 @@ public abstract class AbstractTickerHUD extends HUD{
 
     }
 
-    private float drawTickers(DrawContext context, int number, float x, int y, float scale, boolean filled) {
+    private static float drawTickers(DrawContext context, int number, float x, int y, float scale, boolean filled) {
         float drawX = x;
         for (int i = 0; i < number; i++) {
-            context.drawTexture(filled ? FULL : BLANK, (int) (drawX / scale), (int) (y / scale), 0, 0, DIMENSION, DIMENSION, DIMENSION , DIMENSION);
+            RenderUtils.drawTexture(context, filled ? FULL : BLANK, (int) (drawX / scale), (int) (y / scale), DIMENSION, DIMENSION, DIMENSION , DIMENSION);
             drawX = (2 + drawX + (DIMENSION * scale));
         }
         return drawX;

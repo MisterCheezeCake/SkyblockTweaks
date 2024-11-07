@@ -18,16 +18,22 @@
  */
 package wtf.cheeze.sbt.utils;
 
+import wtf.cheeze.sbt.SkyblockTweaks;
+
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 
 public class HTTPUtils {
 
     public static String get(String uri){
         try {
-            URL url = new URL(uri);
+           // URL url = new URL(uri);
+            URL url = new URI(uri).toURL();
+
             var connection = url.openConnection();
-            connection.setRequestProperty("User-Agent", "Mozilla/5.0 SkyblockTweaks");
+            connection.setRequestProperty("User-Agent", "Mozilla/5.0 SkyblockTweaks " + SkyblockTweaks.VERSION.getVersionString());
             var reader = new java.io.BufferedReader(new java.io.InputStreamReader(connection.getInputStream()));
             var response = new StringBuilder();
             String line;
@@ -36,8 +42,8 @@ public class HTTPUtils {
             }
             reader.close();
             return response.toString();
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            SkyblockTweaks.LOGGER.error("Update Checker Experienced an Error", e);
             return null;
         }
     }

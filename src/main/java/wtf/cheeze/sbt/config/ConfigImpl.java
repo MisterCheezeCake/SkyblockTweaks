@@ -28,7 +28,7 @@ import wtf.cheeze.sbt.features.chat.PartyFeatures;
 import wtf.cheeze.sbt.utils.Version;
 import wtf.cheeze.sbt.utils.actionbar.ActionBarTransformer;
 
-public class ConfigImpl {
+public class ConfigImpl extends VersionedObject {
     @SerialEntry // This defines the spec version of the config, so that in the future, migration code can be written if necessary
     public int configVersion = 1;
 

@@ -20,12 +20,12 @@ package wtf.cheeze.sbt.utils;
 
 import dev.isxander.yacl3.api.NameableEnum;
 import dev.isxander.yacl3.api.Option;
-import dev.isxander.yacl3.api.OptionDescription;
 import dev.isxander.yacl3.api.controller.EnumControllerBuilder;
 import net.minecraft.text.Text;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.categories.General;
 
+import java.util.Map;
 import java.util.regex.Pattern;
 
 public class Version {
@@ -105,25 +105,17 @@ public class Version {
             return String.format("%d.%d.%d", MAJOR, MINOR, PATCH);
         }
     }
+
     public static class RemoteVersionFile {
-        // This can be disabled in the remote file in case of a bug
         public boolean enabled;
-        // Latest Alpha is not necessarily the latest build with on the alpha stream, it is the latest build that someone with their notifier set on alpha will get notified about, so it could be alpha, beta or release.
-        public RemoteVersion latestAlpha;
-        // Like latest alpha, latest beta could be beta or release.
-        public RemoteVersion latestBeta;
-        // Latest release is the latest build that is on the release stream.
-        public RemoteVersion latestRelease;
-
-
+        public Map<String, RemoteVersion> latestAlpha;
+        public Map<String, RemoteVersion> latestBeta;
+        public Map<String, RemoteVersion> latestRelease;
     }
 
     public static class RemoteVersion {
         public String versionString;
-        // The names that the build has on modrinth, used to generate the links to the modrinth page for the builds
-        // https://modrinth.com/mod/sbt/version/${version}
         public String modrinthName;
-
     }
 
     public static enum VersionComparison {

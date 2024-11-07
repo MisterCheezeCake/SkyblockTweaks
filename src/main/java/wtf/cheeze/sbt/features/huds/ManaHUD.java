@@ -19,21 +19,22 @@
 package wtf.cheeze.sbt.features.huds;
 
 import dev.isxander.yacl3.api.Option;
-import dev.isxander.yacl3.api.OptionDescription;
 import dev.isxander.yacl3.api.OptionGroup;
 import dev.isxander.yacl3.api.controller.ColorControllerBuilder;
 import dev.isxander.yacl3.api.controller.StringControllerBuilder;
 import dev.isxander.yacl3.config.v2.api.SerialEntry;
-import net.minecraft.client.resource.language.I18n;
 import net.minecraft.text.Text;
 import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SBTConfig;
+import wtf.cheeze.sbt.hud.utils.AnchorPoint;
 import wtf.cheeze.sbt.utils.NumberUtils;
 import wtf.cheeze.sbt.utils.TextUtils;
-import wtf.cheeze.sbt.utils.hud.HudInformation;
-import wtf.cheeze.sbt.utils.hud.TextHUD;
-import wtf.cheeze.sbt.utils.hud.HudLine;
+import wtf.cheeze.sbt.hud.utils.DrawMode;
+import wtf.cheeze.sbt.hud.utils.HudInformation;
+import wtf.cheeze.sbt.hud.bases.TextHUD;
+import wtf.cheeze.sbt.hud.components.SingleHudLine;
+import wtf.cheeze.sbt.utils.render.Colors;
 
 
 import java.awt.*;
@@ -51,7 +52,7 @@ public class ManaHUD extends TextHUD {
                 scale -> SBTConfig.huds().mana.scale = (float) scale,
                 anchor -> SBTConfig.huds().mana.anchor = anchor
         );
-        line = new HudLine(
+        line = new SingleHudLine(
                 () -> SBTConfig.huds().mana.color,
                 () -> SBTConfig.huds().mana.outlineColor,
                 () -> SBTConfig.huds().mana.mode,
@@ -83,7 +84,7 @@ public class ManaHUD extends TextHUD {
 //        public boolean shadow = true;
 
         @SerialEntry
-        public HudLine.DrawMode mode = HudLine.DrawMode.SHADOW;
+        public DrawMode mode = DrawMode.SHADOW;
 
         @SerialEntry // Not handled by YACL Gui
         public float x = 0;
@@ -95,10 +96,10 @@ public class ManaHUD extends TextHUD {
         public float scale = 1.0f;
 
         @SerialEntry
-        public int color = 5592575;
+        public int color = Colors.BLUE;
 
         @SerialEntry
-        public int outlineColor = 0x000000;
+        public int outlineColor = Colors.BLACK;
 
         @SerialEntry
         public boolean icon = true;
@@ -135,7 +136,7 @@ public class ManaHUD extends TextHUD {
                     .name(key("mana.outlineColor"))
                     .description(keyD("mana.outlineColor"))
                     .controller(ColorControllerBuilder::create)
-                    .available(config.huds.mana.mode == HudLine.DrawMode.OUTLINE)
+                    .available(config.huds.mana.mode == DrawMode.OUTLINE)
                     .binding(
                             new Color(defaults.huds.mana.outlineColor),
                             () ->  new Color(config.huds.mana.outlineColor),
@@ -143,7 +144,7 @@ public class ManaHUD extends TextHUD {
 
                     )
                     .build();
-            var mode = Option.<HudLine.DrawMode>createBuilder()
+            var mode = Option.<DrawMode>createBuilder()
                     .name(key("mana.mode"))
                     .description(keyD("mana.mode"))
                     .controller(SBTConfig::generateDrawModeController)
@@ -152,7 +153,7 @@ public class ManaHUD extends TextHUD {
                             () -> config.huds.mana.mode,
                             value -> {
                                 config.huds.mana.mode = value;
-                                if (value == HudLine.DrawMode.OUTLINE) outline.setAvailable(true);
+                                if (value == DrawMode.OUTLINE) outline.setAvailable(true);
                                 else outline.setAvailable(false);
                             }
                     )

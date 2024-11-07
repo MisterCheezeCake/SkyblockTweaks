@@ -19,7 +19,6 @@
 package wtf.cheeze.sbt.utils.render;
 
 public class Color3f {
-
     public float red;
     public float green;
     public float blue;
@@ -29,4 +28,5 @@ public class Color3f {
         this.green = (float) (color >> 8 & 255) / 255.0F;
         this.blue = (float) (color & 255) / 255.0F;
     }
+
 }

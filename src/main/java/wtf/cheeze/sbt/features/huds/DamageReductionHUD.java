@@ -19,7 +19,6 @@
 package wtf.cheeze.sbt.features.huds;
 
 import dev.isxander.yacl3.api.Option;
-import dev.isxander.yacl3.api.OptionDescription;
 import dev.isxander.yacl3.api.OptionGroup;
 import dev.isxander.yacl3.api.controller.ColorControllerBuilder;
 import dev.isxander.yacl3.config.v2.api.SerialEntry;
@@ -27,11 +26,14 @@ import net.minecraft.text.Text;
 import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SBTConfig;
-import wtf.cheeze.sbt.utils.hud.HudLine;
+import wtf.cheeze.sbt.hud.utils.AnchorPoint;
+import wtf.cheeze.sbt.hud.utils.DrawMode;
+import wtf.cheeze.sbt.hud.components.SingleHudLine;
 import wtf.cheeze.sbt.utils.NumberUtils;
 import wtf.cheeze.sbt.utils.TextUtils;
-import wtf.cheeze.sbt.utils.hud.HudInformation;
-import wtf.cheeze.sbt.utils.hud.TextHUD;
+import wtf.cheeze.sbt.hud.utils.HudInformation;
+import wtf.cheeze.sbt.hud.bases.TextHUD;
+import wtf.cheeze.sbt.utils.render.Colors;
 
 import java.awt.Color;
 
@@ -48,7 +50,7 @@ public class DamageReductionHUD extends TextHUD {
                 scale -> SBTConfig.huds().dr.scale = (float) scale,
                 anchor -> SBTConfig.huds().dr.anchor = anchor
         );
-        line = new HudLine(
+        line = new SingleHudLine(
                 () -> SBTConfig.huds().dr.color,
                 () -> SBTConfig.huds().dr.outlineColor,
                 () -> SBTConfig.huds().dr.mode,
@@ -74,13 +76,13 @@ public class DamageReductionHUD extends TextHUD {
         public boolean enabled = false;
 
         @SerialEntry
-        public HudLine.DrawMode mode = HudLine.DrawMode.SHADOW;
+        public DrawMode mode = DrawMode.SHADOW;
 
         @SerialEntry
-        public int color = 5635925;
+        public int color = Colors.LIME;
 
         @SerialEntry
-        public int outlineColor = 0x000000;
+        public int outlineColor = Colors.BLACK;
 
         @SerialEntry // Not handled by YACL Gui
         public float x = 0;
@@ -122,7 +124,7 @@ public class DamageReductionHUD extends TextHUD {
                     .name(key("dr.outlineColor"))
                     .description(keyD("dr.outlineColor"))
                     .controller(ColorControllerBuilder::create)
-                    .available(config.huds.dr.mode == HudLine.DrawMode.OUTLINE)
+                    .available(config.huds.dr.mode == DrawMode.OUTLINE)
                     .binding(
                             new Color(defaults.huds.dr.outlineColor),
                             () ->  new Color(config.huds.dr.outlineColor),
@@ -130,7 +132,7 @@ public class DamageReductionHUD extends TextHUD {
 
                     )
                     .build();
-            var mode = Option.<HudLine.DrawMode>createBuilder()
+            var mode = Option.<DrawMode>createBuilder()
                     .name(key("dr.mode"))
                     .description(keyD("dr.mode"))
                     .controller(SBTConfig::generateDrawModeController)
@@ -139,7 +141,7 @@ public class DamageReductionHUD extends TextHUD {
                             () -> config.huds.dr.mode,
                             value -> {
                                 config.huds.dr.mode = value;
-                                if (value == HudLine.DrawMode.OUTLINE) outline.setAvailable(true);
+                                if (value == DrawMode.OUTLINE) outline.setAvailable(true);
                                 else outline.setAvailable(false);
                             }
                     )

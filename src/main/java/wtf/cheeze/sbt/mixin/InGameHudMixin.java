@@ -30,14 +30,14 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.config.SBTConfig;
-import wtf.cheeze.sbt.utils.ModifiedDrawContext;
+import wtf.cheeze.sbt.utils.render.SBTDrawContext;
 
 @Mixin(InGameHud.class)
 public abstract class InGameHudMixin {
     @WrapOperation(method = "renderOverlayMessage", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawTextWithBackground(Lnet/minecraft/client/font/TextRenderer;Lnet/minecraft/text/Text;IIII)I"))
     private int sbt$drawTextWithBackgroundNoShadowWrap(DrawContext instance, TextRenderer textRenderer, Text text, int x, int y, int width, int color, Operation<Integer> original) {
         if (SBTConfig.get().hudTweaks.noShadowActionBar) {
-            return ((ModifiedDrawContext) instance).sbt$drawTextWithBackgroundNoShadow(textRenderer, text, x, y, width, color);
+            return ((SBTDrawContext) instance).sbt$drawTextWithBackgroundNoShadow(textRenderer, text, x, y, width, color);
         } else {
             return original.call(instance, textRenderer, text, x, y, width, color);
         }

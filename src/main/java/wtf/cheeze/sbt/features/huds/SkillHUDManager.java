@@ -20,7 +20,6 @@ package wtf.cheeze.sbt.features.huds;
 
 import dev.isxander.yacl3.api.NameableEnum;
 import dev.isxander.yacl3.api.Option;
-import dev.isxander.yacl3.api.OptionDescription;
 import dev.isxander.yacl3.api.OptionGroup;
 import dev.isxander.yacl3.api.controller.ColorControllerBuilder;
 import dev.isxander.yacl3.api.controller.EnumControllerBuilder;
@@ -30,12 +29,15 @@ import net.minecraft.text.Text;
 import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SBTConfig;
+import wtf.cheeze.sbt.hud.utils.AnchorPoint;
 import wtf.cheeze.sbt.utils.NumberUtils;
 import wtf.cheeze.sbt.utils.TextUtils;
-import wtf.cheeze.sbt.utils.hud.BarHUD;
-import wtf.cheeze.sbt.utils.hud.HudInformation;
-import wtf.cheeze.sbt.utils.hud.HudLine;
-import wtf.cheeze.sbt.utils.hud.TextHUD;
+import wtf.cheeze.sbt.hud.utils.DrawMode;
+import wtf.cheeze.sbt.hud.bases.BarHUD;
+import wtf.cheeze.sbt.hud.utils.HudInformation;
+import wtf.cheeze.sbt.hud.components.SingleHudLine;
+import wtf.cheeze.sbt.hud.bases.TextHUD;
+import wtf.cheeze.sbt.utils.render.Colors;
 import wtf.cheeze.sbt.utils.skyblock.IconDict;
 import wtf.cheeze.sbt.utils.skyblock.SkyblockConstants;
 import wtf.cheeze.sbt.utils.skyblock.SkyblockUtils;
@@ -101,7 +103,7 @@ public class SkillHUDManager {
                     scale -> SBTConfig.huds().skills.scale = scale,
                     anchor -> SBTConfig.huds().skills.anchor = anchor
             );
-            line = new HudLine(
+            line = new SingleHudLine(
                     () -> SBTConfig.huds().skills.color,
                     () -> SBTConfig.huds().skills.outlineColor,
                     () -> SBTConfig.huds().skills.mode,
@@ -230,7 +232,7 @@ public class SkillHUDManager {
             public boolean abridgeDenominator = true;
 
             @SerialEntry
-            public HudLine.DrawMode mode = HudLine.DrawMode.SHADOW;
+            public DrawMode mode = DrawMode.SHADOW;
 
             @SerialEntry // Not handled by YACL Gui
             public float x = 0;
@@ -242,10 +244,10 @@ public class SkillHUDManager {
             public float scale = 1.0f;
 
             @SerialEntry
-            public int color = 43690;
+            public int color = Colors.CYAN;
 
             @SerialEntry
-            public int outlineColor = 0x000000;
+            public int outlineColor = Colors.BLACK;
 
             @SerialEntry
             public AnchorPoint anchor = AnchorPoint.LEFT;
@@ -309,7 +311,7 @@ public class SkillHUDManager {
                         .name(key("skills.outlineColor"))
                         .description(keyD("skills.outlineColor"))
                         .controller(ColorControllerBuilder::create)
-                        .available(config.huds.skills.mode == HudLine.DrawMode.OUTLINE)
+                        .available(config.huds.skills.mode == DrawMode.OUTLINE)
                         .binding(
                                 new Color(defaults.huds.skills.outlineColor),
                                 () -> new Color(config.huds.skills.outlineColor),
@@ -317,7 +319,7 @@ public class SkillHUDManager {
 
                         )
                         .build();
-                var mode = Option.<HudLine.DrawMode>createBuilder()
+                var mode = Option.<DrawMode>createBuilder()
                         .name(key("skills.mode"))
                         .description(keyD("skills.mode"))
                         .controller(SBTConfig::generateDrawModeController)
@@ -326,7 +328,7 @@ public class SkillHUDManager {
                                 () -> config.huds.skills.mode,
                                 value -> {
                                     config.huds.skills.mode = value;
-                                    outline.setAvailable(value == HudLine.DrawMode.OUTLINE);
+                                    outline.setAvailable(value == DrawMode.OUTLINE);
                                 }
                         )
                         .build();
@@ -410,7 +412,7 @@ public class SkillHUDManager {
             public float scale = 1.0f;
 
             @SerialEntry
-            public int color = 43690;
+            public int color = Colors.CYAN;
 
             @SerialEntry
             public AnchorPoint anchor = AnchorPoint.LEFT;

@@ -16,23 +16,28 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with SkyblockTweaks. If not, see <https://www.gnu.org/licenses/>.
  */
-package wtf.cheeze.sbt.utils.hud;
+package wtf.cheeze.sbt.hud.bases;
 
 import net.minecraft.client.gui.DrawContext;
 import wtf.cheeze.sbt.SkyblockTweaks;
+import wtf.cheeze.sbt.hud.utils.DrawMode;
+import wtf.cheeze.sbt.hud.bounds.Bounds;
+import wtf.cheeze.sbt.hud.bounds.BoundsRelative;
+import wtf.cheeze.sbt.hud.HUD;
+import wtf.cheeze.sbt.hud.components.SingleHudLine;
 import wtf.cheeze.sbt.utils.render.RenderUtils;
 
 public abstract class TextHUD extends HUD {
     //public abstract String getText();
 
-    public HudLine line;
+    public SingleHudLine line;
 
     @Override
     public void render(DrawContext context, boolean fromHudScreen, boolean hovered) {
         if (!shouldRender(fromHudScreen)) return;
         var bounds = getCurrentBounds();
         if (fromHudScreen) {
-            drawBackground(context, hovered ? BACKGROUND_HOVERED : BACKGROUND_NOT_HOVERED, line.mode.get() == HudLine.DrawMode.OUTLINE);
+            drawBackground(context, hovered ? BACKGROUND_HOVERED : BACKGROUND_NOT_HOVERED, line.mode.get() == DrawMode.OUTLINE);
         }
         RenderUtils.beginScale(context, bounds.scale);
         line.render(context, bounds.x, bounds.y, bounds.scale);

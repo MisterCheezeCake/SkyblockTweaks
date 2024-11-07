@@ -29,15 +29,19 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import wtf.cheeze.sbt.config.categories.*;
-import wtf.cheeze.sbt.utils.hud.HudLine;
+import wtf.cheeze.sbt.hud.utils.DrawMode;
+
+import java.nio.file.Path;
 
 
 public class SBTConfig {
 
+    public static final Path PATH = FabricLoader.getInstance().getConfigDir().resolve("skyblocktweaks-config.json");
+
     public static final ConfigClassHandler<ConfigImpl> HANDLER = ConfigClassHandler.createBuilder(ConfigImpl.class)
             .id(Identifier.of("skyblocktweaks", "config"))
             .serializer(config -> GsonConfigSerializerBuilder.create(config).appendGsonBuilder(builder -> builder.setFieldNamingPolicy(FieldNamingPolicy.IDENTITY))
-                    .setPath(FabricLoader.getInstance().getConfigDir().resolve("skyblocktweaks-config.json"))
+                    .setPath(PATH)
                     .build())
             .build();
     public static Screen getScreen(Screen parent) {
@@ -78,6 +82,10 @@ public class SBTConfig {
         return get().huds;
     }
 
+    public static void override(ConfigImpl config) {
+
+    }
+
 
 
     public static ControllerBuilder generateBooleanController(Option<Boolean> opt) {
@@ -89,8 +97,8 @@ public class SBTConfig {
                 .step(0.1f);
     }
 
-    public static EnumControllerBuilder<HudLine.DrawMode> generateDrawModeController(Option<HudLine.DrawMode> opt) {
-        return EnumControllerBuilder.create(opt).enumClass(HudLine.DrawMode.class);
+    public static EnumControllerBuilder<DrawMode> generateDrawModeController(Option<DrawMode> opt) {
+        return EnumControllerBuilder.create(opt).enumClass(DrawMode.class);
     }
 
 }

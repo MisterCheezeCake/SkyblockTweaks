@@ -66,13 +66,13 @@ public class ActionBarTransformer {
       try {
           ActionBarData data = new ActionBarData();
           String[] parts = actionBarText.split(SEPERATOR3);
-          String newText = "";
+          StringBuilder newText = new StringBuilder();
           for (String part : parts) {
               String unpadded = part.trim();
               String segment = TextUtils.removeColorCodes(unpadded);
               if (segment.toLowerCase().contains("race")) {
                   // Races, we do these first because the timer updates an obscene amount
-                  newText += unpadded + SEPERATOR12;
+                  newText.append(unpadded).append(SEPERATOR12);
               } else if (segment.contains("❤")) {
                   // Health
                   if (segment.contains("+")) {
@@ -81,9 +81,9 @@ public class ActionBarTransformer {
                       data.currentHealth = Float.parseFloat(health[0].replace(",", ""));
                       data.maxHealth = Float.parseFloat(health[1].replace(",", ""));
                       if (!SBTConfig.get().actionBarFilters.hideHealth) {
-                          newText += SEPERATOR5 + unpadded;
+                          newText.append(SEPERATOR5).append(unpadded);
                       } else {
-                          newText += SEPERATOR5 + TextUtils.SECTION + "c" + "+" + segment.split("\\+")[1];
+                          newText.append(SEPERATOR5 + TextUtils.SECTION + "c" + "+").append(segment.split("\\+")[1]);
                       }
                       continue;
                   }
@@ -91,7 +91,7 @@ public class ActionBarTransformer {
                   data.currentHealth = Float.parseFloat(health[0].replace(",", ""));
                   data.maxHealth = Float.parseFloat(health[1].replace(",", ""));
                   if (!SBTConfig.get().actionBarFilters.hideHealth) {
-                      newText += SEPERATOR5 + unpadded;
+                      newText.append(SEPERATOR5).append(unpadded);
                   }
 
               } else if (segment.contains("✎")) {
@@ -109,16 +109,16 @@ public class ActionBarTransformer {
                       data.overflowMana = 0f;
                   }
                   if (!SBTConfig.get().actionBarFilters.hideMana) {
-                      newText += SEPERATOR5 + unpadded;
+                      newText.append(SEPERATOR5).append(unpadded);
                   }
               } else if (segment.contains("NOT ENOUGH MANA")) {
-                  newText += SEPERATOR5 + unpadded;
+                  newText.append(SEPERATOR5).append(unpadded);
               } else if (segment.contains("❈")) {
                   // Defense
                   String defense = segment.split("❈")[0].trim();
                   data.defense = Integer.parseInt(defense.replace(",", ""));
                   if (!SBTConfig.get().actionBarFilters.hideDefense) {
-                      newText += SEPERATOR5 + unpadded;
+                      newText.append(SEPERATOR5).append(unpadded);
                   }
 
               } else if (segment.contains("Mana")) {
@@ -127,11 +127,11 @@ public class ActionBarTransformer {
                       data.abilityManaCost = Integer.parseInt(matcher.group(1));
                       data.abilityName = matcher.group(2);
                       if (!SBTConfig.get().actionBarFilters.hideAbilityUse) {
-                          newText += SEPERATOR5 + unpadded;
+                          newText.append(SEPERATOR5).append(unpadded);
                       }
                       continue;
                   }
-                  newText += SEPERATOR5 + unpadded;
+                  newText.append(SEPERATOR5).append(unpadded);
 
               } else if (skillLevelPatern.matcher(segment).matches()) {
                   Matcher matcher = skillLevelPatern.matcher(segment);
@@ -148,10 +148,10 @@ public class ActionBarTransformer {
                           SkillHUDManager.INSTANCE.update(data.skillType, data.gainedXP, data.skillPercentage);
                       }
                       if (!SBTConfig.get().actionBarFilters.hideSkill) {
-                          newText += SEPERATOR5 + unpadded;
+                          newText.append(SEPERATOR5).append(unpadded);
                       }
                   } else {
-                      newText += SEPERATOR5 + unpadded;
+                      newText.append(SEPERATOR5).append(unpadded);
                   }
               } else if (segment.contains("Secrets")) {
                   Matcher matcher = secretsPattern.matcher(segment);
@@ -160,7 +160,7 @@ public class ActionBarTransformer {
                       data.secretsTotal = Integer.parseInt(matcher.group(2));
                   }
                   if (!SBTConfig.get().actionBarFilters.hideSecrets) {
-                      newText += SEPERATOR5 + unpadded;
+                      newText.append(SEPERATOR5).append(unpadded);
                   }
               } else if (segment.contains("Drill Fuel")) {
                   // Drill Fuel
@@ -168,11 +168,11 @@ public class ActionBarTransformer {
                   data.drillFuel = Integer.parseInt(drillFuel[0].replace(",", ""));
                   data.maxDrillFuel = NumberUtils.parseIntWithKorM(drillFuel[1]);
                   if (!SBTConfig.get().actionBarFilters.hideDrill) {
-                      newText += SEPERATOR5 + unpadded;
+                      newText.append(SEPERATOR5).append(unpadded);
                   }
               } else if (segment.contains("second") || segment.contains("DPS")) {
                   // Trial of Fire
-                  newText += SEPERATOR3 + unpadded;
+                  newText.append(SEPERATOR3).append(unpadded);
               } else if (segment.contains("ⓩ") || segment.contains("Ⓞ")){
                   // Ornate/Florid: §e§lⓩⓩⓩ§6§lⓄⓄ
                   // Regular: §a§lⓩ§2§lⓄⓄⓄ
@@ -191,20 +191,22 @@ public class ActionBarTransformer {
                   }
 
                   if (!SBTConfig.get().actionBarFilters.hideTickers) {
-                        newText += SEPERATOR4 + unpadded;
+                        newText.append(SEPERATOR4).append(unpadded);
                   }
 
               } else {
-                  newText += SEPERATOR5 + unpadded;
+                  newText.append(SEPERATOR5).append(unpadded);
               }
           }
-          newText = newText.trim();
-          data.transformedText = newText;
+
+          data.transformedText = newText.toString().trim();
           return data;
       } catch (Exception e) {
           SkyblockTweaks.LOGGER.error("Error parsing action bar text: {}", actionBarText, e);
           SkyblockTweaks.LOGGER.warn("Some features may not work correctly. Please report this to MisterCheezeCake immediately.");
-          return new ActionBarData();
+          var data = new ActionBarData();
+          // data.transformedText = actionBarText;
+          return data;
       }
     }
 

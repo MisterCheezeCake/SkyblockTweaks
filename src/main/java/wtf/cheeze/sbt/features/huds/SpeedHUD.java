@@ -26,9 +26,12 @@ import net.minecraft.text.Text;
 import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SBTConfig;
-import wtf.cheeze.sbt.utils.hud.HudLine;
-import wtf.cheeze.sbt.utils.hud.HudInformation;
-import wtf.cheeze.sbt.utils.hud.TextHUD;
+import wtf.cheeze.sbt.hud.utils.AnchorPoint;
+import wtf.cheeze.sbt.hud.utils.DrawMode;
+import wtf.cheeze.sbt.hud.components.SingleHudLine;
+import wtf.cheeze.sbt.hud.utils.HudInformation;
+import wtf.cheeze.sbt.hud.bases.TextHUD;
+import wtf.cheeze.sbt.utils.render.Colors;
 
 import java.awt.Color;
 
@@ -45,7 +48,7 @@ public class SpeedHUD extends TextHUD {
                 scale -> SBTConfig.huds().speed.scale = (float) scale,
                 anchor -> SBTConfig.huds().speed.anchor = anchor
         );
-        line = new HudLine(
+        line = new SingleHudLine(
                 () -> SBTConfig.huds().speed.color,
                 () -> SBTConfig.huds().speed.outlineColor,
                 () -> SBTConfig.huds().speed.mode,
@@ -69,13 +72,13 @@ public class SpeedHUD extends TextHUD {
         public boolean enabled = false;
 
         @SerialEntry
-        public HudLine.DrawMode mode = HudLine.DrawMode.SHADOW;
+        public DrawMode mode = DrawMode.SHADOW;
 
         @SerialEntry
-        public int color = 0xFFFFFF;
+        public int color = Colors.WHITE;
 
         @SerialEntry
-        public int outlineColor = 0x000000;
+        public int outlineColor = Colors.BLACK;
 
         @SerialEntry // Not handled by YACL Gui
         public float x = 0;
@@ -116,7 +119,7 @@ public class SpeedHUD extends TextHUD {
                     .name(key("speed.outlineColor"))
                     .description(keyD("speed.outlineColor"))
                     .controller(ColorControllerBuilder::create)
-                    .available(config.huds.speed.mode == HudLine.DrawMode.OUTLINE)
+                    .available(config.huds.speed.mode == DrawMode.OUTLINE)
                     .binding(
                             new Color(defaults.huds.speed.outlineColor),
                             () ->  new Color(config.huds.speed.outlineColor),
@@ -124,7 +127,7 @@ public class SpeedHUD extends TextHUD {
 
                     )
                     .build();
-            var mode = Option.<HudLine.DrawMode>createBuilder()
+            var mode = Option.<DrawMode>createBuilder()
                     .name(key("speed.mode"))
                     .description(keyD("speed.mode"))
                     .controller(SBTConfig::generateDrawModeController)
@@ -133,7 +136,7 @@ public class SpeedHUD extends TextHUD {
                             () -> config.huds.speed.mode,
                             value -> {
                                 config.huds.speed.mode = value;
-                                if (value == HudLine.DrawMode.OUTLINE) outline.setAvailable(true);
+                                if (value == DrawMode.OUTLINE) outline.setAvailable(true);
                                 else outline.setAvailable(false);
                             }
                     )

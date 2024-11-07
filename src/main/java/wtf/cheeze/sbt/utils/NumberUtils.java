@@ -46,27 +46,26 @@ public class NumberUtils {
         }
     }
 
+    @SuppressWarnings("DuplicatedCode")
     public static float parseFloatWithKorM(String text) {
         text = text.toLowerCase();
         text = text.replaceAll(",", "");
-        if (text.endsWith("k")) {
-            var v = Float.parseFloat(text.substring(0, text.length() - 1));
-            return v * 1000;
-        } else if (text.endsWith("m")) {
-            var v = Float.parseFloat(text.substring(0, text.length() - 1));
-            return v * 1000000;
-        } else {
-            return Float.parseFloat(text);
-        }
+
+        return switch (text.charAt(text.length() - 1)) {
+            case 'k' -> Float.parseFloat(text.substring(0, text.length() - 1)) * 1000;
+            case 'm' -> Float.parseFloat(text.substring(0, text.length() - 1)) * 1000000;
+            default -> Float.parseFloat(text);
+        };
+
     }
 
-    public static String formatNumber(int number, String seperator) {
+    public static String formatNumber(int number, String separator) {
         String str = Integer.toString(number);
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < str.length(); i++) {
             sb.append(str.charAt(i));
             if ((str.length() - i - 1) % 3 == 0 && i != str.length() - 1) {
-                sb.append(seperator);
+                sb.append(separator);
             }
         }
         return sb.toString();

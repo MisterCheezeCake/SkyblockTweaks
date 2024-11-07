@@ -19,7 +19,9 @@
 package wtf.cheeze.sbt.mixin;
 
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.screen.ingame.InventoryScreen;
+
+import net.minecraft.client.gui.screen.ingame.*;
+
 import net.minecraft.client.gui.widget.ButtonWidget;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -28,17 +30,27 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.config.SBTConfig;
 
-@Mixin(InventoryScreen.class)
+
+
+
+//? if =1.21.1 {
+/*@Mixin(InventoryScreen.class)
+ *///?} else {
+@Mixin(RecipeBookScreen.class)
+//?}
+
 public abstract class InventoryScreenMixin {
-
-
     // This injects into the head of the synthetic method that is triggered when you click the recipe book button
-    @Inject(method = "method_19891", at = @At("HEAD"), cancellable = true)
+    //? if =1.21.1 {
+    /*@Inject(method = "method_19891", at = @At("HEAD"), cancellable = true)
+     *///?} else {
+    @Inject(method = "method_64513", at = @At("HEAD"), cancellable = true)
+    //?}
     private void sbt$onPressRBook(ButtonWidget button, CallbackInfo ci) {
         if (SBTConfig.get().inventory.redirectRecipeBook && SkyblockTweaks.DATA.inSB) {
             ci.cancel();
             MinecraftClient.getInstance().getNetworkHandler().sendChatCommand("recipebook");
         }
     }
-
 }
+

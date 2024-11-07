@@ -16,11 +16,16 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with SkyblockTweaks. If not, see <https://www.gnu.org/licenses/>.
  */
-package wtf.cheeze.sbt.utils.hud;
+package wtf.cheeze.sbt.hud.bases;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.render.RenderLayer;
 import net.minecraft.util.Identifier;
 import wtf.cheeze.sbt.SkyblockTweaks;
+import wtf.cheeze.sbt.hud.bounds.Bounds;
+import wtf.cheeze.sbt.hud.bounds.BoundsRelative;
+import wtf.cheeze.sbt.hud.HUD;
 import wtf.cheeze.sbt.utils.render.RenderUtils;
 
 /**
@@ -39,8 +44,10 @@ public abstract class BarHUD extends HUD {
         if (fromHudScreen) {
             drawBackground(context, hovered ? BACKGROUND_HOVERED : BACKGROUND_NOT_HOVERED);
         }
+
+            //? if =1.21.1 {
         var colors = RenderUtils.getColor3f((int) INFO.getColor.get());
-        if (bounds.scale == 1.0f) {
+            /* if (bounds.scale == 1.0f) {
             context.setShaderColor(colors.red, colors.green, colors.blue, 1.0f);
             context.drawTexture(UNFILLED, bounds.x, bounds.y, 0, 0, BAR_WIDTH, BAR_HEIGHT, BAR_WIDTH, BAR_HEIGHT);
             context.drawTexture(FILLED, bounds.x, bounds.y, 0, 0, calculateFill((float) INFO.getFill.get()), BAR_HEIGHT, BAR_WIDTH, BAR_HEIGHT);
@@ -53,6 +60,23 @@ public abstract class BarHUD extends HUD {
             context.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
             RenderUtils.endScale(context);
         }
+           *///?} else {
+
+        if (bounds.scale == 1.0f) {
+            var color = INFO.getColor.get();
+            context.drawTexture(RenderLayer::getGuiTextured, UNFILLED, bounds.x, bounds.y, 0, 0, BAR_WIDTH, BAR_HEIGHT, BAR_WIDTH, BAR_HEIGHT, color);
+            context.drawTexture(RenderLayer::getGuiTextured, FILLED, bounds.x, bounds.y, 0, 0, calculateFill((float) INFO.getFill.get()), BAR_HEIGHT, BAR_WIDTH, BAR_HEIGHT, color);
+        } else {
+            var color = INFO.getColor.get();
+            RenderUtils.beginScale(context, bounds.scale);
+            context.drawTexture(RenderLayer::getGuiTextured, UNFILLED, (int)(bounds.x/bounds.scale), (int)(bounds.y/bounds.scale), 0, 0, BAR_WIDTH, BAR_HEIGHT, BAR_WIDTH, BAR_HEIGHT, color);
+            context.drawTexture(RenderLayer::getGuiTextured, FILLED, (int)(bounds.x/bounds.scale), (int)(bounds.y/bounds.scale), 0, 0, calculateFill((float) INFO.getFill.get()), BAR_HEIGHT, BAR_WIDTH, BAR_HEIGHT, color);
+            RenderUtils.endScale(context);
+        }
+            //?}
+
+
+
     }
     @Override
     public Bounds getCurrentBounds() {

@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with SkyblockTweaks. If not, see <https://www.gnu.org/licenses/>.
  */
-package wtf.cheeze.sbt.utils.hud;
+package wtf.cheeze.sbt.hud;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
@@ -28,8 +28,8 @@ import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.text.Text;
 import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
-import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.config.SBTConfig;
+import wtf.cheeze.sbt.hud.utils.AnchorPoint;
 
 import java.util.ArrayList;
 import java.util.function.Predicate;
@@ -109,15 +109,15 @@ public class HudScreen extends Screen {
             anchorButton = ButtonWidget.builder(Text.literal("you should not be seeing this text"), button -> {
                 if (selectedElement != null) {
                     var anchor = selectedElement.INFO.getAnchorPoint.get();
-                    if (anchor == HUD.AnchorPoint.LEFT) {
-                        selectedElement.INFO.setAnchorPoint.accept(HUD.AnchorPoint.CENTER);
-                        anchorButton.setMessage(Text.literal("Anchor: " + HUD.AnchorPoint.CENTER.name()));
-                    } else if (anchor == HUD.AnchorPoint.CENTER) {
-                        selectedElement.INFO.setAnchorPoint.accept(HUD.AnchorPoint.RIGHT);
-                        anchorButton.setMessage(Text.literal("Anchor: " + HUD.AnchorPoint.RIGHT.name()));
-                    } else if (anchor == HUD.AnchorPoint.RIGHT) {
-                        selectedElement.INFO.setAnchorPoint.accept(HUD.AnchorPoint.LEFT);
-                        anchorButton.setMessage(Text.literal("Anchor: " + HUD.AnchorPoint.LEFT.name()));
+                    if (anchor == AnchorPoint.LEFT) {
+                        selectedElement.INFO.setAnchorPoint.accept(AnchorPoint.CENTER);
+                        anchorButton.setMessage(Text.literal("Anchor: " + AnchorPoint.CENTER.name()));
+                    } else if (anchor == AnchorPoint.CENTER) {
+                        selectedElement.INFO.setAnchorPoint.accept(AnchorPoint.RIGHT);
+                        anchorButton.setMessage(Text.literal("Anchor: " + AnchorPoint.RIGHT.name()));
+                    } else if (anchor == AnchorPoint.RIGHT) {
+                        selectedElement.INFO.setAnchorPoint.accept(AnchorPoint.LEFT);
+                        anchorButton.setMessage(Text.literal("Anchor: " + AnchorPoint.LEFT.name()));
                     }
                 }
             }).dimensions(centerX, 110, 100, 20).build();
@@ -170,6 +170,7 @@ public class HudScreen extends Screen {
             widgetX.setText(""+bounds.x);
             widgetY.setText(""+bounds.y);
             anchorButton.setMessage(Text.literal("Anchor: " + hud.INFO.getAnchorPoint.get().name()));
+            anchorButton.active = hud.supportsNonLeftAnchors;
         }
 
         @Override
@@ -178,7 +179,7 @@ public class HudScreen extends Screen {
 
             MinecraftClient mc = MinecraftClient.getInstance();
             var centerX = mc.getWindow().getScaledWidth() / 2;
-            if (!this.hasAltDown() && this.mode == Mode.DRAG) {
+            if (!hasAltDown() && this.mode == Mode.DRAG) {
                 context.drawCenteredTextWithShadow(mc.textRenderer, "Drag or use the arrow keys to move items" , centerX, 5, 0xFFFFFF);
                 context.drawCenteredTextWithShadow(mc.textRenderer, "Scroll or use the + and - keys to scale items" , centerX, 15, 0xFFFFFF);
                 context.drawCenteredTextWithShadow(mc.textRenderer, "Press shift and hover to see the name of the item" , centerX, 25, 0xFFFFFF);
@@ -203,7 +204,7 @@ public class HudScreen extends Screen {
                 hud.render(context, true, b);
                 if (b) {
                     hovered = hud;
-                    if (this.hasShiftDown()) {
+                    if (hasShiftDown()) {
                         this.setTooltip(Tooltip.of(Text.literal(hud.getName())), HoveredTooltipPositioner.INSTANCE, false);
                     }
                 }
@@ -236,7 +237,7 @@ public class HudScreen extends Screen {
             selectedViaTheKeyboard = null;
             for (HUD hud : huds) {
                 if (clickInBounds(hud, mouseX, mouseY)) {
-                    if (this.hasControlDown() || this.mode == Mode.TEXT) {
+                    if (hasControlDown() || this.mode == Mode.TEXT) {
                         enableTextMode(hud);
                         return b;
                     }
@@ -257,7 +258,7 @@ public class HudScreen extends Screen {
         @Override
         public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
 
-            if (keyCode == GLFW.GLFW_KEY_R && this.hasControlDown()) {
+            if (keyCode == GLFW.GLFW_KEY_R && hasControlDown()) {
                 setMode(Mode.RESET);
             }
             if (this.mode == Mode.DRAG) {
@@ -345,11 +346,11 @@ public class HudScreen extends Screen {
         private void updateOffset(HUD hud, double mouseX, double mouseY) {
             var bounds = hud.getCurrentBounds();
             var anchor = hud.INFO.getAnchorPoint.get();
-            if (anchor == HUD.AnchorPoint.LEFT) {
+            if (anchor == AnchorPoint.LEFT) {
                 offsetX = (float) (mouseX - bounds.x);
-            } else if (anchor == HUD.AnchorPoint.CENTER) {
+            } else if (anchor == AnchorPoint.CENTER) {
                 offsetX = (float) (mouseX - bounds.x - bounds.width / 2);
-            } else if (anchor == HUD.AnchorPoint.RIGHT) {
+            } else if (anchor == AnchorPoint.RIGHT) {
                 offsetX = (float) (mouseX - bounds.x - bounds.width);
             }
             offsetY = (float) (mouseY - bounds.y);

@@ -16,9 +16,10 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with SkyblockTweaks. If not, see <https://www.gnu.org/licenses/>.
  */
-package wtf.cheeze.sbt.utils.hud;
+package wtf.cheeze.sbt.hud.utils;
 
 import org.jetbrains.annotations.Nullable;
+import wtf.cheeze.sbt.utils.DataUtils;
 
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -28,7 +29,7 @@ public class HudInformation {
     public Supplier<Float> getX;
     public Supplier<Float> getY;
     public Supplier<Float> getScale;
-    public Supplier<HUD.AnchorPoint> getAnchorPoint;
+    public Supplier<AnchorPoint> getAnchorPoint;
 
     @Nullable
     public Supplier<Float> getFill;
@@ -39,9 +40,12 @@ public class HudInformation {
     public Consumer<Float> setX;
     public Consumer<Float> setY;
     public Consumer<Float> setScale;
-    public Consumer<HUD.AnchorPoint> setAnchorPoint;
+    public Consumer<AnchorPoint> setAnchorPoint;
 
-    public HudInformation(Supplier<Float> xSupplier, Supplier<Float> ySupplier, Supplier<Float> scaleSupplier, Supplier<HUD.AnchorPoint> anchorPointSupplier, Consumer<Float> xConsumer, Consumer<Float> yConsumer, Consumer<Float> scaleConsumer, Consumer<HUD.AnchorPoint> anchorPointConsumer) {
+    /**
+     * This constructor is used for Single Line Text HUDs and the Ticker HUD
+     */
+    public HudInformation(Supplier<Float> xSupplier, Supplier<Float> ySupplier, Supplier<Float> scaleSupplier, Supplier<AnchorPoint> anchorPointSupplier, Consumer<Float> xConsumer, Consumer<Float> yConsumer, Consumer<Float> scaleConsumer, Consumer<AnchorPoint> anchorPointConsumer) {
         this.getX = xSupplier;
         this.getY = ySupplier;
         this.getScale = scaleSupplier;
@@ -52,7 +56,11 @@ public class HudInformation {
         this.setScale = scaleConsumer;
         this.setAnchorPoint = anchorPointConsumer;
     }
-    public HudInformation(Supplier<Float> xSupplier, Supplier<Float> ySupplier, Supplier<Float> scaleSupplier, Supplier<HUD.AnchorPoint> anchorPointSupplier, Supplier<Integer> colorSupplier, Supplier<Float> fillSupplier, Consumer<Float> xConsumer, Consumer<Float> yConsumer, Consumer<Float> scaleConsumer, Consumer<HUD.AnchorPoint> anchorPointConsumer) {
+
+    /**
+     * This constructor is used for Bar HUDs
+     */
+    public HudInformation(Supplier<Float> xSupplier, Supplier<Float> ySupplier, Supplier<Float> scaleSupplier, Supplier<AnchorPoint> anchorPointSupplier, Supplier<Integer> colorSupplier, Supplier<Float> fillSupplier, Consumer<Float> xConsumer, Consumer<Float> yConsumer, Consumer<Float> scaleConsumer, Consumer<AnchorPoint> anchorPointConsumer) {
         this.getX = xSupplier;
         this.getY = ySupplier;
         this.getScale = scaleSupplier;
@@ -65,5 +73,20 @@ public class HudInformation {
         this.setY = yConsumer;
         this.setScale = scaleConsumer;
         this.setAnchorPoint = anchorPointConsumer;
+    }
+
+    /**
+     * This constructor is used for Multi Line Text HUDs
+     */
+    public HudInformation(Supplier<Float> xSupplier, Supplier<Float> ySupplier, Supplier<Float> scaleSupplier, Consumer<Float> xConsumer, Consumer<Float> yConsumer, Consumer<Float> scaleConsumer) {
+        this.getX = xSupplier;
+        this.getY = ySupplier;
+        this.getScale = scaleSupplier;
+        this.getAnchorPoint = DataUtils.alwaysLeft;
+
+        this.setX = xConsumer;
+        this.setY = yConsumer;
+        this.setScale = scaleConsumer;
+        this.setAnchorPoint = DataUtils.doNothing;
     }
 }

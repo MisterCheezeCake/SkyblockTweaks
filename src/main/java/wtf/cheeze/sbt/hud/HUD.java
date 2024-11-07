@@ -16,27 +16,39 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with SkyblockTweaks. If not, see <https://www.gnu.org/licenses/>.
  */
-package wtf.cheeze.sbt.utils.hud;
+package wtf.cheeze.sbt.hud;
 
 import dev.isxander.yacl3.api.NameableEnum;
 import dev.isxander.yacl3.api.OptionDescription;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.text.Text;
+import wtf.cheeze.sbt.hud.bounds.Bounds;
+import wtf.cheeze.sbt.hud.bounds.BoundsRelative;
+import wtf.cheeze.sbt.hud.utils.HudInformation;
 
 /**
- * Represents any sort of HUD that can be drawn to the screen, and handles logic that is that same if the HUD is a text or bar based hud
+ * Represents any sort of HUD that can be drawn to the screen, and handles logic that is that same no matter how the HUD renders
  */
 public abstract class HUD  {
 
     public HudInformation INFO;
 
+    /**;
+     * Whether the HUD supports non-left anchors
+     */
+    public boolean supportsNonLeftAnchors = true;
+
+    /**
+     * @return the name of the HUD that will be shown in the HUD screen
+     */
     public abstract String getName();
 
 
     public abstract Bounds getCurrentBounds();
 
     public abstract BoundsRelative getCurrentBoundsRelative();
+
 
     public boolean shouldRender(boolean fromHudScreen) {
         // We let the HUD screen handle rendering when it is open
@@ -45,9 +57,20 @@ public abstract class HUD  {
         else return true;
     };
 
+    /**
+     * Calls the render method with hovered set to false
+     */
     public void render(DrawContext context, boolean fromHudScreen) {
         render(context, fromHudScreen, false);
     }
+
+    /**
+     * Draws the HUD to the screen
+     * @param context the DrawContext
+     * @param fromHudScreen whether the HUD is being drawn in the context of the edit screen
+     * @param hovered whether the HUD is hovered while being drawn in the context of the edit screen
+     */
+    public abstract void render(DrawContext context, boolean fromHudScreen, boolean hovered);
 
     public void updatePosition(float x, float y) {
         INFO.setX.accept(x);
@@ -106,13 +129,5 @@ public abstract class HUD  {
     public static OptionDescription keyD(String key) {
         return OptionDescription.of(Text.translatable(BASE_KEY + key + ".desc"));
     }
-    public abstract void render(DrawContext context, boolean fromHudScreen, boolean hovered);
 
-    public enum AnchorPoint implements NameableEnum {
-        LEFT, CENTER, RIGHT;
-        @Override
-        public Text getDisplayName() {
-            return Text.literal(name());
-        }
-    }
 }

@@ -950,7 +950,7 @@ public class SkyblockConstants {
      * Crop levels for carrot and potato
      */
     public static final int[] CROP_LEVELS_CP  = {
-        100,
+                100,
                 150,
                 250,
                 500,

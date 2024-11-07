@@ -16,16 +16,16 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with SkyblockTweaks. If not, see <https://www.gnu.org/licenses/>.
  */
-package wtf.cheeze.sbt.utils.hud;
+package wtf.cheeze.sbt.hud.bounds;
 
-public class BoundsRelative {
-    public float x;
-    public float y;
+public class Bounds {
+    public int x;
+    public int y;
     public float width;
     public float height;
     public float scale = 1.0f;
 
-    public BoundsRelative(float x, float y, float width, float height, float scale) {
+    public Bounds(int x, int y, float width, float height, float scale) {
         this.x = x;
         this.y = y;
         this.width = width;
@@ -33,4 +33,3 @@ public class BoundsRelative {
         this.scale = scale;
     }
 }
-
