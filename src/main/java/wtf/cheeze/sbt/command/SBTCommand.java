@@ -333,6 +333,7 @@ public class SBTCommand {
                                     return 1;
                                 }))
 
+
                                 .then(literal("dumpComponents")
                                         .then(literal("hand")
                                         .executes(context -> {
@@ -342,7 +343,18 @@ public class SBTCommand {
                                             });
                                             return 1;
                                         }))
-                                        .then(literal("slot")
+                                        .then(literal("inventory")
+                                                .then(argument("number" , IntegerArgumentType.integer())
+                                                        .executes(context -> {
+                                                            var components = SkyblockTweaks.mc.player.getInventory().getStack(IntegerArgumentType.getInteger(context, "number")).getComponents();
+                                                            components.forEach((component) -> {
+                                                                context.getSource().sendFeedback(Text.of(PREFIX + " §3" + component.toString()));
+                                                            });
+                                                            return 1;
+                                                        })
+
+                                        ))
+                                        .then(literal("container")
                                                 .then(argument("number" , IntegerArgumentType.integer())
                                                         .executes(context -> {
                                                             new Thread(() -> {

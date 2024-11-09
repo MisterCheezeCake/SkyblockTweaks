@@ -40,6 +40,7 @@ public class UpdateChecker {
                                 if (remote.latestAlpha == null) {
                                     break;
                                 }
+
                                 internalRun(remote.latestAlpha.get(SkyblockTweaks.mc.getGameVersion()));
                             }
                             case NotificationStream.BETA -> {
@@ -64,6 +65,7 @@ public class UpdateChecker {
     }
 
     private static void internalRun(Version.RemoteVersion remoteVersion) {
+        if (remoteVersion == null) return;
         var version = new Version(remoteVersion.versionString);
         var comparison = Version.compareVersions(version, SkyblockTweaks.VERSION);
         if (comparison == Version.VersionComparison.GREATER) {

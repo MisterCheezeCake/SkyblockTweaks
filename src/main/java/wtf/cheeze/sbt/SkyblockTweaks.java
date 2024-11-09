@@ -90,6 +90,7 @@ public class SkyblockTweaks implements ModInitializer {
 		HUDS.add(new FpsHUD());
 
 		HUDS.add(new TickerHUD());
+		HUDS.add(new QuiverHUD());
 
 		HudRenderCallback.EVENT.register((context, tickCounter) -> {
 			HUDS.forEach(hud -> hud.render(context, false));

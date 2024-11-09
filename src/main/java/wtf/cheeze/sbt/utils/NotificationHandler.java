@@ -29,7 +29,7 @@ public class NotificationHandler {
 
     public static void registerEvents() {
         ClientPlayConnectionEvents.JOIN.register((handler, sender, client) -> {
-            if (NOTIFICATION_QUEUE.size() == 0) return;
+            if (NOTIFICATION_QUEUE.isEmpty()) return;
             new Thread(() -> {
                 try {
                     Thread.sleep(2500);

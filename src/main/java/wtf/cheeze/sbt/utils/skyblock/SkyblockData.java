@@ -70,10 +70,6 @@ public class SkyblockData {
         return (defense / (defense + 100f)) * 100;
     }
 
-    public boolean isThePlayerHoldingADrill() {
-        return MinecraftClient.getInstance().player.getMainHandStack().getName().getString().contains("Drill");
-    }
-
     /**
      * Provides the profile ID with an appended "_ALPHA" if the player is in the alpha network
      * We do this so that what players do on the Alpha network does not affect persistent data for their main profile

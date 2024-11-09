@@ -66,6 +66,7 @@ public class GlobalSearchCategory {
                 .group(RealTimeHUD.Config.getGroup(defaults, config))
                 .group(FpsHUD.Config.getGroup(defaults, config))
                 .group(TickerHUD.Config.getGroup(defaults, config))
+                .group(QuiverHUD.Config.getGroup(defaults, config))
                 .build();
     }
 

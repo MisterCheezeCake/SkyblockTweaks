@@ -41,6 +41,8 @@ public class IconDict {
             Map.entry(Skills.SOCIAL, new HudIcon(ofItem("emerald"))
             ));
 
+    public static final HudIcon ARROW = new HudIcon(ofItem("arrow"));
+
     private static Identifier ofItem(String name) {
         return Identifier.ofVanilla("textures/item/" + name + ".png");
     }

@@ -9,7 +9,7 @@ import wtf.cheeze.sbt.utils.render.RenderUtils;
 public class HudIcon {
     @Nullable private Identifier iconTexture;
     @Nullable private ItemStack iconStack;
-    private Mode mode;
+    private final Mode mode;
 
     public HudIcon(Identifier iconTexture) {
         this.iconTexture = iconTexture;

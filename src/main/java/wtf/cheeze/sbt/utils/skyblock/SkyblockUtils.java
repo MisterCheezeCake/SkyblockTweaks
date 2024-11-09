@@ -18,6 +18,9 @@
  */
 package wtf.cheeze.sbt.utils.skyblock;
 
+import net.minecraft.client.MinecraftClient;
+import wtf.cheeze.sbt.SkyblockTweaks;
+
 public class SkyblockUtils {
 
     public static SkyblockConstants.Rarity castStringToRarity(String input) {
@@ -80,4 +83,21 @@ public class SkyblockUtils {
             default -> SkyblockConstants.Skills.UNKNOWN;
         };
     }
+
+    public static boolean isThePlayerHoldingADrill() {
+        return MinecraftClient.getInstance().player.getMainHandStack().getName().getString().contains("Drill");
+    }
+
+    public static boolean quiverActive() {
+        return SkyblockTweaks.mc.player.getInventory().getStack(8).getName().getString().startsWith("Quiver");
+    }
+
+    /**
+     * Please qualify calls to this with a call to quiverActive
+     */
+    public static QuiverData getQuiverData() {
+        return new QuiverData(SkyblockTweaks.mc.player.getInventory().getStack(8));
+    }
+
+
 }

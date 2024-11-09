@@ -78,6 +78,9 @@ public class Huds {
     @SerialEntry
     public TickerHUD.Config ticker = new TickerHUD.Config();
 
+    @SerialEntry
+    public QuiverHUD.Config quiver = new QuiverHUD.Config();
+
     public static ConfigCategory getCategory(ConfigImpl defaults, ConfigImpl config) {
         return ConfigCategory.createBuilder()
                 .name(Text.translatable("sbt.config.huds"))
@@ -99,6 +102,7 @@ public class Huds {
                 .group(RealTimeHUD.Config.getGroup(defaults, config))
                 .group(FpsHUD.Config.getGroup(defaults, config))
                 .group(TickerHUD.Config.getGroup(defaults, config))
+                .group(QuiverHUD.Config.getGroup(defaults, config))
                 .build();
     }
 }

@@ -25,6 +25,7 @@ public class TextUtils {
     public static String removeColorCodes(String text) {
         return text.replaceAll("§[a-f0-9k-o]", "");
     }
+    public static final Text SPACE = Text.literal(" ");
 
     public static Text getTextThatLinksToURL(String text, String hovered, String url) {
         return Text.literal(text).styled(style -> {
