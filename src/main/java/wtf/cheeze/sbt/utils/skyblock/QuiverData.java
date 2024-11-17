@@ -4,8 +4,6 @@ import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.LoreComponent;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
-import wtf.cheeze.sbt.SkyblockTweaks;
-import wtf.cheeze.sbt.features.huds.QuiverHUD;
 
 import java.util.regex.Pattern;
 

@@ -18,6 +18,7 @@
  */
 package wtf.cheeze.sbt.utils;
 
+import net.minecraft.MinecraftVersion;
 import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.config.SBTConfig;
 import wtf.cheeze.sbt.utils.Version.NotificationStream;
@@ -41,19 +42,19 @@ public class UpdateChecker {
                                     break;
                                 }
 
-                                internalRun(remote.latestAlpha.get(SkyblockTweaks.mc.getGameVersion()));
+                                internalRun(remote.latestAlpha.get(MinecraftVersion.CURRENT.getName()));
                             }
                             case NotificationStream.BETA -> {
                                 if (remote.latestBeta == null) {
                                     break;
                                 }
-                                internalRun(remote.latestBeta.get(SkyblockTweaks.mc.getGameVersion()));
+                                internalRun(remote.latestBeta.get(MinecraftVersion.CURRENT.getName()));
                             }
                             case NotificationStream.RELEASE -> {
                                 if (remote.latestRelease == null) {
                                     break;
                                 }
-                                internalRun(remote.latestRelease.get(SkyblockTweaks.mc.getGameVersion()));
+                                internalRun(remote.latestRelease.get(MinecraftVersion.CURRENT.getName()));
                             }
                         }
                     }
@@ -65,7 +66,10 @@ public class UpdateChecker {
     }
 
     private static void internalRun(Version.RemoteVersion remoteVersion) {
-        if (remoteVersion == null) return;
+        if (remoteVersion == null) {
+            SkyblockTweaks.LOGGER.warn("Null RemoteVersion");
+            return;
+        };
         var version = new Version(remoteVersion.versionString);
         var comparison = Version.compareVersions(version, SkyblockTweaks.VERSION);
         if (comparison == Version.VersionComparison.GREATER) {

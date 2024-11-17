@@ -1,7 +1,5 @@
 package wtf.cheeze.sbt.config.migration;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SBTConfig;
@@ -50,7 +48,7 @@ public class MigrationManager {
            }
 
        } catch (Exception e) {
-           e.printStackTrace();
+           SkyblockTweaks.LOGGER.error("Failed to handle migrations", e);
        }
 
    }
@@ -61,15 +59,15 @@ public class MigrationManager {
      */
     @SuppressWarnings("unchecked")
     public static <T extends ConfigImpl> void runTransformation(ConfigTransformation<T> transformation) {
-        SkyblockTweaks.LOGGER.info("Checking config transformation: " + transformation.getClass().getSimpleName());
+        //SkyblockTweaks.LOGGER.info("Checking config transformation: " + transformation.getClass().getSimpleName());
         T currentConfig = (T) SBTConfig.get();
-        SkyblockTweaks.LOGGER.info("Current config version: " + currentConfig.configVersion);
+        //SkyblockTweaks.LOGGER.info("Current config version: " + currentConfig.configVersion);
         if (!transformation.isApplicable(currentConfig.configVersion))  {
-            SkyblockTweaks.LOGGER.info("Transformation not applicable for version");
+            //SkyblockTweaks.LOGGER.info("Transformation not applicable for version");
             return;
         }
         if (!transformation.isApplicable(currentConfig)) {
-            SkyblockTweaks.LOGGER.info("Transformation not applicable for config");
+            //SkyblockTweaks.LOGGER.info("Transformation not applicable for config");
             return;
         }
         SkyblockTweaks.LOGGER.info("Running config transformation: " + transformation.getClass().getSimpleName());

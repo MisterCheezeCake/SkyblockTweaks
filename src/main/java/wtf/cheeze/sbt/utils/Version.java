@@ -31,16 +31,6 @@ import java.util.regex.Pattern;
 public class Version {
     public static Pattern PATTERN_RELEASE = Pattern.compile("^(\\d+)\\.(\\d+)\\.(\\d+)$");
     public static Pattern PATTERN_ALPHA_BETA = Pattern.compile("^(\\d+)\\.(\\d+)\\.(\\d+)-(Alpha|Beta)\\.(\\d+)$");
-    public static enum VersionType {
-        // Development versions, ideally, a user should never be using these
-        UNSTABLE,
-        // Alpha versions, these are the least stable jars that will go out to users, and may have bugs
-        ALPHA,
-        // Beta versions, more stable than alpha, but still may have bugs and not ready for full release
-        BETA,
-        // Full releases, stable and ideally not released with any known bugs
-        RELEASE
-    }
 
     public VersionType STREAM;
     public int MAJOR;
@@ -106,25 +96,6 @@ public class Version {
         }
     }
 
-    public static class RemoteVersionFile {
-        public boolean enabled;
-        public Map<String, RemoteVersion> latestAlpha;
-        public Map<String, RemoteVersion> latestBeta;
-        public Map<String, RemoteVersion> latestRelease;
-    }
-
-    public static class RemoteVersion {
-        public String versionString;
-        public String modrinthName;
-    }
-
-    public static enum VersionComparison {
-        EQUAL,
-        GREATER,
-        LESS,
-        FAILURE
-    }
-
     public static VersionComparison compareVersions(Version a, Version b) {
         try {
             if (a.STREAM == VersionType.UNSTABLE || b.STREAM == VersionType.UNSTABLE) {
@@ -163,19 +134,9 @@ public class Version {
         }
     }
 
-    public static enum NotificationStream implements NameableEnum {
-        ALPHA,
-        BETA,
-        RELEASE,
-        NONE;
 
-        @Override
-        public Text getDisplayName() {
-            return Text.literal(name());
-        }
-    }
 
-    public static Option getStreamOption(ConfigImpl defaults, ConfigImpl config) {
+    public static Option<NotificationStream> getStreamOption(ConfigImpl defaults, ConfigImpl config) {
         return Option.<NotificationStream>createBuilder()
                 .name(General.key("notificationStream"))
                 .description(General.keyD("notificationStream"))
@@ -189,5 +150,46 @@ public class Version {
     }
     public static String getModrinthLink(String name) {
         return "https://modrinth.com/mod/sbt/version/" + name;
+    }
+
+    public enum VersionType {
+        // Development versions, ideally, a user should never be using these
+        UNSTABLE,
+        // Alpha versions, these are the least stable jars that will go out to users, and may have bugs
+        ALPHA,
+        // Beta versions, more stable than alpha, but still may have bugs and not ready for full release
+        BETA,
+        // Full releases, stable and ideally not released with any known bugs
+        RELEASE
+    }
+    public enum NotificationStream implements NameableEnum {
+        ALPHA,
+        BETA,
+        RELEASE,
+        NONE;
+
+        @Override
+        public Text getDisplayName() {
+            return Text.literal(name());
+        }
+    }
+
+    public enum VersionComparison {
+        EQUAL,
+        GREATER,
+        LESS,
+        FAILURE
+    }
+
+    public static class RemoteVersionFile {
+        public boolean enabled;
+        public Map<String, RemoteVersion> latestAlpha;
+        public Map<String, RemoteVersion> latestBeta;
+        public Map<String, RemoteVersion> latestRelease;
+    }
+
+    public static class RemoteVersion {
+        public String versionString;
+        public String modrinthName;
     }
 }

@@ -23,6 +23,7 @@ import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
+import net.minecraft.MinecraftVersion;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.ingame.GenericContainerScreen;
@@ -331,6 +332,19 @@ public class SBTCommand {
                                         context.getSource().sendFeedback(Text.of(PREFIX + " §aEnabled party command debug"));
                                     }
                                     return 1;
+                                }))
+
+                                .then(literal("sysInfo").executes(context -> {
+                                    var source = context.getSource();
+                                    source.sendFeedback(Text.literal(PREFIX + " §3System Information"));
+                                    source.sendFeedback(getDebugText("Minecraft Version", MinecraftVersion.CURRENT.getName()));
+                                    source.sendFeedback(getDebugText("Operating System", System.getProperty("os.name")));
+                                    source.sendFeedback(getDebugText("OS Version", System.getProperty("os.version")));
+                                    source.sendFeedback(getDebugText("Architecture", System.getProperty("os.arch")));
+                                    source.sendFeedback(getDebugText("Java Version", System.getProperty("java.version")));
+                                    source.sendFeedback(getDebugText("Java Vendor", System.getProperty("java.vendor")));
+                                    return 1;
+
                                 }))
 
 

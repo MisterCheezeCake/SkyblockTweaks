@@ -20,6 +20,7 @@ package wtf.cheeze.sbt.utils;
 
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.minecraft.text.Text;
+import wtf.cheeze.sbt.SkyblockTweaks;
 
 import java.util.ArrayList;
 
@@ -34,7 +35,7 @@ public class NotificationHandler {
                 try {
                     Thread.sleep(2500);
                 } catch (InterruptedException e) {
-                    e.printStackTrace();
+                    SkyblockTweaks.LOGGER.error("Notification manager failed to sleep thread", e);
                 }
                 client.execute(() -> {
                     for (Text message : NOTIFICATION_QUEUE) {

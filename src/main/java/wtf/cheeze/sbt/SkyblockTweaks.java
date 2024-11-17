@@ -61,7 +61,7 @@ public class SkyblockTweaks implements ModInitializer {
 	@Override
 	public void onInitialize() {
 
-		MigrationManager.handleMigrations();
+		//MigrationManager.handleMigrations();
 
 
 		SBTConfig.HANDLER.load();

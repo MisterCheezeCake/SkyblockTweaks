@@ -31,7 +31,6 @@ public class HTTPUtils {
         try {
            // URL url = new URL(uri);
             URL url = new URI(uri).toURL();
-
             var connection = url.openConnection();
             connection.setRequestProperty("User-Agent", "Mozilla/5.0 SkyblockTweaks " + SkyblockTweaks.VERSION.getVersionString());
             var reader = new java.io.BufferedReader(new java.io.InputStreamReader(connection.getInputStream()));

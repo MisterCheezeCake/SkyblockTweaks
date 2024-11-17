@@ -18,6 +18,8 @@
  */
 package wtf.cheeze.sbt.utils;
 
+import org.jetbrains.annotations.NotNull;
+
 public class NumberUtils {
     public static double round(float number, int decimalPlaces) {
         return Math.round(number * Math.pow(10, decimalPlaces)) / Math.pow(10, decimalPlaces);
@@ -61,10 +63,20 @@ public class NumberUtils {
 
     public static String formatNumber(int number, String separator) {
         String str = Integer.toString(number);
+        return formatNumber(str, separator);
+    }
+
+    public static String formatNumber(long number, String separator) {
+        String str = Long.toString(number);
+        return formatNumber(str, separator);
+    }
+
+
+    private static String formatNumber(String numString, String separator) {
         StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < str.length(); i++) {
-            sb.append(str.charAt(i));
-            if ((str.length() - i - 1) % 3 == 0 && i != str.length() - 1) {
+        for (int i = 0; i < numString.length(); i++) {
+            sb.append(numString.charAt(i));
+            if ((numString.length() - i - 1) % 3 == 0 && i != numString.length() - 1) {
                 sb.append(separator);
             }
         }
