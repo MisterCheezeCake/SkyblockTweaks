@@ -68,6 +68,10 @@ public class ActionBarData {
     public Integer maxTickers;
     @Nullable
     public Integer currentTickers;
+    @Nullable
+    public String stackSymbol;
+    @Nullable
+    public Integer stackAmount;
 
 
     public String toJson() {
