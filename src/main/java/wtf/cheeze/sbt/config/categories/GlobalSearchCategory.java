@@ -67,6 +67,7 @@ public class GlobalSearchCategory {
                 .group(FpsHUD.Config.getGroup(defaults, config))
                 .group(TickerHUD.Config.getGroup(defaults, config))
                 .group(QuiverHUD.Config.getGroup(defaults, config))
+                .group(ArmorStackHUD.Config.getGroup(defaults, config))
                 .build();
     }
 

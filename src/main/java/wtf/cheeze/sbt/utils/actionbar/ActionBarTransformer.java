@@ -210,7 +210,7 @@ public class ActionBarTransformer {
     public static void registerEvents() {
         ClientReceiveMessageEvents.MODIFY_GAME.register((message, overlay) -> {
             if (!overlay) return message;
-            SkyblockTweaks.LOGGER.info("Old: " + message.getString());
+            //SkyblockTweaks.LOGGER.info("Old: " + message.getString());
             var data = ActionBarTransformer.extractDataAndRunTransformation(message.getString());
             //SkyblockTweaks.LOGGER.info("New: " + data.transformedText);
             SkyblockTweaks.DATA.update(data);
@@ -245,8 +245,6 @@ public class ActionBarTransformer {
         @SerialEntry
         public boolean hideTickers = false;
 
-        @SerialEntry
-        public boolean hideArmorStacks = false;
 
         public static OptionGroup getGroup(ConfigImpl defaults, ConfigImpl config) {
             var health = Option.<Boolean>createBuilder()

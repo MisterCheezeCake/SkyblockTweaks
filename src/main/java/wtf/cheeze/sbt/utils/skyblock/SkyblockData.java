@@ -56,6 +56,9 @@ public class SkyblockData {
     public int tickers = 0;
     public boolean tickerActive = false;
 
+    public int armorStack = 0;
+    public String stackString = null;
+
 
 
     public float getSpeed() {
@@ -95,6 +98,14 @@ public class SkyblockData {
         } else {
             this.tickerActive = false;
         }
+        if (data.stackSymbol != null && data.stackAmount !=null) {
+            this.stackString = data.stackSymbol;
+            this.armorStack = data.stackAmount;
+        } else {
+            this.stackString = null;
+            this.armorStack = 0;
+        }
+
     }
 
     public void handlePacket(HypixelS2CPacket packet) {

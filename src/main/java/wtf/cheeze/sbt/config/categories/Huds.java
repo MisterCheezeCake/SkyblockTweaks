@@ -81,6 +81,9 @@ public class Huds {
     @SerialEntry
     public QuiverHUD.Config quiver = new QuiverHUD.Config();
 
+    @SerialEntry
+    public ArmorStackHUD.Config armorStack = new ArmorStackHUD.Config();
+
     public static ConfigCategory getCategory(ConfigImpl defaults, ConfigImpl config) {
         return ConfigCategory.createBuilder()
                 .name(Text.translatable("sbt.config.huds"))
@@ -103,6 +106,7 @@ public class Huds {
                 .group(FpsHUD.Config.getGroup(defaults, config))
                 .group(TickerHUD.Config.getGroup(defaults, config))
                 .group(QuiverHUD.Config.getGroup(defaults, config))
+                .group(ArmorStackHUD.Config.getGroup(defaults, config))
                 .build();
     }
 }
