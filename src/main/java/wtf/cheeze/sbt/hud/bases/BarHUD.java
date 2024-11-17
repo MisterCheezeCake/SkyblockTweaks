@@ -46,8 +46,8 @@ public abstract class BarHUD extends HUD {
         }
 
             //? if =1.21.1 {
-        var colors = RenderUtils.getColor3f((int) INFO.getColor.get());
-            /* if (bounds.scale == 1.0f) {
+        /*var colors = RenderUtils.getColor3f((int) INFO.getColor.get());
+             if (bounds.scale == 1.0f) {
             context.setShaderColor(colors.red, colors.green, colors.blue, 1.0f);
             context.drawTexture(UNFILLED, bounds.x, bounds.y, 0, 0, BAR_WIDTH, BAR_HEIGHT, BAR_WIDTH, BAR_HEIGHT);
             context.drawTexture(FILLED, bounds.x, bounds.y, 0, 0, calculateFill((float) INFO.getFill.get()), BAR_HEIGHT, BAR_WIDTH, BAR_HEIGHT);
