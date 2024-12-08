@@ -8,8 +8,6 @@ package wtf.cheeze.sbt.config.migration;
  * A ConfigMigration will always be accompanied by an increase in the config version
  */
 public interface ConfigMigration<Source, Target> {
-
-
     Source migrate(Target config);
 
     boolean isApplicable(int aVersion);
@@ -19,5 +17,4 @@ public interface ConfigMigration<Source, Target> {
 
     Class<Source> getSourceClass();
     Class<Target> getTargetClass();
-
 }

@@ -91,7 +91,7 @@ public class SBTCommand {
                                                     return 0;
                                                 }
 
-                                                var table = getCalcSlayerTable(slayer);
+                                                var table = CommandUtils.getCalcSlayerTable(slayer);
                                                 var needed = table[levelEnd] - table[levelStart];
                                                 context.getSource().sendFeedback(Text.of(PREFIX + " §3Total Slayer XP Required: §e" + NumberUtils.formatNumber(needed, ",")));
                                                 return 1;
@@ -148,7 +148,7 @@ public class SBTCommand {
                                                     return 0;
                                                 }
 
-                                                var newArr = Arrays.stream(getCalcPetTable(rarity)).skip(levelStart).limit(levelEnd - levelStart).toArray();
+                                                var newArr = Arrays.stream(CommandUtils.getCalcPetTable(rarity)).skip(levelStart).limit(levelEnd - levelStart).toArray();
                                                 var total = Arrays.stream(newArr).sum();
                                                 context.getSource().sendFeedback(Text.of(PREFIX + " §3Total Pet XP Required: §e" + NumberUtils.formatNumber(total, ",")));
                                                 return 1;
@@ -229,7 +229,7 @@ public class SBTCommand {
                                                             return 0;
                                                         }
 
-                                                        var newArr = Arrays.stream(getCalcCropTable(crop)).skip(levelStart).limit(levelEnd - levelStart).toArray();
+                                                        var newArr = Arrays.stream(CommandUtils.getCalcCropTable(crop)).skip(levelStart).limit(levelEnd - levelStart).toArray();
                                                         var total = Arrays.stream(newArr).sum();
                                                         context.getSource().sendFeedback(Text.of(PREFIX + " §3Total Crop XP Required: §e" + NumberUtils.formatNumber(total, ",")));
                                                         return 1;
@@ -337,12 +337,12 @@ public class SBTCommand {
                                 .then(literal("sysInfo").executes(context -> {
                                     var source = context.getSource();
                                     source.sendFeedback(Text.literal(PREFIX + " §3System Information"));
-                                    source.sendFeedback(getDebugText("Minecraft Version", MinecraftVersion.CURRENT.getName()));
-                                    source.sendFeedback(getDebugText("Operating System", System.getProperty("os.name")));
-                                    source.sendFeedback(getDebugText("OS Version", System.getProperty("os.version")));
-                                    source.sendFeedback(getDebugText("Architecture", System.getProperty("os.arch")));
-                                    source.sendFeedback(getDebugText("Java Version", System.getProperty("java.version")));
-                                    source.sendFeedback(getDebugText("Java Vendor", System.getProperty("java.vendor")));
+                                    source.sendFeedback(CommandUtils.getDebugText("Minecraft Version", MinecraftVersion.CURRENT.getName()));
+                                    source.sendFeedback(CommandUtils.getDebugText("Operating System", System.getProperty("os.name")));
+                                    source.sendFeedback(CommandUtils.getDebugText("OS Version", System.getProperty("os.version")));
+                                    source.sendFeedback(CommandUtils.getDebugText("Architecture", System.getProperty("os.arch")));
+                                    source.sendFeedback(CommandUtils.getDebugText("Java Version", System.getProperty("java.version")));
+                                    source.sendFeedback(CommandUtils.getDebugText("Java Vendor", System.getProperty("java.vendor")));
                                     return 1;
 
                                 }))
@@ -391,14 +391,15 @@ public class SBTCommand {
                                 ).executes(context -> {
                                     var source = context.getSource();
                                     source.sendFeedback(Text.literal(PREFIX +  " §3Debug Information"));
-                                    source.sendFeedback(getDebugText("Version", SkyblockTweaks.VERSION.getVersionString()));
-                                    source.sendFeedback(getDebugText("In Skyblock", SkyblockTweaks.DATA.inSB));
-                                    source.sendFeedback(getDebugText("Mode", SkyblockTweaks.DATA.mode));
-                                    source.sendFeedback(getDebugText("On Alpha Network", SkyblockTweaks.DATA.alphaNetwork));
-                                    source.sendFeedback(getDebugText("In Party", SkyblockTweaks.DATA.inParty));
-                                    source.sendFeedback(getDebugText("Am I The Leader", SkyblockTweaks.DATA.amITheLeader));
-                                    source.sendFeedback(getDebugText("Current Profile", SkyblockTweaks.DATA.currentProfile));
-                                    source.sendFeedback(getDebugText("Unique Profile ID", SkyblockTweaks.DATA.getCurrentProfileUnique()));
+                                    source.sendFeedback(CommandUtils.getDebugText("Version", SkyblockTweaks.VERSION.getVersionString()));
+                                    source.sendFeedback(CommandUtils.getDebugText("In Skyblock", SkyblockTweaks.DATA.inSB));
+                                    //source.sendFeedback(CommandUtils.getDebugText("Mode", SkyblockTweaks.DATA.mode));
+                                    source.sendFeedback(CommandUtils.getDebugText("Location", SkyblockTweaks.DATA.location.getName()));
+                                    source.sendFeedback(CommandUtils.getDebugText("On Alpha Network", SkyblockTweaks.DATA.alphaNetwork));
+                                    source.sendFeedback(CommandUtils.getDebugText("In Party", SkyblockTweaks.DATA.inParty));
+                                    source.sendFeedback(CommandUtils.getDebugText("Am I The Leader", SkyblockTweaks.DATA.amITheLeader));
+                                    source.sendFeedback(CommandUtils.getDebugText("Current Profile", SkyblockTweaks.DATA.currentProfile));
+                                    source.sendFeedback(CommandUtils.getDebugText("Unique Profile ID", SkyblockTweaks.DATA.getCurrentProfileUnique()));
 
                                     return 1;
                                 })
@@ -418,42 +419,5 @@ public class SBTCommand {
                         )
         ));
     }
-
-    private static int[] getCalcPetTable(SkyblockConstants.Rarity rarity) {
-        return switch (rarity) {
-            case COMMON -> SkyblockConstants.PET_LEVELS_COMMON;
-            case UNCOMMON -> SkyblockConstants.PET_LEVELS_UNCOMMON;
-            case RARE -> SkyblockConstants.PET_LEVELS_RARE;
-            case EPIC -> SkyblockConstants.PET_LEVELS_EPIC;
-            case LEGENDARY, MYTHIC -> SkyblockConstants.PET_LEVELS_LEGENDARY;
-            default -> null;
-        };
-    }
-
-    private static int[] getCalcSlayerTable(SkyblockConstants.Slayers slayer) {
-        return switch (slayer) {
-            case ZOMBIE -> SkyblockConstants.SLAYER_LEVELS_ZOMBIE;
-            case SPIDER -> SkyblockConstants.SLAYER_LEVELS_SPIDER;
-            case WOLF, ENDERMAN, BLAZE -> SkyblockConstants.SLAYER_LEVELS_WEB;
-            case VAMPIRE -> SkyblockConstants.SLAYER_LEVELS_VAMPIRE;
-        };
-    }
-
-    private static int[] getCalcCropTable(SkyblockConstants.Crops crop) {
-        return switch (crop) {
-            case WHEAT, PUMPKIN, MUSHROOM -> SkyblockConstants.CROP_LEVELS_WPMS;
-            case CARROT, POTATO -> SkyblockConstants.CROP_LEVELS_CP;
-            case MELON -> SkyblockConstants.CROP_LEVELS_MELON;
-            case SUGAR_CANE, CACTUS -> SkyblockConstants.CROP_LEVELS_SCC;
-            case COCOA_BEANS, NETHER_WART -> SkyblockConstants.CROP_LEVELS_CBNW;
-        };
-    }
-
-    private static Text getDebugText(String name, boolean value) {
-        return Text.of("§3" + name + ": §" + (value ? "a" : "c") + value);
-    }
-    private static Text getDebugText(String name, String value) {
-        return Text.of("§3" + name + ": §e" + value);
-    }
-
 }
+

@@ -46,7 +46,7 @@ public class PersistentData {
             writer.write(toWrite);
             writer.close();
         } catch (Exception e) {
-            e.printStackTrace();
+            SkyblockTweaks.LOGGER.error("Failed to save persistent data", e);
         }
     }
 
@@ -62,7 +62,7 @@ public class PersistentData {
             return SkyblockTweaks.GSON.fromJson(content, PersistentData.class);
            
         } catch (Exception e) {
-            e.printStackTrace();
+            SkyblockTweaks.LOGGER.error("Failed to load persistent data", e);
             return new PersistentData();
         }
     }

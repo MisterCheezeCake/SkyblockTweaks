@@ -21,7 +21,6 @@ package wtf.cheeze.sbt;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import net.fabricmc.api.ModInitializer;
-
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.minecraft.client.MinecraftClient;
@@ -30,7 +29,6 @@ import net.minecraft.scoreboard.ScoreboardDisplaySlot;
 import net.minecraft.scoreboard.ScoreboardObjective;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import wtf.cheeze.sbt.command.SBTCommand;
 import wtf.cheeze.sbt.config.SBTConfig;
 import wtf.cheeze.sbt.config.migration.BarColorTransformation;
@@ -39,13 +37,14 @@ import wtf.cheeze.sbt.config.persistent.PersistentData;
 import wtf.cheeze.sbt.features.chat.ChatProtections;
 import wtf.cheeze.sbt.features.chat.PartyFeatures;
 import wtf.cheeze.sbt.features.huds.*;
-import wtf.cheeze.sbt.utils.*;
-import wtf.cheeze.sbt.utils.actionbar.ActionBarTransformer;
 import wtf.cheeze.sbt.hud.HUD;
+import wtf.cheeze.sbt.utils.NotificationHandler;
+import wtf.cheeze.sbt.utils.UpdateChecker;
+import wtf.cheeze.sbt.utils.Version;
+import wtf.cheeze.sbt.utils.actionbar.ActionBarTransformer;
 import wtf.cheeze.sbt.utils.skyblock.ModAPIUtils;
 import wtf.cheeze.sbt.utils.skyblock.ProfileManager;
 import wtf.cheeze.sbt.utils.skyblock.SkyblockData;
-
 import java.util.ArrayList;
 
 public class SkyblockTweaks implements ModInitializer {
@@ -64,6 +63,7 @@ public class SkyblockTweaks implements ModInitializer {
 		//MigrationManager.handleMigrations();
 
 
+
 		SBTConfig.HANDLER.load();
 
 		MigrationManager.runTransformation(BarColorTransformation.INSTANCE);
@@ -71,6 +71,7 @@ public class SkyblockTweaks implements ModInitializer {
 
 		HUDS.add(SkillHUDManager.INSTANCE.SKILL_HUD);
 		HUDS.add(SkillHUDManager.INSTANCE.SKILL_BAR);
+
 
 		HUDS.add(new SpeedHUD());
 		HUDS.add(new DefenseHUD());
@@ -107,32 +108,32 @@ public class SkyblockTweaks implements ModInitializer {
 
 		UpdateChecker.checkForUpdates();
 
-		// TODO: Checking this every tick may be overkill, change this later
-		// TODO: Use the mod api for this
-		ClientTickEvents.END_CLIENT_TICK.register(client -> {
-
-			if (mc != null && mc.world != null) {
-				Scoreboard scoreboard = mc.world.getScoreboard();
-				if (scoreboard != null) {
-					ScoreboardObjective objective = scoreboard.getObjectiveForSlot(ScoreboardDisplaySlot.SIDEBAR);
-					if (objective != null) {
-						var name = objective.getDisplayName().getString();
-						if (name.contains("SKYBLOCK") || name.contains("SKIBLOCK")) {
-							DATA.inSB = true;
-						} else {
-							DATA.inSB = false;
-						}
-					} else {
-						DATA.inSB = false;
-					}
-				} else {
-					DATA.inSB = false;
-				}
-			} else {
-				DATA.inSB = false;
-			}
-
-		});
+//		// TODO: Checking this every tick may be overkill, change this later
+//		// TODO: Use the mod api for this
+//		ClientTickEvents.END_CLIENT_TICK.register(client -> {
+//
+//			if (mc != null && mc.world != null) {
+//				Scoreboard scoreboard = mc.world.getScoreboard();
+//				if (scoreboard != null) {
+//					ScoreboardObjective objective = scoreboard.getObjectiveForSlot(ScoreboardDisplaySlot.SIDEBAR);
+//					if (objective != null) {
+//						var name = objective.getDisplayName().getString();
+//						if (name.contains("SKYBLOCK") || name.contains("SKIBLOCK")) {
+//							DATA.inSB = true;
+//						} else {
+//							DATA.inSB = false;
+//						}
+//					} else {
+//						DATA.inSB = false;
+//					}
+//				} else {
+//					DATA.inSB = false;
+//				}
+//			} else {
+//				DATA.inSB = false;
+//			}
+//
+//		});
 
 
 

@@ -1151,7 +1151,7 @@ public class SkyblockConstants {
             9000000
     };
 
-    public static enum Rarity {
+    public enum Rarity {
         COMMON,
         UNCOMMON,
         RARE,
@@ -1163,7 +1163,7 @@ public class SkyblockConstants {
         VERY_SPECIAL,
         ULTIMATE
     }
-    public static enum Slayers {
+    public enum Slayers {
         ZOMBIE,
         SPIDER,
         WOLF,
@@ -1172,7 +1172,7 @@ public class SkyblockConstants {
         VAMPIRE
     }
 
-    public static enum Crops {
+    public enum Crops {
         WHEAT,
         CARROT,
         POTATO,
@@ -1189,7 +1189,7 @@ public class SkyblockConstants {
      * Skills
      * Unknown is used rather than null when no skill is known to prevent NPEs
      */
-    public static enum Skills {
+    public enum Skills {
         COMBAT,
         MINING,
         FARMING,
@@ -1204,13 +1204,52 @@ public class SkyblockConstants {
         UNKNOWN
     }
 
-    public static enum Powder {
+    public enum Powder {
         MITHRIL,
         GEMSTONE,
         GLACITE;
 
         public String getDisplayName() {
             return name().substring(0, 1).toUpperCase() + name().substring(1).toLowerCase();
+        }
+    }
+
+    // Inspired by Skyblocker's Location enum
+    public enum Location {
+
+        PRIVATE_ISLAND("dynamic", "Private Location"),
+        GARDEN("garden", "The Garden"),
+        HUB("hub", "The Hub"),
+        FARMING("farming_1", "The Barn"),
+        PARK("foraging_1", "The Park"),
+        SPIDERS_DEN("combat_1", "The Spider's Den"),
+        END("combat_3","The End" ),
+        CRIMSON_ISLE("crimson_isle", "The Crimson Isle"),
+        GOLD_MINE("mining_1", "The Gold Mine"),
+        DEEP_CAVERNS("mining_2", "The Deep Caverns"),
+        DWARVEN_MINES("mining_3", "The Dwarven Mines"),
+        CRYSTAL_HOLLOWS("crystal_hollows", "The Crystal Hollows"),
+        GLACITE_MINESHAFT("mineshaft", "Glacite Mineshaft"),
+        DUNGEON_HUB("dungeon_hub", "The Dungeon Hub"),
+        JERRYS_WORKSHOP("winter", "Jerry's Workshop"),
+        RIFT("rift", "The Rift"),
+        DARK_AUCTION("dark_auction", "The Dark Auction"),
+        DUNGEON("dungeon", "Dungeons"),
+        KUUDRA("kuudra", "Kuudra"),
+        UNKNOWN("unknown", "Unknown Location");
+
+        Location(String mode, String name) {
+            this.mode = mode;
+            this.name = name;
+        };
+        private final String mode;
+        private final String name;
+
+        public String getMode() {
+            return mode;
+        }
+        public String getName() {
+            return name;
         }
     }
 

@@ -59,7 +59,6 @@ public class ActionBarTransformer {
     public static final String SEPERATOR12 = "            ";
 
     private static final Pattern manaAbilityPattern = Pattern.compile("-(\\d+) Mana \\((.+)\\)");
-    //private static Pattern skillLevelPatern = Pattern.compile("\\+(\\d+\\.?\\d*) (.+) \\((.+)\\)");
     private static final Pattern skillLevelPatern = Pattern.compile("\\+([\\d,]+\\.?\\d*) (.+) \\((.+)\\)");
     private static final Pattern secretsPattern = Pattern.compile("(\\d+)/(\\d+) Secrets");
     private static final Pattern healthPattern = Pattern.compile("(?<current>[\\d,]+)/(?<max>[\\d,]+)❤(?:\\+[\\d,]+.)?(?: {2})?(?<stacks>\\d+)?(?<symbol>.)?");
@@ -70,13 +69,13 @@ public class ActionBarTransformer {
           String[] unmodifiedParts = actionBarText.split(SEPERATOR3);
           StringBuilder newText = new StringBuilder();
           for (String unmodifiedPart : unmodifiedParts) {
-              String unpadded = unmodifiedPart.trim();
-              String rawContent = TextUtils.removeColorCodes(unpadded);
-              if (rawContent.toLowerCase().contains("race")) {
+              String trimmed = unmodifiedPart.trim();
+              String unformatted = TextUtils.removeColorCodes(trimmed);
+              if (unformatted.toLowerCase().contains("race")) {
                   // Races, we do these first because the timer updates an obscene amount
-                  newText.append(unpadded).append(SEPERATOR12);
-              } else if (rawContent.contains("❤")) {
-                  var matcher = healthPattern.matcher(rawContent);
+                  newText.append(trimmed).append(SEPERATOR12);
+              } else if (unformatted.contains("❤")) {
+                  var matcher = healthPattern.matcher(unformatted);
                     if (matcher.find()) {
                       data.currentHealth = Float.parseFloat(matcher.group("current").replace(",", ""));
                       data.maxHealth = Float.parseFloat(matcher.group("max").replace(",", ""));
@@ -88,14 +87,14 @@ public class ActionBarTransformer {
                       }
                   }
                   if (!SBTConfig.get().actionBarFilters.hideHealth) {
-                      newText.append(SEPERATOR5).append(unpadded);
+                      newText.append(SEPERATOR5).append(trimmed);
                   }
 
-              } else if (rawContent.contains("✎")) {
+              } else if (unformatted.contains("✎")) {
                   // Mana
                   // 411/1,221✎ 2ʬ
                   // 289/1,221✎ Mana
-                  String[] manaParts = rawContent.split(" ");
+                  String[] manaParts = unformatted.split(" ");
                   manaParts[0] = manaParts[0].replace("✎", "");
                   String[] mana = manaParts[0].split("/");
                   data.currentMana = Float.parseFloat(mana[0].replace(",", ""));
@@ -106,32 +105,32 @@ public class ActionBarTransformer {
                       data.overflowMana = 0f;
                   }
                   if (!SBTConfig.get().actionBarFilters.hideMana) {
-                      newText.append(SEPERATOR5).append(unpadded);
+                      newText.append(SEPERATOR5).append(trimmed);
                   }
-              } else if (rawContent.contains("NOT ENOUGH MANA")) {
-                  newText.append(SEPERATOR5).append(unpadded);
-              } else if (rawContent.contains("❈")) {
+              } else if (unformatted.contains("NOT ENOUGH MANA")) {
+                  newText.append(SEPERATOR5).append(trimmed);
+              } else if (unformatted.contains("❈")) {
                   // Defense
-                  String defense = rawContent.split("❈")[0].trim();
+                  String defense = unformatted.split("❈")[0].trim();
                   data.defense = Integer.parseInt(defense.replace(",", ""));
                   if (!SBTConfig.get().actionBarFilters.hideDefense) {
-                      newText.append(SEPERATOR5).append(unpadded);
+                      newText.append(SEPERATOR5).append(trimmed);
                   }
 
-              } else if (rawContent.contains("Mana")) {
-                  Matcher matcher = manaAbilityPattern.matcher(rawContent);
+              } else if (unformatted.contains("Mana")) {
+                  Matcher matcher = manaAbilityPattern.matcher(unformatted);
                   if (matcher.find()) {
                       data.abilityManaCost = Integer.parseInt(matcher.group(1));
                       data.abilityName = matcher.group(2);
                       if (!SBTConfig.get().actionBarFilters.hideAbilityUse) {
-                          newText.append(SEPERATOR5).append(unpadded);
+                          newText.append(SEPERATOR5).append(trimmed);
                       }
                       continue;
                   }
-                  newText.append(SEPERATOR5).append(unpadded);
+                  newText.append(SEPERATOR5).append(trimmed);
 
-              } else if (skillLevelPatern.matcher(rawContent).matches()) {
-                  Matcher matcher = skillLevelPatern.matcher(rawContent);
+              } else if (skillLevelPatern.matcher(unformatted).matches()) {
+                  Matcher matcher = skillLevelPatern.matcher(unformatted);
                   if (matcher.find() && !matcher.group(2).contains("SkyBlock XP")) {
                       data.gainedXP = NumberUtils.parseFloatWithKorM(matcher.group(1));
                       data.skillType = matcher.group(2);
@@ -145,54 +144,54 @@ public class ActionBarTransformer {
                           SkillHUDManager.INSTANCE.update(data.skillType, data.gainedXP, data.skillPercentage);
                       }
                       if (!SBTConfig.get().actionBarFilters.hideSkill) {
-                          newText.append(SEPERATOR5).append(unpadded);
+                          newText.append(SEPERATOR5).append(trimmed);
                       }
                   } else {
-                      newText.append(SEPERATOR5).append(unpadded);
+                      newText.append(SEPERATOR5).append(trimmed);
                   }
-              } else if (rawContent.contains("Secrets")) {
-                  Matcher matcher = secretsPattern.matcher(rawContent);
+              } else if (unformatted.contains("Secrets")) {
+                  Matcher matcher = secretsPattern.matcher(unformatted);
                   if (matcher.find()) {
                       data.secretsFound = Integer.parseInt(matcher.group(1));
                       data.secretsTotal = Integer.parseInt(matcher.group(2));
                   }
                   if (!SBTConfig.get().actionBarFilters.hideSecrets) {
-                      newText.append(SEPERATOR5).append(unpadded);
+                      newText.append(SEPERATOR5).append(trimmed);
                   }
-              } else if (rawContent.contains("Drill Fuel")) {
+              } else if (unformatted.contains("Drill Fuel")) {
                   // Drill Fuel
-                  String[] drillFuel = rawContent.split(" ")[0].split("/");
+                  String[] drillFuel = unformatted.split(" ")[0].split("/");
                   data.drillFuel = Integer.parseInt(drillFuel[0].replace(",", ""));
                   data.maxDrillFuel = NumberUtils.parseIntWithKorM(drillFuel[1]);
                   if (!SBTConfig.get().actionBarFilters.hideDrill) {
-                      newText.append(SEPERATOR5).append(unpadded);
+                      newText.append(SEPERATOR5).append(trimmed);
                   }
-              } else if (rawContent.contains("second") || rawContent.contains("DPS")) {
+              } else if (unformatted.contains("second") || unformatted.contains("DPS")) {
                   // Trial of Fire
-                  newText.append(SEPERATOR3).append(unpadded);
-              } else if (rawContent.contains("ⓩ") || rawContent.contains("Ⓞ")){
+                  newText.append(SEPERATOR3).append(trimmed);
+              } else if (unformatted.contains("ⓩ") || unformatted.contains("Ⓞ")){
                   // Ornate/Florid: §e§lⓩⓩⓩ§6§lⓄⓄ
                   // Regular: §a§lⓩ§2§lⓄⓄⓄ
                   // Foil: §e§lⓄⓄ§7§lⓄⓄ
-                  data.maxTickers = rawContent.length();
-                  if (unpadded.contains("§6§l")) {
-                        var split = unpadded.split("§6§l") ;
+                  data.maxTickers = unformatted.length();
+                  if (trimmed.contains("§6§l")) {
+                        var split = trimmed.split("§6§l") ;
                       data.currentTickers = TextUtils.removeColorCodes(split[0]).length();
-                  } else if (unpadded.contains("§2§l")) {
-                      var split = unpadded.split("§2§l") ;
+                  } else if (trimmed.contains("§2§l")) {
+                      var split = trimmed.split("§2§l") ;
                       data.currentTickers = TextUtils.removeColorCodes(split[0]).length();
                   }
-                  else if (unpadded.contains("§7§l")) {
-                      var split = unpadded.split("§7§l") ;
+                  else if (trimmed.contains("§7§l")) {
+                      var split = trimmed.split("§7§l") ;
                       data.currentTickers = TextUtils.removeColorCodes(split[0]).length();
                   }
 
                   if (!SBTConfig.get().actionBarFilters.hideTickers) {
-                        newText.append(SEPERATOR4).append(unpadded);
+                        newText.append(SEPERATOR4).append(trimmed);
                   }
 
               } else {
-                  newText.append(SEPERATOR5).append(unpadded);
+                  newText.append(SEPERATOR5).append(trimmed);
               }
           }
 

@@ -36,10 +36,10 @@ public class CalcPowder {
 
     public static class Perk {
         public int max;
-        public CalcPowder.CostFunction cost;
+        public CostFunction cost;
         public Powder powder;
 
-        public Perk(int max, CalcPowder.CostFunction cost, Powder powder) {
+        public Perk(int max, CostFunction cost, Powder powder) {
             this.max = max;
             this.cost = cost;
             this.powder = powder;

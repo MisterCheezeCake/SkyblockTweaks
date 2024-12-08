@@ -24,6 +24,8 @@ import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager;
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.text.Text;
+import wtf.cheeze.sbt.utils.skyblock.SkyblockConstants;
 
 import java.util.function.Supplier;
 
@@ -44,5 +46,43 @@ public class CommandUtils {
             }
             return builder.buildFuture();
         };
+    }
+
+    static int[] getCalcPetTable(SkyblockConstants.Rarity rarity) {
+        return switch (rarity) {
+            case COMMON -> SkyblockConstants.PET_LEVELS_COMMON;
+            case UNCOMMON -> SkyblockConstants.PET_LEVELS_UNCOMMON;
+            case RARE -> SkyblockConstants.PET_LEVELS_RARE;
+            case EPIC -> SkyblockConstants.PET_LEVELS_EPIC;
+            case LEGENDARY, MYTHIC -> SkyblockConstants.PET_LEVELS_LEGENDARY;
+            default -> null;
+        };
+    }
+
+    static int[] getCalcSlayerTable(SkyblockConstants.Slayers slayer) {
+        return switch (slayer) {
+            case ZOMBIE -> SkyblockConstants.SLAYER_LEVELS_ZOMBIE;
+            case SPIDER -> SkyblockConstants.SLAYER_LEVELS_SPIDER;
+            case WOLF, ENDERMAN, BLAZE -> SkyblockConstants.SLAYER_LEVELS_WEB;
+            case VAMPIRE -> SkyblockConstants.SLAYER_LEVELS_VAMPIRE;
+        };
+    }
+
+    static int[] getCalcCropTable(SkyblockConstants.Crops crop) {
+        return switch (crop) {
+            case WHEAT, PUMPKIN, MUSHROOM -> SkyblockConstants.CROP_LEVELS_WPMS;
+            case CARROT, POTATO -> SkyblockConstants.CROP_LEVELS_CP;
+            case MELON -> SkyblockConstants.CROP_LEVELS_MELON;
+            case SUGAR_CANE, CACTUS -> SkyblockConstants.CROP_LEVELS_SCC;
+            case COCOA_BEANS, NETHER_WART -> SkyblockConstants.CROP_LEVELS_CBNW;
+        };
+    }
+
+    static Text getDebugText(String name, boolean value) {
+        return Text.of("§3" + name + ": §" + (value ? "a" : "c") + value);
+    }
+
+    static Text getDebugText(String name, String value) {
+        return Text.of("§3" + name + ": §e" + value);
     }
 }

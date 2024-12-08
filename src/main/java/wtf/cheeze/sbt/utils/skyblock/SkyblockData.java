@@ -26,7 +26,10 @@ import net.azureaaron.hmapi.network.packet.s2c.HypixelS2CPacket;
 import net.azureaaron.hmapi.network.packet.v1.s2c.LocationUpdateS2CPacket;
 import net.azureaaron.hmapi.network.packet.v2.s2c.PartyInfoS2CPacket;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.text.Text;
 import wtf.cheeze.sbt.SkyblockTweaks;
+import wtf.cheeze.sbt.command.SBTCommand;
+import wtf.cheeze.sbt.utils.TextUtils;
 import wtf.cheeze.sbt.utils.actionbar.ActionBarData;
 
 import java.util.Map;
@@ -39,8 +42,10 @@ public class SkyblockData {
     public boolean inParty = false;
     public boolean amITheLeader = false;
 
+
     public String currentProfile = null;
     public String mode = null;
+    public SkyblockConstants.Location location = SkyblockConstants.Location.UNKNOWN;
 
     public int defense = 0;
     public float maxHealth = 0;
@@ -133,9 +138,17 @@ public class SkyblockData {
                 }
             }
             case LocationUpdateS2CPacket(String serverName, Optional<String> serverType, Optional<String> lobbyName, Optional<String> mode, Optional<String> map) -> {
-                this.mode = mode.orElse(null);
+//                this.mode = mode.orElse(null);
+                SkyblockTweaks.LOGGER.info("Location update packet received. Server: {}, Type: {}, Mode: {}", serverName, serverType.orElse("unknown"), mode.orElse("unknown"));
+                this.inSB = serverType.orElse("").equals("SKYBLOCK");
+                if (inSB) {
+                    this.location = SkyblockUtils.getLocationFromMode(mode.orElse("unknown"));
+                } else {
+                    this.location = SkyblockConstants.Location.UNKNOWN;
+                }
             }
             case ErrorS2CPacket(var id, var errorReason) -> {
+                SkyblockTweaks.mc.player.sendMessage(Text.literal(SBTCommand.PREFIX + TextUtils.SECTION + "cThe Hypixel Mod API experienced an error, check logs for more details"), false);
                 SkyblockTweaks.LOGGER.error("The Hypixel Mod API experienced an error. ID: {} Reason: {}", id, errorReason);
             }
 //            case LocationUpdateS2CPacket(String serverName, Optional<String> serverType, Optional<String> lobbyName, Optional<String> mode, Optional<String> map) -> {
