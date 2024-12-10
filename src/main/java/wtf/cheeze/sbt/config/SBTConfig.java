@@ -34,7 +34,7 @@ import wtf.cheeze.sbt.hud.utils.DrawMode;
 import java.nio.file.Path;
 
 
-public class SBTConfig {
+public class  SBTConfig {
 
     public static final Path PATH = FabricLoader.getInstance().getConfigDir().resolve("skyblocktweaks-config.json");
 

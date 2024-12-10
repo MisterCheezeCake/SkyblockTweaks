@@ -34,6 +34,8 @@ import wtf.cheeze.sbt.config.SkyblockTweaksScreenMain;
 import wtf.cheeze.sbt.features.CalcPowder;
 import wtf.cheeze.sbt.features.chat.PartyFeatures;
 import wtf.cheeze.sbt.utils.NumberUtils;
+import wtf.cheeze.sbt.utils.enums.Rarity;
+import wtf.cheeze.sbt.utils.enums.Slayers;
 import wtf.cheeze.sbt.utils.skyblock.SkyblockConstants;
 import wtf.cheeze.sbt.utils.skyblock.SkyblockUtils;
 import wtf.cheeze.sbt.hud.HudScreen;
@@ -84,7 +86,7 @@ public class SBTCommand {
                                                 }
                                                 var levelStart = IntegerArgumentType.getInteger(context, "level-start");
                                                 var levelEnd = IntegerArgumentType.getInteger(context, "level-end");
-                                                var cap = slayer == SkyblockConstants.Slayers.VAMPIRE ? 5 : 9;
+                                                var cap = slayer == Slayers.VAMPIRE ? 5 : 9;
 
                                                 if (levelStart > levelEnd || levelEnd < 0 || levelStart < 0 || levelStart > cap || levelEnd > cap) {
                                                     context.getSource().sendFeedback(Text.of(PREFIX + " §cInvalid arguments"));
@@ -140,7 +142,7 @@ public class SBTCommand {
                                                 var levelStart = IntegerArgumentType.getInteger(context, "level-start");
                                                 var levelEnd = IntegerArgumentType.getInteger(context, "level-end");
 
-                                                var cap = (rarity == SkyblockConstants.Rarity.LEGENDARY || rarity == SkyblockConstants.Rarity.MYTHIC) ? 200 : 100;
+                                                var cap = (rarity == Rarity.LEGENDARY || rarity == Rarity.MYTHIC) ? 200 : 100;
 
 
                                                 if (levelStart < 0 || levelEnd < 0 || levelStart > cap || levelEnd > cap || levelStart >= levelEnd) {

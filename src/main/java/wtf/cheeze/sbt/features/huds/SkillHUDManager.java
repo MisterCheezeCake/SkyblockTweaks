@@ -37,6 +37,7 @@ import wtf.cheeze.sbt.hud.bases.BarHUD;
 import wtf.cheeze.sbt.hud.utils.HudInformation;
 import wtf.cheeze.sbt.hud.components.SingleHudLine;
 import wtf.cheeze.sbt.hud.bases.TextHUD;
+import wtf.cheeze.sbt.utils.enums.Skills;
 import wtf.cheeze.sbt.utils.render.Colors;
 import wtf.cheeze.sbt.utils.skyblock.IconDict;
 import wtf.cheeze.sbt.utils.skyblock.SkyblockConstants;
@@ -65,7 +66,7 @@ public class SkillHUDManager {
     private static final int PERSIST_TICKS = 60;
 
     private int timeLeft = 0;
-    private SkyblockConstants.Skills currentSkill = SkyblockConstants.Skills.UNKNOWN;
+    private Skills currentSkill = Skills.UNKNOWN;
     private float gained = 0;
     private float total = 0;
     private float progress = 0;
@@ -171,13 +172,13 @@ public class SkillHUDManager {
             );
         }
 
-        private static int tryAndGetSkillLevel(SkyblockConstants.Skills skill) {
+        private static int tryAndGetSkillLevel(Skills skill) {
             var profile = SkyblockTweaks.PD.profiles.get(SkyblockTweaks.DATA.getCurrentProfileUnique());
             if (profile == null) return -1;
             return profile.skillLevels.getOrDefault(skill, -1);
         }
 
-        private static int[] getSkillTable(SkyblockConstants.Skills skill) {
+        private static int[] getSkillTable(Skills skill) {
             return switch (skill) {
                 case FARMING, FISHING, FORAGING, MINING, COMBAT, ENCHANTING, ALCHEMY, TAMING, CARPENTRY, UNKNOWN ->
                         SkyblockConstants.SKILL_LEVELS;

@@ -28,6 +28,6 @@ public interface SBTDrawContext {
     /**
      * You may ask yourself, "Why is this not an accessor?" The answer is that I really did not want to deal with mixins only existing on one version, and this works fine
      */
-    //? if <=1.21.3
+    //? if >=1.21.3
     VertexConsumerProvider.Immediate sbt$getVertexConsumers();
 }

@@ -25,6 +25,9 @@ import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.text.Text;
+import wtf.cheeze.sbt.utils.enums.Crops;
+import wtf.cheeze.sbt.utils.enums.Rarity;
+import wtf.cheeze.sbt.utils.enums.Slayers;
 import wtf.cheeze.sbt.utils.skyblock.SkyblockConstants;
 
 import java.util.function.Supplier;
@@ -48,7 +51,7 @@ public class CommandUtils {
         };
     }
 
-    static int[] getCalcPetTable(SkyblockConstants.Rarity rarity) {
+    static int[] getCalcPetTable(Rarity rarity) {
         return switch (rarity) {
             case COMMON -> SkyblockConstants.PET_LEVELS_COMMON;
             case UNCOMMON -> SkyblockConstants.PET_LEVELS_UNCOMMON;
@@ -59,7 +62,7 @@ public class CommandUtils {
         };
     }
 
-    static int[] getCalcSlayerTable(SkyblockConstants.Slayers slayer) {
+    static int[] getCalcSlayerTable(Slayers slayer) {
         return switch (slayer) {
             case ZOMBIE -> SkyblockConstants.SLAYER_LEVELS_ZOMBIE;
             case SPIDER -> SkyblockConstants.SLAYER_LEVELS_SPIDER;
@@ -68,7 +71,7 @@ public class CommandUtils {
         };
     }
 
-    static int[] getCalcCropTable(SkyblockConstants.Crops crop) {
+    static int[] getCalcCropTable(Crops crop) {
         return switch (crop) {
             case WHEAT, PUMPKIN, MUSHROOM -> SkyblockConstants.CROP_LEVELS_WPMS;
             case CARROT, POTATO -> SkyblockConstants.CROP_LEVELS_CP;

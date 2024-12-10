@@ -20,7 +20,7 @@ package wtf.cheeze.sbt.utils.skyblock;
 
 import net.minecraft.client.MinecraftClient;
 import wtf.cheeze.sbt.SkyblockTweaks;
-import wtf.cheeze.sbt.utils.skyblock.SkyblockConstants.*;
+import wtf.cheeze.sbt.utils.enums.*;
 
 public class SkyblockUtils {
 
@@ -122,7 +122,12 @@ public class SkyblockUtils {
      * Please qualify calls to this with a call to quiverActive
      */
     public static QuiverData getQuiverData() {
-        return new QuiverData(SkyblockTweaks.mc.player.getInventory().getStack(8));
+        try {
+            if (quiverActive()) return new QuiverData(SkyblockTweaks.mc.player.getInventory().getStack(8));
+            return QuiverData.DEFAULT;
+        } catch (Exception e) {
+            return QuiverData.DEFAULT;
+        }
     }
 
 

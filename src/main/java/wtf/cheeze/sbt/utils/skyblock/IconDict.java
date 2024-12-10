@@ -23,7 +23,7 @@ import wtf.cheeze.sbt.hud.HudIcon;
 
 import java.util.Map;
 
-import static wtf.cheeze.sbt.utils.skyblock.SkyblockConstants.Skills;
+import wtf.cheeze.sbt.utils.enums.Skills;
 
 public class IconDict {
 

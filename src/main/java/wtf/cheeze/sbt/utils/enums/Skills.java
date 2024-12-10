@@ -16,19 +16,23 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with SkyblockTweaks. If not, see <https://www.gnu.org/licenses/>.
  */
-package wtf.cheeze.sbt.hud.utils;
+package wtf.cheeze.sbt.utils.enums;
 
-import dev.isxander.yacl3.api.NameableEnum;
-import net.minecraft.text.Text;
-import wtf.cheeze.sbt.utils.TextUtils;
-
-public enum DrawMode implements NameableEnum {
-    PURE,
-    SHADOW,
-    OUTLINE;
-
-    @Override
-    public Text getDisplayName() {
-        return Text.literal(TextUtils.firstLetterUppercase(name().toLowerCase()));
-    }
+/**
+ * Skills
+ * Unknown is used rather than null when no skill is known to prevent NPEs
+ */
+public enum Skills {
+    COMBAT,
+    MINING,
+    FARMING,
+    FORAGING,
+    FISHING,
+    ENCHANTING,
+    ALCHEMY,
+    TAMING,
+    CARPENTRY,
+    RUNECRAFTING,
+    SOCIAL,
+    UNKNOWN
 }

@@ -18,10 +18,10 @@
  */
 package wtf.cheeze.sbt.config.persistent;
 
-import wtf.cheeze.sbt.utils.skyblock.SkyblockConstants;
+import wtf.cheeze.sbt.utils.enums.Skills;
 
 import java.util.EnumMap;
 
 public class ProfileData {
-    public EnumMap<SkyblockConstants.Skills, Integer> skillLevels = new EnumMap<>(SkyblockConstants.Skills.class);
+    public EnumMap<Skills, Integer> skillLevels = new EnumMap<>(Skills.class);
 }

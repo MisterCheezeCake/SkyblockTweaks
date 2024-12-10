@@ -16,19 +16,14 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with SkyblockTweaks. If not, see <https://www.gnu.org/licenses/>.
  */
-package wtf.cheeze.sbt.hud.utils;
+package wtf.cheeze.sbt.utils.enums;
 
-import dev.isxander.yacl3.api.NameableEnum;
-import net.minecraft.text.Text;
-import wtf.cheeze.sbt.utils.TextUtils;
+public enum Powder {
+    MITHRIL,
+    GEMSTONE,
+    GLACITE;
 
-public enum DrawMode implements NameableEnum {
-    PURE,
-    SHADOW,
-    OUTLINE;
-
-    @Override
-    public Text getDisplayName() {
-        return Text.literal(TextUtils.firstLetterUppercase(name().toLowerCase()));
+    public String getDisplayName() {
+        return name().substring(0, 1).toUpperCase() + name().substring(1).toLowerCase();
     }
 }

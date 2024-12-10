@@ -31,6 +31,7 @@ import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.command.SBTCommand;
 import wtf.cheeze.sbt.utils.TextUtils;
 import wtf.cheeze.sbt.utils.actionbar.ActionBarData;
+import wtf.cheeze.sbt.utils.enums.Location;
 
 import java.util.Map;
 import java.util.Optional;
@@ -45,7 +46,7 @@ public class SkyblockData {
 
     public String currentProfile = null;
     public String mode = null;
-    public SkyblockConstants.Location location = SkyblockConstants.Location.UNKNOWN;
+    public Location location = Location.UNKNOWN;
 
     public int defense = 0;
     public float maxHealth = 0;
@@ -144,7 +145,7 @@ public class SkyblockData {
                 if (inSB) {
                     this.location = SkyblockUtils.getLocationFromMode(mode.orElse("unknown"));
                 } else {
-                    this.location = SkyblockConstants.Location.UNKNOWN;
+                    this.location = Location.UNKNOWN;
                 }
             }
             case ErrorS2CPacket(var id, var errorReason) -> {

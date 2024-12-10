@@ -20,7 +20,7 @@ package wtf.cheeze.sbt.features;
 
 import java.util.Map;
 
-import static wtf.cheeze.sbt.utils.skyblock.SkyblockConstants.Powder;
+import wtf.cheeze.sbt.utils.enums.Powder;
 
 /**
  * This lives in its own class instead of SkyblockConstants because it has its own complex logic
