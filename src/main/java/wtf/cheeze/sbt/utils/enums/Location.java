@@ -19,7 +19,7 @@
 package wtf.cheeze.sbt.utils.enums;
 
 // Inspired by Skyblocker's Location enum
-public enum Location {
+public enum     Location {
     PRIVATE_ISLAND("dynamic", "Private Location"),
     GARDEN("garden", "The Garden"),
     HUB("hub", "The Hub"),
@@ -46,7 +46,7 @@ public enum Location {
         this.name = name;
     }
 
-    ;
+
     private final String mode;
     private final String name;
 

@@ -32,6 +32,7 @@ import wtf.cheeze.sbt.command.SBTCommand;
 import wtf.cheeze.sbt.utils.TextUtils;
 import wtf.cheeze.sbt.utils.actionbar.ActionBarData;
 import wtf.cheeze.sbt.utils.enums.Location;
+import wtf.cheeze.sbt.utils.tablist.TabListData;
 
 import java.util.Map;
 import java.util.Optional;
@@ -64,6 +65,8 @@ public class SkyblockData {
 
     public int armorStack = 0;
     public String stackString = null;
+
+    public TabListData tabData = TabListData.EMPTY;
 
 
 
@@ -112,6 +115,10 @@ public class SkyblockData {
             this.armorStack = 0;
         }
 
+    }
+
+    public void update(TabListData data) {
+        this.tabData = data;
     }
 
     public void handlePacket(HypixelS2CPacket packet) {

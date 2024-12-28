@@ -39,6 +39,7 @@ import wtf.cheeze.sbt.utils.enums.Slayers;
 import wtf.cheeze.sbt.utils.skyblock.SkyblockConstants;
 import wtf.cheeze.sbt.utils.skyblock.SkyblockUtils;
 import wtf.cheeze.sbt.hud.HudScreen;
+import wtf.cheeze.sbt.utils.tablist.TabListParser;
 
 import java.util.Arrays;
 
@@ -389,7 +390,11 @@ public class SBTCommand {
                                                             return 1;
                                                         })
                                         )
-                                )
+                                )).then(literal("dumpTablist").executes(context -> {
+                                    SkyblockTweaks.LOGGER.info(TabListParser.parseTabList().serialize());
+                                    SkyblockTweaks.mc.player.sendMessage(Text.of(PREFIX + " §3Tablist data dumped to logs"), false);
+                                    return 1;
+                                })
                                 ).executes(context -> {
                                     var source = context.getSource();
                                     source.sendFeedback(Text.literal(PREFIX +  " §3Debug Information"));

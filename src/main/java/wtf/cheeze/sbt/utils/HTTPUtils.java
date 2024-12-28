@@ -29,7 +29,6 @@ public class HTTPUtils {
 
     public static String get(String uri){
         try {
-           // URL url = new URL(uri);
             URL url = new URI(uri).toURL();
             var connection = url.openConnection();
             connection.setRequestProperty("User-Agent", "Mozilla/5.0 SkyblockTweaks " + SkyblockTweaks.VERSION.getVersionString());

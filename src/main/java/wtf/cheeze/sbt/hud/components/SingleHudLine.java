@@ -18,11 +18,15 @@
  */
 package wtf.cheeze.sbt.hud.components;
 
+import com.mojang.brigadier.Message;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.text.Text;
 import org.jetbrains.annotations.Nullable;
+import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.hud.HudIcon;
 import wtf.cheeze.sbt.hud.utils.DrawMode;
+import wtf.cheeze.sbt.utils.TextUtils;
+import wtf.cheeze.sbt.utils.render.Colors;
 import wtf.cheeze.sbt.utils.render.RenderUtils;
 
 import java.util.function.Supplier;
@@ -34,6 +38,8 @@ public class SingleHudLine implements HudComponent {
     public Supplier<DrawMode> mode;
     public Supplier<Text> text;
     public Supplier<Boolean> useIcon;
+
+    private static final Text ERROR = TextUtils.withColor("ERROR", Colors.RED);
 
     public int lineCount = 1;
 
@@ -73,12 +79,22 @@ public class SingleHudLine implements HudComponent {
             case OUTLINE:
                 if (useIcon.get()) {
                     icon.get().render(context, x, y, scale);
-                    RenderUtils.drawTextWithOutline(context, text.get(), x + (int) (10 * scale), y, color.get(), outlineColor.get(), scale, true);
+
+                    RenderUtils.drawTextWithOutline(context, getText() , x + (int) (10 * scale), y, color.get(), outlineColor.get(), scale, true);
                 } else {
-                    RenderUtils.drawTextWithOutline(context, text.get(), x, y, color.get(), outlineColor.get(), scale, true);
+                    RenderUtils.drawTextWithOutline(context, getText(), x, y, color.get(), outlineColor.get(), scale, true);
                 }
         }
         return 1;
+    }
+
+    private Text getText() {
+        try {
+            return text.get();
+        } catch (Exception e) {
+            SkyblockTweaks.LOGGER.error("Error while getting text for HUD line", e);
+            return ERROR;
+        }
     }
 
     private void render(DrawContext context, int x, int y, float scale, boolean shadow) {
