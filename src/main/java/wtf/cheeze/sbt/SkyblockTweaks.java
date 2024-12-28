@@ -21,12 +21,8 @@ package wtf.cheeze.sbt;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.scoreboard.Scoreboard;
-import net.minecraft.scoreboard.ScoreboardDisplaySlot;
-import net.minecraft.scoreboard.ScoreboardObjective;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import wtf.cheeze.sbt.command.SBTCommand;
@@ -71,8 +67,6 @@ public class SkyblockTweaks implements ModInitializer {
 
 		HUDS.add(SkillHUDManager.INSTANCE.SKILL_HUD);
 		HUDS.add(SkillHUDManager.INSTANCE.SKILL_BAR);
-
-
 		HUDS.add(new SpeedHUD());
 		HUDS.add(new DefenseHUD());
 		HUDS.add(new EhpHUD());
@@ -81,18 +75,16 @@ public class SkyblockTweaks implements ModInitializer {
 		HUDS.add(new ManaHUD());
 		HUDS.add(new OverflowManaHUD());
 		HUDS.add(new DrillFuelHUD());
-
 		HUDS.add(new DrillFuelBar());
 		HUDS.add(new HealthBar());
 		HUDS.add(new ManaBar());
-
 		HUDS.add(new CoordinatesHUD());
 		HUDS.add(new RealTimeHUD());
 		HUDS.add(new FpsHUD());
-
 		HUDS.add(new TickerHUD());
 		HUDS.add(new QuiverHUD());
 		HUDS.add(new ArmorStackHUD());
+		HUDS.add(new RiftTimeHUD());
 
 		HudRenderCallback.EVENT.register((context, tickCounter) -> {
 			HUDS.forEach(hud -> hud.render(context, false));
@@ -107,35 +99,5 @@ public class SkyblockTweaks implements ModInitializer {
 		ProfileManager.registerEvents();
 
 		UpdateChecker.checkForUpdates();
-
-//		// TODO: Checking this every tick may be overkill, change this later
-//		// TODO: Use the mod api for this
-//		ClientTickEvents.END_CLIENT_TICK.register(client -> {
-//
-//			if (mc != null && mc.world != null) {
-//				Scoreboard scoreboard = mc.world.getScoreboard();
-//				if (scoreboard != null) {
-//					ScoreboardObjective objective = scoreboard.getObjectiveForSlot(ScoreboardDisplaySlot.SIDEBAR);
-//					if (objective != null) {
-//						var name = objective.getDisplayName().getString();
-//						if (name.contains("SKYBLOCK") || name.contains("SKIBLOCK")) {
-//							DATA.inSB = true;
-//						} else {
-//							DATA.inSB = false;
-//						}
-//					} else {
-//						DATA.inSB = false;
-//					}
-//				} else {
-//					DATA.inSB = false;
-//				}
-//			} else {
-//				DATA.inSB = false;
-//			}
-//
-//		});
-
-
-
 	}
 }

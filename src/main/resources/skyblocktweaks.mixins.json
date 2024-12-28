@@ -9,12 +9,10 @@
     "HandledScreenMixin",
     "InGameHudMixin",
     "InventoryScreenMixin",
-    "YACLScreenAccessor"
+    "YACLScreenAccessor",
+    "PlayerListHudAccessor"
   ],
   "injectors": {
     "defaultRequire": 1
-  },
-  "client": [
-    "PlayerListHudAccessor"
-  ]
+  }
 }

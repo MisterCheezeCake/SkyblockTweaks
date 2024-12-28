@@ -88,4 +88,11 @@ public class CommandUtils {
     static Text getDebugText(String name, String value) {
         return Text.of("§3" + name + ": §e" + value);
     }
+
+    static Text getDebugText(String name, int value) {
+        return Text.of("§3" + name + ": §e" + value);
+    }
+    static Text getDebugText(String name, float value) {
+        return Text.of("§3" + name + ": §e" + value);
+    }
 }

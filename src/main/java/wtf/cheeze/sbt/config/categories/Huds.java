@@ -84,6 +84,9 @@ public class Huds {
     @SerialEntry
     public ArmorStackHUD.Config armorStack = new ArmorStackHUD.Config();
 
+    @SerialEntry
+    public RiftTimeHUD.Config riftTime = new RiftTimeHUD.Config();
+
     public static ConfigCategory getCategory(ConfigImpl defaults, ConfigImpl config) {
         return ConfigCategory.createBuilder()
                 .name(Text.translatable("sbt.config.huds"))
@@ -107,6 +110,7 @@ public class Huds {
                 .group(TickerHUD.Config.getGroup(defaults, config))
                 .group(QuiverHUD.Config.getGroup(defaults, config))
                 .group(ArmorStackHUD.Config.getGroup(defaults, config))
+                .group(RiftTimeHUD.Config.getGroup(defaults, config))
                 .build();
     }
 }

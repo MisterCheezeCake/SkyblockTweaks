@@ -313,6 +313,7 @@ public class SBTCommand {
                                                                 case "amITheLeader" -> SkyblockTweaks.DATA.amITheLeader = Boolean.parseBoolean(value);
                                                                 case "currentProfile" -> SkyblockTweaks.DATA.currentProfile = value;
                                                                 case "mode" -> SkyblockTweaks.DATA.mode = value;
+                                                                case "riftSeconds" -> SkyblockTweaks.DATA.riftSeconds = Integer.parseInt(value);
                                                                 default -> {
                                                                     context.getSource().sendFeedback(Text.of(PREFIX + " §cInvalid key"));
                                                                     return 0;
@@ -390,7 +391,29 @@ public class SBTCommand {
                                                             return 1;
                                                         })
                                         )
-                                )).then(literal("dumpTablist").executes(context -> {
+                                ))
+                                .then(literal("fullData").executes(context -> {
+                                    var source = context.getSource();
+                                    source.sendFeedback(Text.literal(PREFIX + " §3Full Data Dump"));
+                                    source.sendFeedback(CommandUtils.getDebugText("Defence", SkyblockTweaks.DATA.defense));
+                                    source.sendFeedback(CommandUtils.getDebugText("Max Health", SkyblockTweaks.DATA.maxHealth));
+                                    source.sendFeedback(CommandUtils.getDebugText("Health", SkyblockTweaks.DATA.health));
+                                    source.sendFeedback(CommandUtils.getDebugText("Max Mana", SkyblockTweaks.DATA.maxMana));
+                                    source.sendFeedback(CommandUtils.getDebugText("Mana", SkyblockTweaks.DATA.mana));
+                                    source.sendFeedback(CommandUtils.getDebugText("Overflow Mana", SkyblockTweaks.DATA.overflowMana));
+                                    source.sendFeedback(CommandUtils.getDebugText("Drill Fuel", SkyblockTweaks.DATA.drillFuel));
+                                    source.sendFeedback(CommandUtils.getDebugText("Max Drill Fuel", SkyblockTweaks.DATA.maxDrillFuel));
+                                    source.sendFeedback(CommandUtils.getDebugText("Rift Seconds", SkyblockTweaks.DATA.riftSeconds));
+                                    source.sendFeedback(CommandUtils.getDebugText("Rift Ticking", SkyblockTweaks.DATA.riftTicking));
+                                    source.sendFeedback(CommandUtils.getDebugText("Max Tickers", SkyblockTweaks.DATA.maxTickers));
+                                    source.sendFeedback(CommandUtils.getDebugText("Tickers", SkyblockTweaks.DATA.tickers));
+                                    source.sendFeedback(CommandUtils.getDebugText("Ticker Active", SkyblockTweaks.DATA.tickerActive));
+                                    source.sendFeedback(CommandUtils.getDebugText("Armor Stack", SkyblockTweaks.DATA.armorStack));
+                                    source.sendFeedback(CommandUtils.getDebugText("Stack String", SkyblockTweaks.DATA.stackString));
+
+
+                                    return 1;
+                                })).then(literal("dumpTablist").executes(context -> {
                                     SkyblockTweaks.LOGGER.info(TabListParser.parseTabList().serialize());
                                     SkyblockTweaks.mc.player.sendMessage(Text.of(PREFIX + " §3Tablist data dumped to logs"), false);
                                     return 1;

@@ -20,7 +20,12 @@ package wtf.cheeze.sbt.utils;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class NumberUtils {
+
+    private static final  Pattern TIME_PATTERN = Pattern.compile("(?:(?<hours>\\d+)h)?(?:(?<minutes>\\d+)m)?(?:(?<seconds>\\d+)s)?");
     public static double round(float number, int decimalPlaces) {
         return Math.round(number * Math.pow(10, decimalPlaces)) / Math.pow(10, decimalPlaces);
     }
@@ -92,4 +97,37 @@ public class NumberUtils {
             return formatNumber(number, separator);
         }
     }
-}
+
+    public static int parseDuration(String string) {
+        Matcher matcher = TIME_PATTERN.matcher(string);
+        int time = 0;
+        if (!matcher.matches()) {
+            return time;
+        }
+        if (matcher.group("hours") != null) {
+            time += Integer.parseInt(matcher.group("hours")) * 3600;
+        }
+        if (matcher.group("minutes") != null) {
+            time += Integer.parseInt(matcher.group("minutes")) * 60;
+        }
+        if (matcher.group("seconds") != null) {
+            time += Integer.parseInt(matcher.group("seconds"));
+        }
+        return time;
+    }
+
+    public static String toDuration(int seconds) {
+        int hours = seconds / 3600;
+        int minutes = (seconds % 3600) / 60;
+        int secs = seconds % 60;
+        if (hours < 1) {
+            if (minutes < 1) {
+                return String.format("%ds", secs);
+            } else {
+                return String.format("%dm%ds", minutes, secs);
+            }
+        } else {
+            return String.format("%dh%dm%ds", hours, minutes, secs);
+        }
+    }
+ }

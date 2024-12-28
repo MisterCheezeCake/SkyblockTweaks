@@ -87,6 +87,9 @@ public class General {
         public boolean noRenderHearts = true;
 
         @SerialEntry
+        public boolean showHearsInRift = true;
+
+        @SerialEntry
         public boolean noRenderArmor = true;
 
         @SerialEntry
@@ -116,6 +119,16 @@ public class General {
                     .build();
 
 
+            var showHearsInRift = Option.<Boolean>createBuilder()
+                    .name(key("hudTweaks.showHeartsInRift"))
+                    .description(keyD("hudTweaks.showHeartsInRift"))
+                    .controller(SBTConfig::generateBooleanController)
+                    .available(config.hudTweaks.noRenderHearts)
+                    .binding(
+                            defaults.hudTweaks.showHearsInRift,
+                            () -> config.hudTweaks.showHearsInRift,
+                            value -> config.hudTweaks.showHearsInRift = (Boolean) value
+                    ).build();
 
             var noRenderHearts = Option.<Boolean>createBuilder()
                     .name(key("hudTweaks.noRenderHearts"))
@@ -124,9 +137,14 @@ public class General {
                     .binding(
                             defaults.hudTweaks.noRenderHearts,
                             () -> config.hudTweaks.noRenderHearts,
-                            value -> config.hudTweaks.noRenderHearts = (Boolean) value
+                            value -> {
+                                config.hudTweaks.noRenderHearts = (Boolean) value;
+                                showHearsInRift.setAvailable((boolean) value);
+                            }
                     )
                     .build();
+
+
             var noRenderArmor = Option.<Boolean>createBuilder()
                     .name(key("hudTweaks.noRenderArmor"))
                     .description(keyD("hudTweaks.noRenderArmor"))
@@ -149,12 +167,15 @@ public class General {
                     )
                     .build();
 
+
+
             return OptionGroup.createBuilder()
                     .name(key("hudTweaks"))
                     .description(keyD("hudTweaks"))
                     .option(noShadowActionBar)
                     .option(noRenderBossBar)
                     .option(noRenderHearts)
+                    .option(showHearsInRift)
                     .option(noRenderArmor)
                     .option(noRenderHunger)
                     .build();

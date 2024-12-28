@@ -29,12 +29,14 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.text.Text;
 import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.command.SBTCommand;
+import wtf.cheeze.sbt.utils.NumberUtils;
 import wtf.cheeze.sbt.utils.TextUtils;
 import wtf.cheeze.sbt.utils.actionbar.ActionBarData;
 import wtf.cheeze.sbt.utils.enums.Location;
 import wtf.cheeze.sbt.utils.tablist.TabListData;
 
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -58,6 +60,9 @@ public class SkyblockData {
 
     public float drillFuel = 0;
     public float maxDrillFuel = 0;
+
+    public int riftSeconds = 0;
+    public boolean riftTicking = false;
 
     public int maxTickers = 0;
     public int tickers = 0;
@@ -113,6 +118,15 @@ public class SkyblockData {
         } else {
             this.stackString = null;
             this.armorStack = 0;
+        }
+
+        if (data.riftTime != null) {
+            this.riftSeconds = NumberUtils.parseDuration(data.riftTime);
+            this.riftTicking = Objects.requireNonNullElse(data.riftTicking, false);
+        } else {
+            this.riftSeconds = 0;
+            this.riftTicking = false;
+
         }
 
     }

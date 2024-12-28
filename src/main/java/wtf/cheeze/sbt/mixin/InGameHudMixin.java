@@ -30,6 +30,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.config.SBTConfig;
+import wtf.cheeze.sbt.utils.enums.Location;
 import wtf.cheeze.sbt.utils.render.SBTDrawContext;
 
 @Mixin(InGameHud.class)
@@ -52,7 +53,7 @@ public abstract class InGameHudMixin {
 
     @Inject(method = "renderHealthBar" , at = @At("HEAD"), cancellable = true)
     private void sbt$onRenderHealth(CallbackInfo ci) {
-        if (SBTConfig.get().hudTweaks.noRenderHearts && SkyblockTweaks.DATA.inSB) {
+        if (SBTConfig.get().hudTweaks.noRenderHearts && SkyblockTweaks.DATA.inSB && (!SBTConfig.get().hudTweaks.showHearsInRift || SkyblockTweaks.DATA.location != Location.RIFT)) {
             ci.cancel();
         }
     }

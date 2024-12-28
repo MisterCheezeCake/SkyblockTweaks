@@ -52,16 +52,19 @@ import java.util.regex.Pattern;
  * TODO: Switch more things in here to regex
  */
 
+@SuppressWarnings("DataFlowIssue")
 public class ActionBarTransformer {
     public static final String SEPERATOR3 = "   ";
     public static final String SEPERATOR4 = "     ";
     public static final String SEPERATOR5 = "     ";
     public static final String SEPERATOR12 = "            ";
 
+
     private static final Pattern manaAbilityPattern = Pattern.compile("-(\\d+) Mana \\((.+)\\)");
     private static final Pattern skillLevelPatern = Pattern.compile("\\+([\\d,]+\\.?\\d*) (.+) \\((.+)\\)");
     private static final Pattern secretsPattern = Pattern.compile("(\\d+)/(\\d+) Secrets");
     private static final Pattern healthPattern = Pattern.compile("(?<current>[\\d,]+)/(?<max>[\\d,]+)❤(?:\\+[\\d,]+.)?(?: {2})?(?<stacks>\\d+)?(?<symbol>.)?");
+    private static final Pattern riftTimePattern = Pattern.compile("(?<time>.+)ф Left(?: \\+\\d+[ms]!)?");
 
     public static ActionBarData extractDataAndRunTransformation(String actionBarText) {
       try {
@@ -166,6 +169,14 @@ public class ActionBarTransformer {
                   if (!SBTConfig.get().actionBarFilters.hideDrill) {
                       newText.append(SEPERATOR5).append(trimmed);
                   }
+              } else if (unformatted.contains("ф Left")) {
+                  // Rift Timer
+                  Matcher matcher = riftTimePattern.matcher(unformatted);
+                  if (matcher.matches()) {
+                      data.riftTime = matcher.group("time");
+                      data.riftTicking = trimmed.contains("§a");
+                  }
+                  if (!SBTConfig.get().actionBarFilters.hideRiftTime) newText.append(SEPERATOR5).append(trimmed);
               } else if (unformatted.contains("second") || unformatted.contains("DPS")) {
                   // Trial of Fire
                   newText.append(SEPERATOR3).append(trimmed);
@@ -190,6 +201,7 @@ public class ActionBarTransformer {
                         newText.append(SEPERATOR4).append(trimmed);
                   }
 
+
               } else {
                   newText.append(SEPERATOR5).append(trimmed);
               }
@@ -209,7 +221,7 @@ public class ActionBarTransformer {
     public static void registerEvents() {
         ClientReceiveMessageEvents.MODIFY_GAME.register((message, overlay) -> {
             if (!overlay) return message;
-            //SkyblockTweaks.LOGGER.info("Old: " + message.getString());
+           // SkyblockTweaks.LOGGER.info("Old: " + message.getString());
             var data = ActionBarTransformer.extractDataAndRunTransformation(message.getString());
             //SkyblockTweaks.LOGGER.info("New: " + data.transformedText);
             SkyblockTweaks.DATA.update(data);
@@ -243,6 +255,9 @@ public class ActionBarTransformer {
 
         @SerialEntry
         public boolean hideTickers = false;
+
+        @SerialEntry
+        public boolean hideRiftTime = false;
 
 
         public static OptionGroup getGroup(ConfigImpl defaults, ConfigImpl config) {
@@ -326,6 +341,19 @@ public class ActionBarTransformer {
                             value -> config.actionBarFilters.hideTickers = (Boolean) value
                     )
                     .build();
+
+            var riftTime = Option.<Boolean>createBuilder()
+                    .name(key("actionBarFilters.hideRiftTime"))
+                    .description(keyD("actionBarFilters.hideRiftTime"))
+                    .controller(SBTConfig::generateBooleanController)
+                    .binding(
+                            defaults.actionBarFilters.hideRiftTime,
+                            () -> config.actionBarFilters.hideRiftTime,
+                            value -> config.actionBarFilters.hideRiftTime = (Boolean) value
+                    )
+                    .build();
+
+
             return OptionGroup.createBuilder()
                     .name(key("actionBarFilters"))
                     .description(keyD("actionBarFilters"))
@@ -337,6 +365,7 @@ public class ActionBarTransformer {
                     .option(drill)
                     .option(secrets)
                     .option(tickers)
+                    .option(riftTime)
                     .build();
         }
     }
