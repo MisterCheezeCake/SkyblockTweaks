@@ -83,10 +83,10 @@ public class TickerHUD extends AbstractTickerHUD {
         public boolean enabled = false;
 
         @SerialEntry // Not handled by YACL Gui
-        public float x = 0;
+        public float x = 0.1f;
 
         @SerialEntry // Not handled by YACL Gui
-        public float y = 0.9f;
+        public float y = 0.1f;
 
         @SerialEntry
         public float scale = 1.0f;

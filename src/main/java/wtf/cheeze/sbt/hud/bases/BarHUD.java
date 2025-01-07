@@ -60,7 +60,7 @@ public abstract class BarHUD extends HUD {
             context.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
             RenderUtils.endScale(context);
         }
-           *///?} else {
+         *///?} else {
 
         if (bounds.scale == 1.0f) {
             var color = INFO.getColor.get();
