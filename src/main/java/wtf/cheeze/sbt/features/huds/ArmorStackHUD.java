@@ -31,6 +31,7 @@ import wtf.cheeze.sbt.hud.utils.DrawMode;
 import wtf.cheeze.sbt.hud.components.SingleHudLine;
 import wtf.cheeze.sbt.hud.utils.HudInformation;
 import wtf.cheeze.sbt.hud.bases.TextHUD;
+import wtf.cheeze.sbt.utils.TextUtils;
 import wtf.cheeze.sbt.utils.render.Colors;
 
 import java.awt.Color;
@@ -43,9 +44,9 @@ public class ArmorStackHUD extends TextHUD {
                 () -> SBTConfig.huds().armorStack.y,
                 () -> SBTConfig.huds().armorStack.scale,
                 () -> SBTConfig.huds().armorStack.anchor,
-                x -> SBTConfig.huds().armorStack.x = (float) x,
-                y -> SBTConfig.huds().armorStack.y = (float) y,
-                scale -> SBTConfig.huds().armorStack.scale = (float) scale,
+                x -> SBTConfig.huds().armorStack.x = x,
+                y -> SBTConfig.huds().armorStack.y = y,
+                scale -> SBTConfig.huds().armorStack.scale = scale,
                 anchor -> SBTConfig.huds().armorStack.anchor = anchor
         );
         line = new SingleHudLine(
@@ -59,13 +60,12 @@ public class ArmorStackHUD extends TextHUD {
     public boolean shouldRender(boolean fromHudScreen) {
         if (!super.shouldRender(fromHudScreen)) return false;
         if (SkyblockTweaks.DATA.stackString == null && !fromHudScreen) return false;
-        if ((SkyblockTweaks.DATA.inSB && SBTConfig.huds().armorStack.enabled) || fromHudScreen) return true;
-        return false;
+        return (SkyblockTweaks.DATA.inSB && SBTConfig.huds().armorStack.enabled) || fromHudScreen;
     }
 
     @Override
-    public String getName() {
-        return "Armor Stack HUD";
+    public Text getName() {
+        return TextUtils.withColor("Armor Stack HUD", Colors.ORANGE);
     }
 
     public static class Config {
@@ -101,7 +101,7 @@ public class ArmorStackHUD extends TextHUD {
                     .binding(
                             defaults.huds.armorStack.enabled,
                             () -> config.huds.armorStack.enabled,
-                            value -> config.huds.armorStack.enabled = (Boolean) value
+                            value -> config.huds.armorStack.enabled = value
                     )
                     .build();
 
@@ -137,8 +137,7 @@ public class ArmorStackHUD extends TextHUD {
                             () -> config.huds.armorStack.mode,
                             value -> {
                                 config.huds.armorStack.mode = value;
-                                if (value == DrawMode.OUTLINE) outline.setAvailable(true);
-                                else outline.setAvailable(false);
+                                outline.setAvailable(value == DrawMode.OUTLINE);
                             }
                     )
                     .build();

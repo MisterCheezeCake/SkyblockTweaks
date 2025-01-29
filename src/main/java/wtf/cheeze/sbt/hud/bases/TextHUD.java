@@ -48,13 +48,13 @@ public abstract class TextHUD extends HUD {
         var scale = (float) INFO.getScale.get();
         switch (INFO.getAnchorPoint.get()) {
             case LEFT -> {
-                return new Bounds(getActualX((float) INFO.getX.get()), getActualY((float) INFO.getY.get()), RenderUtils.getStringWidth(line.text.get()) * scale, SkyblockTweaks.mc.textRenderer.fontHeight * scale, scale);
+                return new Bounds(getActualX(INFO.getX.get()), getActualY(INFO.getY.get()), RenderUtils.getStringWidth(line.text.get()) * scale, SkyblockTweaks.mc.textRenderer.fontHeight * scale, scale);
             }
             case RIGHT -> {
-                return new Bounds((int) (getActualX((float) INFO.getX.get()) - RenderUtils.getStringWidth(line.text.get()) * scale), getActualY((float) INFO.getY.get()), RenderUtils.getStringWidth(line.text.get()) * scale, SkyblockTweaks.mc.textRenderer.fontHeight * scale, scale);
+                return new Bounds((int) (getActualX(INFO.getX.get()) - RenderUtils.getStringWidth(line.text.get()) * scale), getActualY(INFO.getY.get()), RenderUtils.getStringWidth(line.text.get()) * scale, SkyblockTweaks.mc.textRenderer.fontHeight * scale, scale);
             }
             case CENTER -> {
-                return new Bounds((int) (getActualX((float) INFO.getX.get()) - RenderUtils.getStringWidth(line.text.get()) * scale / 2), getActualY((float) INFO.getY.get()), RenderUtils.getStringWidth(line.text.get()) * scale, SkyblockTweaks.mc.textRenderer.fontHeight * scale, scale);
+                return new Bounds((int) (getActualX(INFO.getX.get()) - RenderUtils.getStringWidth(line.text.get()) * scale / 2), getActualY(INFO.getY.get()), RenderUtils.getStringWidth(line.text.get()) * scale, SkyblockTweaks.mc.textRenderer.fontHeight * scale, scale);
             }
             default -> throw new IllegalStateException("Unexpected value: " + INFO.getAnchorPoint.get());
         }
@@ -64,13 +64,13 @@ public abstract class TextHUD extends HUD {
         var scale = (float) INFO.getScale.get();
         switch (INFO.getAnchorPoint.get()) {
             case LEFT -> {
-                return new BoundsRelative((float) INFO.getX.get(), (float) INFO.getY.get(), RenderUtils.getStringWidth(line.text.get()) * scale, SkyblockTweaks.mc.textRenderer.fontHeight * scale, scale);
+                return new BoundsRelative(INFO.getX.get(), INFO.getY.get(), RenderUtils.getStringWidth(line.text.get()) * scale, SkyblockTweaks.mc.textRenderer.fontHeight * scale, scale);
             }
             case RIGHT -> {
-                return new BoundsRelative((float) INFO.getX.get() - RenderUtils.getRelativeStringWidth(line.text.get()) * scale, (float) INFO.getY.get(), RenderUtils.getStringWidth(line.text.get()) * scale, SkyblockTweaks.mc.textRenderer.fontHeight * scale, scale);
+                return new BoundsRelative(INFO.getX.get() - RenderUtils.getRelativeStringWidth(line.text.get()) * scale, INFO.getY.get(), RenderUtils.getStringWidth(line.text.get()) * scale, SkyblockTweaks.mc.textRenderer.fontHeight * scale, scale);
             }
             case CENTER -> {
-                return new BoundsRelative((float) INFO.getX.get() - RenderUtils.getRelativeStringWidth(line.text.get()) * scale / 2, (float) INFO.getY.get(), RenderUtils.getStringWidth(line.text.get()) * scale, SkyblockTweaks.mc.textRenderer.fontHeight * scale, scale);
+                return new BoundsRelative(INFO.getX.get() - RenderUtils.getRelativeStringWidth(line.text.get()) * scale / 2, INFO.getY.get(), RenderUtils.getStringWidth(line.text.get()) * scale, SkyblockTweaks.mc.textRenderer.fontHeight * scale, scale);
             }
             default -> throw new IllegalStateException("Unexpected value: " + INFO.getAnchorPoint.get());
         }

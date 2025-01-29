@@ -46,9 +46,9 @@ public class OverflowManaHUD extends TextHUD {
                 () -> SBTConfig.huds().overflowMana.y,
                 () -> SBTConfig.huds().overflowMana.scale,
                 () -> SBTConfig.huds().overflowMana.anchor,
-                x -> SBTConfig.huds().overflowMana.x = (float) x,
-                y -> SBTConfig.huds().overflowMana.y = (float) y,
-                scale -> SBTConfig.huds().overflowMana.scale = (float) scale,
+                x -> SBTConfig.huds().overflowMana.x = x,
+                y -> SBTConfig.huds().overflowMana.y = y,
+                scale -> SBTConfig.huds().overflowMana.scale = scale,
                 anchor -> SBTConfig.huds().overflowMana.anchor = anchor
         );
         line = new SingleHudLine(
@@ -62,13 +62,15 @@ public class OverflowManaHUD extends TextHUD {
     @Override
     public boolean shouldRender(boolean fromHudScreen) {
         if (!super.shouldRender(fromHudScreen)) return false;
-        if ((SkyblockTweaks.DATA.inSB && SBTConfig.huds().overflowMana.enabled && (!SBTConfig.huds().overflowMana.hideWhenZero || SkyblockTweaks.DATA.overflowMana != 0)) || fromHudScreen) return true;
-        return false;
+        return (SkyblockTweaks.DATA.inSB && SBTConfig.huds().overflowMana.enabled && (!SBTConfig.huds().overflowMana.hideWhenZero || SkyblockTweaks.DATA.overflowMana != 0)) || fromHudScreen;
     }
 
     @Override
-    public String getName() {
-        return TextUtils.SECTION +  "3Oveflow Mana HUD";
+//    public String getName() {
+//        return TextUtils.SECTION +  "3Oveflow Mana HUD";
+//    }
+    public Text getName() {
+        return TextUtils.withColor("Overflow Mana Hud", Colors.CYAN);
     }
 
     public static class Config {
@@ -114,7 +116,7 @@ public class OverflowManaHUD extends TextHUD {
                     .binding(
                             defaults.huds.overflowMana.enabled,
                             () -> config.huds.overflowMana.enabled,
-                            value -> config.huds.overflowMana.enabled = (Boolean) value
+                            value -> config.huds.overflowMana.enabled = value
                     )
                     .build();
             var hideWhenZero = Option.<Boolean>createBuilder()
@@ -124,7 +126,7 @@ public class OverflowManaHUD extends TextHUD {
                     .binding(
                             defaults.huds.overflowMana.hideWhenZero,
                             () -> config.huds.overflowMana.hideWhenZero,
-                            value -> config.huds.overflowMana.hideWhenZero = (Boolean) value
+                            value -> config.huds.overflowMana.hideWhenZero = value
                     )
                     .build();
             var color = Option.<Color>createBuilder()
@@ -159,8 +161,7 @@ public class OverflowManaHUD extends TextHUD {
                             () -> config.huds.overflowMana.mode,
                             value -> {
                                 config.huds.overflowMana.mode = value;
-                                if (value == DrawMode.OUTLINE) outline.setAvailable(true);
-                                else outline.setAvailable(false);
+                                outline.setAvailable(value == DrawMode.OUTLINE);
                             }
                     )
                     .build();
@@ -171,7 +172,7 @@ public class OverflowManaHUD extends TextHUD {
                     .binding(
                             defaults.huds.overflowMana.icon,
                             () -> config.huds.overflowMana.icon,
-                            value -> config.huds.overflowMana.icon = (Boolean) value
+                            value -> config.huds.overflowMana.icon = value
                     )
                     .build();
             var separator = Option.<String>createBuilder()

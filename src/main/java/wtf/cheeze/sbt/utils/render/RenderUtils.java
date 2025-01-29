@@ -86,10 +86,10 @@ public class RenderUtils {
     }
 
     public static int getRelativeStringWidth(String text) {
-        return (int) (SkyblockTweaks.mc.textRenderer.getWidth(text) / MinecraftClient.getInstance().getWindow().getScaledWidth());
+        return SkyblockTweaks.mc.textRenderer.getWidth(text) / MinecraftClient.getInstance().getWindow().getScaledWidth();
     }
     public static int getRelativeStringWidth(Text text) {
-        return (int) (SkyblockTweaks.mc.textRenderer.getWidth(text) / MinecraftClient.getInstance().getWindow().getScaledWidth());
+        return SkyblockTweaks.mc.textRenderer.getWidth(text) / MinecraftClient.getInstance().getWindow().getScaledWidth();
     }
 
     public static void drawTexture(DrawContext context, Identifier texture, int x, int y, int width, int height, int textureWidth, int textureHeight) {

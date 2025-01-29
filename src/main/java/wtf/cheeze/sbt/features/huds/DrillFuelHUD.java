@@ -47,9 +47,9 @@ public class DrillFuelHUD extends TextHUD {
                 () -> SBTConfig.huds().drillFuel.y,
                 () -> SBTConfig.huds().drillFuel.scale,
                 () -> SBTConfig.huds().drillFuel.anchor,
-                x -> SBTConfig.huds().drillFuel.x = (float) x,
-                y -> SBTConfig.huds().drillFuel.y = (float) y,
-                scale -> SBTConfig.huds().drillFuel.scale = (float) scale,
+                x -> SBTConfig.huds().drillFuel.x = x,
+                y -> SBTConfig.huds().drillFuel.y = y,
+                scale -> SBTConfig.huds().drillFuel.scale = scale,
                 anchor -> SBTConfig.huds().drillFuel.anchor = anchor
         );
         line = new SingleHudLine(
@@ -65,14 +65,13 @@ public class DrillFuelHUD extends TextHUD {
     @Override
     public boolean shouldRender(boolean fromHudScreen) {
         if (!super.shouldRender(fromHudScreen)) return false;
-        if ((SkyblockTweaks.DATA.inSB && SBTConfig.huds().drillFuel.enabled) && SkyblockUtils.isThePlayerHoldingADrill() || fromHudScreen) return true;
-        return false;
+        return (SkyblockTweaks.DATA.inSB && SBTConfig.huds().drillFuel.enabled) && SkyblockUtils.isThePlayerHoldingADrill() || fromHudScreen;
     }
 
 
     @Override
-    public String getName() {
-        return TextUtils.SECTION + "2Drill Fuel HUD";
+    public Text getName() {
+        return TextUtils.withColor("Drill Fuel Hud", Colors.DARK_GREEN);
     }
 
     public static class Config {
@@ -114,7 +113,7 @@ public class DrillFuelHUD extends TextHUD {
                     .binding(
                             defaults.huds.drillFuel.enabled,
                             () -> config.huds.drillFuel.enabled,
-                            value -> config.huds.drillFuel.enabled = (Boolean) value
+                            value -> config.huds.drillFuel.enabled = value
                     )
                     .build();
             var secondNo = Option.<Boolean>createBuilder()
@@ -124,7 +123,7 @@ public class DrillFuelHUD extends TextHUD {
                     .binding(
                             defaults.huds.drillFuel.abridgeSecondNumber,
                             () -> config.huds.drillFuel.abridgeSecondNumber,
-                            value -> config.huds.drillFuel.abridgeSecondNumber = (Boolean) value
+                            value -> config.huds.drillFuel.abridgeSecondNumber = value
                     )
                     .build();
             var color = Option.<Color>createBuilder()
@@ -158,8 +157,7 @@ public class DrillFuelHUD extends TextHUD {
                             () -> config.huds.drillFuel.mode,
                             value -> {
                                 config.huds.drillFuel.mode = value;
-                                if (value == DrawMode.OUTLINE) outline.setAvailable(true);
-                                else outline.setAvailable(false);
+                                outline.setAvailable(value == DrawMode.OUTLINE);
                             }
                     )
                     .build();

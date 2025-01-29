@@ -46,9 +46,9 @@ public class EhpHUD extends TextHUD {
                 () -> SBTConfig.huds().ehp.y,
                 () -> SBTConfig.huds().ehp.scale,
                 () -> SBTConfig.huds().ehp.anchor,
-                x -> SBTConfig.huds().ehp.x = (float) x,
-                y -> SBTConfig.huds().ehp.y = (float) y,
-                scale -> SBTConfig.huds().ehp.scale = (float) scale,
+                x -> SBTConfig.huds().ehp.x = x,
+                y -> SBTConfig.huds().ehp.y = y,
+                scale -> SBTConfig.huds().ehp.scale = scale,
                 anchor -> SBTConfig.huds().ehp.anchor = anchor
         );
         line = new SingleHudLine(
@@ -62,13 +62,12 @@ public class EhpHUD extends TextHUD {
     @Override
     public boolean shouldRender(boolean fromHudScreen) {
         if (!super.shouldRender(fromHudScreen)) return false;
-        if ((SkyblockTweaks.DATA.inSB && SBTConfig.huds().ehp.enabled) || fromHudScreen) return true;
-        return false;
+        return (SkyblockTweaks.DATA.inSB && SBTConfig.huds().ehp.enabled) || fromHudScreen;
     }
 
     @Override
-    public String getName() {
-        return TextUtils.SECTION + "2Effective Health HUD";
+    public Text getName() {
+        return TextUtils.withColor("Effective Health Hud", Colors.DARK_GREEN);
     }
 
     public static class Config {
@@ -110,7 +109,7 @@ public class EhpHUD extends TextHUD {
                     .binding(
                             defaults.huds.ehp.enabled,
                             () -> config.huds.ehp.enabled,
-                            value -> config.huds.ehp.enabled = (Boolean) value
+                            value -> config.huds.ehp.enabled = value
                     )
                     .build();
             var outline = Option.<Color>createBuilder()
@@ -136,8 +135,7 @@ public class EhpHUD extends TextHUD {
                             () -> config.huds.ehp.mode,
                             value -> {
                                 config.huds.ehp.mode = value;
-                                if (value == DrawMode.OUTLINE) outline.setAvailable(true);
-                                else outline.setAvailable(false);
+                                outline.setAvailable(value == DrawMode.OUTLINE);
                             }
                     )
                     .build();
@@ -160,7 +158,7 @@ public class EhpHUD extends TextHUD {
                     .binding(
                             defaults.huds.ehp.icon,
                             () -> config.huds.ehp.icon,
-                            value -> config.huds.ehp.icon = (Boolean) value
+                            value -> config.huds.ehp.icon = value
                     )
                     .build();
             var separator = Option.<String>createBuilder()

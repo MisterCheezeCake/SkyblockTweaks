@@ -30,7 +30,7 @@ public class CalcPowder {
 
 
     @FunctionalInterface
-    public static interface CostFunction {
+    public interface CostFunction {
         double calculate(double nextLevel);
     }
 

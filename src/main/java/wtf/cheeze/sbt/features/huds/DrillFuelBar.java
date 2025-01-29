@@ -22,6 +22,7 @@ import dev.isxander.yacl3.api.Option;
 import dev.isxander.yacl3.api.OptionGroup;
 import dev.isxander.yacl3.api.controller.ColorControllerBuilder;
 import dev.isxander.yacl3.config.v2.api.SerialEntry;
+import net.minecraft.text.Text;
 import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SBTConfig;
@@ -44,24 +45,23 @@ public class DrillFuelBar extends BarHUD {
                 () -> SBTConfig.huds().drillFuelBar.anchor,
                 () -> SBTConfig.huds().drillFuelBar.color,
                 () -> SkyblockTweaks.DATA.drillFuel / SkyblockTweaks.DATA.maxDrillFuel,
-                x -> SBTConfig.huds().drillFuelBar.x = (float) x,
-                y -> SBTConfig.huds().drillFuelBar.y = (float) y,
-                scale -> SBTConfig.huds().drillFuelBar.scale = (float) scale,
+                x -> SBTConfig.huds().drillFuelBar.x = x,
+                y -> SBTConfig.huds().drillFuelBar.y = y,
+                scale -> SBTConfig.huds().drillFuelBar.scale = scale,
                 anchor -> SBTConfig.huds().drillFuelBar.anchor = anchor
 
         );
     }
 
     @Override
-    public String getName() {
-        return TextUtils.SECTION +  "2Drill Fuel Bar Bar";
+    public Text getName() {
+        return TextUtils.withColor("Drill Fuel Bar", Colors.DARK_GREEN);
     }
 
     @Override
     public boolean shouldRender(boolean fromHudScreen) {
         if (!super.shouldRender(fromHudScreen)) return false;
-        if ((SkyblockTweaks.DATA.inSB && SBTConfig.huds().drillFuelBar.enabled) && SkyblockUtils.isThePlayerHoldingADrill() || fromHudScreen) return true;
-        return false;
+        return (SkyblockTweaks.DATA.inSB && SBTConfig.huds().drillFuelBar.enabled) && SkyblockUtils.isThePlayerHoldingADrill() || fromHudScreen;
     }
 
     public static class Config {
@@ -91,7 +91,7 @@ public class DrillFuelBar extends BarHUD {
                     .binding(
                             defaults.huds.drillFuelBar.enabled,
                             () -> config.huds.drillFuelBar.enabled,
-                            value -> config.huds.drillFuelBar.enabled = (Boolean) value
+                            value -> config.huds.drillFuelBar.enabled = value
                     )
                     .build();
 

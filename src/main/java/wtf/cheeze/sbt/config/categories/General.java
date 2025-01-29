@@ -55,7 +55,7 @@ public class General {
                     .binding(
                             defaults.inventory.noRenderPotionHud,
                             () -> config.inventory.noRenderPotionHud,
-                            value -> config.inventory.noRenderPotionHud = (Boolean) value
+                            value -> config.inventory.noRenderPotionHud = value
                     )
                     .build();
             var redirectRecipeBook = Option.<Boolean>createBuilder()
@@ -65,7 +65,7 @@ public class General {
                     .binding(
                             defaults.inventory.redirectRecipeBook,
                             () -> config.inventory.redirectRecipeBook,
-                            value -> config.inventory.redirectRecipeBook = (Boolean) value
+                            value -> config.inventory.redirectRecipeBook = value
                     )
                     .build();
 
@@ -105,7 +105,7 @@ public class General {
                     .binding(
                             defaults.hudTweaks.noShadowActionBar,
                             () -> config.hudTweaks.noShadowActionBar,
-                            value -> config.hudTweaks.noShadowActionBar = (Boolean) value
+                            value -> config.hudTweaks.noShadowActionBar = value
                     )
                     .build();
 
@@ -116,7 +116,7 @@ public class General {
                     .binding(
                             defaults.hudTweaks.noRenderBossBar,
                             () -> config.hudTweaks.noRenderBossBar,
-                            value -> config.hudTweaks.noRenderBossBar = (Boolean) value
+                            value -> config.hudTweaks.noRenderBossBar = value
                     )
                     .build();
 
@@ -129,7 +129,7 @@ public class General {
                     .binding(
                             defaults.hudTweaks.showHearsInRift,
                             () -> config.hudTweaks.showHearsInRift,
-                            value -> config.hudTweaks.showHearsInRift = (Boolean) value
+                            value -> config.hudTweaks.showHearsInRift = value
                     ).build();
 
             var noRenderHearts = Option.<Boolean>createBuilder()
@@ -140,8 +140,8 @@ public class General {
                             defaults.hudTweaks.noRenderHearts,
                             () -> config.hudTweaks.noRenderHearts,
                             value -> {
-                                config.hudTweaks.noRenderHearts = (Boolean) value;
-                                showHearsInRift.setAvailable((boolean) value);
+                                config.hudTweaks.noRenderHearts = value;
+                                showHearsInRift.setAvailable(value);
                             }
                     )
                     .build();
@@ -154,7 +154,7 @@ public class General {
                     .binding(
                             defaults.hudTweaks.noRenderArmor,
                             () -> config.hudTweaks.noRenderArmor,
-                            value -> config.hudTweaks.noRenderArmor = (Boolean) value
+                            value -> config.hudTweaks.noRenderArmor = value
                     )
                     .build();
 
@@ -165,7 +165,7 @@ public class General {
                     .binding(
                             defaults.hudTweaks.noRenderHunger,
                             () -> config.hudTweaks.noRenderHunger,
-                            value -> config.hudTweaks.noRenderHunger = (Boolean) value
+                            value -> config.hudTweaks.noRenderHunger = value
                     )
                     .build();
 

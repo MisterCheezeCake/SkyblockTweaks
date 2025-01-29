@@ -73,7 +73,7 @@ public class UpdateChecker {
         if (remoteVersion == null) {
             SkyblockTweaks.LOGGER.warn("Null RemoteVersion");
             return;
-        };
+        }
         var version = new Version(remoteVersion.versionString);
         var comparison = Version.compareVersions(version, SkyblockTweaks.VERSION);
         if (comparison == Version.VersionComparison.GREATER) {

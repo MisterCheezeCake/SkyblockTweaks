@@ -43,9 +43,9 @@ public class FpsHUD extends TextHUD {
                 () -> SBTConfig.huds().fps.y,
                 () -> SBTConfig.huds().fps.scale,
                 () -> SBTConfig.huds().fps.anchor,
-                x -> SBTConfig.huds().fps.x = (float) x,
-                y -> SBTConfig.huds().fps.y = (float) y,
-                scale -> SBTConfig.huds().fps.scale = (float) scale,
+                x -> SBTConfig.huds().fps.x = x,
+                y -> SBTConfig.huds().fps.y = y,
+                scale -> SBTConfig.huds().fps.scale = scale,
                 anchor -> SBTConfig.huds().fps.anchor = anchor
         );
         line = new SingleHudLine(
@@ -59,14 +59,14 @@ public class FpsHUD extends TextHUD {
     @Override
     public boolean shouldRender(boolean fromHudScreen) {
         if (!super.shouldRender(fromHudScreen)) return false;
-        if (((SkyblockTweaks.DATA.inSB  || SBTConfig.huds().fps.showOutside) && SBTConfig.huds().fps.enabled) || fromHudScreen) return true;
-        return false;
+        return ((SkyblockTweaks.DATA.inSB || SBTConfig.huds().fps.showOutside) && SBTConfig.huds().fps.enabled) || fromHudScreen;
     }
 
     @Override
-    public String getName() {
-        return "FPS HUD";
+    public Text getName() {
+        return Text.literal("FPS HUD");
     }
+
 
     public static class Config {
         @SerialEntry
@@ -107,7 +107,7 @@ public class FpsHUD extends TextHUD {
                     .binding(
                             defaults.huds.fps.enabled,
                             () -> config.huds.fps.enabled,
-                            value -> config.huds.fps.enabled = (Boolean) value
+                            value -> config.huds.fps.enabled = value
                     )
                     .build();
 
@@ -118,7 +118,7 @@ public class FpsHUD extends TextHUD {
                     .binding(
                             defaults.huds.fps.showOutside,
                             () -> config.huds.fps.showOutside,
-                            value -> config.huds.fps.showOutside = (Boolean) value
+                            value -> config.huds.fps.showOutside = value
                     )
                     .build();
 
@@ -129,7 +129,7 @@ public class FpsHUD extends TextHUD {
                     .binding(
                             defaults.huds.fps.reverse,
                             () -> config.huds.fps.reverse,
-                            value -> config.huds.fps.reverse = (Boolean) value
+                            value -> config.huds.fps.reverse = value
                     )
                     .build();
             var color = Option.<Color>createBuilder()
@@ -164,8 +164,7 @@ public class FpsHUD extends TextHUD {
                             () -> config.huds.fps.mode,
                             value -> {
                                 config.huds.fps.mode = value;
-                                if (value == DrawMode.OUTLINE) outline.setAvailable(true);
-                                else outline.setAvailable(false);
+                                outline.setAvailable(value == DrawMode.OUTLINE);
                             }
                     )
                     .build();

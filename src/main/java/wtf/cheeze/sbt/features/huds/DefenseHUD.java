@@ -46,9 +46,9 @@ public class DefenseHUD extends TextHUD {
                 () -> SBTConfig.huds().defense.y,
                 () -> SBTConfig.huds().defense.scale,
                 () -> SBTConfig.huds().defense.anchor,
-                x -> SBTConfig.huds().defense.x = (float) x,
-                y -> SBTConfig.huds().defense.y = (float) y,
-                scale -> SBTConfig.huds().defense.scale = (float) scale,
+                x -> SBTConfig.huds().defense.x = x,
+                y -> SBTConfig.huds().defense.y = y,
+                scale -> SBTConfig.huds().defense.scale = scale,
                 anchor -> SBTConfig.huds().defense.anchor = anchor
         );
 
@@ -62,15 +62,14 @@ public class DefenseHUD extends TextHUD {
     @Override
     public boolean shouldRender(boolean fromHudScreen) {
         if (!super.shouldRender(fromHudScreen)) return false;
-        if ((SkyblockTweaks.DATA.inSB && SBTConfig.huds().defense.enabled) || fromHudScreen) return true;
-        return false;
+        return (SkyblockTweaks.DATA.inSB && SBTConfig.huds().defense.enabled) || fromHudScreen;
     }
 
 
 
     @Override
-    public String getName() {
-        return TextUtils.SECTION + "aDefense HUD";
+    public Text getName() {
+        return TextUtils.withColor("Defense HUD", Colors.LIME);
     }
 
     public static class Config {
@@ -112,7 +111,7 @@ public class DefenseHUD extends TextHUD {
                     .binding(
                             defaults.huds.defense.enabled,
                             () -> config.huds.defense.enabled,
-                            value -> config.huds.defense.enabled = (Boolean) value
+                            value -> config.huds.defense.enabled = value
                     )
                     .build();
             var color = Option.<Color>createBuilder()
@@ -147,8 +146,7 @@ public class DefenseHUD extends TextHUD {
                             () -> config.huds.defense.mode,
                             value -> {
                                 config.huds.defense.mode = value;
-                                if (value == DrawMode.OUTLINE) outline.setAvailable(true);
-                                else outline.setAvailable(false);
+                                outline.setAvailable(value == DrawMode.OUTLINE);
                             }
                     )
                     .build();
@@ -159,7 +157,7 @@ public class DefenseHUD extends TextHUD {
                     .binding(
                             defaults.huds.defense.icon,
                             () -> config.huds.defense.icon,
-                            value -> config.huds.defense.icon = (Boolean) value
+                            value -> config.huds.defense.icon = value
                     )
                     .build();
             var separator = Option.<String>createBuilder()

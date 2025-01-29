@@ -30,13 +30,14 @@ import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
 import wtf.cheeze.sbt.config.SBTConfig;
 import wtf.cheeze.sbt.hud.utils.AnchorPoint;
+import wtf.cheeze.sbt.utils.TextUtils;
 
 import java.util.ArrayList;
 import java.util.function.Predicate;
 
 public class HudScreen extends Screen {
 
-        private ArrayList<HUD> huds;
+        private final ArrayList<HUD> huds;
 
         @Nullable
         private HUD selectedElement = null;
@@ -47,12 +48,12 @@ public class HudScreen extends Screen {
         @Nullable
         private HUD selectedViaTheKeyboard = null;
 
-        private TextFieldWidget widgetX;
-        private TextFieldWidget widgetY;
-        private ButtonWidget doneButton;
+        private final TextFieldWidget widgetX;
+        private final TextFieldWidget widgetY;
+        private final ButtonWidget doneButton;
         private ButtonWidget resetModeButton;
-        private ButtonWidget cancelButton;
-        private ButtonWidget resetButton;
+        private final ButtonWidget cancelButton;
+        private final ButtonWidget resetButton;
         private ButtonWidget anchorButton;
         private Mode mode = Mode.DRAG;
         private int resetModeIndex = 0;
@@ -60,7 +61,7 @@ public class HudScreen extends Screen {
         private float offsetX = 0;
         private float offsetY = 0;
 
-        private Screen parent;
+        private final Screen parent;
         public HudScreen(Text title, ArrayList<HUD> huds, Screen parent) {
             super(title);
             this.huds = huds;
@@ -87,12 +88,12 @@ public class HudScreen extends Screen {
                 this.selectedElement = null;
                 setMode(Mode.DRAG);
             }).dimensions(centerX, 140, 100, 20).build();
-            resetModeButton = ButtonWidget.builder(Text.literal(this.huds.getFirst().getName()), button -> {
+            resetModeButton = ButtonWidget.builder(this.huds.getFirst().getName(), button -> {
                 this.resetModeIndex++;
                 if (this.resetModeIndex >= this.huds.size()) {
                     this.resetModeIndex = 0;
                 }
-                resetModeButton.setMessage(Text.literal(this.huds.get(this.resetModeIndex).getName()));
+                resetModeButton.setMessage(this.huds.get(this.resetModeIndex).getName());
 
             }).dimensions(centerX-25, 35, 150, 20).build();
 
@@ -187,7 +188,7 @@ public class HudScreen extends Screen {
                 context.drawCenteredTextWithShadow(mc.textRenderer, "Control + R to enter Reset Mode" , centerX, 45, 0xFFFFFF);
                 context.drawCenteredTextWithShadow(mc.textRenderer, "Press alt to hide this text" , centerX, 55, 0xFFFFFF);
             } else if (this.mode == Mode.TEXT) {
-                context.drawCenteredTextWithShadow(mc.textRenderer, "You are now in exact positioning mode, editing " + selectedElement.getName() , centerX, 5, 0xFFFFFF);
+                context.drawCenteredTextWithShadow(mc.textRenderer, TextUtils.join(Text.literal("You are now in exact positioning mode, editing ", selectedElement.getName()) , centerX, 5, 0xFFFFFF);
                 context.drawCenteredTextWithShadow(mc.textRenderer, "Enter the x and y positions in the text fields below" , centerX, 15, 0xFFFFFF);
                 context.drawCenteredTextWithShadow(mc.textRenderer, "The number is relative, so 0 is fully up/left and 1 is fully up/right" , centerX, 25, 0xFFFFFF);
                 context.drawCenteredTextWithShadow(mc.textRenderer, "Press the done button to exit" , centerX, 35, 0xFFFFFF);
@@ -335,8 +336,7 @@ public class HudScreen extends Screen {
                 if (s.endsWith(".")) s= s + "0"; // allow trailing dots
                 try {
                     var f = Float.parseFloat(s);
-                    if (f < 0 || f > 1) return false;
-                    return true;
+                    return !(f < 0) && !(f > 1);
                 } catch (NumberFormatException e) {
                     return false;
                 }
@@ -357,7 +357,7 @@ public class HudScreen extends Screen {
         }
 
 
-        private static enum Mode {
+        private enum Mode {
             DRAG,
             TEXT,
             RESET

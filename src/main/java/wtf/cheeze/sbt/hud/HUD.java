@@ -42,7 +42,7 @@ public abstract class HUD  {
     /**
      * @return the name of the HUD that will be shown in the HUD screen
      */
-    public abstract String getName();
+    public abstract Text getName();
 
 
     public abstract Bounds getCurrentBounds();
@@ -53,9 +53,8 @@ public abstract class HUD  {
     public boolean shouldRender(boolean fromHudScreen) {
         // We let the HUD screen handle rendering when it is open
         if (!fromHudScreen && MinecraftClient.getInstance().currentScreen instanceof HudScreen) return false;
-        if (!fromHudScreen && MinecraftClient.getInstance().options.hudHidden) return false;
-        else return true;
-    };
+        return fromHudScreen || !MinecraftClient.getInstance().options.hudHidden;
+    }
 
     /**
      * Calls the render method with hovered set to false

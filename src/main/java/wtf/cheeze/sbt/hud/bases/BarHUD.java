@@ -65,12 +65,12 @@ public abstract class BarHUD extends HUD {
         if (bounds.scale == 1.0f) {
             var color = INFO.getColor.get();
             context.drawTexture(RenderLayer::getGuiTextured, UNFILLED, bounds.x, bounds.y, 0, 0, BAR_WIDTH, BAR_HEIGHT, BAR_WIDTH, BAR_HEIGHT, color);
-            context.drawTexture(RenderLayer::getGuiTextured, FILLED, bounds.x, bounds.y, 0, 0, calculateFill((float) INFO.getFill.get()), BAR_HEIGHT, BAR_WIDTH, BAR_HEIGHT, color);
+            context.drawTexture(RenderLayer::getGuiTextured, FILLED, bounds.x, bounds.y, 0, 0, calculateFill(INFO.getFill.get()), BAR_HEIGHT, BAR_WIDTH, BAR_HEIGHT, color);
         } else {
             var color = INFO.getColor.get();
             RenderUtils.beginScale(context, bounds.scale);
             context.drawTexture(RenderLayer::getGuiTextured, UNFILLED, (int)(bounds.x/bounds.scale), (int)(bounds.y/bounds.scale), 0, 0, BAR_WIDTH, BAR_HEIGHT, BAR_WIDTH, BAR_HEIGHT, color);
-            context.drawTexture(RenderLayer::getGuiTextured, FILLED, (int)(bounds.x/bounds.scale), (int)(bounds.y/bounds.scale), 0, 0, calculateFill((float) INFO.getFill.get()), BAR_HEIGHT, BAR_WIDTH, BAR_HEIGHT, color);
+            context.drawTexture(RenderLayer::getGuiTextured, FILLED, (int)(bounds.x/bounds.scale), (int)(bounds.y/bounds.scale), 0, 0, calculateFill(INFO.getFill.get()), BAR_HEIGHT, BAR_WIDTH, BAR_HEIGHT, color);
             RenderUtils.endScale(context);
         }
             //?}
@@ -83,13 +83,13 @@ public abstract class BarHUD extends HUD {
         var scale = (float) INFO.getScale.get();
         switch (INFO.getAnchorPoint.get()) {
             case LEFT -> {
-                return new Bounds(getActualX((float) INFO.getX.get()), getActualY((float) INFO.getY.get()), BAR_WIDTH * scale, BAR_HEIGHT * scale, scale);
+                return new Bounds(getActualX(INFO.getX.get()), getActualY(INFO.getY.get()), BAR_WIDTH * scale, BAR_HEIGHT * scale, scale);
             }
             case RIGHT -> {
-                return new Bounds((int) (getActualX((float) INFO.getX.get()) - BAR_WIDTH * scale), getActualY((float) INFO.getY.get()), BAR_WIDTH * scale, BAR_HEIGHT * scale, scale);
+                return new Bounds((int) (getActualX(INFO.getX.get()) - BAR_WIDTH * scale), getActualY(INFO.getY.get()), BAR_WIDTH * scale, BAR_HEIGHT * scale, scale);
             }
             case CENTER -> {
-                return new Bounds((int) (getActualX((float) INFO.getX.get()) - BAR_WIDTH * scale / 2), getActualY((float) INFO.getY.get()), BAR_WIDTH * scale, BAR_HEIGHT * scale, scale);
+                return new Bounds((int) (getActualX(INFO.getX.get()) - BAR_WIDTH * scale / 2), getActualY(INFO.getY.get()), BAR_WIDTH * scale, BAR_HEIGHT * scale, scale);
             }
             default -> throw new IllegalStateException("Unexpected value: " + INFO.getAnchorPoint.get());
         }
@@ -99,13 +99,13 @@ public abstract class BarHUD extends HUD {
         var scale = (float) INFO.getScale.get();
         switch (INFO.getAnchorPoint.get()) {
             case LEFT -> {
-                return new BoundsRelative((float) INFO.getX.get(), (float) INFO.getY.get(), BAR_WIDTH * scale, BAR_HEIGHT * scale, scale);
+                return new BoundsRelative(INFO.getX.get(), INFO.getY.get(), BAR_WIDTH * scale, BAR_HEIGHT * scale, scale);
             }
             case RIGHT -> {
-                return new BoundsRelative((float) INFO.getX.get() - getRelativeBarWidth() * scale, (float) INFO.getY.get(), BAR_WIDTH * scale, BAR_HEIGHT * scale, scale);
+                return new BoundsRelative(INFO.getX.get() - getRelativeBarWidth() * scale, INFO.getY.get(), BAR_WIDTH * scale, BAR_HEIGHT * scale, scale);
             }
             case CENTER -> {
-                return new BoundsRelative((float) INFO.getX.get() - getRelativeBarWidth() * scale / 2, (float) INFO.getY.get(), BAR_WIDTH * scale, BAR_HEIGHT * scale, scale);
+                return new BoundsRelative(INFO.getX.get() - getRelativeBarWidth() * scale / 2, INFO.getY.get(), BAR_WIDTH * scale, BAR_HEIGHT * scale, scale);
             }
             default -> throw new IllegalStateException("Unexpected value: " + INFO.getAnchorPoint.get());
 

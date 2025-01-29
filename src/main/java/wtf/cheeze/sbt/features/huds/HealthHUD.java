@@ -34,6 +34,7 @@ import wtf.cheeze.sbt.hud.components.SingleHudLine;
 import wtf.cheeze.sbt.utils.TextUtils;
 import wtf.cheeze.sbt.hud.utils.HudInformation;
 import wtf.cheeze.sbt.hud.bases.TextHUD;
+import wtf.cheeze.sbt.utils.render.Colors;
 
 import java.awt.Color;
 
@@ -45,9 +46,9 @@ public class HealthHUD extends TextHUD {
                 () -> SBTConfig.huds().health.y,
                 () -> SBTConfig.huds().health.scale,
                 () -> SBTConfig.huds().health.anchor,
-                x -> SBTConfig.huds().health.x = (float) x,
-                y -> SBTConfig.huds().health.y = (float) y,
-                scale -> SBTConfig.huds().health.scale = (float) scale,
+                x -> SBTConfig.huds().health.x = x,
+                y -> SBTConfig.huds().health.y = y,
+                scale -> SBTConfig.huds().health.scale = scale,
                 anchor -> SBTConfig.huds().health.anchor = anchor
         );
         line = new SingleHudLine(
@@ -60,13 +61,12 @@ public class HealthHUD extends TextHUD {
     @Override
     public boolean shouldRender(boolean fromHudScreen) {
         if (!super.shouldRender(fromHudScreen)) return false;
-        if ((SkyblockTweaks.DATA.inSB && SBTConfig.huds().health.enabled) || fromHudScreen) return true;
-        return false;
+        return (SkyblockTweaks.DATA.inSB && SBTConfig.huds().health.enabled) || fromHudScreen;
     }
 
     @Override
-    public String getName() {
-        return TextUtils.SECTION +  "cHealth HUD";
+    public Text getName() {
+        return TextUtils.withColor("Health Hud", Colors.RED);
     }
 
     public static class Config {
@@ -111,7 +111,7 @@ public class HealthHUD extends TextHUD {
                     .binding(
                             defaults.huds.health.enabled,
                             () -> config.huds.health.enabled,
-                            value -> config.huds.health.enabled = (Boolean) value
+                            value -> config.huds.health.enabled = value
                     )
                     .build();
             var color = Option.<Color>createBuilder()
@@ -157,8 +157,7 @@ public class HealthHUD extends TextHUD {
                             () -> config.huds.health.mode,
                             value -> {
                                 config.huds.health.mode = value;
-                                if (value == DrawMode.OUTLINE) outline.setAvailable(true);
-                                else outline.setAvailable(false);
+                                outline.setAvailable(value == DrawMode.OUTLINE);
                             }
                     )
                     .build();
@@ -169,7 +168,7 @@ public class HealthHUD extends TextHUD {
                     .binding(
                             defaults.huds.health.icon,
                             () -> config.huds.health.icon,
-                            value -> config.huds.health.icon = (Boolean) value
+                            value -> config.huds.health.icon = value
                     )
                     .build();
             var separator = Option.<String>createBuilder()

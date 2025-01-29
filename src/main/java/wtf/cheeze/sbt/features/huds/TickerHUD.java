@@ -21,6 +21,7 @@ package wtf.cheeze.sbt.features.huds;
 import dev.isxander.yacl3.api.Option;
 import dev.isxander.yacl3.api.OptionGroup;
 import dev.isxander.yacl3.config.v2.api.SerialEntry;
+import net.minecraft.text.Text;
 import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SBTConfig;
@@ -28,6 +29,7 @@ import wtf.cheeze.sbt.hud.utils.AnchorPoint;
 import wtf.cheeze.sbt.utils.TextUtils;
 import wtf.cheeze.sbt.hud.bases.AbstractTickerHUD;
 import wtf.cheeze.sbt.hud.utils.HudInformation;
+import wtf.cheeze.sbt.utils.render.Colors;
 
 public class TickerHUD extends AbstractTickerHUD {
 
@@ -46,15 +48,14 @@ public class TickerHUD extends AbstractTickerHUD {
 
 
     @Override
-    public String getName() {
-        return TextUtils.SECTION + "eTicker/Charges Hud";
+    public Text getName() {
+        return TextUtils.withColor("Ticker/Charges Hud", Colors.YELLOW);
     }
 
     @Override
     public boolean shouldRender(boolean fromHudScreen) {
         if (!super.shouldRender(fromHudScreen)) return false;
-        if ((SkyblockTweaks.DATA.inSB && SBTConfig.huds().ticker.enabled && SkyblockTweaks.DATA.tickerActive) || fromHudScreen) return true;
-        return false;
+        return (SkyblockTweaks.DATA.inSB && SBTConfig.huds().ticker.enabled && SkyblockTweaks.DATA.tickerActive) || fromHudScreen;
     }
 
 
@@ -102,7 +103,7 @@ public class TickerHUD extends AbstractTickerHUD {
                     .binding(
                             defaults.huds.ticker.enabled,
                             () -> config.huds.ticker.enabled,
-                            value -> config.huds.ticker.enabled = (Boolean) value
+                            value -> config.huds.ticker.enabled = value
                     )
                     .build();
             var scale = Option.<Float>createBuilder()

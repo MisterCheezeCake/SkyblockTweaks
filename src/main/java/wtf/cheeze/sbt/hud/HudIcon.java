@@ -34,7 +34,7 @@ public class HudIcon {
             }
         }
     }
-    private static enum Mode {
+    private enum Mode {
         TEXTURE,
         ITEM
     }

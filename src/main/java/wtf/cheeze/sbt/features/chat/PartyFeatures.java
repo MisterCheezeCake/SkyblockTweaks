@@ -123,11 +123,7 @@ public class PartyFeatures {
                 var name = matcher.group(1);
                 if (name.contains(" ")) name = name.split(" ")[1];
                 var me = SkyblockTweaks.mc.player.getName().getString();
-                if (name.equals(me)) {
-                    SkyblockTweaks.DATA.amITheLeader = true;
-                } else {
-                    SkyblockTweaks.DATA.amITheLeader = false;
-                }
+                SkyblockTweaks.DATA.amITheLeader = name.equals(me);
             } else if (s.matches("From .*: Boop!")) {
                 if (!SBTConfig.get().partyCommands.boopInvites) return;
                 var matcher = BOOP_PATTERN.matcher(s);
@@ -176,7 +172,7 @@ public class PartyFeatures {
                     .binding(
                             defaults.partyCommands.enabled,
                             () -> config.partyCommands.enabled,
-                            value -> config.partyCommands.enabled = (Boolean) value
+                            value -> config.partyCommands.enabled = value
                     )
                     .build();
             var cooldown = Option.<Integer>createBuilder()
@@ -186,7 +182,7 @@ public class PartyFeatures {
                     .binding(
                             defaults.partyCommands.cooldown,
                             () -> config.partyCommands.cooldown,
-                            value -> config.partyCommands.cooldown = (Integer) value
+                            value -> config.partyCommands.cooldown = value
                     )
                     .build();
 
@@ -197,7 +193,7 @@ public class PartyFeatures {
                     .binding(
                             defaults.partyCommands.boopInvites,
                             () -> config.partyCommands.boopInvites,
-                            value -> config.partyCommands.boopInvites = (Boolean) value
+                            value -> config.partyCommands.boopInvites = value
                     )
                     .build();
 

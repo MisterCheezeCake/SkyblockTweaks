@@ -44,9 +44,9 @@ public class RealTimeHUD extends TextHUD {
                 () -> SBTConfig.huds().time.y,
                 () -> SBTConfig.huds().time.scale,
                 () -> SBTConfig.huds().time.anchor,
-                x -> SBTConfig.huds().time.x = (float) x,
-                y -> SBTConfig.huds().time.y = (float) y,
-                scale -> SBTConfig.huds().time.scale = (float) scale,
+                x -> SBTConfig.huds().time.x = x,
+                y -> SBTConfig.huds().time.y = y,
+                scale -> SBTConfig.huds().time.scale = scale,
                 anchor -> SBTConfig.huds().time.anchor = anchor
         );
         line = new SingleHudLine(
@@ -82,14 +82,13 @@ public class RealTimeHUD extends TextHUD {
     @Override
     public boolean shouldRender(boolean fromHudScreen) {
         if (!super.shouldRender(fromHudScreen)) return false;
-        if (((SkyblockTweaks.DATA.inSB  || SBTConfig.huds().time.showOutside) && SBTConfig.huds().time.enabled) || fromHudScreen) return true;
-        return false;
+        return ((SkyblockTweaks.DATA.inSB || SBTConfig.huds().time.showOutside) && SBTConfig.huds().time.enabled) || fromHudScreen;
     }
 
 
     @Override
-    public String getName() {
-        return "Real Time HUD";
+    public Text getName() {
+        return Text.literal("Real Time HUD");
     }
 
     public static class Config {
@@ -137,7 +136,7 @@ public class RealTimeHUD extends TextHUD {
                     .binding(
                             defaults.huds.time.enabled,
                             () -> config.huds.time.enabled,
-                            value -> config.huds.time.enabled = (Boolean) value
+                            value -> config.huds.time.enabled = value
                     )
                     .build();
 
@@ -148,7 +147,7 @@ public class RealTimeHUD extends TextHUD {
                     .binding(
                             defaults.huds.time.showOutside,
                             () -> config.huds.time.showOutside,
-                            value -> config.huds.time.showOutside = (Boolean) value
+                            value -> config.huds.time.showOutside = value
                     )
                     .build();
 
@@ -159,7 +158,7 @@ public class RealTimeHUD extends TextHUD {
                     .binding(
                             defaults.huds.time.seconds,
                             () -> config.huds.time.seconds,
-                            value -> config.huds.time.seconds = (Boolean) value
+                            value -> config.huds.time.seconds = value
                     )
                     .build();
 
@@ -170,7 +169,7 @@ public class RealTimeHUD extends TextHUD {
                     .binding(
                             defaults.huds.time.amPM,
                             () -> config.huds.time.amPM,
-                            value -> config.huds.time.amPM = (Boolean) value
+                            value -> config.huds.time.amPM = value
                     )
                     .available(config.huds.time.twelveHour)
                     .build();
@@ -182,8 +181,8 @@ public class RealTimeHUD extends TextHUD {
                             defaults.huds.time.twelveHour,
                             () -> config.huds.time.twelveHour,
                             value -> {
-                                config.huds.time.twelveHour = (Boolean) value;
-                                amPM.setAvailable((boolean) value);
+                                config.huds.time.twelveHour = value;
+                                amPM.setAvailable(value);
                             }
                     )
                     .build();
@@ -220,8 +219,7 @@ public class RealTimeHUD extends TextHUD {
                             () -> config.huds.time.mode,
                             value -> {
                                 config.huds.time.mode = value;
-                                if (value == DrawMode.OUTLINE) outline.setAvailable(true);
-                                else outline.setAvailable(false);
+                                outline.setAvailable(value == DrawMode.OUTLINE);
                             }
                     )
                     .build();

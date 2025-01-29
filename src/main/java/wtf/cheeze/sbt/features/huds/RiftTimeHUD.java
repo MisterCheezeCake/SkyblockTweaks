@@ -47,9 +47,9 @@ public class RiftTimeHUD extends TextHUD {
                 () -> SBTConfig.huds().riftTime.y,
                 () -> SBTConfig.huds().riftTime.scale,
                 () -> SBTConfig.huds().riftTime.anchor,
-                x -> SBTConfig.huds().riftTime.x = (float) x,
-                y -> SBTConfig.huds().riftTime.y = (float) y,
-                scale -> SBTConfig.huds().riftTime.scale = (float) scale,
+                x -> SBTConfig.huds().riftTime.x = x,
+                y -> SBTConfig.huds().riftTime.y = y,
+                scale -> SBTConfig.huds().riftTime.scale = scale,
                 anchor -> SBTConfig.huds().riftTime.anchor = anchor
         );
         line = new SingleHudLine(
@@ -63,14 +63,19 @@ public class RiftTimeHUD extends TextHUD {
     @Override
     public boolean shouldRender(boolean fromHudScreen) {
         if (!super.shouldRender(fromHudScreen)) return false;
-        if ((SkyblockTweaks.DATA.location == Location.RIFT && SBTConfig.huds().riftTime.enabled || fromHudScreen)) return true;
-        return false;
+        return SkyblockTweaks.DATA.location == Location.RIFT && SBTConfig.huds().riftTime.enabled || fromHudScreen;
     }
 
+//    @Override
+//    public String getName() {
+//        return TextUtils.SECTION +  "3Rift Time HUD";
+//    }
+
     @Override
-    public String getName() {
-        return TextUtils.SECTION +  "3Rift Time HUD";
+    public Text getName() {
+        return TextUtils.withColor("Rift Time HUD", Colors.LIME);
     }
+
 
 
     public static class Config {
@@ -116,7 +121,7 @@ public class RiftTimeHUD extends TextHUD {
                     .binding(
                             defaults.huds.riftTime.enabled,
                             () -> config.huds.riftTime.enabled,
-                            value -> config.huds.riftTime.enabled = (Boolean) value
+                            value -> config.huds.riftTime.enabled = value
                     )
                     .build();
 
@@ -163,8 +168,7 @@ public class RiftTimeHUD extends TextHUD {
                             () -> config.huds.riftTime.mode,
                             value -> {
                                 config.huds.riftTime.mode = value;
-                                if (value == DrawMode.OUTLINE) outline.setAvailable(true);
-                                else outline.setAvailable(false);
+                                outline.setAvailable(value == DrawMode.OUTLINE);
                             }
                     )
                     .build();
@@ -175,7 +179,7 @@ public class RiftTimeHUD extends TextHUD {
                     .binding(
                             defaults.huds.riftTime.icon,
                             () -> config.huds.riftTime.icon,
-                            value -> config.huds.riftTime.icon = (Boolean) value
+                            value -> config.huds.riftTime.icon = value
                     )
                     .build();
 
@@ -186,7 +190,7 @@ public class RiftTimeHUD extends TextHUD {
                     .binding(
                             defaults.huds.riftTime.showLeftText,
                             () -> config.huds.riftTime.showLeftText,
-                            value -> config.huds.riftTime.showLeftText = (Boolean) value
+                            value -> config.huds.riftTime.showLeftText = value
                     )
                     .build();
 

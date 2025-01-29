@@ -43,9 +43,9 @@ public class SpeedHUD extends TextHUD {
                 () -> SBTConfig.huds().speed.y,
                 () -> SBTConfig.huds().speed.scale,
                 () -> SBTConfig.huds().speed.anchor,
-                x -> SBTConfig.huds().speed.x = (float) x,
-                y -> SBTConfig.huds().speed.y = (float) y,
-                scale -> SBTConfig.huds().speed.scale = (float) scale,
+                x -> SBTConfig.huds().speed.x = x,
+                y -> SBTConfig.huds().speed.y = y,
+                scale -> SBTConfig.huds().speed.scale = scale,
                 anchor -> SBTConfig.huds().speed.anchor = anchor
         );
         line = new SingleHudLine(
@@ -55,17 +55,19 @@ public class SpeedHUD extends TextHUD {
                 () -> Text.literal((SkyblockTweaks.DATA.getSpeed()+"").split("\\.")[0] + "%")
         );
     }
+
     @Override
-    public boolean shouldRender(boolean fromHudScreen) {
-        if (!super.shouldRender(fromHudScreen)) return false;
-        if ((SkyblockTweaks.DATA.inSB && SBTConfig.huds().speed.enabled) || fromHudScreen) return true;
-        return false;
+    public Text getName() {
+        return Text.literal("Speed HUD");
     }
 
     @Override
-    public String getName() {
-        return "Speed Percentage HUD";
+    public boolean shouldRender(boolean fromHudScreen) {
+        if (!super.shouldRender(fromHudScreen)) return false;
+        return (SkyblockTweaks.DATA.inSB && SBTConfig.huds().speed.enabled) || fromHudScreen;
     }
+
+
 
     public static class Config {
         @SerialEntry
@@ -100,7 +102,7 @@ public class SpeedHUD extends TextHUD {
                     .binding(
                             defaults.huds.speed.enabled,
                             () -> config.huds.speed.enabled,
-                            value -> config.huds.speed.enabled = (Boolean) value
+                            value -> config.huds.speed.enabled = value
                     )
                     .build();
 
@@ -136,8 +138,7 @@ public class SpeedHUD extends TextHUD {
                             () -> config.huds.speed.mode,
                             value -> {
                                 config.huds.speed.mode = value;
-                                if (value == DrawMode.OUTLINE) outline.setAvailable(true);
-                                else outline.setAvailable(false);
+                                outline.setAvailable(value == DrawMode.OUTLINE);
                             }
                     )
                     .build();

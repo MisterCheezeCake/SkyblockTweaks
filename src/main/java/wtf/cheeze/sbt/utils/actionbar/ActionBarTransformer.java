@@ -272,7 +272,7 @@ public class ActionBarTransformer {
                     .binding(
                             defaults.actionBarFilters.hideHealth,
                             () -> config.actionBarFilters.hideHealth,
-                            value -> config.actionBarFilters.hideHealth = (Boolean) value
+                            value -> config.actionBarFilters.hideHealth = value
                     )
                     .build();
             var defense = Option.<Boolean>createBuilder()
@@ -282,7 +282,7 @@ public class ActionBarTransformer {
                     .binding(
                             defaults.actionBarFilters.hideDefense,
                             () -> config.actionBarFilters.hideDefense,
-                            value -> config.actionBarFilters.hideDefense = (Boolean) value
+                            value -> config.actionBarFilters.hideDefense = value
                     )
                     .build();
             var mana = Option.<Boolean>createBuilder()
@@ -292,7 +292,7 @@ public class ActionBarTransformer {
                     .binding(
                             defaults.actionBarFilters.hideMana,
                             () -> config.actionBarFilters.hideMana,
-                            value -> config.actionBarFilters.hideMana = (Boolean) value
+                            value -> config.actionBarFilters.hideMana = value
                     )
                     .build();
             var ability = Option.<Boolean>createBuilder()
@@ -302,7 +302,7 @@ public class ActionBarTransformer {
                     .binding(
                             defaults.actionBarFilters.hideAbilityUse,
                             () -> config.actionBarFilters.hideAbilityUse,
-                            value -> config.actionBarFilters.hideAbilityUse = (Boolean) value
+                            value -> config.actionBarFilters.hideAbilityUse = value
                     )
                     .build();
             var skill = Option.<Boolean>createBuilder()
@@ -312,7 +312,7 @@ public class ActionBarTransformer {
                     .binding(
                             defaults.actionBarFilters.hideSkill,
                             () -> config.actionBarFilters.hideSkill,
-                            value -> config.actionBarFilters.hideSkill = (Boolean) value
+                            value -> config.actionBarFilters.hideSkill = value
                     )
                     .build();
             var drill = Option.<Boolean>createBuilder()
@@ -322,7 +322,7 @@ public class ActionBarTransformer {
                     .binding(
                             defaults.actionBarFilters.hideDrill,
                             () -> config.actionBarFilters.hideDrill,
-                            value -> config.actionBarFilters.hideDrill = (Boolean) value
+                            value -> config.actionBarFilters.hideDrill = value
                     )
                     .build();
             var secrets = Option.<Boolean>createBuilder()
@@ -332,7 +332,7 @@ public class ActionBarTransformer {
                     .binding(
                             defaults.actionBarFilters.hideSecrets,
                             () -> config.actionBarFilters.hideSecrets,
-                            value -> config.actionBarFilters.hideSecrets = (Boolean) value
+                            value -> config.actionBarFilters.hideSecrets = value
                     )
                     .build();
             var tickers = Option.<Boolean>createBuilder()
@@ -342,7 +342,7 @@ public class ActionBarTransformer {
                     .binding(
                             defaults.actionBarFilters.hideTickers,
                             () -> config.actionBarFilters.hideTickers,
-                            value -> config.actionBarFilters.hideTickers = (Boolean) value
+                            value -> config.actionBarFilters.hideTickers = value
                     )
                     .build();
 
@@ -353,7 +353,7 @@ public class ActionBarTransformer {
                     .binding(
                             defaults.actionBarFilters.hideRiftTime,
                             () -> config.actionBarFilters.hideRiftTime,
-                            value -> config.actionBarFilters.hideRiftTime = (Boolean) value
+                            value -> config.actionBarFilters.hideRiftTime = value
                     )
                     .build();
 

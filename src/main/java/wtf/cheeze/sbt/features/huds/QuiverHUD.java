@@ -22,6 +22,7 @@ import dev.isxander.yacl3.api.Option;
 import dev.isxander.yacl3.api.OptionGroup;
 import dev.isxander.yacl3.api.controller.ColorControllerBuilder;
 import dev.isxander.yacl3.config.v2.api.SerialEntry;
+import net.minecraft.text.Text;
 import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SBTConfig;
@@ -38,10 +39,7 @@ import wtf.cheeze.sbt.utils.skyblock.SkyblockUtils;
 import java.awt.*;
 
 public class QuiverHUD extends TextHUD {
-    @Override
-    public String getName() {
-        return "Quiver HUD";
-    }
+
 
 
     public QuiverHUD() {
@@ -50,9 +48,9 @@ public class QuiverHUD extends TextHUD {
                 () -> SBTConfig.huds().quiver.y,
                 () -> SBTConfig.huds().quiver.scale,
                 () -> SBTConfig.huds().quiver.anchor,
-                x -> SBTConfig.huds().quiver.x = (float) x,
-                y -> SBTConfig.huds().quiver.y = (float) y,
-                scale -> SBTConfig.huds().quiver.scale = (float) scale,
+                x -> SBTConfig.huds().quiver.x = x,
+                y -> SBTConfig.huds().quiver.y = y,
+                scale -> SBTConfig.huds().quiver.scale = scale,
                 anchor -> SBTConfig.huds().quiver.anchor = anchor
         );
         line = new SingleHudLine(
@@ -74,10 +72,14 @@ public class QuiverHUD extends TextHUD {
     }
 
     @Override
+    public Text getName() {
+        return Text.literal("Quiver Hud");
+    }
+
+    @Override
     public boolean shouldRender(boolean fromHudScreen) {
         if (!super.shouldRender(fromHudScreen)) return false;
-        if ((SkyblockTweaks.DATA.inSB && SBTConfig.huds().quiver.enabled && SkyblockUtils.quiverActive()) || fromHudScreen) return true;
-        return false;
+        return (SkyblockTweaks.DATA.inSB && SBTConfig.huds().quiver.enabled && SkyblockUtils.quiverActive()) || fromHudScreen;
     }
 
 
@@ -114,7 +116,7 @@ public class QuiverHUD extends TextHUD {
                     .binding(
                             defaults.huds.quiver.enabled,
                             () -> config.huds.quiver.enabled,
-                            value -> config.huds.quiver.enabled = (Boolean) value
+                            value -> config.huds.quiver.enabled = value
                     )
                     .build();
             var icon = Option.<Boolean>createBuilder()
@@ -124,7 +126,7 @@ public class QuiverHUD extends TextHUD {
                     .binding(
                             defaults.huds.quiver.icon,
                             () -> config.huds.quiver.icon,
-                            value -> config.huds.quiver.icon = (Boolean) value
+                            value -> config.huds.quiver.icon = value
                     )
                     .build();
 
@@ -152,8 +154,7 @@ public class QuiverHUD extends TextHUD {
                             () -> config.huds.quiver.mode,
                             value -> {
                                 config.huds.quiver.mode = value;
-                                if (value == DrawMode.OUTLINE) outline.setAvailable(true);
-                                else outline.setAvailable(false);
+                                outline.setAvailable(value == DrawMode.OUTLINE);
                             }
                     )
                     .build();

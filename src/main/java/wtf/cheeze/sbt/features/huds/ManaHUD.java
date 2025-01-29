@@ -47,9 +47,9 @@ public class ManaHUD extends TextHUD {
                 () -> SBTConfig.huds().mana.y,
                 () -> SBTConfig.huds().mana.scale,
                 () -> SBTConfig.huds().mana.anchor,
-                x -> SBTConfig.huds().mana.x = (float) x,
-                y -> SBTConfig.huds().mana.y = (float) y,
-                scale -> SBTConfig.huds().mana.scale = (float) scale,
+                x -> SBTConfig.huds().mana.x = x,
+                y -> SBTConfig.huds().mana.y = y,
+                scale -> SBTConfig.huds().mana.scale = scale,
                 anchor -> SBTConfig.huds().mana.anchor = anchor
         );
         line = new SingleHudLine(
@@ -62,8 +62,7 @@ public class ManaHUD extends TextHUD {
     @Override
     public boolean shouldRender(boolean fromHudScreen) {
         if (!super.shouldRender(fromHudScreen)) return false;
-        if ((SkyblockTweaks.DATA.inSB && SBTConfig.huds().mana.enabled) || fromHudScreen) return true;
-        return false;
+        return (SkyblockTweaks.DATA.inSB && SBTConfig.huds().mana.enabled) || fromHudScreen;
     }
 //    @Override
 //    public String getText() {
@@ -71,8 +70,8 @@ public class ManaHUD extends TextHUD {
 //    }
 
     @Override
-    public String getName() {
-        return TextUtils.SECTION +  "9Mana HUD";
+    public Text getName() {
+        return TextUtils.withColor("Mana Hud", Colors.BLUE);
     }
 
     public static class Config {
@@ -118,7 +117,7 @@ public class ManaHUD extends TextHUD {
                     .binding(
                             defaults.huds.mana.enabled,
                             () -> config.huds.mana.enabled,
-                            value -> config.huds.mana.enabled = (Boolean) value
+                            value -> config.huds.mana.enabled = value
                     )
                     .build();
             var color = Option.<Color>createBuilder()
@@ -153,8 +152,7 @@ public class ManaHUD extends TextHUD {
                             () -> config.huds.mana.mode,
                             value -> {
                                 config.huds.mana.mode = value;
-                                if (value == DrawMode.OUTLINE) outline.setAvailable(true);
-                                else outline.setAvailable(false);
+                                outline.setAvailable(value == DrawMode.OUTLINE);
                             }
                     )
                     .build();
@@ -165,7 +163,7 @@ public class ManaHUD extends TextHUD {
                     .binding(
                             defaults.huds.mana.icon,
                             () -> config.huds.mana.icon,
-                            value -> config.huds.mana.icon = (Boolean) value
+                            value -> config.huds.mana.icon = value
                     )
                     .build();
             var separator = Option.<String>createBuilder()

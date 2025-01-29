@@ -45,9 +45,9 @@ public class DamageReductionHUD extends TextHUD {
                 () -> SBTConfig.huds().dr.y,
                 () -> SBTConfig.huds().dr.scale,
                 () -> SBTConfig.huds().dr.anchor,
-                x -> SBTConfig.huds().dr.x = (float) x,
-                y -> SBTConfig.huds().dr.y = (float) y,
-                scale -> SBTConfig.huds().dr.scale = (float) scale,
+                x -> SBTConfig.huds().dr.x = x,
+                y -> SBTConfig.huds().dr.y = y,
+                scale -> SBTConfig.huds().dr.scale = scale,
                 anchor -> SBTConfig.huds().dr.anchor = anchor
         );
         line = new SingleHudLine(
@@ -61,14 +61,14 @@ public class DamageReductionHUD extends TextHUD {
     @Override
     public boolean shouldRender(boolean fromHudScreen) {
         if (!super.shouldRender(fromHudScreen)) return false;
-        if ((SkyblockTweaks.DATA.inSB && SBTConfig.huds().dr.enabled) || fromHudScreen) return true;
-        return false;
+        return (SkyblockTweaks.DATA.inSB && SBTConfig.huds().dr.enabled) || fromHudScreen;
     }
 
     @Override
-    public String getName() {
-        return TextUtils.SECTION + "aDamage Reduction Percentage HUD";
+    public Text getName() {
+        return TextUtils.withColor("Damage Reduction Percentage HUD", Colors.LIME);
     }
+
 
     public static class Config {
 
@@ -106,7 +106,7 @@ public class DamageReductionHUD extends TextHUD {
                     .binding(
                             defaults.huds.dr.enabled,
                             () -> config.huds.dr.enabled,
-                            value -> config.huds.dr.enabled = (Boolean) value
+                            value -> config.huds.dr.enabled = value
                     )
                     .build();
             var color = Option.<Color>createBuilder()
@@ -141,8 +141,7 @@ public class DamageReductionHUD extends TextHUD {
                             () -> config.huds.dr.mode,
                             value -> {
                                 config.huds.dr.mode = value;
-                                if (value == DrawMode.OUTLINE) outline.setAvailable(true);
-                                else outline.setAvailable(false);
+                                outline.setAvailable(value == DrawMode.OUTLINE);
                             }
                     )
                     .build();

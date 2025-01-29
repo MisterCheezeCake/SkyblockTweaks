@@ -22,6 +22,7 @@ import dev.isxander.yacl3.api.Option;
 import dev.isxander.yacl3.api.OptionGroup;
 import dev.isxander.yacl3.api.controller.ColorControllerBuilder;
 import dev.isxander.yacl3.config.v2.api.SerialEntry;
+import net.minecraft.text.Text;
 import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SBTConfig;
@@ -43,23 +44,23 @@ public class HealthBar extends BarHUD {
                 () -> SBTConfig.huds().healthBar.anchor,
                 () -> SkyblockTweaks.DATA.health > SkyblockTweaks.DATA.maxHealth ? SBTConfig.huds().healthBar.colorAbsorption : SBTConfig.huds().healthBar.color,
                 () -> SkyblockTweaks.DATA.health / SkyblockTweaks.DATA.maxHealth,
-                x -> SBTConfig.huds().healthBar.x = (float) x,
-                y -> SBTConfig.huds().healthBar.y = (float) y,
-                scale -> SBTConfig.huds().healthBar.scale = (float) scale,
+                x -> SBTConfig.huds().healthBar.x = x,
+                y -> SBTConfig.huds().healthBar.y = y,
+                scale -> SBTConfig.huds().healthBar.scale = scale,
                 anchor ->SBTConfig.huds().healthBar.anchor= anchor
         );
     }
 
     @Override
-    public String getName() {
-        return TextUtils.SECTION +  "cHealth Bar";
+    public Text getName() {
+        return TextUtils.withColor("Health Bar", Colors.RED);
     }
+
 
     @Override
     public boolean shouldRender(boolean fromHudScreen) {
         if (!super.shouldRender(fromHudScreen)) return false;
-        if ((SkyblockTweaks.DATA.inSB && SBTConfig.huds().healthBar.enabled) || fromHudScreen) return true;
-        return false;
+        return (SkyblockTweaks.DATA.inSB && SBTConfig.huds().healthBar.enabled) || fromHudScreen;
     }
 
     public static class Config {
@@ -92,7 +93,7 @@ public class HealthBar extends BarHUD {
                     .binding(
                             defaults.huds.healthBar.enabled,
                             () -> config.huds.healthBar.enabled,
-                            value -> config.huds.healthBar.enabled = (Boolean) value
+                            value -> config.huds.healthBar.enabled = value
                     )
                     .build();
             var color = Option.<Color>createBuilder()

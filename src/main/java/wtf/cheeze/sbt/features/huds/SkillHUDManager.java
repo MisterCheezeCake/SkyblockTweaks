@@ -195,9 +195,9 @@ public class SkillHUDManager {
             return Math.round(remain / gain);
         }
 
-        @Override
-        public String getName() {
-            return  TextUtils.SECTION + "3Skill HUD";
+
+        public Text getName() {
+            return TextUtils.withColor("Skill HUD", Colors.CYAN);
         }
 
         @Override
@@ -264,7 +264,7 @@ public class SkillHUDManager {
                         .binding(
                                 defaults.huds.skills.enabled,
                                 () -> config.huds.skills.enabled,
-                                value -> config.huds.skills.enabled = (Boolean) value
+                                value -> config.huds.skills.enabled = value
                         )
                         .build();
 
@@ -286,7 +286,7 @@ public class SkillHUDManager {
                         .binding(
                                 defaults.huds.skills.actionsLeft,
                                 () -> config.huds.skills.actionsLeft,
-                                value -> config.huds.skills.actionsLeft = (Boolean) value
+                                value -> config.huds.skills.actionsLeft = value
                         )
                         .build();
                 var abridgeDenominator = Option.<Boolean>createBuilder()
@@ -296,7 +296,7 @@ public class SkillHUDManager {
                         .binding(
                                 defaults.huds.skills.abridgeDenominator,
                                 () -> config.huds.skills.abridgeDenominator,
-                                value -> config.huds.skills.abridgeDenominator = (Boolean) value
+                                value -> config.huds.skills.abridgeDenominator = value
                         )
                         .build();
 
@@ -379,17 +379,17 @@ public class SkillHUDManager {
                             return progress / total;
                         }
                     },
-                    x -> SBTConfig.huds().skillBar.x = (float) x,
-                    y -> SBTConfig.huds().skillBar.y = (float) y,
-                    scale -> SBTConfig.huds().skillBar.scale = (float) scale,
+                    x -> SBTConfig.huds().skillBar.x = x,
+                    y -> SBTConfig.huds().skillBar.y = y,
+                    scale -> SBTConfig.huds().skillBar.scale = scale,
                     anchor -> SBTConfig.huds().skillBar.anchor = anchor
 
             );
         }
 
         @Override
-        public String getName() {
-            return TextUtils.SECTION +  "3Skill Progress Bar";
+        public Text getName() {
+            return TextUtils.withColor("Skill Progress Bar", Colors.CYAN);
         }
 
         @Override
@@ -429,7 +429,7 @@ public class SkillHUDManager {
                         .binding(
                                 defaults.huds.skillBar.enabled,
                                 () -> config.huds.skillBar.enabled,
-                                value -> config.huds.skillBar.enabled = (Boolean) value
+                                value -> config.huds.skillBar.enabled = value
                         )
                         .build();
 

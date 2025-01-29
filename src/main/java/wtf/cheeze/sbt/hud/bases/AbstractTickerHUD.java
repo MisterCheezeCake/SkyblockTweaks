@@ -79,13 +79,13 @@ public abstract class AbstractTickerHUD extends HUD {
         var scale = (float) INFO.getScale.get();
         switch (INFO.getAnchorPoint.get()) {
             case LEFT -> {
-                return new Bounds(getActualX((float) INFO.getX.get()), getActualY((float) INFO.getY.get()), getWidth() * scale, DIMENSION * scale, scale);
+                return new Bounds(getActualX(INFO.getX.get()), getActualY(INFO.getY.get()), getWidth() * scale, DIMENSION * scale, scale);
             }
             case RIGHT -> {
-                return new Bounds((int) (getActualX((float) INFO.getX.get()) - getWidth() * scale), getActualY((float) INFO.getY.get()), getWidth() * scale, DIMENSION * scale, scale);
+                return new Bounds((int) (getActualX(INFO.getX.get()) - getWidth() * scale), getActualY(INFO.getY.get()), getWidth() * scale, DIMENSION * scale, scale);
             }
             case CENTER -> {
-                return new Bounds((int) (getActualX((float) INFO.getX.get()) - getWidth() * scale / 2), getActualY((float) INFO.getY.get()), getWidth() * scale, DIMENSION * scale, scale);
+                return new Bounds((int) (getActualX(INFO.getX.get()) - getWidth() * scale / 2), getActualY(INFO.getY.get()), getWidth() * scale, DIMENSION * scale, scale);
             }
             default -> throw new IllegalStateException("Unexpected value: " + INFO.getAnchorPoint.get());
         }
@@ -95,13 +95,13 @@ public abstract class AbstractTickerHUD extends HUD {
         var scale = (float) INFO.getScale.get();
         switch (INFO.getAnchorPoint.get()) {
             case LEFT -> {
-                return new BoundsRelative((float) INFO.getX.get(), (float) INFO.getY.get(), getWidth() * scale, DIMENSION * scale, scale);
+                return new BoundsRelative(INFO.getX.get(), INFO.getY.get(), getWidth() * scale, DIMENSION * scale, scale);
             }
             case RIGHT -> {
-                return new BoundsRelative((float) INFO.getX.get() - getRelativeWidth() * scale, (float) INFO.getY.get(), getWidth() * scale, DIMENSION * scale, scale);
+                return new BoundsRelative(INFO.getX.get() - getRelativeWidth() * scale, INFO.getY.get(), getWidth() * scale, DIMENSION * scale, scale);
             }
             case CENTER -> {
-                return new BoundsRelative((float) INFO.getX.get() - getRelativeWidth() * scale / 2, (float) INFO.getY.get(), getWidth() * scale, DIMENSION * scale, scale);
+                return new BoundsRelative(INFO.getX.get() - getRelativeWidth() * scale / 2, INFO.getY.get(), getWidth() * scale, DIMENSION * scale, scale);
             }
             default -> throw new IllegalStateException("Unexpected value: " + INFO.getAnchorPoint.get());
         }

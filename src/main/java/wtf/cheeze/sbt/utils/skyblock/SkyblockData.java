@@ -155,11 +155,7 @@ public class SkyblockData {
             case HelloS2CPacket(Environment environment) -> {
                 // Beta is alpha
                 SkyblockTweaks.LOGGER.info("Connected to Hypixel Mod API. Environment: {}", environment);
-                if (environment == Environment.BETA) {
-                    alphaNetwork = true;
-                } else {
-                    alphaNetwork = false;
-                }
+                alphaNetwork = environment == Environment.BETA;
             }
             case LocationUpdateS2CPacket(String serverName, Optional<String> serverType, Optional<String> lobbyName, Optional<String> mode, Optional<String> map) -> {
 //                this.mode = mode.orElse(null);

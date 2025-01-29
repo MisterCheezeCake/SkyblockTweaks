@@ -22,6 +22,7 @@ import dev.isxander.yacl3.api.Option;
 import dev.isxander.yacl3.api.OptionGroup;
 import dev.isxander.yacl3.api.controller.ColorControllerBuilder;
 import dev.isxander.yacl3.config.v2.api.SerialEntry;
+import net.minecraft.text.Text;
 import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SBTConfig;
@@ -43,23 +44,23 @@ public class ManaBar extends BarHUD {
                 () -> SBTConfig.huds().manaBar.anchor,
                 () -> SBTConfig.huds().manaBar.color,
                 () -> SkyblockTweaks.DATA.mana / SkyblockTweaks.DATA.maxMana,
-                x -> SBTConfig.huds().manaBar.x = (float) x,
-                y -> SBTConfig.huds().manaBar.y = (float) y,
-                scale -> SBTConfig.huds().manaBar.scale = (float) scale,
+                x -> SBTConfig.huds().manaBar.x = x,
+                y -> SBTConfig.huds().manaBar.y = y,
+                scale -> SBTConfig.huds().manaBar.scale = scale,
                 anchor -> SBTConfig.huds().manaBar.anchor = anchor
         );
     }
 
     @Override
-    public String getName() {
-        return TextUtils.SECTION +  "9Mana Bar";
+    public Text getName() {
+        return TextUtils.withColor("Mana Bar", Colors.BLUE);
     }
+
 
     @Override
     public boolean shouldRender(boolean fromHudScreen) {
         if (!super.shouldRender(fromHudScreen)) return false;
-        if ((SkyblockTweaks.DATA.inSB && SBTConfig.huds().manaBar.enabled) || fromHudScreen) return true;
-        return false;
+        return (SkyblockTweaks.DATA.inSB && SBTConfig.huds().manaBar.enabled) || fromHudScreen;
     }
 
     public static class Config {
@@ -90,7 +91,7 @@ public class ManaBar extends BarHUD {
                     .binding(
                             defaults.huds.manaBar.enabled,
                             () -> config.huds.manaBar.enabled,
-                            value -> config.huds.manaBar.enabled = (Boolean) value
+                            value -> config.huds.manaBar.enabled = value
                     )
                     .build();
 

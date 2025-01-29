@@ -39,7 +39,7 @@ public class SkyblockTweaksScreenMain extends Screen {
     private ButtonWidget discordButton;
     private ButtonWidget legalButton;
     private ButtonWidget closeButton;
-    private Screen parent;
+    private final Screen parent;
     public SkyblockTweaksScreenMain(Screen parent) {
         super(Text.literal("SkyBlockTweaks"));
         this.parent = parent;

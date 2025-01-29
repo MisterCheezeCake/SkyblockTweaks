@@ -45,9 +45,9 @@ public class CoordinatesHUD extends TextHUD {
                 () -> SBTConfig.huds().coordinates.y,
                 () -> SBTConfig.huds().coordinates.scale,
                 () -> SBTConfig.huds().coordinates.anchor,
-                x -> SBTConfig.huds().coordinates.x = (float) x,
-                y -> SBTConfig.huds().coordinates.y = (float) y,
-                scale -> SBTConfig.huds().coordinates.scale = (float) scale,
+                x -> SBTConfig.huds().coordinates.x = x,
+                y -> SBTConfig.huds().coordinates.y = y,
+                scale -> SBTConfig.huds().coordinates.scale = scale,
                 anchor -> SBTConfig.huds().coordinates.anchor = anchor
         );
         line = new SingleHudLine(
@@ -60,13 +60,12 @@ public class CoordinatesHUD extends TextHUD {
     @Override
     public boolean shouldRender(boolean fromHudScreen) {
         if (!super.shouldRender(fromHudScreen)) return false;
-        if (((SkyblockTweaks.DATA.inSB  || SBTConfig.huds().coordinates.showOutside) && SBTConfig.huds().coordinates.enabled) || fromHudScreen) return true;
-        return false;
+        return ((SkyblockTweaks.DATA.inSB || SBTConfig.huds().coordinates.showOutside) && SBTConfig.huds().coordinates.enabled) || fromHudScreen;
     }
 
     @Override
-    public String getName() {
-        return "Coordinates HUD";
+    public Text getName() {
+        return Text.literal("Coordinates HUD");
     }
 
     public static class Config {
@@ -108,7 +107,7 @@ public class CoordinatesHUD extends TextHUD {
                     .binding(
                             defaults.huds.coordinates.enabled,
                             () -> config.huds.coordinates.enabled,
-                            value -> config.huds.coordinates.enabled = (Boolean) value
+                            value -> config.huds.coordinates.enabled = value
                     )
                     .build();
 
@@ -119,7 +118,7 @@ public class CoordinatesHUD extends TextHUD {
                     .binding(
                             defaults.huds.coordinates.showOutside,
                             () -> config.huds.coordinates.showOutside,
-                            value -> config.huds.coordinates.showOutside = (Boolean) value
+                            value -> config.huds.coordinates.showOutside = value
                     )
                     .build();
             var decimalPlaces = Option.<Integer>createBuilder()
@@ -134,7 +133,7 @@ public class CoordinatesHUD extends TextHUD {
                     .binding(
                             defaults.huds.coordinates.decimalPlaces,
                             () -> config.huds.coordinates.decimalPlaces,
-                            value -> config.huds.coordinates.decimalPlaces = (Integer) value
+                            value -> config.huds.coordinates.decimalPlaces = value
                     )
                     .build();
 
@@ -170,8 +169,7 @@ public class CoordinatesHUD extends TextHUD {
                             () -> config.huds.coordinates.mode,
                             value -> {
                                 config.huds.coordinates.mode = value;
-                                if (value == DrawMode.OUTLINE) outline.setAvailable(true);
-                                else outline.setAvailable(false);
+                                outline.setAvailable(value == DrawMode.OUTLINE);
                             }
                     )
                     .build();

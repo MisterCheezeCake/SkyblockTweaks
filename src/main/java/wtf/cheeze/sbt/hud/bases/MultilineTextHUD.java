@@ -39,14 +39,14 @@ public abstract class MultilineTextHUD extends HUD {
         var scale = (float) INFO.getScale.get();
         var w = getLongestLineWidth();
         var h = getLineNo();
-        return new Bounds(getActualX(INFO.getX.get()), getActualY((float) INFO.getY.get()), w * scale, h * SkyblockTweaks.mc.textRenderer.fontHeight * scale, scale);
+        return new Bounds(getActualX(INFO.getX.get()), getActualY(INFO.getY.get()), w * scale, h * SkyblockTweaks.mc.textRenderer.fontHeight * scale, scale);
     }
     @Override
     public BoundsRelative getCurrentBoundsRelative() {
         var scale = (float) INFO.getScale.get();
         var w = getLongestLineWidth();
         var h = getLineNo();
-        return new BoundsRelative(INFO.getX.get(), (float) INFO.getY.get(), w * scale, h * SkyblockTweaks.mc.textRenderer.fontHeight * scale, scale);
+        return new BoundsRelative(INFO.getX.get(), INFO.getY.get(), w * scale, h * SkyblockTweaks.mc.textRenderer.fontHeight * scale, scale);
     }
 
     @Override

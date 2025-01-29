@@ -99,7 +99,7 @@ public class ErrorHandler {
                 .binding(
                         defaults.chatAllErrors,
                         () -> config.chatAllErrors,
-                        value -> config.chatAllErrors = (Boolean) value
+                        value -> config.chatAllErrors = value
                 )
                 .build();
     }
