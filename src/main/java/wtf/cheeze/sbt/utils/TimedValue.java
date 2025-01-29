@@ -19,8 +19,8 @@
 package wtf.cheeze.sbt.utils;
 
 public class TimedValue<T> {
-    private T value;
-    private long time;
+    private final T value;
+    private final long time;
 
     private int expireTime = 1000;
 

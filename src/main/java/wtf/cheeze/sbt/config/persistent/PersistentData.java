@@ -20,6 +20,8 @@ package wtf.cheeze.sbt.config.persistent;
 
 import net.fabricmc.loader.api.FabricLoader;
 import wtf.cheeze.sbt.SkyblockTweaks;
+import wtf.cheeze.sbt.utils.errors.ErrorHandler;
+import wtf.cheeze.sbt.utils.errors.ErrorLevel;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -46,7 +48,7 @@ public class PersistentData {
             writer.write(toWrite);
             writer.close();
         } catch (Exception e) {
-            SkyblockTweaks.LOGGER.error("Failed to save persistent data", e);
+            ErrorHandler.handleError(e, "Failed to save persistent data", ErrorLevel.CRITICAL);
         }
     }
 
@@ -62,7 +64,7 @@ public class PersistentData {
             return SkyblockTweaks.GSON.fromJson(content, PersistentData.class);
            
         } catch (Exception e) {
-            SkyblockTweaks.LOGGER.error("Failed to load persistent data", e);
+            ErrorHandler.handleError(e, "Failed to load persistent data", ErrorLevel.CRITICAL);
             return new PersistentData();
         }
     }

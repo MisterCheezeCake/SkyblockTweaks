@@ -22,9 +22,13 @@ import net.minecraft.MinecraftVersion;
 import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.config.SBTConfig;
 import wtf.cheeze.sbt.utils.Version.NotificationStream;
+import wtf.cheeze.sbt.utils.errors.ErrorHandler;
+import wtf.cheeze.sbt.utils.errors.ErrorLevel;
+import wtf.cheeze.sbt.utils.render.Colors;
 
 public class UpdateChecker {
     public static final String REMOTE_VERSION_FILE = "https://raw.githubusercontent.com/MisterCheezeCake/RemoteData/refs/heads/main/SBT/updateNew.json";
+
 
     public static void checkForUpdates() {
         if (SBTConfig.get().notificationStream != NotificationStream.NONE && SkyblockTweaks.VERSION.STREAM != Version.VersionType.UNSTABLE) {
@@ -60,7 +64,7 @@ public class UpdateChecker {
                     }
                 }
             } catch (Exception e) {
-               SkyblockTweaks.LOGGER.error("Failed to check for updates", e);
+                ErrorHandler.handleError(e, "Failed to check for updates", ErrorLevel.WARNING);
             }
         }
     }
@@ -74,7 +78,20 @@ public class UpdateChecker {
         var comparison = Version.compareVersions(version, SkyblockTweaks.VERSION);
         if (comparison == Version.VersionComparison.GREATER) {
             var link = Version.getModrinthLink(remoteVersion.modrinthName);
-            var message = TextUtils.getTextThatLinksToURL("§7[§aSkyblockTweaks§f§7] §3Update §e" + remoteVersion.versionString + " §3is available! §2[Download]", "§3Click to open Modrinth in your browser", link);
+
+            var message = TextUtils.getTextThatLinksToURL(
+                    TextUtils.join(
+                            MessageManager.PREFIX,
+                            TextUtils.SPACE,
+                            TextUtils.withColor("Update ", Colors.CYAN),
+                            TextUtils.withColor(remoteVersion.versionString, Colors.YELLOW),
+                            TextUtils.withColor(" is available! ", Colors.CYAN),
+                            TextUtils.withColor("[Download]", Colors.DARK_GREEN)
+
+                    ),
+                    //"§7[§aSkyblockTweaks§f§7] §3Update §e" + remoteVersion.versionString + " §3is available! §2[Download]",
+                    TextUtils.withColor("Click to open Modrinth in your browser", Colors.CYAN),
+                    link);
             NotificationHandler.NOTIFICATION_QUEUE.add(message);
         }
     }

@@ -19,15 +19,20 @@
 package wtf.cheeze.sbt.command;
 
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
+import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.suggestion.SuggestionProvider;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager;
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.text.Text;
+import wtf.cheeze.sbt.utils.MessageManager;
+import wtf.cheeze.sbt.utils.NumberUtils;
+import wtf.cheeze.sbt.utils.TextUtils;
 import wtf.cheeze.sbt.utils.enums.Crops;
 import wtf.cheeze.sbt.utils.enums.Rarity;
 import wtf.cheeze.sbt.utils.enums.Slayers;
+import wtf.cheeze.sbt.utils.render.Colors;
 import wtf.cheeze.sbt.utils.skyblock.SkyblockConstants;
 
 import java.util.function.Supplier;
@@ -94,5 +99,26 @@ public class CommandUtils {
     }
     static Text getDebugText(String name, float value) {
         return Text.of("§3" + name + ": §e" + value);
+    }
+
+    public static void send(CommandContext<FabricClientCommandSource> context, Text text) {
+        context.getSource().sendFeedback(TextUtils.join(MessageManager.PREFIX, TextUtils.SPACE, text));
+    }
+    public static void send(CommandContext<FabricClientCommandSource> context, String text) {
+        context.getSource().sendFeedback(TextUtils.join(MessageManager.PREFIX, TextUtils.SPACE, Text.of(text)));
+    }
+    public static void sendRaw(CommandContext<FabricClientCommandSource> context, Text text) {
+        context.getSource().sendFeedback(text);
+    }
+    public static void sendRaw(CommandContext<FabricClientCommandSource> context, String text) {
+        context.getSource().sendFeedback(Text.of(text));
+    }
+
+    public static void calcSend(CommandContext<FabricClientCommandSource> context, String type, int number) {
+        //context.getSource().sendFeedback(Text.of(PREFIX + " §3Total Garden XP Required: §e" + NumberUtils.formatNumber(total, ",")));
+        send(context, TextUtils.join(
+                TextUtils.withColor("Total " + type + " XP Required: ", Colors.CYAN),
+                TextUtils.withColor(NumberUtils.formatNumber(number, ","), Colors.YELLOW)
+        ));
     }
 }

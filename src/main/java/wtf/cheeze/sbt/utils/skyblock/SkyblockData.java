@@ -29,10 +29,12 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.text.Text;
 import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.command.SBTCommand;
+import wtf.cheeze.sbt.utils.MessageManager;
 import wtf.cheeze.sbt.utils.NumberUtils;
 import wtf.cheeze.sbt.utils.TextUtils;
 import wtf.cheeze.sbt.utils.actionbar.ActionBarData;
 import wtf.cheeze.sbt.utils.enums.Location;
+import wtf.cheeze.sbt.utils.render.Colors;
 import wtf.cheeze.sbt.utils.tablist.TabListData;
 
 import java.util.Map;
@@ -170,7 +172,7 @@ public class SkyblockData {
                 }
             }
             case ErrorS2CPacket(var id, var errorReason) -> {
-                SkyblockTweaks.mc.player.sendMessage(Text.literal(SBTCommand.PREFIX + TextUtils.SECTION + "cThe Hypixel Mod API experienced an error, check logs for more details"), false);
+                MessageManager.send("The Hypixel Mod API experienced an error. ID: " + id + " Reason: " + errorReason, Colors.RED);
                 SkyblockTweaks.LOGGER.error("The Hypixel Mod API experienced an error. ID: {} Reason: {}", id, errorReason);
             }
 //            case LocationUpdateS2CPacket(String serverName, Optional<String> serverType, Optional<String> lobbyName, Optional<String> mode, Optional<String> map) -> {

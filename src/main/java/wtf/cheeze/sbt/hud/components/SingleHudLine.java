@@ -26,6 +26,8 @@ import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.hud.HudIcon;
 import wtf.cheeze.sbt.hud.utils.DrawMode;
 import wtf.cheeze.sbt.utils.TextUtils;
+import wtf.cheeze.sbt.utils.errors.ErrorHandler;
+import wtf.cheeze.sbt.utils.errors.ErrorLevel;
 import wtf.cheeze.sbt.utils.render.Colors;
 import wtf.cheeze.sbt.utils.render.RenderUtils;
 
@@ -92,7 +94,8 @@ public class SingleHudLine implements HudComponent {
         try {
             return text.get();
         } catch (Exception e) {
-            SkyblockTweaks.LOGGER.error("Error while getting text for HUD line", e);
+            //SkyblockTweaks.LOGGER.error("Error while getting text for HUD line", e);
+            ErrorHandler.handleError(e, "Error while getting text for HUD line", ErrorLevel.WARNING);
             return ERROR;
         }
     }

@@ -30,6 +30,9 @@ import wtf.cheeze.sbt.config.SBTConfig;
 import wtf.cheeze.sbt.features.huds.SkillHUDManager;
 import wtf.cheeze.sbt.utils.NumberUtils;
 import wtf.cheeze.sbt.utils.TextUtils;
+import wtf.cheeze.sbt.utils.errors.ErrorHandler;
+import wtf.cheeze.sbt.utils.errors.ErrorLevel;
+
 import static wtf.cheeze.sbt.config.categories.General.key;
 import static wtf.cheeze.sbt.config.categories.General.keyD;
 
@@ -210,8 +213,9 @@ public class ActionBarTransformer {
           data.transformedText = newText.toString().trim();
           return data;
       } catch (Exception e) {
-          SkyblockTweaks.LOGGER.error("Error parsing action bar text: {}", actionBarText, e);
-          SkyblockTweaks.LOGGER.warn("Some features may not work correctly. Please report this to MisterCheezeCake immediately.");
+         // SkyblockTweaks.LOGGER.error("Error parsing action bar text: {}", actionBarText, e);
+          ErrorHandler.handleError(e, "Error Parsing action bar text/*LOGONLY: {}*/", ErrorLevel.WARNING, actionBarText);
+          //SkyblockTweaks.LOGGER.warn("Some features may not work correctly. Please report this to MisterCheezeCake immediately.");
           var data = new ActionBarData();
           // data.transformedText = actionBarText;
           return data;

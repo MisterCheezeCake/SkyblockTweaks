@@ -19,6 +19,8 @@
 package wtf.cheeze.sbt.utils;
 
 import wtf.cheeze.sbt.SkyblockTweaks;
+import wtf.cheeze.sbt.utils.errors.ErrorHandler;
+import wtf.cheeze.sbt.utils.errors.ErrorLevel;
 
 import java.io.IOException;
 import java.net.URI;
@@ -41,7 +43,7 @@ public class HTTPUtils {
             reader.close();
             return response.toString();
         } catch (Exception e) {
-            SkyblockTweaks.LOGGER.error("Update Checker Experienced an Error", e);
+            ErrorHandler.handleError(e, "The Update Checker experienced an error", ErrorLevel.WARNING);
             return null;
         }
     }

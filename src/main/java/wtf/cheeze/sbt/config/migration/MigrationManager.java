@@ -4,6 +4,8 @@ import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SBTConfig;
 import wtf.cheeze.sbt.config.VersionedObject;
+import wtf.cheeze.sbt.utils.errors.ErrorHandler;
+import wtf.cheeze.sbt.utils.errors.ErrorLevel;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -48,7 +50,7 @@ public class MigrationManager {
            }
 
        } catch (Exception e) {
-           SkyblockTweaks.LOGGER.error("Failed to handle migrations", e);
+           ErrorHandler.handleError(e, "Config Migration Error", ErrorLevel.CRITICAL);
        }
 
    }

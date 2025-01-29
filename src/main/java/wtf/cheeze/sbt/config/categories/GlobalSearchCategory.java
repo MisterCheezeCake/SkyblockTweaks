@@ -34,6 +34,8 @@ import wtf.cheeze.sbt.mixin.YACLScreenAccessor;
 import wtf.cheeze.sbt.utils.Version;
 import wtf.cheeze.sbt.utils.actionbar.ActionBarTransformer;
 
+
+
 public class GlobalSearchCategory {
 
     public static ConfigCategory getCategory(ConfigImpl defaults, ConfigImpl config) {

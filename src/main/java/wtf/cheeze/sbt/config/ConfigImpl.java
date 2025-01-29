@@ -36,6 +36,9 @@ public class ConfigImpl extends VersionedObject {
     public Version.NotificationStream notificationStream = Version.NotificationStream.ALPHA;
 
     @SerialEntry
+    public boolean chatAllErrors = true;
+
+    @SerialEntry
     public General.HudTweaks hudTweaks = new General.HudTweaks();
 
     @SerialEntry

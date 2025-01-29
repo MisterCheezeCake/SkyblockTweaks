@@ -18,13 +18,11 @@
  */
 package wtf.cheeze.sbt.utils.tablist;
 
-import org.jetbrains.annotations.NotNull;
 import wtf.cheeze.sbt.utils.enums.Location;
 
 import java.util.Arrays;
-import java.util.EnumMap;
 import java.util.HashMap;
-import java.util.Map;
+
 
 public enum WidgetType {
     GENERAL_INFO("General Info", "Area"),

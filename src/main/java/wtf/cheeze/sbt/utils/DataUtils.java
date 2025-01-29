@@ -25,8 +25,8 @@ import java.util.function.Supplier;
 
 public class DataUtils {
 
-    public static Supplier<Boolean> alwaysFalse = () -> false;
-    public static Supplier<Integer> alwaysZero = () -> 0;
-    public static Supplier<AnchorPoint> alwaysLeft = () -> AnchorPoint.LEFT;
-    public static Consumer doNothing = (o) -> {};
+    public static final Supplier<Boolean> alwaysFalse = () -> false;
+    public static final Supplier<Integer> alwaysZero = () -> 0;
+    public static final Supplier<AnchorPoint> alwaysLeft = () -> AnchorPoint.LEFT;
+    public static final Consumer doNothing = (o) -> {};
 }

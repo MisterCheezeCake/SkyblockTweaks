@@ -30,6 +30,7 @@ import net.minecraft.text.Text;
 import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SBTConfig;
+import wtf.cheeze.sbt.utils.MessageManager;
 import wtf.cheeze.sbt.utils.TextUtils;
 
 import java.util.ArrayList;
@@ -107,7 +108,7 @@ public class PartyFeatures {
                     }
                     case "help" -> {
                         if ((name.equals(SkyblockTweaks.mc.player.getName().getString()))) {
-                            SkyblockTweaks.mc.player.sendMessage(Text.of("§7[§aSkyblockTweaks§f§7] §fAvailable party commands: !ptme, !allinvite, !warp, !help"), false);
+                            MessageManager.send("Available party commands: !ptme, !allinvite, !warp, !help");
                             return;
                         }
                         if (verboseDebug) sendDebugMessage("Sending help message");
@@ -133,7 +134,7 @@ public class PartyFeatures {
                 if (!matcher.matches()) return;
                 var n = matcher.group(1);
                 var name = n.contains(" ") ? n.split(" ")[1] : n;
-                SkyblockTweaks.mc.send(() -> SkyblockTweaks.mc.player.sendMessage(getInviteMessage(name), false));
+                SkyblockTweaks.mc.send(() -> MessageManager.send(getInviteMessage(name)));
             }
         });
     }
@@ -214,7 +215,8 @@ public class PartyFeatures {
     }
 
     private static Text getInviteMessage(String name) {
-        return TextUtils.getTextThatRunsCommand("§7[§aSkyblockTweaks§f§7] §bClick here to invite §e" + name + "§b to your party!","§3Click here to run §e/p " + name , "/p invite " + name);
+        //TODO: Switch this from legacy formatting
+        return TextUtils.getTextThatRunsCommand("§bClick here to invite §e" + name + "§b to your party!","§3Click here to run §e/p " + name , "/p invite " + name);
     }
     private static void sendDebugMessage(String message) {
         SkyblockTweaks.mc.player.sendMessage(Text.of("§7[§2SBT Party Debugger§f§7]§3 " + message), false);

@@ -18,6 +18,7 @@
  */
 package wtf.cheeze.sbt.command;
 
+import com.mojang.brigadier.arguments.BoolArgumentType;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
@@ -33,9 +34,14 @@ import wtf.cheeze.sbt.config.SBTConfig;
 import wtf.cheeze.sbt.config.SkyblockTweaksScreenMain;
 import wtf.cheeze.sbt.features.CalcPowder;
 import wtf.cheeze.sbt.features.chat.PartyFeatures;
+import wtf.cheeze.sbt.utils.MessageManager;
 import wtf.cheeze.sbt.utils.NumberUtils;
+import wtf.cheeze.sbt.utils.TextUtils;
 import wtf.cheeze.sbt.utils.enums.Rarity;
 import wtf.cheeze.sbt.utils.enums.Slayers;
+import wtf.cheeze.sbt.utils.errors.ErrorHandler;
+import wtf.cheeze.sbt.utils.errors.ErrorLevel;
+import wtf.cheeze.sbt.utils.render.Colors;
 import wtf.cheeze.sbt.utils.skyblock.SkyblockConstants;
 import wtf.cheeze.sbt.utils.skyblock.SkyblockUtils;
 import wtf.cheeze.sbt.hud.HudScreen;
@@ -45,11 +51,15 @@ import java.util.Arrays;
 
 import static net.fabricmc.fabric.api.client.command.v2.ClientCommandManager.argument;
 import static net.fabricmc.fabric.api.client.command.v2.ClientCommandManager.literal;
+import static wtf.cheeze.sbt.command.CommandUtils.calcSend;
+import static wtf.cheeze.sbt.command.CommandUtils.send;
 
 
 public class SBTCommand {
 
-    public static String PREFIX = "§7[§aSkyblockTweaks§f§7]";
+    //public static String PREFIX = "§7[§aSkyblockTweaks§f§7]";
+
+    private static final Text INVALID = TextUtils.withColor("Invalid arguments", Colors.RED);
     private static final LiteralArgumentBuilder<FabricClientCommandSource> calc = literal("calc")
             .then(literal("skill")
                     .then(argument("level-start", IntegerArgumentType.integer())
@@ -59,18 +69,18 @@ public class SBTCommand {
                                                 var levelEnd = IntegerArgumentType.getInteger(context, "level-end");
 
                                                 if (levelStart < 0 || levelEnd < 0 || levelStart > 60 || levelEnd > 60 || levelStart >= levelEnd) {
-                                                    context.getSource().sendFeedback(Text.of(PREFIX + " §cInvalid arguments"));
+                                                    send(context, INVALID);
                                                     return 0;
                                                 }
 
                                                 var newArr = Arrays.stream(SkyblockConstants.SKILL_LEVELS).skip(levelStart).limit(levelEnd - levelStart).toArray();
                                                 var total = Arrays.stream(newArr).sum();
-                                                context.getSource().sendFeedback(Text.of(PREFIX + " §3Total Skill XP Required: §e" + NumberUtils.formatNumber(total, ",")));
+                                                calcSend(context, "Skill", total);
                                                 return 1;
                                             }
                                     )
                             )).executes(context -> {
-                        context.getSource().sendFeedback(Text.of(PREFIX + " §cInvalid arguments"));
+                        send(context, INVALID);
                         return 0;
                     })
             )
@@ -81,7 +91,7 @@ public class SBTCommand {
                                             .executes(context -> {
                                                 var slayer = SkyblockUtils.castStringToSlayerType(StringArgumentType.getString(context, "type"));
                                                 if (slayer == null) {
-                                                    context.getSource().sendFeedback(Text.of(PREFIX + " §cInvalid slayer type"));
+                                                    send(context, TextUtils.withColor("Invalid slayer type", Colors.RED));
                                                     return 0;
 
                                                 }
@@ -90,18 +100,18 @@ public class SBTCommand {
                                                 var cap = slayer == Slayers.VAMPIRE ? 5 : 9;
 
                                                 if (levelStart > levelEnd || levelEnd < 0 || levelStart < 0 || levelStart > cap || levelEnd > cap) {
-                                                    context.getSource().sendFeedback(Text.of(PREFIX + " §cInvalid arguments"));
+                                                    send(context, INVALID);
                                                     return 0;
                                                 }
 
                                                 var table = CommandUtils.getCalcSlayerTable(slayer);
                                                 var needed = table[levelEnd] - table[levelStart];
-                                                context.getSource().sendFeedback(Text.of(PREFIX + " §3Total Slayer XP Required: §e" + NumberUtils.formatNumber(needed, ",")));
+                                                calcSend(context, "Slayer", needed);
                                                 return 1;
                                             })
 
                                     ))).executes(context -> {
-                        context.getSource().sendFeedback(Text.of(PREFIX + " §cInvalid arguments"));
+                        send(context, INVALID);
                         return 0;
                     })
             )
@@ -113,19 +123,19 @@ public class SBTCommand {
                                                 var levelEnd = IntegerArgumentType.getInteger(context, "level-end");
 
                                                 if (levelStart < 0 || levelEnd < 0 || levelStart > 50 || levelEnd > 50 || levelStart >= levelEnd) {
-                                                    context.getSource().sendFeedback(Text.of(PREFIX + " §cInvalid arguments"));
+                                                    send(context, INVALID);
                                                     return 0;
                                                 }
 
                                                 var newArr = Arrays.stream(SkyblockConstants.DUNGEON_LEVELS).skip(levelStart).limit(levelEnd - levelStart).toArray();
                                                 var total = Arrays.stream(newArr).sum();
-                                                context.getSource().sendFeedback(Text.of(PREFIX + " §3Total Dungeons XP Required: §e" + NumberUtils.formatNumber(total, ",")));
+                                                calcSend(context, "Dungeon", total);
                                                 return 1;
                                             }
                                     )
                             ))
                     .executes(context -> {
-                        context.getSource().sendFeedback(Text.of(PREFIX + " §cInvalid arguments"));
+                        send(context, INVALID);
                         return 0;
                     })
 
@@ -137,7 +147,7 @@ public class SBTCommand {
                                             .executes(context -> {
                                                 var rarity = SkyblockUtils.castStringToRarity(StringArgumentType.getString(context, "rarity"));
                                                 if (rarity == null) {
-                                                    context.getSource().sendFeedback(Text.of(PREFIX + " §cInvalid rarity"));
+                                                    send(context, TextUtils.withColor("Invalid rarity", Colors.RED));
                                                     return 0;
                                                 }
                                                 var levelStart = IntegerArgumentType.getInteger(context, "level-start");
@@ -147,21 +157,21 @@ public class SBTCommand {
 
 
                                                 if (levelStart < 0 || levelEnd < 0 || levelStart > cap || levelEnd > cap || levelStart >= levelEnd) {
-                                                    context.getSource().sendFeedback(Text.of(PREFIX + " §cInvalid arguments"));
+                                                    send(context, INVALID);
                                                     return 0;
                                                 }
 
                                                 var newArr = Arrays.stream(CommandUtils.getCalcPetTable(rarity)).skip(levelStart).limit(levelEnd - levelStart).toArray();
                                                 var total = Arrays.stream(newArr).sum();
-                                                context.getSource().sendFeedback(Text.of(PREFIX + " §3Total Pet XP Required: §e" + NumberUtils.formatNumber(total, ",")));
+                                                calcSend(context, "Pet", total);
                                                 return 1;
                                             })
                                     ).executes(context -> {
-                                        context.getSource().sendFeedback(Text.of(PREFIX + " §cInvalid arguments"));
+                                        send(context, INVALID);
                                         return 0;
                                     })))
                     .executes(context -> {
-                        context.getSource().sendFeedback(Text.of(PREFIX + " §cInvalid arguments"));
+                        send(context, INVALID);
                         return 0;
                     })
             )
@@ -173,13 +183,13 @@ public class SBTCommand {
                                                 var levelEnd = IntegerArgumentType.getInteger(context, "level-end");
 
                                                 if (levelStart < 0 || levelEnd < 0 || levelEnd > 10 || levelStart >= levelEnd) {
-                                                    context.getSource().sendFeedback(Text.of(PREFIX + " §cInvalid arguments"));
+                                                    send(context, INVALID);
                                                     return 0;
                                                 }
 
                                                 var newArr = Arrays.stream(SkyblockConstants.HOTM_LEVELS).skip(levelStart).limit(levelEnd - levelStart).toArray();
                                                 var total = Arrays.stream(newArr).sum();
-                                                context.getSource().sendFeedback(Text.of(PREFIX + " §3Total HOTM XP Required: §e" + NumberUtils.formatNumber(total, ",")));
+                                                calcSend(context, "HOTM", total);
                                                 return 1;
                                             }
                                     )
@@ -187,7 +197,7 @@ public class SBTCommand {
 
                             ))
                     .executes(context -> {
-                        context.getSource().sendFeedback(Text.of(PREFIX + " §cInvalid arguments"));
+                        send(context, INVALID);
                         return 0;
                     }))
             .then(literal("garden")
@@ -198,19 +208,19 @@ public class SBTCommand {
                                                 var levelEnd = IntegerArgumentType.getInteger(context, "level-end");
 
                                                 if (levelStart < 0 || levelEnd < 0 || levelEnd > 15 || levelStart >= levelEnd) {
-                                                    context.getSource().sendFeedback(Text.of(PREFIX + " §cInvalid arguments"));
+                                                    send(context, INVALID);
                                                     return 0;
                                                 }
 
                                                 var newArr = Arrays.stream(SkyblockConstants.GARDEN_LEVELS).skip(levelStart).limit(levelEnd - levelStart).toArray();
                                                 var total = Arrays.stream(newArr).sum();
-                                                context.getSource().sendFeedback(Text.of(PREFIX + " §3Total Garden XP Required: §e" + NumberUtils.formatNumber(total, ",")));
+                                                calcSend(context, "Garden", total);
                                                 return 1;
                                             }
                                     )
                             ))
                     .executes(context -> {
-                        context.getSource().sendFeedback(Text.of(PREFIX + " §cInvalid arguments"));
+                        send(context, INVALID);
                         return 0;
                     })
             )
@@ -221,26 +231,26 @@ public class SBTCommand {
                                             .executes(context -> {
                                                         var crop = SkyblockUtils.castStringToCrop(StringArgumentType.getString(context, "crop"));
                                                         if (crop == null) {
-                                                            context.getSource().sendFeedback(Text.of(PREFIX + " §cInvalid crop"));
+                                                            send(context, TextUtils.withColor("Invalid crop", Colors.RED));
                                                             return 0;
                                                         }
                                                         var levelStart = IntegerArgumentType.getInteger(context, "level-start");
                                                         var levelEnd = IntegerArgumentType.getInteger(context, "level-end");
 
                                                         if (levelStart < 0 || levelEnd < 0 || levelEnd > 46 || levelStart >= levelEnd) {
-                                                            context.getSource().sendFeedback(Text.of(PREFIX + " §cInvalid arguments"));
+                                                            send(context, INVALID);
                                                             return 0;
                                                         }
 
                                                         var newArr = Arrays.stream(CommandUtils.getCalcCropTable(crop)).skip(levelStart).limit(levelEnd - levelStart).toArray();
                                                         var total = Arrays.stream(newArr).sum();
-                                                        context.getSource().sendFeedback(Text.of(PREFIX + " §3Total Crop XP Required: §e" + NumberUtils.formatNumber(total, ",")));
+                                                        calcSend(context, "Crop", total);
                                                         return 1;
                                                     }
                                             )
                                     ))
                     ).executes(context -> {
-                        context.getSource().sendFeedback(Text.of(PREFIX + " §cInvalid arguments"));
+                        send(context, INVALID);
                         return 0;
                     })
             )
@@ -251,29 +261,36 @@ public class SBTCommand {
                                             .executes(context -> {
                                                         var perk = CalcPowder.PERKS.get(StringArgumentType.getString(context, "perk"));
                                                         if (perk == null) {
-                                                            context.getSource().sendFeedback(Text.of(PREFIX + " §cInvalid perk"));
+                                                            send(context, TextUtils.withColor("Invalid perk", Colors.RED));
                                                             return 0;
                                                         }
                                                         var levelStart = IntegerArgumentType.getInteger(context, "level-start");
                                                         var levelEnd = IntegerArgumentType.getInteger(context, "level-end");
 
                                                         if (levelStart < 0 || levelEnd < 0 || levelStart >= levelEnd) {
-                                                            context.getSource().sendFeedback(Text.of(PREFIX + " §cInvalid arguments"));
+                                                            send(context, INVALID);
                                                             return 0;
                                                         }
                                                         if (levelEnd > perk.max) {
-                                                            context.getSource().sendFeedback(Text.of(PREFIX + " §cTargeted end level is higher than max (§e" + perk.max + "§c)"));
+                                                            send(context, TextUtils.join(
+                                                                    TextUtils.withColor("Targeted end level is higher than max (", Colors.RED),
+                                                                    TextUtils.withColor(Integer.toString(perk.max), Colors.YELLOW),
+                                                                    TextUtils.withColor(")", Colors.RED)
+                                                            ));
                                                             return 0;
                                                         }
 
                                                         var total = perk.costBetween(levelStart, levelEnd);
-                                                        context.getSource().sendFeedback(Text.of(PREFIX + " §3Total " + perk.powder.getDisplayName() + " Powder Required: §e" + NumberUtils.formatNumber(total, ",")));
+                                                        send(context, TextUtils.join(
+                                                                TextUtils.withColor("Total " + perk.powder.getDisplayName() + " Powder Required: ", Colors.CYAN),
+                                                                TextUtils.withColor(NumberUtils.formatNumber(total, ","), Colors.YELLOW)
+                                                        ));
                                                         return 1;
                                                     }
                                             )
                                     ))
                     ).executes(context -> {
-                        context.getSource().sendFeedback(Text.of(PREFIX + " §cInvalid arguments"));
+                        send(context, INVALID);
                         return 0;
                     })
 
@@ -315,11 +332,17 @@ public class SBTCommand {
                                                                 case "mode" -> SkyblockTweaks.DATA.mode = value;
                                                                 case "riftSeconds" -> SkyblockTweaks.DATA.riftSeconds = Integer.parseInt(value);
                                                                 default -> {
-                                                                    context.getSource().sendFeedback(Text.of(PREFIX + " §cInvalid key"));
+                                                                    send(context, INVALID);
                                                                     return 0;
                                                                 }
                                                             }
-                                                            context.getSource().sendFeedback(Text.of(PREFIX + " §3Set " + StringArgumentType.getString(context, "key") + " to " + value));
+                                                            //context.getSource().sendFeedback(Text.of(PREFIX + " §3Set " + StringArgumentType.getString(context, "key") + " to " + value));
+                                                            send(context, TextUtils.join(
+                                                                    TextUtils.withColor("Set ", Colors.CYAN),
+                                                                    TextUtils.withColor(StringArgumentType.getString(context, "key"), Colors.YELLOW),
+                                                                    TextUtils.withColor(" to ", Colors.CYAN),
+                                                                    TextUtils.withColor(value, Colors.YELLOW)
+                                                            ));
                                                             return 1;
                                                         })
                                                 )
@@ -330,17 +353,17 @@ public class SBTCommand {
                                 .then(literal("partycommands").executes(context -> {
                                     if (PartyFeatures.verboseDebug) {
                                         PartyFeatures.verboseDebug = false;
-                                        context.getSource().sendFeedback(Text.of(PREFIX + " §cDisabled party command debug"));
+                                        send(context, TextUtils.withColor("Disabled party command debug", Colors.RED));
                                     } else {
                                         PartyFeatures.verboseDebug = true;
-                                        context.getSource().sendFeedback(Text.of(PREFIX + " §aEnabled party command debug"));
+                                        send(context, TextUtils.withColor("Enabled party command debug", Colors.LIME));
                                     }
                                     return 1;
                                 }))
 
                                 .then(literal("sysInfo").executes(context -> {
                                     var source = context.getSource();
-                                    source.sendFeedback(Text.literal(PREFIX + " §3System Information"));
+                                    send(context, TextUtils.withColor("System Information", Colors.CYAN));
                                     source.sendFeedback(CommandUtils.getDebugText("Minecraft Version", MinecraftVersion.CURRENT.getName()));
                                     source.sendFeedback(CommandUtils.getDebugText("Operating System", System.getProperty("os.name")));
                                     source.sendFeedback(CommandUtils.getDebugText("OS Version", System.getProperty("os.version")));
@@ -357,7 +380,7 @@ public class SBTCommand {
                                         .executes(context -> {
                                             var components =  SkyblockTweaks.mc.player.getMainHandStack().getComponents();
                                             components.forEach((component) -> {
-                                                context.getSource().sendFeedback(Text.of(PREFIX + " §3" + component.toString()));
+                                                send(context, TextUtils.withColor(component.toString(), Colors.CYAN));
                                             });
                                             return 1;
                                         }))
@@ -366,7 +389,8 @@ public class SBTCommand {
                                                         .executes(context -> {
                                                             var components = SkyblockTweaks.mc.player.getInventory().getStack(IntegerArgumentType.getInteger(context, "number")).getComponents();
                                                             components.forEach((component) -> {
-                                                                context.getSource().sendFeedback(Text.of(PREFIX + " §3" + component.toString()));
+                                                                send(context, TextUtils.withColor(component.toString(), Colors.CYAN));
+
                                                             });
                                                             return 1;
                                                         })
@@ -381,10 +405,10 @@ public class SBTCommand {
                                                                     var screen = (GenericContainerScreen) SkyblockTweaks.mc.currentScreen;
                                                                     var components = screen.getScreenHandler().getSlot(IntegerArgumentType.getInteger(context, "number")).getStack().getComponents();
                                                                     components.forEach((component) -> {
-                                                                        context.getSource().sendFeedback(Text.of(PREFIX + " §3" + component.toString()));
+                                                                        send(context, TextUtils.withColor(component.toString(), Colors.CYAN));
                                                                     });
                                                                 } catch (Exception e) {
-                                                                    SkyblockTweaks.LOGGER.error("Error while sleeping", e);
+                                                                    ErrorHandler.handleError(e, "Thread Sleep Error in Dump Components", ErrorLevel.WARNING);
                                                                 }
 
                                                             }).start();
@@ -392,9 +416,16 @@ public class SBTCommand {
                                                         })
                                         )
                                 ))
+                                .then(literal("intentionalError").then(argument("warningOnly", BoolArgumentType.bool())
+
+                                        .executes(context -> {
+                                            ErrorHandler.handleError(new RuntimeException("Intentional Error"), "This is an intentional error", BoolArgumentType.getBool(context, "warningOnly") ? ErrorLevel.WARNING : ErrorLevel.CRITICAL);
+                                            return 1;
+                                        }))
+                                )
                                 .then(literal("fullData").executes(context -> {
                                     var source = context.getSource();
-                                    source.sendFeedback(Text.literal(PREFIX + " §3Full Data Dump"));
+                                    send(context, TextUtils.withColor("Full Data Dump", Colors.CYAN));
                                     source.sendFeedback(CommandUtils.getDebugText("Defence", SkyblockTweaks.DATA.defense));
                                     source.sendFeedback(CommandUtils.getDebugText("Max Health", SkyblockTweaks.DATA.maxHealth));
                                     source.sendFeedback(CommandUtils.getDebugText("Health", SkyblockTweaks.DATA.health));
@@ -415,12 +446,12 @@ public class SBTCommand {
                                     return 1;
                                 })).then(literal("dumpTablist").executes(context -> {
                                     SkyblockTweaks.LOGGER.info(TabListParser.parseTabList().serialize());
-                                    SkyblockTweaks.mc.player.sendMessage(Text.of(PREFIX + " §3Tablist data dumped to logs"), false);
+                                    MessageManager.send("Tablist data dumped to logs", Colors.CYAN);
                                     return 1;
                                 })
                                 ).executes(context -> {
                                     var source = context.getSource();
-                                    source.sendFeedback(Text.literal(PREFIX +  " §3Debug Information"));
+                                    send(context, TextUtils.withColor("Debug Information", Colors.CYAN));
                                     source.sendFeedback(CommandUtils.getDebugText("Version", SkyblockTweaks.VERSION.getVersionString()));
                                     source.sendFeedback(CommandUtils.getDebugText("In Skyblock", SkyblockTweaks.DATA.inSB));
                                     //source.sendFeedback(CommandUtils.getDebugText("Mode", SkyblockTweaks.DATA.mode));
@@ -436,7 +467,7 @@ public class SBTCommand {
                         )
                         .then(calc)
                                 .executes(context -> {
-                                    context.getSource().sendFeedback(Text.of(PREFIX + " §cInvalid arguments"));
+                                    send(context, INVALID);
                                     return 0;
                                 })
 

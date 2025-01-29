@@ -23,6 +23,8 @@ import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.network.PlayerListEntry;
 import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.mixin.PlayerListHudAccessor;
+import wtf.cheeze.sbt.utils.errors.ErrorHandler;
+import wtf.cheeze.sbt.utils.errors.ErrorLevel;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -80,7 +82,7 @@ public class TabListParser {
             data.activeWidgets = data.widgetLines.keySet();
             return data;
         } catch (Exception e) {
-            SkyblockTweaks.LOGGER.error("Failed to parse tablist", e);
+            ErrorHandler.handleError(e, "Failed to parse tab list", ErrorLevel.WARNING);
             return TabListData.EMPTY;
         }
     }

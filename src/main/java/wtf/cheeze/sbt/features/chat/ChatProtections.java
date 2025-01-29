@@ -26,7 +26,10 @@ import net.minecraft.text.Text;
 import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SBTConfig;
+import wtf.cheeze.sbt.utils.MessageManager;
 import wtf.cheeze.sbt.utils.TimedValue;
+import wtf.cheeze.sbt.utils.render.Colors;
+
 import static wtf.cheeze.sbt.config.categories.Chat.key;
 import static wtf.cheeze.sbt.config.categories.Chat.keyD;
 
@@ -36,7 +39,8 @@ public class ChatProtections {
 
     private static TimedValue<String> lastMessageCoop = TimedValue.of(null);
     private static TimedValue<String> lastMessageIp = TimedValue.of(null);
-    private static final String BASE_COOP_MESSAGE = "§7[§aSkyblockTweaks§f§7] §cAre you sure you want to invite §e%s §cto your island? They will have complete access and you may not be able to remove them! Run the command again to add them.";
+    //TODO: Switch this away from legacy formatting
+    private static final String BASE_COOP_MESSAGE = "§cAre you sure you want to invite §e%s §cto your island? They will have complete access and you may not be able to remove them! Run the command again to add them.";
     private static final Pattern IP_PATTERN = Pattern.compile("(?:[0-9]{1,3}\\.){3}[0-9]{1,3}");
 
 
@@ -48,7 +52,7 @@ public class ChatProtections {
                     return true;
                 }
                 lastMessageCoop = TimedValue.of(message, 5000);
-                SkyblockTweaks.mc.player.sendMessage(Text.literal(String.format(BASE_COOP_MESSAGE, message.split(" ")[1])), false);
+                MessageManager.send(String.format(BASE_COOP_MESSAGE, message.split(" ")[1]));
                 return false;
             } else if (SBTConfig.get().chatProtections.ip) {
                 var i = checkIp(message);
@@ -80,9 +84,9 @@ public class ChatProtections {
             }
             lastMessageIp = TimedValue.of(message, 5000);
             if (address) {
-                SkyblockTweaks.mc.player.sendMessage(Text.literal("§7[§aSkyblockTweaks§f§7] §cAre you sure you want to send a message with an ip address? Hypixel may ban you for this! Send the message again to confirm."), false);
+               MessageManager.send("Are you sure you want to send a message with an ip address? Hypixel may ban you for this! Send the message again to confirm.", Colors.LIGHT_RED);
             } else {
-                SkyblockTweaks.mc.player.sendMessage(Text.literal("§7[§aSkyblockTweaks§f§7] §cAre you sure you want to send a message with the word \"ip\" in it? Hypixel has been known to auto mute/ban messages containing \"ip\"! Send the message again to confirm."), false);
+               MessageManager.send("Are you sure you want to send a message with the word \"ip\" in it? Hypixel has been known to auto mute/ban messages containing \"ip\"! Send the message again to confirm.", Colors.LIGHT_RED);
             }
 
             return false;
@@ -90,7 +94,7 @@ public class ChatProtections {
 
     private static int checkIp(String message) {
         if (IP_PATTERN.matcher(message).find()) return 2;
-        if (message.contains(" ip ") || message.startsWith("ip ") || message.endsWith(" ip")) return 1;
+        if (message.contains(" ip ") || message.startsWith("ip ") || message.endsWith(" ip") || message.contains(" ip.") || message.contains(" ip?")) return 1;
         return 0;
     }
 

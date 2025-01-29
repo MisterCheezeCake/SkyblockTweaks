@@ -26,6 +26,7 @@ import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import wtf.cheeze.sbt.SkyblockTweaks;
+import wtf.cheeze.sbt.utils.render.Colors;
 import wtf.cheeze.sbt.utils.render.RenderUtils;
 import wtf.cheeze.sbt.hud.HudScreen;
 
@@ -94,8 +95,8 @@ public class SkyblockTweaksScreenMain extends Screen {
         MinecraftClient mc = MinecraftClient.getInstance();
         var centerX = mc.getWindow().getScaledWidth() / 2;
         super.render(context, mouseX, mouseY, delta);
-        RenderUtils.drawCenteredText(context, Text.literal("SkyblockTweaks"), centerX, 3, 3658595, true, 2.5f);
-        RenderUtils.drawCenteredText(context, Text.literal("v" + SkyblockTweaks.VERSION.getVersionString()), centerX, 25, 0xFFFFFF, true);
-        RenderUtils.drawCenteredText(context, Text.literal("By MisterCheezeCake"), centerX, 36, 16733525, true);
+        RenderUtils.drawCenteredText(context, Text.literal("SkyblockTweaks"), centerX, 3, Colors.SBT_GREEN, true, 2.5f);
+        RenderUtils.drawCenteredText(context, Text.literal("v" + SkyblockTweaks.VERSION.getVersionString()), centerX, 25, Colors.WHITE, true);
+        RenderUtils.drawCenteredText(context, Text.literal("By MisterCheezeCake"), centerX, 36, Colors.LIGHT_RED, true);
     }
 }

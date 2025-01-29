@@ -24,6 +24,8 @@ import net.minecraft.client.gui.screen.ingame.GenericContainerScreen;
 import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.config.persistent.ProfileData;
 import wtf.cheeze.sbt.utils.TextUtils;
+import wtf.cheeze.sbt.utils.errors.ErrorHandler;
+import wtf.cheeze.sbt.utils.errors.ErrorLevel;
 
 import java.util.regex.Pattern;
 
@@ -66,7 +68,7 @@ public class ProfileManager {
                     try {
                         Thread.sleep(1000);
                     } catch (Exception e) {
-                        e.printStackTrace();
+                        ErrorHandler.handleError(e, "Thread Sleep Error in Profile Manager", ErrorLevel.WARNING);
                     }
                     if (client.currentScreen != screen) return;
                     var containerScreen = (GenericContainerScreen) screen;

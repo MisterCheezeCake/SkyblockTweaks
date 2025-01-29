@@ -38,6 +38,8 @@ import wtf.cheeze.sbt.hud.utils.HudInformation;
 import wtf.cheeze.sbt.hud.components.SingleHudLine;
 import wtf.cheeze.sbt.hud.bases.TextHUD;
 import wtf.cheeze.sbt.utils.enums.Skills;
+import wtf.cheeze.sbt.utils.errors.ErrorHandler;
+import wtf.cheeze.sbt.utils.errors.ErrorLevel;
 import wtf.cheeze.sbt.utils.render.Colors;
 import wtf.cheeze.sbt.utils.skyblock.IconDict;
 import wtf.cheeze.sbt.utils.skyblock.SkyblockConstants;
@@ -164,7 +166,8 @@ public class SkillHUDManager {
                         try {
                             return IconDict.SKILL_ICONS.getOrDefault(currentSkill, IconDict.DEFAULT_ICON);
                         } catch (Exception e) {
-                            SkyblockTweaks.LOGGER.error("Error getting skill icon", e);
+                            //SkyblockTweaks.LOGGER.error("Error getting skill icon", e);
+                            ErrorHandler.handleError(e, "Error getting skill icon", ErrorLevel.SILENT);
                             return IconDict.DEFAULT_ICON;
                         }
                     },

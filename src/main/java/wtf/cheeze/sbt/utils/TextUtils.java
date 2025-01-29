@@ -27,21 +27,30 @@ public class TextUtils {
     }
     public static final Text SPACE = Text.literal(" ");
 
-    public static Text getTextThatLinksToURL(String text, String hovered, String url) {
-        return Text.literal(text).styled(style -> {
-            style = style.withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.literal(hovered)));
+    public static Text getTextThatLinksToURL(MutableText text, Text hovered, String url) {
+        return text.styled(style -> {
+            style = style.withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, hovered));
             style = style.withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, url));
             return style;
         });
     }
 
-    public static Text getTextThatRunsCommand(String text, String hovered, String command) {
-        return Text.literal(text).styled(style -> {
-            style = style.withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.literal(hovered)));
+    public static Text getTextThatLinksToURL(String text, String hovered, String url) {
+        return getTextThatLinksToURL(Text.literal(text), Text.literal(hovered), url);
+    }
+
+    public static Text getTextThatRunsCommand(MutableText text, Text hovered, String command) {
+        return text.styled(style -> {
+            style = style.withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, hovered));
             style = style.withClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, command));
             return style;
         });
     }
+
+    public static Text getTextThatRunsCommand(String text, String hovered, String command) {
+        return getTextThatRunsCommand(Text.literal(text), Text.literal(hovered), command);
+    }
+
 
     public static MutableText withColor(String text, int color) {
         return Text.literal(text).styled(style -> style.withColor(color));
@@ -69,11 +78,18 @@ public class TextUtils {
         return text.substring(0, 1).toUpperCase() + text.substring(1);
     }
 
-    public static Text join(Text... texts) {
+    public static MutableText join(Text... texts) {
         var result = Text.literal("");
         for (var text : texts) {
             result = result.append(text);
         }
         return result;
+    }
+
+    public static ClickEvent copyEvent(String text) {
+        return new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, text);
+    }
+    public static HoverEvent showText(Text text) {
+        return new HoverEvent(HoverEvent.Action.SHOW_TEXT, text);
     }
 }

@@ -359,5 +359,7 @@
   "sbt.config.globalSearch.desc": "Contains all SBT options in a single searchable category",
   "sbt.config.globalSearch.open": "Open Global Search",
   "sbt.config.globalSearch.open.desc": "Opens a menu with everything in a single category for easy searching",
-  "sbt.config.globalSearch.open.text": "Open"
+  "sbt.config.globalSearch.open.text": "Open",
+  "sbt.config.general.errors.chatAll.desc": "Whether or not all errors caught by the mod should be sent in chat, or if only critical ones should be",
+  "sbt.config.general.errors.chatAll": "Chat All Errors"
 }
