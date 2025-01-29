@@ -121,7 +121,7 @@ public class RiftTimeHUD extends TextHUD {
                     .binding(
                             defaults.huds.riftTime.enabled,
                             () -> config.huds.riftTime.enabled,
-                            value -> config.huds.riftTime.enabled = value
+                            value -> config.huds.riftTime.enabled = (boolean) value
                     )
                     .build();
 
@@ -179,7 +179,7 @@ public class RiftTimeHUD extends TextHUD {
                     .binding(
                             defaults.huds.riftTime.icon,
                             () -> config.huds.riftTime.icon,
-                            value -> config.huds.riftTime.icon = value
+                            value -> config.huds.riftTime.icon = (boolean) value
                     )
                     .build();
 
@@ -190,7 +190,7 @@ public class RiftTimeHUD extends TextHUD {
                     .binding(
                             defaults.huds.riftTime.showLeftText,
                             () -> config.huds.riftTime.showLeftText,
-                            value -> config.huds.riftTime.showLeftText = value
+                            value -> config.huds.riftTime.showLeftText = (boolean) value
                     )
                     .build();
 

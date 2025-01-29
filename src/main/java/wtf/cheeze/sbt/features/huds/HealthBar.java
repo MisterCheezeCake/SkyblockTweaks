@@ -93,7 +93,7 @@ public class HealthBar extends BarHUD {
                     .binding(
                             defaults.huds.healthBar.enabled,
                             () -> config.huds.healthBar.enabled,
-                            value -> config.huds.healthBar.enabled = value
+                            value -> config.huds.healthBar.enabled = (boolean) value
                     )
                     .build();
             var color = Option.<Color>createBuilder()

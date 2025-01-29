@@ -114,7 +114,7 @@ public class ChatProtections {
                     .binding(
                             defaults.chatProtections.coop,
                             () -> config.chatProtections.coop,
-                            value -> config.chatProtections.coop = value
+                            value -> config.chatProtections.coop = (boolean) value
                     )
                     .build();
             var ip = Option.<Boolean>createBuilder()
@@ -124,7 +124,7 @@ public class ChatProtections {
                     .binding(
                             defaults.chatProtections.ip,
                             () -> config.chatProtections.ip,
-                            value -> config.chatProtections.ip = value
+                            value -> config.chatProtections.ip = (boolean) value
                     )
                     .build();
 

@@ -116,7 +116,7 @@ public class QuiverHUD extends TextHUD {
                     .binding(
                             defaults.huds.quiver.enabled,
                             () -> config.huds.quiver.enabled,
-                            value -> config.huds.quiver.enabled = value
+                            value -> config.huds.quiver.enabled = (boolean) value
                     )
                     .build();
             var icon = Option.<Boolean>createBuilder()
@@ -126,7 +126,7 @@ public class QuiverHUD extends TextHUD {
                     .binding(
                             defaults.huds.quiver.icon,
                             () -> config.huds.quiver.icon,
-                            value -> config.huds.quiver.icon = value
+                            value -> config.huds.quiver.icon = (boolean) value
                     )
                     .build();
 

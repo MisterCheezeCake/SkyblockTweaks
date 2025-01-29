@@ -109,7 +109,7 @@ public class EhpHUD extends TextHUD {
                     .binding(
                             defaults.huds.ehp.enabled,
                             () -> config.huds.ehp.enabled,
-                            value -> config.huds.ehp.enabled = value
+                            value -> config.huds.ehp.enabled = (boolean) value
                     )
                     .build();
             var outline = Option.<Color>createBuilder()
@@ -158,7 +158,7 @@ public class EhpHUD extends TextHUD {
                     .binding(
                             defaults.huds.ehp.icon,
                             () -> config.huds.ehp.icon,
-                            value -> config.huds.ehp.icon = value
+                            value -> config.huds.ehp.icon = (boolean) value
                     )
                     .build();
             var separator = Option.<String>createBuilder()

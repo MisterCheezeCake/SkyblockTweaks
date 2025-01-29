@@ -111,7 +111,7 @@ public class HealthHUD extends TextHUD {
                     .binding(
                             defaults.huds.health.enabled,
                             () -> config.huds.health.enabled,
-                            value -> config.huds.health.enabled = value
+                            value -> config.huds.health.enabled = (boolean) value
                     )
                     .build();
             var color = Option.<Color>createBuilder()
@@ -168,7 +168,7 @@ public class HealthHUD extends TextHUD {
                     .binding(
                             defaults.huds.health.icon,
                             () -> config.huds.health.icon,
-                            value -> config.huds.health.icon = value
+                            value -> config.huds.health.icon = (boolean) value
                     )
                     .build();
             var separator = Option.<String>createBuilder()

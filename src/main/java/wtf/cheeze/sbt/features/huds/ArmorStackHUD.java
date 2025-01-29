@@ -101,7 +101,7 @@ public class ArmorStackHUD extends TextHUD {
                     .binding(
                             defaults.huds.armorStack.enabled,
                             () -> config.huds.armorStack.enabled,
-                            value -> config.huds.armorStack.enabled = value
+                            value -> config.huds.armorStack.enabled = (boolean) value
                     )
                     .build();
 

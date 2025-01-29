@@ -188,7 +188,7 @@ public class HudScreen extends Screen {
                 context.drawCenteredTextWithShadow(mc.textRenderer, "Control + R to enter Reset Mode" , centerX, 45, 0xFFFFFF);
                 context.drawCenteredTextWithShadow(mc.textRenderer, "Press alt to hide this text" , centerX, 55, 0xFFFFFF);
             } else if (this.mode == Mode.TEXT) {
-                context.drawCenteredTextWithShadow(mc.textRenderer, TextUtils.join(Text.literal("You are now in exact positioning mode, editing ", selectedElement.getName()) , centerX, 5, 0xFFFFFF);
+                context.drawCenteredTextWithShadow(mc.textRenderer, TextUtils.join(Text.literal("You are now in exact positioning mode, editing "), selectedElement.getName()) , centerX, 5, 0xFFFFFF);
                 context.drawCenteredTextWithShadow(mc.textRenderer, "Enter the x and y positions in the text fields below" , centerX, 15, 0xFFFFFF);
                 context.drawCenteredTextWithShadow(mc.textRenderer, "The number is relative, so 0 is fully up/left and 1 is fully up/right" , centerX, 25, 0xFFFFFF);
                 context.drawCenteredTextWithShadow(mc.textRenderer, "Press the done button to exit" , centerX, 35, 0xFFFFFF);
@@ -206,7 +206,7 @@ public class HudScreen extends Screen {
                 if (b) {
                     hovered = hud;
                     if (hasShiftDown()) {
-                        this.setTooltip(Tooltip.of(Text.literal(hud.getName())), HoveredTooltipPositioner.INSTANCE, false);
+                        this.setTooltip(Tooltip.of(hud.getName()), HoveredTooltipPositioner.INSTANCE, false);
                     }
                 }
             }

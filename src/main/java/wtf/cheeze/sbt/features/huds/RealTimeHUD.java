@@ -136,7 +136,7 @@ public class RealTimeHUD extends TextHUD {
                     .binding(
                             defaults.huds.time.enabled,
                             () -> config.huds.time.enabled,
-                            value -> config.huds.time.enabled = value
+                            value -> config.huds.time.enabled = (boolean) value
                     )
                     .build();
 
@@ -147,7 +147,7 @@ public class RealTimeHUD extends TextHUD {
                     .binding(
                             defaults.huds.time.showOutside,
                             () -> config.huds.time.showOutside,
-                            value -> config.huds.time.showOutside = value
+                            value -> config.huds.time.showOutside = (boolean) value
                     )
                     .build();
 
@@ -158,7 +158,7 @@ public class RealTimeHUD extends TextHUD {
                     .binding(
                             defaults.huds.time.seconds,
                             () -> config.huds.time.seconds,
-                            value -> config.huds.time.seconds = value
+                            value -> config.huds.time.seconds = (boolean) value
                     )
                     .build();
 
@@ -169,7 +169,7 @@ public class RealTimeHUD extends TextHUD {
                     .binding(
                             defaults.huds.time.amPM,
                             () -> config.huds.time.amPM,
-                            value -> config.huds.time.amPM = value
+                            value -> config.huds.time.amPM = (boolean) value
                     )
                     .available(config.huds.time.twelveHour)
                     .build();
@@ -181,8 +181,8 @@ public class RealTimeHUD extends TextHUD {
                             defaults.huds.time.twelveHour,
                             () -> config.huds.time.twelveHour,
                             value -> {
-                                config.huds.time.twelveHour = value;
-                                amPM.setAvailable(value);
+                                config.huds.time.twelveHour = (boolean) value;
+                                amPM.setAvailable((boolean) value);
                             }
                     )
                     .build();
