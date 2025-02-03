@@ -33,14 +33,12 @@ import wtf.cheeze.sbt.hud.utils.DrawMode;
 import wtf.cheeze.sbt.hud.utils.HudInformation;
 import wtf.cheeze.sbt.utils.TextUtils;
 import wtf.cheeze.sbt.utils.render.Colors;
-import wtf.cheeze.sbt.utils.skyblock.IconDict;
+import wtf.cheeze.sbt.utils.skyblock.Icons;
 import wtf.cheeze.sbt.utils.skyblock.SkyblockUtils;
 
 import java.awt.*;
 
 public class QuiverHUD extends TextHUD {
-
-
 
     public QuiverHUD() {
         INFO = new HudInformation(
@@ -65,7 +63,7 @@ public class QuiverHUD extends TextHUD {
                             TextUtils.withColor("x" + quiver.arrowCount, Colors.GRAY)
                     );
                 },
-                () -> IconDict.ARROW,
+                () -> Icons.ARROW,
                 () -> SBTConfig.huds().quiver.icon
         );
 

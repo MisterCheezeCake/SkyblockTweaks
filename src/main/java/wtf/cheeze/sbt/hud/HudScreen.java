@@ -33,11 +33,12 @@ import wtf.cheeze.sbt.hud.utils.AnchorPoint;
 import wtf.cheeze.sbt.utils.TextUtils;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Predicate;
 
 public class HudScreen extends Screen {
 
-        private final ArrayList<HUD> huds;
+        private final List<HUD> huds;
 
         @Nullable
         private HUD selectedElement = null;
@@ -64,7 +65,7 @@ public class HudScreen extends Screen {
         private final Screen parent;
         public HudScreen(Text title, ArrayList<HUD> huds, Screen parent) {
             super(title);
-            this.huds = huds;
+            this.huds = huds.stream().filter(it -> it.shouldRender(true)).toList();
             MinecraftClient mc = MinecraftClient.getInstance();
             var centerX = (mc.getWindow().getScaledWidth() / 2) - 50;
             widgetX = new TextFieldWidget(mc.textRenderer, centerX, 55, 100, 20, Text.literal(""));
@@ -174,19 +175,25 @@ public class HudScreen extends Screen {
             anchorButton.active = hud.supportsNonLeftAnchors;
         }
 
+        private static boolean macOS() {
+            return System.getProperty("os.name").equalsIgnoreCase("mac os x");
+        }
+
         @Override
         public void render(DrawContext context, int mouseX, int mouseY, float delta) {
             super.render(context, mouseX, mouseY, delta);
 
             MinecraftClient mc = MinecraftClient.getInstance();
             var centerX = mc.getWindow().getScaledWidth() / 2;
+            context.getMatrices().push();
+            context.getMatrices().translate(0, 0, 100);
             if (!hasAltDown() && this.mode == Mode.DRAG) {
                 context.drawCenteredTextWithShadow(mc.textRenderer, "Drag or use the arrow keys to move items" , centerX, 5, 0xFFFFFF);
                 context.drawCenteredTextWithShadow(mc.textRenderer, "Scroll or use the + and - keys to scale items" , centerX, 15, 0xFFFFFF);
                 context.drawCenteredTextWithShadow(mc.textRenderer, "Press shift and hover to see the name of the item" , centerX, 25, 0xFFFFFF);
-                context.drawCenteredTextWithShadow(mc.textRenderer, "Control click for text mode/to edit anchor points" , centerX, 35, 0xFFFFFF);
-                context.drawCenteredTextWithShadow(mc.textRenderer, "Control + R to enter Reset Mode" , centerX, 45, 0xFFFFFF);
-                context.drawCenteredTextWithShadow(mc.textRenderer, "Press alt to hide this text" , centerX, 55, 0xFFFFFF);
+                context.drawCenteredTextWithShadow(mc.textRenderer, (macOS() ? "Command" : "Control") + " click for text mode/to edit anchor points" , centerX, 35, 0xFFFFFF);
+                context.drawCenteredTextWithShadow(mc.textRenderer, (macOS() ? "Command" : "Control") + "+ R to enter Reset Mode" , centerX, 45, 0xFFFFFF);
+                context.drawCenteredTextWithShadow(mc.textRenderer, "Press " +( macOS() ? "option" : "alt") + " to hide this text" , centerX, 55, 0xFFFFFF);
             } else if (this.mode == Mode.TEXT) {
                 context.drawCenteredTextWithShadow(mc.textRenderer, TextUtils.join(Text.literal("You are now in exact positioning mode, editing "), selectedElement.getName()) , centerX, 5, 0xFFFFFF);
                 context.drawCenteredTextWithShadow(mc.textRenderer, "Enter the x and y positions in the text fields below" , centerX, 15, 0xFFFFFF);
@@ -199,6 +206,8 @@ public class HudScreen extends Screen {
                 context.drawCenteredTextWithShadow(mc.textRenderer, "Press the reset button to reset the selected item to the default position", centerX, 15, 0xFFFFFF);
                 context.drawCenteredTextWithShadow(mc.textRenderer, "Press the first button to cycle between elements", centerX, 25, 0xFFFFFF);
             }
+            context.getMatrices().pop();
+
             HUD hovered = null;
             for (HUD hud : huds) {
                 boolean b = clickInBounds(hud, mouseX, mouseY);
@@ -214,6 +223,7 @@ public class HudScreen extends Screen {
             if (hovered == null) {
                 this.clearTooltip();
             }
+
 
 
         }

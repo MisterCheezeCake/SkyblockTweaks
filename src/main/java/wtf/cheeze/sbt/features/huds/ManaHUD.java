@@ -57,6 +57,9 @@ public class ManaHUD extends TextHUD {
                 () -> SBTConfig.huds().mana.outlineColor,
                 () -> SBTConfig.huds().mana.mode,
                 () -> Text.literal(NumberUtils.formatNumber((int) SkyblockTweaks.DATA.mana, SBTConfig.huds().mana.separator) + "/" + NumberUtils.formatNumber((int) SkyblockTweaks.DATA.maxMana, SBTConfig.huds().mana.separator) + (SBTConfig.huds().mana.icon ? "✎" : ""))
+                //,
+//                () -> Icons.SKILL_ICONS.get(Skills.MINING),
+//                () -> true
         );
     }
     @Override

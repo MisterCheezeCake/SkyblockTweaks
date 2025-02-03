@@ -24,12 +24,14 @@ import dev.isxander.yacl3.api.*;
 import dev.isxander.yacl3.api.controller.*;
 import dev.isxander.yacl3.config.v2.api.ConfigClassHandler;
 import dev.isxander.yacl3.config.v2.api.serializer.GsonConfigSerializerBuilder;
+import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import wtf.cheeze.sbt.config.categories.*;
 import wtf.cheeze.sbt.hud.utils.DrawMode;
+import wtf.cheeze.sbt.utils.events.EventUtils;
 
 import java.nio.file.Path;
 
@@ -44,35 +46,24 @@ public class  SBTConfig {
                     .setPath(PATH)
                     .build())
             .build();
-    public static Screen getScreen(Screen parent) {
-        return YetAnotherConfigLib.create(HANDLER,
-                (defaults, configThing, builder) -> {
-                    return builder
-                            .title(Text.literal("SkyblockTweaks"))
-                            .category(General.getCategory(defaults, configThing))
-                            .category(Chat.getCategory(defaults, configThing))
-                            .category(Huds.getCategory(defaults, configThing));
 
-                }).generateScreen(parent);
+    public static Event<Runnable> CONFIG_SAVE = EventUtils.getRunnableBackedEvent();
+    public static Screen getScreen(Screen parent) {
+        var defaults = HANDLER.defaults();
+        var config = HANDLER.instance();
+        return baseBuilder()
+                .category(General.getCategory(defaults, config))
+                .category(Chat.getCategory(defaults, config))
+                .category(Huds.getCategory(defaults, config))
+                .category(Mining.getCategory(defaults, config))
+                .build().generateScreen(parent);
+
     }
     public static Screen getGlobalSearchScreen(Screen parent) {
-        return YetAnotherConfigLib.create(HANDLER,
-                (defaults, configThing, builder) -> {
-                    return builder
-                            .title(Text.literal("SkyblockTweaks"))
-                            .category(GlobalSearchCategory.getCategory(defaults, configThing));
-
-                }).generateScreen(parent);
+        return baseBuilder().category(GlobalSearchCategory.getCategory(HANDLER.defaults(), HANDLER.instance())).build().generateScreen(parent);
     }
     public static Screen getSpecialGlobalSearchScreen(Screen bigParent) {
-        var yacl = YetAnotherConfigLib.create(HANDLER,
-                (defaults, configThing, builder) -> {
-                    return builder
-                            .title(Text.literal("SkyblockTweaks"))
-                            .category(GlobalSearchCategory.getCategory(defaults, configThing));
-
-                });
-        return new GlobalSearchYaclScreen(yacl, () -> getScreen(bigParent));
+        return new GlobalSearchYaclScreen(baseBuilder().category(GlobalSearchCategory.getCategory(HANDLER.defaults(), HANDLER.instance())).build(), () -> getScreen(bigParent));
     }
 
     public static ConfigImpl get() {
@@ -81,14 +72,20 @@ public class  SBTConfig {
     public static Huds huds() {
         return get().huds;
     }
-
-    public static void override(ConfigImpl config) {
-
+    public static Mining mining() {
+        return get().mining;
     }
 
+    private static YetAnotherConfigLib.Builder baseBuilder() {
+        return YetAnotherConfigLib.createBuilder().title(Text.literal("SkyblockTweaks")).save(
+                () -> {
+                    HANDLER.save();
+                    CONFIG_SAVE.invoker().run();
+                }
+        );
+    }
 
-
-    public static ControllerBuilder generateBooleanController(Option<Boolean> opt) {
+    public static BooleanControllerBuilder generateBooleanController(Option<Boolean> opt) {
         return BooleanControllerBuilder.create(opt).coloured(true);
     }
     public static FloatSliderControllerBuilder generateScaleController(Option<Float> opt) {

@@ -37,7 +37,6 @@ import java.util.HashMap;
 public class PersistentData {
 
     public HashMap<String, ProfileData> profiles = new HashMap<String, ProfileData>();
-    private static final Path configPath = FabricLoader.getInstance().getConfigDir().resolve("skyblocktweaks-persistent.json");
 
     public void save() {
         var configFile = new File(String.valueOf(configPath));
@@ -52,6 +51,8 @@ public class PersistentData {
         }
     }
 
+    private static final Path configPath = FabricLoader.getInstance().getConfigDir().resolve("skyblocktweaks-persistent.json");
+
     public static PersistentData load() {
         var configFile = new File(String.valueOf(configPath));
         try {
@@ -62,10 +63,13 @@ public class PersistentData {
             }
             var content = Files.readString(configPath);
             return SkyblockTweaks.GSON.fromJson(content, PersistentData.class);
-           
+
         } catch (Exception e) {
             ErrorHandler.handleError(e, "Failed to load persistent data", ErrorLevel.CRITICAL);
             return new PersistentData();
         }
     }
+
+
+
 }

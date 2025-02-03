@@ -9,10 +9,11 @@
     "HandledScreenMixin",
     "InGameHudMixin",
     "InventoryScreenMixin",
-    "YACLScreenAccessor",
-    "PlayerListHudAccessor"
+    "PlayerListHudAccessor",
+    "YACLScreenAccessor"
   ],
   "injectors": {
-    "defaultRequire": 1
+    "defaultRequire": 1,
+    "maxShiftBy": 5
   }
 }

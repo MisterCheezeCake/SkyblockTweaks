@@ -18,17 +18,14 @@
  */
 package wtf.cheeze.sbt.hud.components;
 
-import com.mojang.brigadier.Message;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.text.Text;
 import org.jetbrains.annotations.Nullable;
-import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.hud.HudIcon;
+import wtf.cheeze.sbt.hud.cache.Cache;
 import wtf.cheeze.sbt.hud.utils.DrawMode;
-import wtf.cheeze.sbt.utils.TextUtils;
-import wtf.cheeze.sbt.utils.errors.ErrorHandler;
-import wtf.cheeze.sbt.utils.errors.ErrorLevel;
-import wtf.cheeze.sbt.utils.render.Colors;
+import wtf.cheeze.sbt.hud.cache.UpdateTiming;
+import wtf.cheeze.sbt.utils.DataUtils;
 import wtf.cheeze.sbt.utils.render.RenderUtils;
 
 import java.util.function.Supplier;
@@ -41,7 +38,10 @@ public class SingleHudLine implements HudComponent {
     public Supplier<Text> text;
     public Supplier<Boolean> useIcon;
 
-    private static final Text ERROR = TextUtils.withColor("ERROR", Colors.RED);
+    private final UpdateTiming timing;
+
+    private final Cache<Text> cache;
+
 
     public int lineCount = 1;
 
@@ -50,73 +50,71 @@ public class SingleHudLine implements HudComponent {
     public Supplier<HudIcon> icon;
 
     public SingleHudLine(Supplier<Integer> getColor, Supplier<Integer> getOutlineColor, Supplier<DrawMode> getMode, Supplier<Text> getText) {
-        this.color = getColor;
-        this.outlineColor = getOutlineColor;
-        this.text = getText;
-        this.mode = getMode;
-        this.useIcon = () -> false;
-
+        this(UpdateTiming.FRAME, getColor, getOutlineColor, getMode, getText, null, DataUtils.alwaysFalse);
+    }
+    public SingleHudLine(UpdateTiming timing, Supplier<Integer> getColor, Supplier<Integer> getOutlineColor, Supplier<DrawMode> getMode, Supplier<Text> getText) {
+        this(timing, getColor, getOutlineColor, getMode, getText, null, DataUtils.alwaysFalse);
     }
 
     public SingleHudLine(Supplier<Integer> getColor, Supplier<Integer> getOutlineColor, Supplier<DrawMode> getMode, Supplier<Text> getText, Supplier<HudIcon> icon, Supplier<Boolean> useIcon) {
+        this(UpdateTiming.FRAME, getColor, getOutlineColor, getMode, getText, icon, useIcon);
+    }
+
+    public SingleHudLine(UpdateTiming timing, Supplier<Integer> getColor, Supplier<Integer> getOutlineColor, Supplier<DrawMode> getMode, Supplier<Text> getText, Supplier<HudIcon> icon, Supplier<Boolean> useIcon) {
+        this.timing = timing;
         this.color = getColor;
         this.outlineColor = getOutlineColor;
         this.text = getText;
         this.mode = getMode;
         this.icon = icon;
         this.useIcon = useIcon;
+        this.cache = new Cache<>(timing, text, ERROR);
     }
+
+
 
 
     @Override
     public int render(DrawContext context, int x, int y, float scale) {
+        if (timing == UpdateTiming.FRAME ||cache.isDueForUpdate()) {
+            cache.update();
+        }
 
         switch (mode.get()) {
-            case PURE:
-                render(context, x, y, scale, false);
-                break;
-            case SHADOW:
-                render(context, x, y, scale, true);
-                break;
-            case OUTLINE:
+            case PURE -> render(context, x, y, scale, false);
+            case SHADOW ->  render(context, x, y, scale, true);
+            case OUTLINE -> {
                 if (useIcon.get()) {
                     icon.get().render(context, x, y, scale);
 
-                    RenderUtils.drawTextWithOutline(context, getText() , x + (int) (10 * scale), y, color.get(), outlineColor.get(), scale, true);
+                    RenderUtils.drawTextWithOutline(context, cache.get(), x + (int) (10 * scale), y, color.get(), outlineColor.get(), scale, true);
                 } else {
-                    RenderUtils.drawTextWithOutline(context, getText(), x, y, color.get(), outlineColor.get(), scale, true);
+                    RenderUtils.drawTextWithOutline(context, cache.get(), x, y, color.get(), outlineColor.get(), scale, true);
                 }
+            }
         }
         return 1;
     }
 
-    private Text getText() {
-        try {
-            return text.get();
-        } catch (Exception e) {
-            //SkyblockTweaks.LOGGER.error("Error while getting text for HUD line", e);
-            ErrorHandler.handleError(e, "Error while getting text for HUD line", ErrorLevel.WARNING);
-            return ERROR;
-        }
-    }
+
 
     private void render(DrawContext context, int x, int y, float scale, boolean shadow) {
 
         if (useIcon.get()) {
-
-//            context.fill(x - i, y - i, x + RenderUtils.getStringWidth(text.get()) + 10, y + 9, 1694433280);
             icon.get().render(context, x, y, scale);
-            RenderUtils.drawText(context, text.get(), x + (int) (10 * scale), y, color.get(), shadow, scale, true);
+            RenderUtils.drawText(context, cache.get(), x + (int) (10 * scale), y, color.get(), shadow, scale, true);
         } else {
-            RenderUtils.drawText(context, text.get(), x, y, color.get(), shadow, scale, true);
+            RenderUtils.drawText(context, cache.get(), x, y, color.get(), shadow, scale, true);
         }
     }
 
     @Override
     public int getWidth() {
-        return RenderUtils.getStringWidth(text.get()) + (useIcon.get() ? 10 : 0);
+        return RenderUtils.getStringWidth(cache.get()) + (useIcon.get() ? 10 : 0);
     }
 
     @Override
     public int getlines() { return 1;}
+
+
 }

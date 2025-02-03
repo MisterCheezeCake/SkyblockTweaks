@@ -53,6 +53,10 @@ public class SpeedHUD extends TextHUD {
                 () -> SBTConfig.huds().speed.outlineColor,
                 () -> SBTConfig.huds().speed.mode,
                 () -> Text.literal((SkyblockTweaks.DATA.getSpeed()+"").split("\\.")[0] + "%")
+                // Test Only
+//                ,
+//                () ->  new HudIcon(SkyblockTweaks.mc.player.getMainHandStack()),
+//                () -> SkyblockTweaks.mc.player.getMainHandStack() != null
         );
     }
 

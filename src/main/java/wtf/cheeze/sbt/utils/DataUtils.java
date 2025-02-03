@@ -23,10 +23,17 @@ import wtf.cheeze.sbt.hud.utils.AnchorPoint;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-public class DataUtils {
 
+
+public class DataUtils {
     public static final Supplier<Boolean> alwaysFalse = () -> false;
+    public static final Supplier<Boolean> alwaysTrue = () -> true;
     public static final Supplier<Integer> alwaysZero = () -> 0;
     public static final Supplier<AnchorPoint> alwaysLeft = () -> AnchorPoint.LEFT;
-    public static final Consumer doNothing = (o) -> {};
+    @SuppressWarnings("rawtypes") public static final Consumer doNothing = (o) -> {};
+
+
+
+
+
 }

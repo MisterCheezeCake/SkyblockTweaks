@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 MisterCheezeCake
+ * Copyright (C) 2025 MisterCheezeCake
  *
  * This file is part of SkyblockTweaks.
  *
@@ -16,20 +16,17 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with SkyblockTweaks. If not, see <https://www.gnu.org/licenses/>.
  */
-package wtf.cheeze.sbt.hud.bounds;
+package wtf.cheeze.sbt.utils.events;
 
-public class Bounds {
-    public int x;
-    public int y;
-    public float width;
-    public float height;
-    public float scale;
+import net.fabricmc.fabric.api.event.Event;
+import net.fabricmc.fabric.api.event.EventFactory;
 
-    public Bounds(int x, int y, float width, float height, float scale) {
-        this.x = x;
-        this.y = y;
-        this.width = width;
-        this.height = height;
-        this.scale = scale;
+public class EventUtils {
+    public static Event<Runnable> getRunnableBackedEvent() {
+        return EventFactory.createArrayBacked(Runnable.class, listeners -> () -> {
+            for (Runnable listener : listeners) {
+                listener.run();
+            }
+        });
     }
 }

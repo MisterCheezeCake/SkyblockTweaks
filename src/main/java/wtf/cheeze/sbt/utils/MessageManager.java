@@ -14,7 +14,7 @@ public class MessageManager {
 
 
     public static void send(Text message) {
-        SkyblockTweaks.mc.player.sendMessage(TextUtils.join(PREFIX, TextUtils.SPACE, message), false);
+        SkyblockTweaks.mc.player.sendMessage(TextUtils.join(PREFIX, message), false);
     }
 
     public static void send(String message) {

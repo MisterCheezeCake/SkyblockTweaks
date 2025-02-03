@@ -32,13 +32,6 @@ import wtf.cheeze.sbt.hud.HudScreen;
 
 public class SkyblockTweaksScreenMain extends Screen {
     public static final Identifier ICON = Identifier.of("skyblocktweaks", "icon.png");
-    private ButtonWidget configButton;
-    private ButtonWidget hudButton;
-    private ButtonWidget modrinthButton;
-    private ButtonWidget githubButton;
-    private ButtonWidget discordButton;
-    private ButtonWidget legalButton;
-    private ButtonWidget closeButton;
     private final Screen parent;
     public SkyblockTweaksScreenMain(Screen parent) {
         super(Text.literal("SkyBlockTweaks"));
@@ -50,25 +43,25 @@ public class SkyblockTweaksScreenMain extends Screen {
         var centerx = mc.getWindow().getScaledWidth() / 2;
         var leftColumn = centerx - 100;
         var rightColumn = centerx + 5;
-        configButton = ButtonWidget.builder(Text.literal("Open Config"), button -> {
+        ButtonWidget configButton = ButtonWidget.builder(Text.literal("Open Config"), button -> {
             mc.send(() -> mc.setScreen(SBTConfig.getScreen(this)));
         }).dimensions(centerx - 100, 55, 200, 20).build();
-        hudButton = ButtonWidget.builder(Text.literal("Edit HUD Positions"), button -> {
+        ButtonWidget hudButton = ButtonWidget.builder(Text.literal("Edit HUD Positions"), button -> {
             mc.send(() -> mc.setScreen(new HudScreen(Text.literal("SkyBlockTweaks"), SkyblockTweaks.HUDS, this)));
         }).dimensions(centerx - 100, 85, 200, 20).build();
-        modrinthButton = ButtonWidget.builder(Text.literal("Modrinth"), button -> {
+        ButtonWidget modrinthButton = ButtonWidget.builder(Text.literal("Modrinth"), button -> {
             ConfirmLinkScreen.open(this, "https://modrinth.com/mod/sbt", true);
         }).dimensions(leftColumn, 115, 95, 20).build();
-        githubButton = ButtonWidget.builder(Text.literal("GitHub"), button -> {
+        ButtonWidget githubButton = ButtonWidget.builder(Text.literal("GitHub"), button -> {
             ConfirmLinkScreen.open(this, "https://github.com/MisterCheezeCake/SkyblockTweaks", true);
         }).dimensions(rightColumn, 115, 95, 20).build();
-        discordButton = ButtonWidget.builder(Text.literal("Discord"), button -> {
+        ButtonWidget discordButton = ButtonWidget.builder(Text.literal("Discord"), button -> {
             ConfirmLinkScreen.open(this, "https://discord.gg/YH3hw926hz", true);
         }).dimensions(leftColumn, 145, 95, 20).build();
-        legalButton = ButtonWidget.builder(Text.literal("Legal"), button -> {
+        ButtonWidget legalButton = ButtonWidget.builder(Text.literal("Legal"), button -> {
             ConfirmLinkScreen.open(this, "https://github.com/MisterCheezeCake/SkyblockTweaks/blob/main/OPENSOURCE.md", true);
         }).dimensions(rightColumn, 145, 95, 20).build();
-        closeButton = ButtonWidget.builder(Text.literal("Close"), button -> {
+        ButtonWidget closeButton = ButtonWidget.builder(Text.literal("Close"), button -> {
             mc.send(() -> mc.setScreen(parent));
         }).dimensions(centerx - 100, 175, 200, 20).build();
         this.addDrawableChild(configButton);

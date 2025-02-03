@@ -33,7 +33,7 @@ import wtf.cheeze.sbt.features.huds.*;
 import wtf.cheeze.sbt.mixin.YACLScreenAccessor;
 import wtf.cheeze.sbt.utils.Version;
 import wtf.cheeze.sbt.utils.actionbar.ActionBarTransformer;
-
+import wtf.cheeze.sbt.utils.errors.ErrorHandler;
 
 
 public class GlobalSearchCategory {
@@ -43,6 +43,7 @@ public class GlobalSearchCategory {
                 .name(Text.translatable("sbt.config.globalSearch"))
                 .tooltip(Text.translatable("sbt.config.globalSearch.desc"))
                 .option(Version.getStreamOption(defaults, config))
+                .option(ErrorHandler.getChatAll(defaults, config))
                 .group(General.InventoryTweaks.getGroup(defaults, config))
                 .group(MenuHighlights.Config.getGroup(defaults, config))
                 .group(BrewingStandOverlay.Config.getGroup(defaults, config))
@@ -71,6 +72,8 @@ public class GlobalSearchCategory {
                 .group(QuiverHUD.Config.getGroup(defaults, config))
                 .group(ArmorStackHUD.Config.getGroup(defaults, config))
                 .group(RiftTimeHUD.Config.getGroup(defaults, config))
+                .group(MiningHUD.Config.getGroup(defaults, config))
+                .group(MiningHUD.Config.getCompositionOption(defaults, config))
                 .build();
     }
 

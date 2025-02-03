@@ -19,7 +19,6 @@
 package wtf.cheeze.sbt.utils.actionbar;
 
 import dev.isxander.yacl3.api.Option;
-import dev.isxander.yacl3.api.OptionDescription;
 import dev.isxander.yacl3.api.OptionGroup;
 import dev.isxander.yacl3.config.v2.api.SerialEntry;
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents;
@@ -69,7 +68,7 @@ public class ActionBarTransformer {
     private static final Pattern healthPattern = Pattern.compile("(?<current>[\\d,]+)/(?<max>[\\d,]+)❤(?:\\+[\\d,]+.)?(?: {2})?(?<stacks>\\d+)?(?<symbol>.)?");
     private static final Pattern riftTimePattern = Pattern.compile("(?<time>.+)ф Left(?: \\+\\d+[ms]!)?");
 
-    public static ActionBarData extractDataAndRunTransformation(String actionBarText) {
+    public static ActionBarData run(String actionBarText) {
       try {
           ActionBarData data = new ActionBarData();
           String[] unmodifiedParts = actionBarText.split(SEPERATOR3);
@@ -226,7 +225,7 @@ public class ActionBarTransformer {
         ClientReceiveMessageEvents.MODIFY_GAME.register((message, overlay) -> {
             if (!overlay) return message;
            // SkyblockTweaks.LOGGER.info("Old: " + message.getString());
-            var data = ActionBarTransformer.extractDataAndRunTransformation(message.getString());
+            var data = ActionBarTransformer.run(message.getString());
             //SkyblockTweaks.LOGGER.info("New: " + data.transformedText);
             SkyblockTweaks.DATA.update(data);
             return Text.of(data.transformedText);

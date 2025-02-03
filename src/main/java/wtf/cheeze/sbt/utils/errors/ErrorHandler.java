@@ -4,17 +4,16 @@ package wtf.cheeze.sbt.utils.errors;
 
 import dev.isxander.yacl3.api.Option;
 import dev.isxander.yacl3.api.OptionDescription;
-import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.text.Text;
 import org.apache.commons.lang3.tuple.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SBTConfig;
-import wtf.cheeze.sbt.utils.DataUtils;
 import wtf.cheeze.sbt.utils.MessageManager;
 import wtf.cheeze.sbt.utils.TextUtils;
-import wtf.cheeze.sbt.utils.TimedSet;
+import wtf.cheeze.sbt.utils.timing.TimedSet;
 import wtf.cheeze.sbt.utils.render.Colors;
 
 import java.util.Arrays;
@@ -54,8 +53,8 @@ public class ErrorHandler {
 //        errorSet.add(e);
         if (errorSet.contains(message)) return;
         errorSet.add(message);
-        LOGGER.info(String.valueOf(e.hashCode()));
-        MessageManager.send(Text.literal("Error: " + chatMessage + ". Click to copy the stack trace.").withColor(Colors.RED).styled(it -> it.withClickEvent(TextUtils.copyEvent(Arrays.toString(e.getStackTrace()))).withHoverEvent(TextUtils.showText(TextUtils.withColor("Click to copy the stack trace", Colors.CYAN)))));
+        //LOGGER.info(String.valueOf(e.hashCode()));
+        if (SkyblockTweaks.mc.player != null) MessageManager.send(Text.literal("Error: " + chatMessage + ". Click to copy the stack trace.").withColor(Colors.RED).styled(it -> it.withClickEvent(TextUtils.copyEvent(Arrays.toString(e.getStackTrace()))).withHoverEvent(TextUtils.showText(TextUtils.withColor("Click to copy the stack trace", Colors.CYAN)))));
 
 
     }

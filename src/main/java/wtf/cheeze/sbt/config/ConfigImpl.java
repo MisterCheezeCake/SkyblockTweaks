@@ -21,6 +21,7 @@ package wtf.cheeze.sbt.config;
 import dev.isxander.yacl3.config.v2.api.SerialEntry;
 import wtf.cheeze.sbt.config.categories.General;
 import wtf.cheeze.sbt.config.categories.Huds;
+import wtf.cheeze.sbt.config.categories.Mining;
 import wtf.cheeze.sbt.features.BrewingStandOverlay;
 import wtf.cheeze.sbt.features.MenuHighlights;
 import wtf.cheeze.sbt.features.chat.ChatProtections;
@@ -62,6 +63,9 @@ public class ConfigImpl extends VersionedObject {
 
     @SerialEntry
     public Huds huds = new Huds();
+
+    @SerialEntry
+    public Mining mining = new Mining();
 
 
 }

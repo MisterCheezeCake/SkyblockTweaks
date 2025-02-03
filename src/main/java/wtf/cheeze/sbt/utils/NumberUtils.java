@@ -18,8 +18,6 @@
  */
 package wtf.cheeze.sbt.utils;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -41,6 +39,10 @@ public class NumberUtils {
         return formattedRound(progress / total * 100, 2) + "%";
     }
 
+    public static String formatPercent(float decimal) {
+        return formattedRound(decimal * 100, 2) + "%";
+    }
+
     public static int parseIntWithKorM(String text) {
         text = text.toLowerCase();
         var i = Integer.parseInt(text.substring(0, text.length() - 1));
@@ -53,6 +55,15 @@ public class NumberUtils {
         }
     }
 
+    public static float parsePercentage(String text) {
+        text = text.toLowerCase();
+        if (text.equals("done")) return 1;
+        if (text.endsWith("%")) {
+            return Float.parseFloat(text.substring(0, text.length() - 1)) / 100;
+        } else {
+            return Float.parseFloat(text);
+        }
+    }
     @SuppressWarnings("DuplicatedCode")
     public static float parseFloatWithKorM(String text) {
         text = text.toLowerCase();
@@ -87,6 +98,7 @@ public class NumberUtils {
         }
         return sb.toString();
     }
+
 
     public static String addKOrM(int number, String separator) {
         if (number >= 1000000) {

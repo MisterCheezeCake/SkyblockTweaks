@@ -19,8 +19,14 @@
 package wtf.cheeze.sbt.hud.components;
 
 import net.minecraft.client.gui.DrawContext;
+import net.minecraft.text.Text;
+import wtf.cheeze.sbt.utils.TextUtils;
+import wtf.cheeze.sbt.utils.render.Colors;
 
 public interface HudComponent {
+
+    Text ERROR = TextUtils.withColor("ERROR", Colors.RED);
+
     int render(DrawContext context, int x, int y, float scale);
     int getWidth();
     int getlines();

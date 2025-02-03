@@ -41,7 +41,7 @@ import wtf.cheeze.sbt.utils.enums.Skills;
 import wtf.cheeze.sbt.utils.errors.ErrorHandler;
 import wtf.cheeze.sbt.utils.errors.ErrorLevel;
 import wtf.cheeze.sbt.utils.render.Colors;
-import wtf.cheeze.sbt.utils.skyblock.IconDict;
+import wtf.cheeze.sbt.utils.skyblock.Icons;
 import wtf.cheeze.sbt.utils.skyblock.SkyblockConstants;
 import wtf.cheeze.sbt.utils.skyblock.SkyblockUtils;
 
@@ -164,11 +164,11 @@ public class SkillHUDManager {
                     () -> {
                         // This sometimes errors for a reason I cannot fathom
                         try {
-                            return IconDict.SKILL_ICONS.getOrDefault(currentSkill, IconDict.DEFAULT_ICON);
+                            return Icons.SKILL_ICONS.getOrDefault(currentSkill, Icons.DEFAULT_ICON);
                         } catch (Exception e) {
                             //SkyblockTweaks.LOGGER.error("Error getting skill icon", e);
                             ErrorHandler.handleError(e, "Error getting skill icon", ErrorLevel.SILENT);
-                            return IconDict.DEFAULT_ICON;
+                            return Icons.DEFAULT_ICON;
                         }
                     },
                     () -> timeLeft > 0

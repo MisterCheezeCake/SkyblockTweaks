@@ -87,6 +87,8 @@ public class Huds {
     @SerialEntry
     public RiftTimeHUD.Config riftTime = new RiftTimeHUD.Config();
 
+
+
     public static ConfigCategory getCategory(ConfigImpl defaults, ConfigImpl config) {
         return ConfigCategory.createBuilder()
                 .name(Text.translatable("sbt.config.huds"))

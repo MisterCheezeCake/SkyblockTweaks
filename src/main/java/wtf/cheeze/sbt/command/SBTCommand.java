@@ -315,6 +315,8 @@ public class SBTCommand {
                             return 1;
                         }))
                         .then(CommandUtils.getScreenOpeningCommand("hud", () -> new HudScreen(Text.literal("SkyBlockTweaks"), SkyblockTweaks.HUDS, null)))
+                        .then(CommandUtils.getScreenOpeningCommand("gui", () -> new HudScreen(Text.literal("SkyBlockTweaks"), SkyblockTweaks.HUDS, null)))
+                        .then(CommandUtils.getScreenOpeningCommand("edit", () -> new HudScreen(Text.literal("SkyBlockTweaks"), SkyblockTweaks.HUDS, null)))
                         .then(literal("debug")
                                 .then(literal("forcevalue")
                                         .then(argument("key", StringArgumentType.string())

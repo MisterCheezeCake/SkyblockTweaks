@@ -17,10 +17,19 @@ public class Colors {
     public static final int LIGHT_RED = 0xFFFF5555;
     public static final int YELLOW = 0xFFFFFF55;
     public static final int DARK_GREEN = 0xFF00AA00;
+    public static final int PINK = 0xFFFF55FF;
+    public static final int LIGHT_BLUE = 0xFF55FFFF;
 
 
     public static final int SBT_GREEN = 3658595;
 
+
+    public static int fromFloatValue(float f) {
+        if (f < .25) return RED;
+        if (f < .5) return ORANGE;
+        if (f < .75) return YELLOW;
+        return LIME;
+    }
 
 
 

@@ -18,7 +18,16 @@
  */
 package wtf.cheeze.sbt.utils.skyblock;
 
+import dev.isxander.yacl3.gui.utils.ItemRegistryHelper;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.component.ComponentChanges;
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.NbtComponent;
+import net.minecraft.item.ItemConvertible;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.util.Identifier;
 import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.utils.enums.*;
 
@@ -117,6 +126,7 @@ public class SkyblockUtils {
     public static boolean quiverActive() {
         return SkyblockTweaks.mc.player.getInventory().getStack(8).getName().getString().startsWith("Quiver");
     }
+
 
     /**
      * Please qualify calls to this with a call to quiverActive

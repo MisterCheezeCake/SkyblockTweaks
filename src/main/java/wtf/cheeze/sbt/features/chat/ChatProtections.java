@@ -22,12 +22,10 @@ import dev.isxander.yacl3.api.Option;
 import dev.isxander.yacl3.api.OptionGroup;
 import dev.isxander.yacl3.config.v2.api.SerialEntry;
 import net.fabricmc.fabric.api.client.message.v1.ClientSendMessageEvents;
-import net.minecraft.text.Text;
-import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SBTConfig;
 import wtf.cheeze.sbt.utils.MessageManager;
-import wtf.cheeze.sbt.utils.TimedValue;
+import wtf.cheeze.sbt.utils.timing.TimedValue;
 import wtf.cheeze.sbt.utils.render.Colors;
 
 import static wtf.cheeze.sbt.config.categories.Chat.key;

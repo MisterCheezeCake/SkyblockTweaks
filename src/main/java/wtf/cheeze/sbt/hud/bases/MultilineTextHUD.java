@@ -6,7 +6,10 @@ import wtf.cheeze.sbt.hud.bounds.Bounds;
 import wtf.cheeze.sbt.hud.bounds.BoundsRelative;
 import wtf.cheeze.sbt.hud.HUD;
 import wtf.cheeze.sbt.hud.components.HudComponent;
+import wtf.cheeze.sbt.hud.components.SingleHudLine;
 import wtf.cheeze.sbt.utils.render.RenderUtils;
+
+import java.util.Arrays;
 
 public abstract class MultilineTextHUD extends HUD {
 
@@ -14,6 +17,19 @@ public abstract class MultilineTextHUD extends HUD {
         this.supportsNonLeftAnchors = false;
     }
     public HudComponent[] lines;
+
+//    public HudComponent[] getLines(){
+//        return lines;
+//    }
+
+//    public void setLines(HudComponent[] lines){
+//        this.lines = lines;
+//        this.lineNo = Arrays.stream(lines).filter(it -> it instanceof SingleHudLine).toArray().length;
+//        this.lineNo+= Arrays.stream(lines).filter(it -> it instanceof MultilineTextHUD).map(it -> ((MultilineTextHUD) it).getLineNo()).reduce(0, Integer::sum);
+//
+//    }
+
+
 
     public int getLongestLineWidth(boolean relative){
         int longest = 0;
@@ -59,16 +75,17 @@ public abstract class MultilineTextHUD extends HUD {
             drawBackground(context, hovered ? BACKGROUND_HOVERED : BACKGROUND_NOT_HOVERED);
         }
         RenderUtils.beginScale(context, bounds.scale);
+//
 //        for(int i = 0; i < lines.length; i++){
 //            var line = lines[i];
 //            var y = bounds.y + i * lineHeight;
-//            line.render(context, getXPosition(line, bounds.x), y, bounds.scale);
+//            line.render(context,  bounds.x, y, bounds.scale);
 //        }
         int i = 0;
         for (var line : lines) {
-            var y = bounds.y + lineHeight * line.getlines();
-//            i+=line.render(context, getXPosition(line, bounds.x), y, bounds.scale);
+            var y = bounds.y + lineHeight * i;
             i+=line.render(context, bounds.x, y, bounds.scale);
+           //i+=line.render(context, bounds.x, y, bounds.scale);
         }
         RenderUtils.endScale(context);
     }

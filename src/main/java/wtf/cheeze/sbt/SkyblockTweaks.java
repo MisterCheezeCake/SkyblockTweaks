@@ -21,7 +21,6 @@ package wtf.cheeze.sbt;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.minecraft.client.MinecraftClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,13 +33,14 @@ import wtf.cheeze.sbt.features.chat.ChatProtections;
 import wtf.cheeze.sbt.features.chat.PartyFeatures;
 import wtf.cheeze.sbt.features.huds.*;
 import wtf.cheeze.sbt.hud.HUD;
+import wtf.cheeze.sbt.utils.events.HudRenderEvents;
 import wtf.cheeze.sbt.utils.NotificationHandler;
 import wtf.cheeze.sbt.utils.UpdateChecker;
 import wtf.cheeze.sbt.utils.Version;
 import wtf.cheeze.sbt.utils.actionbar.ActionBarTransformer;
-import wtf.cheeze.sbt.utils.skyblock.ModAPIUtils;
-import wtf.cheeze.sbt.utils.skyblock.ProfileManager;
-import wtf.cheeze.sbt.utils.skyblock.SkyblockData;
+import wtf.cheeze.sbt.utils.skyblock.*;
+import wtf.cheeze.sbt.utils.tablist.TabListParser;
+
 import java.util.ArrayList;
 
 public class SkyblockTweaks implements ModInitializer {
@@ -53,8 +53,11 @@ public class SkyblockTweaks implements ModInitializer {
 	public static final MinecraftClient mc = MinecraftClient.getInstance();
 
 
+
 	@Override
 	public void onInitialize() {
+
+		//CompletableFuture.runAsync(ItemStackUtils.SkullMap::load, MinecraftClient.getInstance());
 
 		//MigrationManager.handleMigrations();
 
@@ -86,7 +89,13 @@ public class SkyblockTweaks implements ModInitializer {
 		HUDS.add(new ArmorStackHUD());
 		HUDS.add(new RiftTimeHUD());
 
-		HudRenderCallback.EVENT.register((context, tickCounter) -> {
+		HUDS.add(MiningHUD.INSTANCE);
+		//HUDS.add(new IconTestHUD());
+
+//		HudRenderCallback.EVENT.register((context, tickCounter) -> {
+//			HUDS.forEach(hud -> hud.render(context, false));
+//		});
+		HudRenderEvents.AFTER_MAIN_HUD.register((context, tickCounter) -> {
 			HUDS.forEach(hud -> hud.render(context, false));
 		});
 
@@ -97,6 +106,7 @@ public class SkyblockTweaks implements ModInitializer {
 		PartyFeatures.registerEvents();
 		ChatProtections.registerEvents();
 		ProfileManager.registerEvents();
+		TabListParser.registerEvents();
 
 		UpdateChecker.checkForUpdates();
 	}

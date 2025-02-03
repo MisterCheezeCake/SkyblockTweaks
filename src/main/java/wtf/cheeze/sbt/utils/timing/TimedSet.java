@@ -1,4 +1,4 @@
-package wtf.cheeze.sbt.utils;
+package wtf.cheeze.sbt.utils.timing;
 
 import java.util.HashSet;
 import java.util.Set;

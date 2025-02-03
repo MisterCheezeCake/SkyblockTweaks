@@ -22,7 +22,9 @@ import net.minecraft.client.gui.DrawContext;
 import net.minecraft.text.Text;
 import org.jetbrains.annotations.Nullable;
 import wtf.cheeze.sbt.hud.HudIcon;
+import wtf.cheeze.sbt.hud.cache.Cache;
 import wtf.cheeze.sbt.hud.utils.DrawMode;
+import wtf.cheeze.sbt.hud.cache.UpdateTiming;
 import wtf.cheeze.sbt.utils.DataUtils;
 import wtf.cheeze.sbt.utils.render.RenderUtils;
 
@@ -33,20 +35,38 @@ public class FlexibleHudLine implements HudComponent {
 
     public Supplier<Part[]> parts;
 
+    private final UpdateTiming timing;
+
+    private final Cache<Part[]> partCache;
+
+
     private int width = 1;
     private int lines = 1;
 
-    public FlexibleHudLine(Supplier<Part[]> parts) {
+    public FlexibleHudLine(Supplier<Part[]> parts, UpdateTiming timing) {
         this.parts = parts;
+        Part[] ERROR_PARTS = {new Part(() -> ERROR, () -> DrawMode.PURE, DataUtils.alwaysZero, DataUtils.alwaysZero, new Cache<>(UpdateTiming.MEMOIZED, () -> ERROR, ERROR))};
+        this.partCache = new Cache<>(timing, parts, ERROR_PARTS);
+        this.timing = timing;
+    }
+
+    public FlexibleHudLine(Supplier<Part[]> parts) {
+        this(parts, UpdateTiming.SECOND);
     }
 
     @Override
     public int render(DrawContext context, int x, int y, float scale) {
+        if (timing == UpdateTiming.FRAME ||partCache.isDueForUpdate()) {
+            partCache.update();
+        }
         var pts = parts.get();
         var longest = 0;
         var lineHeight = (int) (9 * scale);
         for (Part part : pts) {
-            var text = part.text.get();
+            if (part.cache.isDueForUpdate() || part.cache.timing == UpdateTiming.FRAME) {
+                part.cache.update();
+            }
+            var text = part.cache.get();
             var w = RenderUtils.getStringWidth(text);
             if (part.useIcon.get()) {
                 w += 10;
@@ -65,7 +85,6 @@ public class FlexibleHudLine implements HudComponent {
         return lines;
 
     }
-
 
 
     @Override
@@ -117,22 +136,33 @@ public class FlexibleHudLine implements HudComponent {
         public final Supplier<Integer> color;
         public final Supplier<Integer> outlineColor;
 
-        public Part(Supplier<Text> text, Supplier<DrawMode> mode, Supplier<Integer> color, Supplier<Integer> outlineColor) {
-            this.text = text;
-            this.useIcon = DataUtils.alwaysFalse;
-            this.mode = mode;
-            this.color = color;
-            this.outlineColor = outlineColor;
+        private final Cache<Text> cache;
+
+
+        public Part (Supplier<Text> text, Supplier<DrawMode> mode, Supplier<Integer> color, Supplier<Integer> outlineColor) {
+            this(text, mode, color, outlineColor, null, DataUtils.alwaysFalse, new Cache<>(UpdateTiming.FRAME, text, ERROR));
         }
 
         public Part(Supplier<Text> text, Supplier<DrawMode> mode, Supplier<Integer> color, Supplier<Integer> outlineColor, Supplier<HudIcon> icon, Supplier<Boolean> useIcon) {
+            this(text, mode, color, outlineColor, icon, useIcon, new Cache<>(UpdateTiming.FRAME, text, ERROR));
+        }
+
+        public Part(Supplier<Text> text, Supplier<DrawMode> mode, Supplier<Integer> color, Supplier<Integer> outlineColor, Cache<Text> cache) {
+           this(text, mode, color, outlineColor, null, DataUtils.alwaysFalse, cache);
+
+        }
+
+        public Part(Supplier<Text> text, Supplier<DrawMode> mode, Supplier<Integer> color, Supplier<Integer> outlineColor, Supplier<HudIcon> icon, Supplier<Boolean> useIcon, Cache<Text> cache) {
             this.text = text;
             this.mode = mode;
             this.color = color;
             this.outlineColor = outlineColor;
             this.icon = icon;
             this.useIcon = useIcon;
+            this.cache = cache;
         }
 
     }
+
+
 }

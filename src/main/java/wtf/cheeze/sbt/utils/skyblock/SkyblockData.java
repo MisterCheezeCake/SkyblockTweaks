@@ -26,12 +26,9 @@ import net.azureaaron.hmapi.network.packet.s2c.HypixelS2CPacket;
 import net.azureaaron.hmapi.network.packet.v1.s2c.LocationUpdateS2CPacket;
 import net.azureaaron.hmapi.network.packet.v2.s2c.PartyInfoS2CPacket;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.text.Text;
 import wtf.cheeze.sbt.SkyblockTweaks;
-import wtf.cheeze.sbt.command.SBTCommand;
 import wtf.cheeze.sbt.utils.MessageManager;
 import wtf.cheeze.sbt.utils.NumberUtils;
-import wtf.cheeze.sbt.utils.TextUtils;
 import wtf.cheeze.sbt.utils.actionbar.ActionBarData;
 import wtf.cheeze.sbt.utils.enums.Location;
 import wtf.cheeze.sbt.utils.render.Colors;
@@ -43,6 +40,8 @@ import java.util.Optional;
 import java.util.UUID;
 
 public class SkyblockData {
+
+
     public boolean inSB = false;
     public boolean alphaNetwork = false;
     public boolean inParty = false;
@@ -75,6 +74,7 @@ public class SkyblockData {
 
     public TabListData tabData = TabListData.EMPTY;
 
+    public MiningData miningData = MiningData.EMPTY;
 
 
     public float getSpeed() {
@@ -135,6 +135,7 @@ public class SkyblockData {
 
     public void update(TabListData data) {
         this.tabData = data;
+        this.miningData = inMiningIsland() ? MiningData.of(this.tabData) : MiningData.EMPTY;
     }
 
     public void handlePacket(HypixelS2CPacket packet) {
@@ -179,5 +180,9 @@ public class SkyblockData {
             }
         }
 
+    }
+
+    public boolean inMiningIsland() {
+        return location == Location.DWARVEN_MINES|| location == Location.CRYSTAL_HOLLOWS|| location == Location.GLACITE_MINESHAFT;
     }
 }
