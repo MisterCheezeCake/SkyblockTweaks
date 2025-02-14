@@ -93,10 +93,10 @@ public class EventTimerHUD extends TextHUD {
         public boolean enabled = true;
 
         @SerialEntry
-        public float x = 0.1f;
+        public float x = 0.25f;
 
         @SerialEntry
-        public float y = 0.2f;
+        public float y = 0.25f;
 
         @SerialEntry
         public boolean icons = true;
@@ -126,9 +126,9 @@ public class EventTimerHUD extends TextHUD {
                     .description(Mining.keyD("eventHud.enabled"))
                     .controller(SBTConfig::generateBooleanController)
                     .binding(
-                            defaults.mining.hud.enabled,
-                            () -> config.mining.hud.enabled,
-                            value -> config.mining.hud.enabled = (boolean) value
+                            defaults.mining.eventTimer.enabled,
+                            () -> config.mining.eventTimer.enabled,
+                            value -> config.mining.eventTimer.enabled = (boolean) value
                     )
                     .build();
             var icons = Option.<Boolean>createBuilder()
