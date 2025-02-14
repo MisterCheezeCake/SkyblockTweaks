@@ -2,7 +2,7 @@
   "required": true,
   "package": "wtf.cheeze.sbt.mixin",
   "compatibilityLevel": "JAVA_21",
-  "mixins": [
+  "client": [
     "AbstractInventoryScreenMixin",
     "BossBarHudAccessor",
     "BossBarHudMixin",
@@ -11,13 +11,11 @@
     "InGameHudMixin",
     "InventoryScreenMixin",
     "PlayerListHudAccessor",
-    "YACLScreenAccessor"
+    "YACLScreenAccessor",
+    "MinecraftClientMixin",
+    "MouseMixin"
   ],
   "injectors": {
     "defaultRequire": 1
-  },
-  "client": [
-    "MinecraftClientMixin",
-    "MouseMixin"
-  ]
+  }
 }
