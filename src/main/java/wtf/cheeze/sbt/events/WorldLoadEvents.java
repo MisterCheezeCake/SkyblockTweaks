@@ -1,4 +1,4 @@
-package wtf.cheeze.sbt.utils.events;
+package wtf.cheeze.sbt.events;
 
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;

@@ -31,7 +31,7 @@ import wtf.cheeze.sbt.config.migration.MigrationManager;
 import wtf.cheeze.sbt.config.persistent.PersistentData;
 import wtf.cheeze.sbt.features.MouseLock;
 import wtf.cheeze.sbt.hud.HUD;
-import wtf.cheeze.sbt.utils.events.HudRenderEvents;
+import wtf.cheeze.sbt.events.HudRenderEvents;
 import wtf.cheeze.sbt.utils.NotificationHandler;
 import wtf.cheeze.sbt.utils.UpdateChecker;
 import wtf.cheeze.sbt.utils.Version;

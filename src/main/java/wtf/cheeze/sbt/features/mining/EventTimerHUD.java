@@ -90,7 +90,7 @@ public class EventTimerHUD extends TextHUD {
     public static class Config {
 
         @SerialEntry
-        public boolean enabled = true;
+        public boolean enabled = false;
 
         @SerialEntry
         public float x = 0.25f;

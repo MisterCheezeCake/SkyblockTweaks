@@ -20,7 +20,7 @@ package wtf.cheeze.sbt.features;
 
 import wtf.cheeze.sbt.utils.MessageManager;
 import wtf.cheeze.sbt.utils.TextUtils;
-import wtf.cheeze.sbt.utils.events.WorldLoadEvents;
+import wtf.cheeze.sbt.events.WorldLoadEvents;
 import wtf.cheeze.sbt.utils.render.Colors;
 
 public class MouseLock {

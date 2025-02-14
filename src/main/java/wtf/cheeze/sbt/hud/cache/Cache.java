@@ -20,7 +20,7 @@ package wtf.cheeze.sbt.hud.cache;
 
 import wtf.cheeze.sbt.utils.errors.ErrorHandler;
 import wtf.cheeze.sbt.utils.errors.ErrorLevel;
-import wtf.cheeze.sbt.utils.events.CacheUpdateEvents;
+import wtf.cheeze.sbt.events.CacheUpdateEvents;
 
 import java.util.function.Supplier;
 

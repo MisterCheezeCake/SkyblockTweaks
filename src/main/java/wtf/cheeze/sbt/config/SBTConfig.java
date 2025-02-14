@@ -31,7 +31,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import wtf.cheeze.sbt.config.categories.*;
 import wtf.cheeze.sbt.hud.utils.DrawMode;
-import wtf.cheeze.sbt.utils.events.EventUtils;
+import wtf.cheeze.sbt.events.EventUtils;
 
 import java.nio.file.Path;
 
