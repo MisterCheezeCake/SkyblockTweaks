@@ -18,6 +18,11 @@
  */
 package wtf.cheeze.sbt.utils.timing;
 
+
+/**
+ * A timed value that expires after a certain amount of time, and will return null if it is expired.
+ * @param <T> The type of the value
+ */
 public class TimedValue<T> {
     private final T value;
     private final long time;

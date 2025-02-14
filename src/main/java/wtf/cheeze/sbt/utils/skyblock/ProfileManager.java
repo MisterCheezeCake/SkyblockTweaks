@@ -48,7 +48,7 @@ public class ProfileManager {
                 return;
 
             }
-            var text = TextUtils.removeColorCodes(messageString).trim();
+            var text = TextUtils.removeFormatting(messageString).trim();
             var levelUpMatcher = SKILL_LEVEL_UP_PATTERN.matcher(text);
             if (levelUpMatcher.find()) {
                 var skill = SkyblockUtils.strictCastStringToSkill(levelUpMatcher.group(1));
@@ -61,6 +61,7 @@ public class ProfileManager {
             }
         });
 
+        //TODO: Switch to public API
         ScreenEvents.AFTER_INIT.register(((client, screen, scaledWidth, scaledHeight) -> {
             if (screen.getTitle().getString(
             ).equals("Your Skills")) {

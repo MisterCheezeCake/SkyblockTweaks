@@ -22,6 +22,8 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ConfirmLinkScreen;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.tooltip.HoveredTooltipPositioner;
+import net.minecraft.client.gui.tooltip.Tooltip;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
@@ -33,6 +35,8 @@ import wtf.cheeze.sbt.hud.HudScreen;
 public class SkyblockTweaksScreenMain extends Screen {
     public static final Identifier ICON = Identifier.of("skyblocktweaks", "icon.png");
     private final Screen parent;
+
+    private ButtonWidget hudButton;
     public SkyblockTweaksScreenMain(Screen parent) {
         super(Text.literal("SkyBlockTweaks"));
         this.parent = parent;
@@ -46,7 +50,7 @@ public class SkyblockTweaksScreenMain extends Screen {
         ButtonWidget configButton = ButtonWidget.builder(Text.literal("Open Config"), button -> {
             mc.send(() -> mc.setScreen(SBTConfig.getScreen(this)));
         }).dimensions(centerx - 100, 55, 200, 20).build();
-        ButtonWidget hudButton = ButtonWidget.builder(Text.literal("Edit HUD Positions"), button -> {
+        hudButton = ButtonWidget.builder(Text.literal("Edit HUD Positions"), button -> {
             mc.send(() -> mc.setScreen(new HudScreen(Text.literal("SkyBlockTweaks"), SkyblockTweaks.HUDS, this)));
         }).dimensions(centerx - 100, 85, 200, 20).build();
         ButtonWidget modrinthButton = ButtonWidget.builder(Text.literal("Modrinth"), button -> {
@@ -91,5 +95,8 @@ public class SkyblockTweaksScreenMain extends Screen {
         RenderUtils.drawCenteredText(context, Text.literal("SkyblockTweaks"), centerX, 3, Colors.SBT_GREEN, true, 2.5f);
         RenderUtils.drawCenteredText(context, Text.literal("v" + SkyblockTweaks.VERSION.getVersionString()), centerX, 25, Colors.WHITE, true);
         RenderUtils.drawCenteredText(context, Text.literal("By MisterCheezeCake"), centerX, 36, Colors.LIGHT_RED, true);
+        if (!hudButton.active && hudButton.isHovered()) {
+            this.setTooltip(Tooltip.of(Text.literal("Join a world to edit HUD Positions")), HoveredTooltipPositioner.INSTANCE, false);
+        }
     }
 }

@@ -52,9 +52,10 @@ import java.util.regex.Pattern;
  * Parses and modifies the action bar text
  * Inspired by the SkyBlockAddons Action Bar Parser
  * TODO: Switch more things in here to regex
+ * TODO: Split the main method into smaller methods
  */
 
-@SuppressWarnings("DataFlowIssue")
+
 public class ActionBarTransformer {
     public static final String SEPERATOR3 = "   ";
     public static final String SEPERATOR4 = "     ";
@@ -75,7 +76,7 @@ public class ActionBarTransformer {
           StringBuilder newText = new StringBuilder();
           for (String unmodifiedPart : unmodifiedParts) {
               String trimmed = unmodifiedPart.trim();
-              String unformatted = TextUtils.removeColorCodes(trimmed);
+              String unformatted = TextUtils.removeFormatting(trimmed);
               if (unformatted.toLowerCase().contains("race")) {
                   // Races, we do these first because the timer updates an obscene amount
                   newText.append(trimmed).append(SEPERATOR12);
@@ -96,6 +97,8 @@ public class ActionBarTransformer {
                   }
 
               } else if (unformatted.contains("✎")) {
+                  //TODO: Still uses string manipulation
+
                   // Mana
                   // 411/1,221✎ 2ʬ
                   // 289/1,221✎ Mana
@@ -115,6 +118,7 @@ public class ActionBarTransformer {
               } else if (unformatted.contains("NOT ENOUGH MANA")) {
                   newText.append(SEPERATOR5).append(trimmed);
               } else if (unformatted.contains("❈")) {
+                  //TODO: Still uses string manipulation
                   // Defense
                   String defense = unformatted.split("❈")[0].trim();
                   data.defense = Integer.parseInt(defense.replace(",", ""));
@@ -143,6 +147,7 @@ public class ActionBarTransformer {
                           String[] xp = matcher.group(3).split("/");
                           data.totalXP = NumberUtils.parseFloatWithKorM(xp[1]);
                           data.nextLevelXP = NumberUtils.parseFloatWithKorM(xp[0]);
+                          // TODO: Transition uses of this to an event which SkillHUD can subscribe to
                           SkillHUDManager.INSTANCE.update(data.skillType, data.gainedXP, data.totalXP, data.nextLevelXP);
                       } else {
                           data.skillPercentage = Float.parseFloat(matcher.group(3).replace("%", ""));
@@ -183,20 +188,22 @@ public class ActionBarTransformer {
                   // Trial of Fire
                   newText.append(SEPERATOR3).append(trimmed);
               } else if (unformatted.contains("ⓩ") || unformatted.contains("Ⓞ")){
+                  //TODO: Still uses string manipulation
+
                   // Ornate/Florid: §e§lⓩⓩⓩ§6§lⓄⓄ
                   // Regular: §a§lⓩ§2§lⓄⓄⓄ
                   // Foil: §e§lⓄⓄ§7§lⓄⓄ
                   data.maxTickers = unformatted.length();
                   if (trimmed.contains("§6§l")) {
                         var split = trimmed.split("§6§l") ;
-                      data.currentTickers = TextUtils.removeColorCodes(split[0]).length();
+                      data.currentTickers = TextUtils.removeFormatting(split[0]).length();
                   } else if (trimmed.contains("§2§l")) {
                       var split = trimmed.split("§2§l") ;
-                      data.currentTickers = TextUtils.removeColorCodes(split[0]).length();
+                      data.currentTickers = TextUtils.removeFormatting(split[0]).length();
                   }
                   else if (trimmed.contains("§7§l")) {
                       var split = trimmed.split("§7§l") ;
-                      data.currentTickers = TextUtils.removeColorCodes(split[0]).length();
+                      data.currentTickers = TextUtils.removeFormatting(split[0]).length();
                   }
 
                   if (!SBTConfig.get().actionBarFilters.hideTickers) {

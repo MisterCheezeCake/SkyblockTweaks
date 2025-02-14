@@ -19,14 +19,14 @@
 package wtf.cheeze.sbt.features.huds;
 
 import net.minecraft.text.Text;
-import wtf.cheeze.sbt.hud.HudIcon;
+import wtf.cheeze.sbt.hud.icon.HudIcon;
 import wtf.cheeze.sbt.hud.bases.MultilineTextHUD;
 import wtf.cheeze.sbt.hud.components.SingleHudLine;
 import wtf.cheeze.sbt.hud.utils.DrawMode;
 import wtf.cheeze.sbt.hud.utils.HudInformation;
 import wtf.cheeze.sbt.utils.DataUtils;
 import wtf.cheeze.sbt.utils.render.Colors;
-import wtf.cheeze.sbt.utils.skyblock.Icons;
+import wtf.cheeze.sbt.hud.icon.Icons;
 
 import java.util.ArrayList;
 import java.util.List;

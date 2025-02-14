@@ -20,6 +20,7 @@ package wtf.cheeze.sbt.config.persistent;
 
 import net.fabricmc.loader.api.FabricLoader;
 import wtf.cheeze.sbt.SkyblockTweaks;
+import wtf.cheeze.sbt.features.MouseLock;
 import wtf.cheeze.sbt.utils.errors.ErrorHandler;
 import wtf.cheeze.sbt.utils.errors.ErrorLevel;
 

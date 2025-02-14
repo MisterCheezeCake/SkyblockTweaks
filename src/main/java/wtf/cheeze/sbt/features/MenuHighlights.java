@@ -38,7 +38,7 @@ import static wtf.cheeze.sbt.config.categories.General.keyD;
 public class MenuHighlights {
 
     // Players: n/80
-    public static final Pattern PLAYER_COUNT_PATTERN = Pattern.compile("Players: (\\d\\d?)/80");
+    public static final Pattern PLAYER_COUNT_PATTERN = Pattern.compile("Players: (\\d\\d?)/(\\d\\d?)");
     public static final Pattern PLAYER_COUNT_PATTERN_DH = Pattern.compile("Players: (\\d\\d?)/24");
 
     public static final int HIGHLIGHT_RED = -16842752;
@@ -57,9 +57,14 @@ public class MenuHighlights {
         var matcher = PLAYER_COUNT_PATTERN.matcher(lines.getFirst().getString());
         if (!matcher.matches()) return;
         var playerCount = Integer.parseInt(matcher.group(1));
-        if (playerCount >= 60) highlight(context, slot, HIGHLIGHT_RED);
-        else if (playerCount >= 40) highlight(context, slot, HIGHLIGHT_ORANGE);
-        else if (playerCount >= 20) highlight(context, slot, HIGHLIGHT_YELLOW);
+        var max = Integer.parseInt(matcher.group(2));
+        var threshold1 = max * 3 / 4;
+        var threshold2 = max * 2 / 4;
+        var threshold3 = max / 4;
+
+        if (playerCount >= threshold1) highlight(context, slot, HIGHLIGHT_RED);
+        else if (playerCount >= threshold2) highlight(context, slot, HIGHLIGHT_ORANGE);
+        else if (playerCount >= threshold3) highlight(context, slot, HIGHLIGHT_YELLOW);
         else highlight(context, slot, HIGHLIGHT_GREEN);
 
     }

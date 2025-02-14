@@ -41,7 +41,7 @@ import wtf.cheeze.sbt.utils.enums.Skills;
 import wtf.cheeze.sbt.utils.errors.ErrorHandler;
 import wtf.cheeze.sbt.utils.errors.ErrorLevel;
 import wtf.cheeze.sbt.utils.render.Colors;
-import wtf.cheeze.sbt.utils.skyblock.Icons;
+import wtf.cheeze.sbt.hud.icon.Icons;
 import wtf.cheeze.sbt.utils.skyblock.SkyblockConstants;
 import wtf.cheeze.sbt.utils.skyblock.SkyblockUtils;
 

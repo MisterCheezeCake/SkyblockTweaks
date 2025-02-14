@@ -18,6 +18,7 @@
  */
 package wtf.cheeze.sbt.utils.skyblock;
 
+//TODO: Dynamicly load these from a repo
 public class SkyblockConstants {
 
     /**

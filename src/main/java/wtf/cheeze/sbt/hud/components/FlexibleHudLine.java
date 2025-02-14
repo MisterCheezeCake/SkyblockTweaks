@@ -21,7 +21,7 @@ package wtf.cheeze.sbt.hud.components;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.text.Text;
 import org.jetbrains.annotations.Nullable;
-import wtf.cheeze.sbt.hud.HudIcon;
+import wtf.cheeze.sbt.hud.icon.HudIcon;
 import wtf.cheeze.sbt.hud.cache.Cache;
 import wtf.cheeze.sbt.hud.utils.DrawMode;
 import wtf.cheeze.sbt.hud.cache.UpdateTiming;

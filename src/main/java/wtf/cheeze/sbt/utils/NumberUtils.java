@@ -23,7 +23,7 @@ import java.util.regex.Pattern;
 
 public class NumberUtils {
 
-    private static final  Pattern TIME_PATTERN = Pattern.compile("(?:(?<hours>\\d+)h)?(?:(?<minutes>\\d+)m)?(?:(?<seconds>\\d+)s)?");
+    private static final Pattern TIME_PATTERN = Pattern.compile("(?:(?<hours>\\d+)h)?(?:(?<minutes>\\d+)m)?(?:(?<seconds>\\d+)s)?");
     public static double round(float number, int decimalPlaces) {
         return Math.round(number * Math.pow(10, decimalPlaces)) / Math.pow(10, decimalPlaces);
     }
@@ -142,4 +142,17 @@ public class NumberUtils {
             return String.format("%dh%dm%ds", hours, minutes, secs);
         }
     }
+
+    public static String formatTime(int seconds, boolean hours) {
+        int hoursInt = seconds / 3600;
+        int minutes = (seconds % 3600) / 60;
+        int secs = seconds % 60;
+        if (hours) {
+            return String.format("%02d:%02d:%02d", hoursInt, minutes, secs);
+        } else {
+            return String.format("%02d:%02d", minutes, secs);
+        }
+    }
+
+
  }

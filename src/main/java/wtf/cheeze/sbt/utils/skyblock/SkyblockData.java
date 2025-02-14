@@ -136,6 +136,7 @@ public class SkyblockData {
     public void update(TabListData data) {
         this.tabData = data;
         this.miningData = inMiningIsland() ? MiningData.of(this.tabData) : MiningData.EMPTY;
+
     }
 
     public void handlePacket(HypixelS2CPacket packet) {

@@ -23,12 +23,16 @@ import dev.isxander.yacl3.api.OptionDescription;
 import dev.isxander.yacl3.config.v2.api.SerialEntry;
 import net.minecraft.text.Text;
 import wtf.cheeze.sbt.config.ConfigImpl;
-import wtf.cheeze.sbt.features.huds.MiningHUD;
+import wtf.cheeze.sbt.features.mining.EventTimerHUD;
+import wtf.cheeze.sbt.features.mining.MiningHUD;
 
 public class Mining {
 
     @SerialEntry
     public MiningHUD.Config hud = new MiningHUD.Config();
+
+    @SerialEntry
+    public EventTimerHUD.Config eventTimer = new EventTimerHUD.Config();
 
 
     public static ConfigCategory getCategory(ConfigImpl defaults, ConfigImpl configThing) {
@@ -37,6 +41,7 @@ public class Mining {
                 .tooltip(Text.translatable("sbt.config.mining.desc"))
                 .group(MiningHUD.Config.getGroup(defaults, configThing))
                 .group(MiningHUD.Config.getCompositionOption(defaults, configThing))
+                .group(EventTimerHUD.Config.getGroup(defaults, configThing))
                 .build();
     }
 

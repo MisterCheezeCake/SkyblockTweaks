@@ -30,6 +30,8 @@ import wtf.cheeze.sbt.features.MenuHighlights;
 import wtf.cheeze.sbt.features.chat.ChatProtections;
 import wtf.cheeze.sbt.features.chat.PartyFeatures;
 import wtf.cheeze.sbt.features.huds.*;
+import wtf.cheeze.sbt.features.mining.EventTimerHUD;
+import wtf.cheeze.sbt.features.mining.MiningHUD;
 import wtf.cheeze.sbt.mixin.YACLScreenAccessor;
 import wtf.cheeze.sbt.utils.Version;
 import wtf.cheeze.sbt.utils.actionbar.ActionBarTransformer;
@@ -74,6 +76,7 @@ public class GlobalSearchCategory {
                 .group(RiftTimeHUD.Config.getGroup(defaults, config))
                 .group(MiningHUD.Config.getGroup(defaults, config))
                 .group(MiningHUD.Config.getCompositionOption(defaults, config))
+                .group(EventTimerHUD.Config.getGroup(defaults, config))
                 .build();
     }
 

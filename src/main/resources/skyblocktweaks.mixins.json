@@ -4,6 +4,7 @@
   "compatibilityLevel": "JAVA_21",
   "mixins": [
     "AbstractInventoryScreenMixin",
+    "BossBarHudAccessor",
     "BossBarHudMixin",
     "DrawContextMixin",
     "HandledScreenMixin",
@@ -13,7 +14,10 @@
     "YACLScreenAccessor"
   ],
   "injectors": {
-    "defaultRequire": 1,
-    "maxShiftBy": 5
-  }
+    "defaultRequire": 1
+  },
+  "client": [
+    "MinecraftClientMixin",
+    "MouseMixin"
+  ]
 }

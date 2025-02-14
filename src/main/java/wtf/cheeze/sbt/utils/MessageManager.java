@@ -14,6 +14,10 @@ public class MessageManager {
 
 
     public static void send(Text message) {
+        if (SkyblockTweaks.mc.player == null) {
+            SkyblockTweaks.LOGGER.info("Message Manager tried to send a message but the player was null");
+            return;
+        }
         SkyblockTweaks.mc.player.sendMessage(TextUtils.join(PREFIX, message), false);
     }
 

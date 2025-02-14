@@ -32,6 +32,7 @@ import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SBTConfig;
 import wtf.cheeze.sbt.utils.MessageManager;
 import wtf.cheeze.sbt.utils.TextUtils;
+import wtf.cheeze.sbt.utils.render.Colors;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,7 +54,7 @@ public class PartyFeatures {
 
             if (overlay) return;
             if (!SBTConfig.get().partyCommands.enabled) return;
-            var s = TextUtils.removeColorCodes(message.getString());
+            var s = TextUtils.removeFormatting(message.getString());
             if (s.startsWith("Party >")) {
                 var matcher = PARTY_PATTERN.matcher(s);
                 if (!matcher.matches()) {
@@ -212,10 +213,28 @@ public class PartyFeatures {
 
     private static Text getInviteMessage(String name) {
         //TODO: Switch this from legacy formatting
-        return TextUtils.getTextThatRunsCommand("§bClick here to invite §e" + name + "§b to your party!","§3Click here to run §e/p " + name , "/p invite " + name);
+        return TextUtils.getTextThatRunsCommand(
+                TextUtils.join(
+                        TextUtils.withColor("Cick here to invite ", Colors.LIGHT_BLUE),
+                        TextUtils.withColor(name, Colors.YELLOW),
+                        TextUtils.withColor(" to your party!", Colors.LIGHT_BLUE)
+                ),
+                TextUtils.join(
+                        TextUtils.withColor("Click here to run ", Colors.CYAN),
+                        TextUtils.withColor("/p " + name, Colors.YELLOW)
+                ),
+                "/p invite " + name
+        );
     }
+
+
+    private static final Text DEBUG_PREFIX = TextUtils.join(
+            TextUtils.withColor("[", Colors.DARK_GRAY),
+            TextUtils.withColor("SBT Party Debugger", Colors.DARK_GREEN),
+            TextUtils.withColor("]", Colors.DARK_GRAY)
+    );
     private static void sendDebugMessage(String message) {
-        SkyblockTweaks.mc.player.sendMessage(Text.of("§7[§2SBT Party Debugger§f§7]§3 " + message), false);
+        SkyblockTweaks.mc.player.sendMessage(TextUtils.join(DEBUG_PREFIX, TextUtils.SPACE, TextUtils.withColor(message, Colors.CYAN)), false);
     }
 
 

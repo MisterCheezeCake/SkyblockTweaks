@@ -60,7 +60,6 @@ public class ItemStackUtils {
                         .add(DataComponentTypes.CUSTOM_DATA, getSkyblockItemNBT(skyblockID))
                         .add(DataComponentTypes.ENCHANTMENT_GLINT_OVERRIDE, enchanted)
                         .build());
-
     }
 
 

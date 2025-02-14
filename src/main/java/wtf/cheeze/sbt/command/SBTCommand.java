@@ -33,7 +33,9 @@ import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.config.SBTConfig;
 import wtf.cheeze.sbt.config.SkyblockTweaksScreenMain;
 import wtf.cheeze.sbt.features.CalcPowder;
+import wtf.cheeze.sbt.features.MouseLock;
 import wtf.cheeze.sbt.features.chat.PartyFeatures;
+import wtf.cheeze.sbt.mixin.BossBarHudAccessor;
 import wtf.cheeze.sbt.utils.MessageManager;
 import wtf.cheeze.sbt.utils.NumberUtils;
 import wtf.cheeze.sbt.utils.TextUtils;
@@ -53,6 +55,7 @@ import static net.fabricmc.fabric.api.client.command.v2.ClientCommandManager.arg
 import static net.fabricmc.fabric.api.client.command.v2.ClientCommandManager.literal;
 import static wtf.cheeze.sbt.command.CommandUtils.calcSend;
 import static wtf.cheeze.sbt.command.CommandUtils.send;
+import static wtf.cheeze.sbt.utils.MessageManager.PREFIX;
 
 
 public class SBTCommand {
@@ -141,7 +144,7 @@ public class SBTCommand {
 
             )
             .then(literal("pet")
-                    .then(argument("rarity", StringArgumentType.string()).suggests(CommandUtils.getArrayAsSuggestions(new String[]{"common", "uncommon", "rare", "epic", "legendary", "mythic"}))
+                    .then(argument("rarity", StringArgumentType.string()).suggests(CommandUtils.getArrayAsSuggestions("common", "uncommon", "rare", "epic", "legendary", "mythic"))
                             .then(argument("level-start", IntegerArgumentType.integer())
                                     .then(argument("level-end", IntegerArgumentType.integer())
                                             .executes(context -> {
@@ -225,7 +228,7 @@ public class SBTCommand {
                     })
             )
             .then(literal("crop")
-                    .then(argument("crop", StringArgumentType.string()).suggests(CommandUtils.getArrayAsSuggestions(new String[]{"wheat", "pumpkin", "mushroom", "carrot", "potato", "melon", "cane", "cactus", "cocoa", "wart"}))
+                    .then(argument("crop", StringArgumentType.string()).suggests(CommandUtils.getArrayAsSuggestions("wheat", "pumpkin", "mushroom", "carrot", "potato", "melon", "cane", "cactus", "cocoa", "wart"))
                             .then(argument("level-start", IntegerArgumentType.integer())
                                     .then(argument("level-end", IntegerArgumentType.integer())
                                             .executes(context -> {
@@ -317,6 +320,10 @@ public class SBTCommand {
                         .then(CommandUtils.getScreenOpeningCommand("hud", () -> new HudScreen(Text.literal("SkyBlockTweaks"), SkyblockTweaks.HUDS, null)))
                         .then(CommandUtils.getScreenOpeningCommand("gui", () -> new HudScreen(Text.literal("SkyBlockTweaks"), SkyblockTweaks.HUDS, null)))
                         .then(CommandUtils.getScreenOpeningCommand("edit", () -> new HudScreen(Text.literal("SkyBlockTweaks"), SkyblockTweaks.HUDS, null)))
+                        .then(literal("mouselock").executes(context -> {
+                            MouseLock.toggle();
+                            return 1;
+                        }))
                         .then(literal("debug")
                                 .then(literal("forcevalue")
                                         .then(argument("key", StringArgumentType.string())
@@ -352,6 +359,14 @@ public class SBTCommand {
                                         )
 
                                 )
+                                .then(literal("dumpBossbars").executes(context -> {
+                                    for (var bar : ((BossBarHudAccessor) SkyblockTweaks.mc.inGameHud.getBossBarHud()).getBossBars().values()) {
+                                        SkyblockTweaks.LOGGER.info(bar.getName().getString());
+                                    }
+                                    send(context, TextUtils.withColor("Dumped Bossbar Text to Logs", Colors.CYAN));
+
+                                    return 1;
+                                }))
                                 .then(literal("partycommands").executes(context -> {
                                     if (PartyFeatures.verboseDebug) {
                                         PartyFeatures.verboseDebug = false;

@@ -47,7 +47,7 @@ public class CommandUtils {
         });
     }
 
-    public static SuggestionProvider<FabricClientCommandSource> getArrayAsSuggestions(String[] args) {
+    public static SuggestionProvider<FabricClientCommandSource> getArrayAsSuggestions(String... args) {
         return (context, builder) -> {
             for (String arg : args) {
                 builder.suggest(arg);
@@ -55,6 +55,7 @@ public class CommandUtils {
             return builder.buildFuture();
         };
     }
+
 
     static int[] getCalcPetTable(Rarity rarity) {
         return switch (rarity) {
@@ -86,19 +87,24 @@ public class CommandUtils {
         };
     }
 
+
+
+
     static Text getDebugText(String name, boolean value) {
-        return Text.of("§3" + name + ": §" + (value ? "a" : "c") + value);
+        return getDebugText(name, String.valueOf(value));
+    }
+    static Text getDebugText(String name, int value) {
+        return getDebugText(name, String.valueOf(value));
+    }
+    static Text getDebugText(String name, float value) {
+        return getDebugText(name, String.valueOf(value));
     }
 
     static Text getDebugText(String name, String value) {
-        return Text.of("§3" + name + ": §e" + value);
-    }
-
-    static Text getDebugText(String name, int value) {
-        return Text.of("§3" + name + ": §e" + value);
-    }
-    static Text getDebugText(String name, float value) {
-        return Text.of("§3" + name + ": §e" + value);
+        return TextUtils.join(
+                TextUtils.withColor(name + ": ", Colors.CYAN),
+                TextUtils.withColor(value, Colors.YELLOW)
+        );
     }
 
     public static void send(CommandContext<FabricClientCommandSource> context, Text text) {

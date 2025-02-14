@@ -18,7 +18,6 @@
  */
 package wtf.cheeze.sbt.utils.tablist;
 
-import net.minecraft.text.Text;
 import wtf.cheeze.sbt.SkyblockTweaks;
 
 import java.util.EnumMap;

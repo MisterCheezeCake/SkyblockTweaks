@@ -43,7 +43,6 @@ public class TabListParser {
 
         try {
             var data = new TabListData();
-
             boolean inInfoColumn = false;
             WidgetType currentWidget = null;
             var network = getNetworkHandler();

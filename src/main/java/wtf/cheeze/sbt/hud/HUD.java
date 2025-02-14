@@ -18,7 +18,6 @@
  */
 package wtf.cheeze.sbt.hud;
 
-import dev.isxander.yacl3.api.NameableEnum;
 import dev.isxander.yacl3.api.OptionDescription;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
@@ -34,7 +33,7 @@ public abstract class HUD  {
 
     public HudInformation INFO;
 
-    /**;
+    /**
      * Whether the HUD supports non-left anchors
      */
     public boolean supportsNonLeftAnchors = true;
@@ -71,11 +70,17 @@ public abstract class HUD  {
      */
     public abstract void render(DrawContext context, boolean fromHudScreen, boolean hovered);
 
+    /**
+     * Updates the position of the HUD
+     */
     public void updatePosition(float x, float y) {
         INFO.setX.accept(x);
         INFO.setY.accept(y);
     }
 
+    /**
+     * Updates the scale of the HUD, clamping it to the min and max scale
+     */
     public void updateScale(float scale) {
         if (scale <= MIN_SCALE) {
             INFO.setScale.accept(MIN_SCALE);

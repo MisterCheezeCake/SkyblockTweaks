@@ -22,8 +22,9 @@ import net.minecraft.text.*;
 
 public class TextUtils {
     public static final String SECTION  = "§";
-    public static String removeColorCodes(String text) {
-        return text.replaceAll("§[a-f0-9k-o]", "");
+    //FIXME: Support uppercase letters in codes
+    public static String removeFormatting(String text) {
+        return text.replaceAll("§[a-f0-9k-oA-FK-O]", "");
     }
     public static final Text SPACE = Text.literal(" ");
 
@@ -46,6 +47,7 @@ public class TextUtils {
             return style;
         });
     }
+
 
     public static Text getTextThatRunsCommand(String text, String hovered, String command) {
         return getTextThatRunsCommand(Text.literal(text), Text.literal(hovered), command);
@@ -75,11 +77,21 @@ public class TextUtils {
     }
 
     public static String firstLetterUppercase(String text) {
+        if (text.isEmpty()) return text;
         return text.substring(0, 1).toUpperCase() + text.substring(1);
     }
 
+    public static String pascalCase(String text) {
+        var split = text.toLowerCase().split(" ");
+        var result = new StringBuilder();
+        for (var s : split) {
+            result.append(firstLetterUppercase(s)).append(" ");
+        }
+        return result.toString().trim();
+    }
+
     public static MutableText join(Text... texts) {
-        var result = Text.literal("");
+        var result = Text.empty();
         for (var text : texts) {
             result = result.append(text);
         }

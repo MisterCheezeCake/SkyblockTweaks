@@ -48,7 +48,6 @@ public class RenderUtils {
         context.drawText(SkyblockTweaks.mc.textRenderer, text, x, y, color, shadow);
     }
     public static void drawTextWithOutline(DrawContext context, Text text, int x, int y, int color, int outlineColor) {
-        // TODO: This currently renders weirdly, fix it
         SkyblockTweaks.mc.textRenderer.drawWithOutline(
                 text.asOrderedText(),
                 x, y, color, outlineColor,

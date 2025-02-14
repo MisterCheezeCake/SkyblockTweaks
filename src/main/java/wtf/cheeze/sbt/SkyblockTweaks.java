@@ -29,17 +29,18 @@ import wtf.cheeze.sbt.config.SBTConfig;
 import wtf.cheeze.sbt.config.migration.BarColorTransformation;
 import wtf.cheeze.sbt.config.migration.MigrationManager;
 import wtf.cheeze.sbt.config.persistent.PersistentData;
-import wtf.cheeze.sbt.features.chat.ChatProtections;
-import wtf.cheeze.sbt.features.chat.PartyFeatures;
-import wtf.cheeze.sbt.features.huds.*;
+import wtf.cheeze.sbt.features.MouseLock;
 import wtf.cheeze.sbt.hud.HUD;
 import wtf.cheeze.sbt.utils.events.HudRenderEvents;
 import wtf.cheeze.sbt.utils.NotificationHandler;
 import wtf.cheeze.sbt.utils.UpdateChecker;
 import wtf.cheeze.sbt.utils.Version;
 import wtf.cheeze.sbt.utils.actionbar.ActionBarTransformer;
-import wtf.cheeze.sbt.utils.skyblock.*;
 import wtf.cheeze.sbt.utils.tablist.TabListParser;
+import wtf.cheeze.sbt.utils.skyblock.*;
+import wtf.cheeze.sbt.features.chat.*;
+import wtf.cheeze.sbt.features.huds.*;
+import wtf.cheeze.sbt.features.mining.*;
 
 import java.util.ArrayList;
 
@@ -90,6 +91,7 @@ public class SkyblockTweaks implements ModInitializer {
 		HUDS.add(new RiftTimeHUD());
 
 		HUDS.add(MiningHUD.INSTANCE);
+		HUDS.add(new EventTimerHUD());
 		//HUDS.add(new IconTestHUD());
 
 //		HudRenderCallback.EVENT.register((context, tickCounter) -> {
@@ -107,6 +109,7 @@ public class SkyblockTweaks implements ModInitializer {
 		ChatProtections.registerEvents();
 		ProfileManager.registerEvents();
 		TabListParser.registerEvents();
+		MouseLock.registerEvents();
 
 		UpdateChecker.checkForUpdates();
 	}

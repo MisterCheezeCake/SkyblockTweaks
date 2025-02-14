@@ -383,5 +383,21 @@
   "sbt.config.general.errors.chatAll.desc": "Whether or not all errors caught by the mod should be sent in chat, or if only critical ones should be",
   "sbt.config.general.errors.chatAll": "Chat All Errors",
   "sbt.config.mining": "Mining",
-  "sbt.config.mining.desc": "Options for features relating to mining"
+  "sbt.config.mining.desc": "Options for features relating to mining",
+  "sbt.config.mining.eventHud": "Event Timer HUD",
+  "sbt.config.mining.eventHud.desc": "Settings for the Event Timer HUD",
+  "sbt.config.mining.eventHud.enabled": "Enable Event Timer HUD",
+  "sbt.config.mining.eventHud.enabled.desc": "Enables the Event Timer HUD",
+  "sbt.config.mining.eventHud.mode": "Event Timer HUD Mode",
+  "sbt.config.mining.eventHud.mode.desc": "The draw mode of the Event Timer HUD. Pure will render without shadow, Shadow will render with a shadow, and Outline will render with an outline.",
+  "sbt.config.mining.eventHud.outlineColor": "Event Timer HUD Outline Color",
+  "sbt.config.mining.eventHud.outlineColor.desc": "The outline color of the Event Timer HUD",
+  "sbt.config.mining.eventHud.scale": "Event Timer HUD Scale",
+  "sbt.config.mining.eventHud.scale.desc": "The scale of the Event Timer HUD",
+  "sbt.config.mining.eventHud.colorPrimary": "Event Timer HUD Primary Color",
+  "sbt.config.mining.eventHud.colorPrimary.desc": "The color of the event name",
+  "sbt.config.mining.eventHud.colorSecondary": "Event Timer HUD Secondary Color",
+  "sbt.config.mining.eventHud.colorSecondary.desc": "The color of the time left",
+  "sbt.config.mining.eventHud.icons": "Show Icons",
+  "sbt.config.mining.eventHud.icons.desc": "Show icons in the Event Timer HUD"
 }

@@ -20,28 +20,44 @@ package wtf.cheeze.sbt.utils.skyblock;
 
 import net.minecraft.util.Pair;
 import wtf.cheeze.sbt.SkyblockTweaks;
-import wtf.cheeze.sbt.hud.HudIcon;
+import wtf.cheeze.sbt.hud.icon.HudIcon;
+import wtf.cheeze.sbt.hud.icon.Icons;
+import wtf.cheeze.sbt.mixin.BossBarHudAccessor;
 import wtf.cheeze.sbt.utils.NumberUtils;
+import wtf.cheeze.sbt.utils.TextUtils;
 import wtf.cheeze.sbt.utils.enums.Location;
 import wtf.cheeze.sbt.utils.errors.ErrorHandler;
 import wtf.cheeze.sbt.utils.errors.ErrorLevel;
 import wtf.cheeze.sbt.utils.tablist.TabListData;
 import wtf.cheeze.sbt.utils.tablist.WidgetType;
 
-import static wtf.cheeze.sbt.utils.skyblock.Icons.MINING_ICONS;
+import java.util.regex.Pattern;
+
+import static wtf.cheeze.sbt.hud.icon.Icons.MINING_ICONS;
 
 public class MiningData {
+
+    //TODO: Add support for active events
+    //§e§lEVENT §B§LMITHRIL GOURMAND §e§lACTIVE IN §b§lFAR RESERVE §e§lfor §a§l06:12
+    private static final Pattern ACTIVE_EVENT = Pattern.compile("EVENT (?<name>.+) ACTIVE IN (?<location>.+) for (?<minutes>\\d\\d):(?<seconds>\\d\\d)");
+    private static final Pattern PASSIVE_EVENT = Pattern.compile("PASSIVE EVENT (?<name>.+) RUNNING FOR (?<minutes>\\d\\d):(?<seconds>\\d\\d)");
     public final int comNo;
     public final Pair<String, Float>[] coms;
     public int mithPowder = 0;
     public int gemPowder = 0;
     public int glacPowder = 0;
 
+    public boolean event = false;
+    public String eventName = "";
+    public int eventTimeLeft = 0;
+
+
     public static int getComMax(String com) {
-       return switch (com) {
+        return switch (com) {
             case "Mithril Miner" -> 350;
-            case "Lava Springs Mithril", "Royal Mines Mithril", "Cliffside Veins Mithril", "Rampart's Quarry Mithril", "Upper Mines Mithril" -> 250;
-            case "Titanium Miner" ->  15;
+            case "Lava Springs Mithril", "Royal Mines Mithril", "Cliffside Veins Mithril", "Rampart's Quarry Mithril",
+                 "Upper Mines Mithril" -> 250;
+            case "Titanium Miner" -> 15;
             case "Lava Springs Titanium", "Royal Mines Titanium", "Cliffside Veins Titanium",
                  "Rampart's Quarry Titanium", "Upper Mines Titanium", "Treasure Hoarder Puncher", "Star Sentry Puncher",
                  "Maniac Slayer" -> 10;
@@ -66,9 +82,11 @@ public class MiningData {
 
     public static HudIcon getComIcon(String com) {
         return switch (com) {
-            case "Mithril Miner", "Lava Springs Mithril", "Royal Mines Mithril", "Cliffside Veins Mithril", "Rampart's Quarry Mithril", "Upper Mines Mithril" -> MINING_ICONS.get("MITHRIL");
+            case "Mithril Miner", "Lava Springs Mithril", "Royal Mines Mithril", "Cliffside Veins Mithril",
+                 "Rampart's Quarry Mithril", "Upper Mines Mithril" -> MINING_ICONS.get("MITHRIL");
             case "2x Mithril Powder Collector" -> MINING_ICONS.get("MITHRIL_POWDER");
-            case "Lava Springs Titanium", "Royal Mines Titanium", "Cliffside Veins Titanium", "Rampart's Quarry Titanium", "Upper Mines Titanium", "Titanium Miner" ->  MINING_ICONS.get("TITANIUM");
+            case "Lava Springs Titanium", "Royal Mines Titanium", "Cliffside Veins Titanium",
+                 "Rampart's Quarry Titanium", "Upper Mines Titanium", "Titanium Miner" -> MINING_ICONS.get("TITANIUM");
             case "Jade Gemstone Collector" -> MINING_ICONS.get("JADE");
             case "Amber Gemstone Collector" -> MINING_ICONS.get("AMBER");
             case "Topaz Gemstone Collector" -> MINING_ICONS.get("TOPAZ");
@@ -105,10 +123,24 @@ public class MiningData {
             case "Yog Slayer" -> MINING_ICONS.get("YOG");
             case "Sludge Slayer" -> MINING_ICONS.get("SLUDGE");
             case "Maniac Slayer" -> MINING_ICONS.get("MUTT");
+            case "Golden Goblin Slayer" -> Icons.GOLDEN_HELMET;
             default -> null;
         };
     }
 
+    public static HudIcon getEventIcon(String event) {
+        return switch (event) {
+            case "Goblin Raid" -> MINING_ICONS.get("GOBLIN");
+            case "Raffle" -> MINING_ICONS.get("RAFFLE");
+            case "Mithril Gourmand" -> MINING_ICONS.get("GOURMAND");
+            case "Better Together" -> Icons.DEFAULT_HEAD;
+            case "Gone With The Wind" -> Icons.COMPASS;
+            case "2x Powder" -> MINING_ICONS.get("MITHRIL_POWDER");
+            case "Fortunate Freezing" -> MINING_ICONS.get("GLACITE");
+            default -> null;
+        };
+
+}
 
 
     @SuppressWarnings("unchecked")
@@ -117,6 +149,7 @@ public class MiningData {
         if (data.widgetLines.get(WidgetType.COMMISSIONS) != null) {
             coms = data.widgetLines.get(WidgetType.COMMISSIONS).stream().filter(it -> !it.equals("Commissions:"))
                     .map(it -> {
+                        //TODO: Could a regex work here
                         String[] split = it.trim().split(": ");
                         float com = NumberUtils.parsePercentage(split[1]);
                         return new Pair<>(split[0], com);
@@ -126,6 +159,7 @@ public class MiningData {
             comNo = 0;
             coms = new Pair[0];
         }
+
         if (data.widgetLines.get(WidgetType.POWDER) != null) {
             for (var line : data.widgetLines.get(WidgetType.POWDER)) {
                 if (line.startsWith(" Mithril")) {
@@ -137,6 +171,28 @@ public class MiningData {
                 }
 
             }
+        }
+
+        var bossBars = ((BossBarHudAccessor) SkyblockTweaks.mc.inGameHud.getBossBarHud()).getBossBars();
+        for (var bar: bossBars.values()) {
+            var name = TextUtils.removeFormatting(bar.getName().getString());
+            var passive = PASSIVE_EVENT.matcher(name);
+            if (passive.matches()) {
+                event = true;
+                eventName = TextUtils.pascalCase(passive.group("name"));
+                eventTimeLeft = Integer.parseInt(passive.group("minutes")) * 60 + Integer.parseInt(passive.group("seconds"));
+                //ticksSinceEventNotFound = 0;
+                break;
+            }
+            var active = ACTIVE_EVENT.matcher(name);
+            if (active.matches()) {
+                event = true;
+                eventName = TextUtils.pascalCase(active.group("name"));
+                eventTimeLeft = Integer.parseInt(active.group("minutes")) * 60 + Integer.parseInt(active.group("seconds"));
+                //ticksSinceEventNotFound = 0;
+                break;
+            }
+           //if (ticksSinceEventNotFound <= 30) ticksSinceEventNotFound++;
         }
     }
 

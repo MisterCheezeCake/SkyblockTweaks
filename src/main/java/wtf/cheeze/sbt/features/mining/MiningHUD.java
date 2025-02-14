@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with SkyblockTweaks. If not, see <https://www.gnu.org/licenses/>.
  */
-package wtf.cheeze.sbt.features.huds;
+package wtf.cheeze.sbt.features.mining;
 
 import dev.isxander.yacl3.api.ListOption;
 import dev.isxander.yacl3.api.NameableEnum;
@@ -31,7 +31,7 @@ import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SBTConfig;
 import wtf.cheeze.sbt.config.categories.Mining;
-import wtf.cheeze.sbt.hud.HudIcon;
+import wtf.cheeze.sbt.hud.icon.HudIcon;
 import wtf.cheeze.sbt.hud.bases.MultilineTextHUD;
 import wtf.cheeze.sbt.hud.cache.Cache;
 import wtf.cheeze.sbt.hud.cache.UpdateTiming;
@@ -44,7 +44,7 @@ import wtf.cheeze.sbt.utils.DataUtils;
 import wtf.cheeze.sbt.utils.NumberUtils;
 import wtf.cheeze.sbt.utils.TextUtils;
 import wtf.cheeze.sbt.utils.render.Colors;
-import wtf.cheeze.sbt.utils.skyblock.Icons;
+import wtf.cheeze.sbt.hud.icon.Icons;
 import wtf.cheeze.sbt.utils.skyblock.MiningData;
 
 import java.awt.*;
@@ -184,7 +184,7 @@ public class MiningHUD extends MultilineTextHUD {
     }
 
 
-    private enum Entry implements NameableEnum {
+    public enum Entry implements NameableEnum {
         COMMISSIONS(TextUtils.withColor("Commissions", Colors.CYAN)),
         MITHRIL_POWDER(TextUtils.withColor("Mithril Powder", Colors.DARK_GREEN)),
         GEMSTONE_POWDER(TextUtils.withColor("Gemstone Powder", Colors.PINK)),

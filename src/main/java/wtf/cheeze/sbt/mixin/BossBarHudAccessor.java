@@ -16,22 +16,19 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with SkyblockTweaks. If not, see <https://www.gnu.org/licenses/>.
  */
-package wtf.cheeze.sbt.utils;
-
-import wtf.cheeze.sbt.hud.utils.AnchorPoint;
-
-import java.util.function.Consumer;
-import java.util.function.Supplier;
+package wtf.cheeze.sbt.mixin;
 
 
-/**
- * Contains some commonly used data methods and allows us to more easily track where things like
- * the {@link #alwaysFalse} and {@link #alwaysTrue} methods are used.
- */
-public class DataUtils {
-    public static final Supplier<Boolean> alwaysFalse = () -> false;
-    public static final Supplier<Boolean> alwaysTrue = () -> true;
-    public static final Supplier<Integer> alwaysZero = () -> 0;
-    public static final Supplier<AnchorPoint> alwaysLeft = () -> AnchorPoint.LEFT;
-    @SuppressWarnings("rawtypes") public static final Consumer doNothing = (o) -> {};
+import net.minecraft.client.gui.hud.BossBarHud;
+import net.minecraft.client.gui.hud.ClientBossBar;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.gen.Accessor;
+
+import java.util.Map;
+import java.util.UUID;
+
+@Mixin(BossBarHud.class)
+public interface BossBarHudAccessor {
+    @Accessor("bossBars")
+    Map<UUID, ClientBossBar> getBossBars();
 }
