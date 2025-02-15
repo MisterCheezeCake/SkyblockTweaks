@@ -33,8 +33,7 @@ public class BrewingStandOverlay {
 
     private static final int DRAW_OFFSET_X = 20;
     private static final int DRAW_OFFSET_Y = 4;
-    // One more than the z offset that items are rendered at
-    private static final float Z_OFFSET = 250.0f;
+    public static final float Z_OFFSET = 251;
 
     public static void render(DefaultedList<Slot> slots, DrawContext context) {
         if (!SBTConfig.get().brewingStandOverlay.enabled) return;
@@ -56,6 +55,7 @@ public class BrewingStandOverlay {
             drawName(slot42, context);
         }
         context.getMatrices().pop();
+
     }
 
     private static void drawName(Slot slot, DrawContext context) {

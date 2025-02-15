@@ -29,6 +29,7 @@ import wtf.cheeze.sbt.config.SBTConfig;
 import wtf.cheeze.sbt.config.migration.BarColorTransformation;
 import wtf.cheeze.sbt.config.migration.MigrationManager;
 import wtf.cheeze.sbt.config.persistent.PersistentData;
+import wtf.cheeze.sbt.features.MenuHighlights;
 import wtf.cheeze.sbt.features.MouseLock;
 import wtf.cheeze.sbt.hud.HUD;
 import wtf.cheeze.sbt.events.HudRenderEvents;
@@ -50,7 +51,8 @@ public class SkyblockTweaks implements ModInitializer {
 	public static final SkyblockData DATA = new SkyblockData();
 	public static final PersistentData PD = PersistentData.load();
 	public static final ArrayList<HUD> HUDS = new ArrayList<HUD>();
-	public static final Version VERSION = new Version(Version.VersionType.ALPHA, 0, 1, 0, 10);
+	//public static final Version VERSION = new Version(Version.VersionType.ALPHA, 0, 1, 0, 10);
+	public static final Version VERSION = new Version(Version.VersionType.UNSTABLE);
 	public static final MinecraftClient mc = MinecraftClient.getInstance();
 
 
@@ -112,5 +114,6 @@ public class SkyblockTweaks implements ModInitializer {
 		MouseLock.registerEvents();
 
 		UpdateChecker.checkForUpdates();
+		MenuHighlights.registerEvents();
 	}
 }

@@ -30,6 +30,7 @@ import net.minecraft.text.Text;
 import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SBTConfig;
+import wtf.cheeze.sbt.events.DrawSlotEvents;
 
 import java.util.regex.Pattern;
 import static wtf.cheeze.sbt.config.categories.General.key;
@@ -39,7 +40,6 @@ public class MenuHighlights {
 
     // Players: n/80
     public static final Pattern PLAYER_COUNT_PATTERN = Pattern.compile("Players: (\\d\\d?)/(\\d\\d?)");
-    public static final Pattern PLAYER_COUNT_PATTERN_DH = Pattern.compile("Players: (\\d\\d?)/24");
 
     public static final int HIGHLIGHT_RED = -16842752;
     public static final int HIGHLIGHT_ORANGE = -16804352;
@@ -50,9 +50,39 @@ public class MenuHighlights {
     public static final int HIGHLIGHT_GREEN2 = -33423577;
     public static final int HIGHLIGHT_GREY = -27962027;
 
-    public static void tryDrawHighlight(DrawContext context, Slot slot) {
+    public static void registerEvents() {
+        DrawSlotEvents.BEFORE_ITEM.register(MenuHighlights::onDrawSlot);
+    }
+
+
+    public static void onDrawSlot(Text screenTitle, DrawContext context, Slot slot) {
+        var title = screenTitle.getString();
+        switch (title) {
+            case "SkyBlock Hub Selector" -> tryDrawHighlight(context, slot);
+            case "Dungeon Hub Selector" -> tryDrawHighlightDH(context, slot);
+            case "Heart of the Mountain" -> tryDrawHighlightHOTM(context, slot);
+        }
+        if (title.contains("Widget") || title.contains("Setting")) {
+          tryDrawHighlightWidget(context, slot);
+        } else if (title.startsWith("Tasks") ||title.contains(" ➜ ")) {
+          tryDrawHighlightTasks(context, slot);
+        }
+
+    }
+
+    private static void tryDrawHighlight(DrawContext context, Slot slot) {
         if (!SBTConfig.get().hubSelectorHighlight.enabledRegular) return;
         if (!slot.getStack().getName().getString().contains("SkyBlock Hub #")) return;
+        sharedHighlight(context, slot);
+
+    }
+    private static void tryDrawHighlightDH(DrawContext context, Slot slot) {
+        if (!SBTConfig.get().hubSelectorHighlight.enabledDungeon) return;
+        if (!slot.getStack().getName().getString().contains("Dungeon Hub #")) return;
+        sharedHighlight(context, slot);
+    }
+
+    private static void sharedHighlight(DrawContext context, Slot slot) {
         var lines = slot.getStack().getOrDefault(DataComponentTypes.LORE, LoreComponent.DEFAULT).lines();
         var matcher = PLAYER_COUNT_PATTERN.matcher(lines.getFirst().getString());
         if (!matcher.matches()) return;
@@ -66,21 +96,9 @@ public class MenuHighlights {
         else if (playerCount >= threshold2) highlight(context, slot, HIGHLIGHT_ORANGE);
         else if (playerCount >= threshold3) highlight(context, slot, HIGHLIGHT_YELLOW);
         else highlight(context, slot, HIGHLIGHT_GREEN);
+    }
 
-    }
-    public static void tryDrawHighlightDH(DrawContext context, Slot slot) {
-        if (!SBTConfig.get().hubSelectorHighlight.enabledDungeon) return;
-        if (!slot.getStack().getName().getString().contains("Dungeon Hub #")) return;
-        var lines = slot.getStack().getOrDefault(DataComponentTypes.LORE, LoreComponent.DEFAULT).lines();
-        var matcher = PLAYER_COUNT_PATTERN_DH.matcher(lines.getFirst().getString());
-        if (!matcher.matches()) return;
-        var playerCount = Integer.parseInt(matcher.group(1));
-        if (playerCount >= 18) highlight(context, slot, HIGHLIGHT_RED);
-        else if (playerCount >= 12) highlight(context, slot, HIGHLIGHT_ORANGE);
-        else if (playerCount >= 6) highlight(context, slot, HIGHLIGHT_YELLOW);
-        else highlight(context, slot, HIGHLIGHT_GREEN);
-    }
-    public static void tryDrawHighlightHOTM(DrawContext context, Slot slot) {
+    private static void tryDrawHighlightHOTM(DrawContext context, Slot slot) {
         if (!SBTConfig.get().hubSelectorHighlight.hotmHighlight) return;
         var lines = slot.getStack().getOrDefault(DataComponentTypes.LORE, LoreComponent.DEFAULT).lines();
         for (var line: lines) {
@@ -101,7 +119,7 @@ public class MenuHighlights {
         }
     }
 
-    public static void tryDrawHighlightWidget(DrawContext context, Slot slot) {
+    private static void tryDrawHighlightWidget(DrawContext context, Slot slot) {
         if (!SBTConfig.get().hubSelectorHighlight.widgetHighlight) return;
         var name = slot.getStack().getName().getString();
         if (!name.contains("✔") && !name.contains("✖")) {
@@ -116,13 +134,16 @@ public class MenuHighlights {
         else highlight(context, slot, HIGHLIGHT_RED2);
     }
 
-    public static void tryDrawHighlightTasks(DrawContext context, Slot slot) {
+    private static void tryDrawHighlightTasks(DrawContext context, Slot slot) {
         if (!SBTConfig.get().hubSelectorHighlight.sblevelHighlight) return;
         var lines = slot.getStack().getOrDefault(DataComponentTypes.LORE, LoreComponent.DEFAULT).lines();
         for (var line: lines) {
             var s = line.getString();
             if (s.equals("Total Progress: 100%")) highlight(context, slot, HIGHLIGHT_GREEN2);
             else if (s.contains("Total Progress: ")) highlight(context, slot, HIGHLIGHT_RED2);
+            else if (s.equals("You have completed this task!")) highlight(context, slot, HIGHLIGHT_GREEN2);
+            else if (s.equals("This task can only be completed once!")) highlight(context, slot, HIGHLIGHT_RED2);
+
         }
     }
 
