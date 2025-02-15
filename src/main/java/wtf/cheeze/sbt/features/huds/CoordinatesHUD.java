@@ -23,10 +23,12 @@ import dev.isxander.yacl3.api.OptionGroup;
 import dev.isxander.yacl3.api.controller.ColorControllerBuilder;
 import dev.isxander.yacl3.api.controller.IntegerSliderControllerBuilder;
 import dev.isxander.yacl3.config.v2.api.SerialEntry;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.text.Text;
 import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SBTConfig;
+import wtf.cheeze.sbt.hud.HUD;
 import wtf.cheeze.sbt.hud.utils.AnchorPoint;
 import wtf.cheeze.sbt.utils.NumberUtils;
 import wtf.cheeze.sbt.hud.utils.DrawMode;
@@ -55,7 +57,7 @@ public class CoordinatesHUD extends TextHUD {
                 () -> SBTConfig.huds().coordinates.color,
                 () -> SBTConfig.huds().coordinates.outlineColor,
                 () -> SBTConfig.huds().coordinates.mode,
-                () -> Text.literal(String.format("X: %s Y: %s Z: %s" , NumberUtils.formattedRound(SkyblockTweaks.mc.player.getX(), SBTConfig.huds().coordinates.decimalPlaces), NumberUtils.formattedRound(SkyblockTweaks.mc.player.getY(), SBTConfig.huds().coordinates.decimalPlaces), NumberUtils.formattedRound(SkyblockTweaks.mc.player.getZ(), SBTConfig.huds().coordinates.decimalPlaces)))
+                () -> Text.literal(String.format("X: %s Y: %s Z: %s" , NumberUtils.formattedRound(client.player.getX(), SBTConfig.huds().coordinates.decimalPlaces), NumberUtils.formattedRound(client.player.getY(), SBTConfig.huds().coordinates.decimalPlaces), NumberUtils.formattedRound(client.player.getZ(), SBTConfig.huds().coordinates.decimalPlaces)))
         );
     }
     @Override

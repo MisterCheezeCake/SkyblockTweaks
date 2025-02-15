@@ -33,6 +33,8 @@ import wtf.cheeze.sbt.utils.enums.*;
 
 public class SkyblockUtils {
 
+    private static final MinecraftClient client = MinecraftClient.getInstance();
+
     public static Rarity castStringToRarity(String input) {
         input = input.toLowerCase();
         return switch (input) {
@@ -124,7 +126,7 @@ public class SkyblockUtils {
     }
 
     public static boolean quiverActive() {
-        return SkyblockTweaks.mc.player.getInventory().getStack(8).getName().getString().startsWith("Quiver");
+        return client.player.getInventory().getStack(8).getName().getString().startsWith("Quiver");
     }
 
 
@@ -133,7 +135,7 @@ public class SkyblockUtils {
      */
     public static QuiverData getQuiverData() {
         try {
-            if (quiverActive()) return new QuiverData(SkyblockTweaks.mc.player.getInventory().getStack(8));
+            if (quiverActive()) return new QuiverData(client.player.getInventory().getStack(8));
             return QuiverData.DEFAULT;
         } catch (Exception e) {
             return QuiverData.DEFAULT;

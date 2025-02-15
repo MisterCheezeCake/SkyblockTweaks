@@ -22,6 +22,7 @@ import dev.isxander.yacl3.api.Option;
 import dev.isxander.yacl3.api.OptionGroup;
 import dev.isxander.yacl3.api.controller.ColorControllerBuilder;
 import dev.isxander.yacl3.config.v2.api.SerialEntry;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.text.Text;
 import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.config.ConfigImpl;
@@ -38,6 +39,7 @@ import java.awt.Color;
 
 public class FpsHUD extends TextHUD {
 
+
     public FpsHUD() {
         INFO = new HudInformation(
                 () -> SBTConfig.huds().fps.x,
@@ -53,7 +55,7 @@ public class FpsHUD extends TextHUD {
                 () -> SBTConfig.huds().fps.color,
                 () -> SBTConfig.huds().fps.outlineColor,
                 () -> SBTConfig.huds().fps.mode,
-                () -> Text.literal(SBTConfig.huds().fps.reverse ?  "FPS: " + SkyblockTweaks.mc.getCurrentFps() : SkyblockTweaks.mc.getCurrentFps() + " FPS")
+                () -> Text.literal(SBTConfig.huds().fps.reverse ?  "FPS: " + client.getCurrentFps() : client.getCurrentFps() + " FPS")
 
         );
     }

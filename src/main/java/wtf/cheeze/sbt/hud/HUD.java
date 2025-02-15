@@ -31,7 +31,10 @@ import wtf.cheeze.sbt.hud.utils.HudInformation;
  */
 public abstract class HUD  {
 
+    public static final MinecraftClient client = MinecraftClient.getInstance();
+
     public HudInformation INFO;
+
 
     /**
      * Whether the HUD supports non-left anchors

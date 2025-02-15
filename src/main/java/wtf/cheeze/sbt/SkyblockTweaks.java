@@ -21,7 +21,6 @@ package wtf.cheeze.sbt;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import net.fabricmc.api.ModInitializer;
-import net.minecraft.client.MinecraftClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import wtf.cheeze.sbt.command.SBTCommand;
@@ -31,19 +30,15 @@ import wtf.cheeze.sbt.config.migration.MigrationManager;
 import wtf.cheeze.sbt.config.persistent.PersistentData;
 import wtf.cheeze.sbt.features.MenuHighlights;
 import wtf.cheeze.sbt.features.MouseLock;
-import wtf.cheeze.sbt.hud.HUD;
-import wtf.cheeze.sbt.events.HudRenderEvents;
+import wtf.cheeze.sbt.hud.HudManager;
 import wtf.cheeze.sbt.utils.NotificationHandler;
 import wtf.cheeze.sbt.utils.UpdateChecker;
 import wtf.cheeze.sbt.utils.Version;
 import wtf.cheeze.sbt.utils.actionbar.ActionBarTransformer;
+import wtf.cheeze.sbt.utils.skyblock.ModAPIUtils;
+import wtf.cheeze.sbt.utils.skyblock.ProfileManager;
 import wtf.cheeze.sbt.utils.tablist.TabListParser;
-import wtf.cheeze.sbt.utils.skyblock.*;
 import wtf.cheeze.sbt.features.chat.*;
-import wtf.cheeze.sbt.features.huds.*;
-import wtf.cheeze.sbt.features.mining.*;
-
-import java.util.ArrayList;
 
 public class SkyblockTweaks implements ModInitializer {
 	public static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
@@ -51,10 +46,8 @@ public class SkyblockTweaks implements ModInitializer {
 
 
 	public static final PersistentData PD = PersistentData.load();
-	public static final ArrayList<HUD> HUDS = new ArrayList<HUD>();
 	//public static final Version VERSION = new Version(Version.VersionType.ALPHA, 0, 1, 0, 10);
 	public static final Version VERSION = new Version(Version.VersionType.UNSTABLE);
-	public static final MinecraftClient mc = MinecraftClient.getInstance();
 
 
 
@@ -63,45 +56,12 @@ public class SkyblockTweaks implements ModInitializer {
 
 		//MigrationManager.handleMigrations();
 
-
-
 		SBTConfig.HANDLER.load();
 
 		MigrationManager.runTransformation(BarColorTransformation.INSTANCE);
 
 
-		HUDS.add(SkillHUDManager.INSTANCE.SKILL_HUD);
-		HUDS.add(SkillHUDManager.INSTANCE.SKILL_BAR);
-		HUDS.add(new SpeedHUD());
-		HUDS.add(new DefenseHUD());
-		HUDS.add(new EhpHUD());
-		HUDS.add(new DamageReductionHUD());
-		HUDS.add(new HealthHUD());
-		HUDS.add(new ManaHUD());
-		HUDS.add(new OverflowManaHUD());
-		HUDS.add(new DrillFuelHUD());
-		HUDS.add(new DrillFuelBar());
-		HUDS.add(new HealthBar());
-		HUDS.add(new ManaBar());
-		HUDS.add(new CoordinatesHUD());
-		HUDS.add(new RealTimeHUD());
-		HUDS.add(new FpsHUD());
-		HUDS.add(new TickerHUD());
-		HUDS.add(new QuiverHUD());
-		HUDS.add(new ArmorStackHUD());
-		HUDS.add(new RiftTimeHUD());
-
-		HUDS.add(MiningHUD.INSTANCE);
-		HUDS.add(new EventTimerHUD());
-		//HUDS.add(new IconTestHUD());
-
-//		HudRenderCallback.EVENT.register((context, tickCounter) -> {
-//			HUDS.forEach(hud -> hud.render(context, false));
-//		});
-		HudRenderEvents.AFTER_MAIN_HUD.register((context, tickCounter) -> {
-			HUDS.forEach(hud -> hud.render(context, false));
-		});
-
+		HudManager.registerEvents();
 		SBTCommand.registerEvents();
 		ActionBarTransformer.registerEvents();
 		NotificationHandler.registerEvents();
@@ -111,8 +71,7 @@ public class SkyblockTweaks implements ModInitializer {
 		ProfileManager.registerEvents();
 		TabListParser.registerEvents();
 		MouseLock.registerEvents();
-
-		UpdateChecker.checkForUpdates();
 		MenuHighlights.registerEvents();
+		UpdateChecker.checkForUpdates();
 	}
 }

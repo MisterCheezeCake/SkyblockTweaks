@@ -118,7 +118,7 @@ public abstract class BarHUD extends HUD {
     }
 
     private static float getRelativeBarWidth(){
-        return BAR_WIDTH / SkyblockTweaks.mc.getWindow().getWidth();
+        return BAR_WIDTH / client.getWindow().getWidth();
     }
 
 }

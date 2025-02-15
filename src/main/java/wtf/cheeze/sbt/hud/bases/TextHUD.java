@@ -18,6 +18,7 @@
  */
 package wtf.cheeze.sbt.hud.bases;
 
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.hud.utils.DrawMode;
@@ -30,7 +31,9 @@ import wtf.cheeze.sbt.utils.render.RenderUtils;
 public abstract class TextHUD extends HUD {
     //public abstract String getText();
 
+
     public SingleHudLine line;
+    
 
     @Override
     public void render(DrawContext context, boolean fromHudScreen, boolean hovered) {
@@ -48,13 +51,13 @@ public abstract class TextHUD extends HUD {
         var scale = (float) INFO.getScale.get();
         switch (INFO.getAnchorPoint.get()) {
             case LEFT -> {
-                return new Bounds(getActualX(INFO.getX.get()), getActualY(INFO.getY.get()), RenderUtils.getStringWidth(line.text.get()) * scale, SkyblockTweaks.mc.textRenderer.fontHeight * scale, scale);
+                return new Bounds(getActualX(INFO.getX.get()), getActualY(INFO.getY.get()), RenderUtils.getStringWidth(line.text.get()) * scale, client.textRenderer.fontHeight * scale, scale);
             }
             case RIGHT -> {
-                return new Bounds((int) (getActualX(INFO.getX.get()) - RenderUtils.getStringWidth(line.text.get()) * scale), getActualY(INFO.getY.get()), RenderUtils.getStringWidth(line.text.get()) * scale, SkyblockTweaks.mc.textRenderer.fontHeight * scale, scale);
+                return new Bounds((int) (getActualX(INFO.getX.get()) - RenderUtils.getStringWidth(line.text.get()) * scale), getActualY(INFO.getY.get()), RenderUtils.getStringWidth(line.text.get()) * scale, client.textRenderer.fontHeight * scale, scale);
             }
             case CENTER -> {
-                return new Bounds((int) (getActualX(INFO.getX.get()) - RenderUtils.getStringWidth(line.text.get()) * scale / 2), getActualY(INFO.getY.get()), RenderUtils.getStringWidth(line.text.get()) * scale, SkyblockTweaks.mc.textRenderer.fontHeight * scale, scale);
+                return new Bounds((int) (getActualX(INFO.getX.get()) - RenderUtils.getStringWidth(line.text.get()) * scale / 2), getActualY(INFO.getY.get()), RenderUtils.getStringWidth(line.text.get()) * scale, client.textRenderer.fontHeight * scale, scale);
             }
             default -> throw new IllegalStateException("Unexpected value: " + INFO.getAnchorPoint.get());
         }
@@ -64,13 +67,13 @@ public abstract class TextHUD extends HUD {
         var scale = (float) INFO.getScale.get();
         switch (INFO.getAnchorPoint.get()) {
             case LEFT -> {
-                return new BoundsRelative(INFO.getX.get(), INFO.getY.get(), RenderUtils.getStringWidth(line.text.get()) * scale, SkyblockTweaks.mc.textRenderer.fontHeight * scale, scale);
+                return new BoundsRelative(INFO.getX.get(), INFO.getY.get(), RenderUtils.getStringWidth(line.text.get()) * scale, client.textRenderer.fontHeight * scale, scale);
             }
             case RIGHT -> {
-                return new BoundsRelative(INFO.getX.get() - RenderUtils.getRelativeStringWidth(line.text.get()) * scale, INFO.getY.get(), RenderUtils.getStringWidth(line.text.get()) * scale, SkyblockTweaks.mc.textRenderer.fontHeight * scale, scale);
+                return new BoundsRelative(INFO.getX.get() - RenderUtils.getRelativeStringWidth(line.text.get()) * scale, INFO.getY.get(), RenderUtils.getStringWidth(line.text.get()) * scale, client.textRenderer.fontHeight * scale, scale);
             }
             case CENTER -> {
-                return new BoundsRelative(INFO.getX.get() - RenderUtils.getRelativeStringWidth(line.text.get()) * scale / 2, INFO.getY.get(), RenderUtils.getStringWidth(line.text.get()) * scale, SkyblockTweaks.mc.textRenderer.fontHeight * scale, scale);
+                return new BoundsRelative(INFO.getX.get() - RenderUtils.getRelativeStringWidth(line.text.get()) * scale / 2, INFO.getY.get(), RenderUtils.getStringWidth(line.text.get()) * scale, client.textRenderer.fontHeight * scale, scale);
             }
             default -> throw new IllegalStateException("Unexpected value: " + INFO.getAnchorPoint.get());
         }

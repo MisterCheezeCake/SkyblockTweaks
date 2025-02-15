@@ -19,6 +19,7 @@
 package wtf.cheeze.sbt.utils.tablist;
 
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.network.PlayerListEntry;
 import wtf.cheeze.sbt.SkyblockTweaks;
@@ -46,7 +47,7 @@ public class TabListParser {
             var data = new TabListData();
             boolean inInfoColumn = false;
             WidgetType currentWidget = null;
-            var network = getNetworkHandler();
+            var network = MinecraftClient.getInstance().getNetworkHandler();
             if (network == null) return TabListData.EMPTY;
             for (PlayerListEntry entry : network.getPlayerList().stream().sorted(ORDER).toList()) {
                 var displayName = entry.getDisplayName();
@@ -87,9 +88,7 @@ public class TabListParser {
         }
     }
 
-    private static ClientPlayNetworkHandler getNetworkHandler() {
-        return SkyblockTweaks.mc.getNetworkHandler();
-    }
+
 
     public static void registerEvents() {
         ClientTickEvents.END_CLIENT_TICK.register(client -> {

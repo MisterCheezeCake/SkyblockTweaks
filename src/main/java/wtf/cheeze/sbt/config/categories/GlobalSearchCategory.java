@@ -21,6 +21,7 @@ package wtf.cheeze.sbt.config.categories;
 import dev.isxander.yacl3.api.ButtonOption;
 import dev.isxander.yacl3.api.ConfigCategory;
 import dev.isxander.yacl3.api.OptionDescription;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.text.Text;
 import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.config.ConfigImpl;
@@ -90,7 +91,7 @@ public class GlobalSearchCategory {
                     if (y.pendingChanges()) {
                         y.finishOrSave();
                     }
-                    SkyblockTweaks.mc.setScreen(SBTConfig.getSpecialGlobalSearchScreen(((YACLScreenAccessor) y).sbt$getParent()));
+                   MinecraftClient.getInstance().setScreen(SBTConfig.getSpecialGlobalSearchScreen(((YACLScreenAccessor) y).sbt$getParent()));
 
 
                 })

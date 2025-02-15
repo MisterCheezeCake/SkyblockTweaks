@@ -18,6 +18,7 @@
  */
 package wtf.cheeze.sbt.utils.skyblock;
 
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.util.Pair;
 import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.hud.icon.HudIcon;
@@ -37,8 +38,8 @@ import static wtf.cheeze.sbt.hud.icon.Icons.MINING_ICONS;
 
 public class MiningData {
 
-    //TODO: Add support for active events
-    //§e§lEVENT §B§LMITHRIL GOURMAND §e§lACTIVE IN §b§lFAR RESERVE §e§lfor §a§l06:12
+    public static final MinecraftClient client = MinecraftClient.getInstance();
+
     private static final Pattern ACTIVE_EVENT = Pattern.compile("EVENT (?<name>.+) ACTIVE IN (?<location>.+) for (?<minutes>\\d\\d):(?<seconds>\\d\\d)");
     private static final Pattern PASSIVE_EVENT = Pattern.compile("PASSIVE EVENT (?<name>.+) RUNNING FOR (?<minutes>\\d\\d):(?<seconds>\\d\\d)");
     public final int comNo;
@@ -173,7 +174,7 @@ public class MiningData {
             }
         }
 
-        var bossBars = ((BossBarHudAccessor) SkyblockTweaks.mc.inGameHud.getBossBarHud()).getBossBars();
+        var bossBars = ((BossBarHudAccessor) client.inGameHud.getBossBarHud()).getBossBars();
         for (var bar: bossBars.values()) {
             var name = TextUtils.removeFormatting(bar.getName().getString());
             var passive = PASSIVE_EVENT.matcher(name);

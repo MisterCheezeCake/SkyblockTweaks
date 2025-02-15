@@ -35,6 +35,7 @@ import wtf.cheeze.sbt.config.SkyblockTweaksScreenMain;
 import wtf.cheeze.sbt.features.CalcPowder;
 import wtf.cheeze.sbt.features.MouseLock;
 import wtf.cheeze.sbt.features.chat.PartyFeatures;
+import wtf.cheeze.sbt.hud.HudManager;
 import wtf.cheeze.sbt.mixin.BossBarHudAccessor;
 import wtf.cheeze.sbt.utils.MessageManager;
 import wtf.cheeze.sbt.utils.NumberUtils;
@@ -57,7 +58,6 @@ import static net.fabricmc.fabric.api.client.command.v2.ClientCommandManager.arg
 import static net.fabricmc.fabric.api.client.command.v2.ClientCommandManager.literal;
 import static wtf.cheeze.sbt.command.CommandUtils.calcSend;
 import static wtf.cheeze.sbt.command.CommandUtils.send;
-import static wtf.cheeze.sbt.utils.MessageManager.PREFIX;
 
 
 public class SBTCommand {
@@ -319,9 +319,9 @@ public class SBTCommand {
                             mc.send(() -> mc.setScreen(screen));
                             return 1;
                         }))
-                        .then(CommandUtils.getScreenOpeningCommand("hud", () -> new HudScreen(Text.literal("SkyBlockTweaks"), SkyblockTweaks.HUDS, null)))
-                        .then(CommandUtils.getScreenOpeningCommand("gui", () -> new HudScreen(Text.literal("SkyBlockTweaks"), SkyblockTweaks.HUDS, null)))
-                        .then(CommandUtils.getScreenOpeningCommand("edit", () -> new HudScreen(Text.literal("SkyBlockTweaks"), SkyblockTweaks.HUDS, null)))
+                        .then(CommandUtils.getScreenOpeningCommand("hud", () -> new HudScreen(Text.literal("SkyBlockTweaks"), HudManager.HUDS, null)))
+                        .then(CommandUtils.getScreenOpeningCommand("gui", () -> new HudScreen(Text.literal("SkyBlockTweaks"), HudManager.HUDS, null)))
+                        .then(CommandUtils.getScreenOpeningCommand("edit", () -> new HudScreen(Text.literal("SkyBlockTweaks"), HudManager.HUDS, null)))
                         .then(literal("mouselock").executes(context -> {
                             MouseLock.toggle();
                             return 1;
@@ -362,7 +362,7 @@ public class SBTCommand {
 
                                 )
                                 .then(literal("dumpBossbars").executes(context -> {
-                                    for (var bar : ((BossBarHudAccessor) SkyblockTweaks.mc.inGameHud.getBossBarHud()).getBossBars().values()) {
+                                    for (var bar : ((BossBarHudAccessor) context.getSource().getClient().inGameHud.getBossBarHud()).getBossBars().values()) {
                                         SkyblockTweaks.LOGGER.info(bar.getName().getString());
                                     }
                                     send(context, TextUtils.withColor("Dumped Bossbar Text to Logs", Colors.CYAN));
@@ -397,7 +397,7 @@ public class SBTCommand {
                                 .then(literal("dumpComponents")
                                         .then(literal("hand")
                                         .executes(context -> {
-                                            var components =  SkyblockTweaks.mc.player.getMainHandStack().getComponents();
+                                            var components =  context.getSource().getClient().player.getMainHandStack().getComponents();
                                             components.forEach((component) -> {
                                                 send(context, TextUtils.withColor(component.toString(), Colors.CYAN));
                                             });
@@ -406,7 +406,8 @@ public class SBTCommand {
                                         .then(literal("inventory")
                                                 .then(argument("number" , IntegerArgumentType.integer())
                                                         .executes(context -> {
-                                                            var components = SkyblockTweaks.mc.player.getInventory().getStack(IntegerArgumentType.getInteger(context, "number")).getComponents();
+                                                            
+                                                            var components = context.getSource().getClient().player.getInventory().getStack(IntegerArgumentType.getInteger(context, "number")).getComponents();
                                                             components.forEach((component) -> {
                                                                 send(context, TextUtils.withColor(component.toString(), Colors.CYAN));
 
@@ -421,7 +422,7 @@ public class SBTCommand {
                                                             new Thread(() -> {
                                                                 try {
                                                                     Thread.sleep(1500);
-                                                                    var screen = (GenericContainerScreen) SkyblockTweaks.mc.currentScreen;
+                                                                    var screen = (GenericContainerScreen) context.getSource().getClient().currentScreen;
                                                                     var components = screen.getScreenHandler().getSlot(IntegerArgumentType.getInteger(context, "number")).getStack().getComponents();
                                                                     components.forEach((component) -> {
                                                                         send(context, TextUtils.withColor(component.toString(), Colors.CYAN));

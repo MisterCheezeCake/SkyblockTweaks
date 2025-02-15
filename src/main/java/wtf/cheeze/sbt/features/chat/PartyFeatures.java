@@ -26,6 +26,7 @@ import dev.isxander.yacl3.api.controller.StringControllerBuilder;
 import dev.isxander.yacl3.config.v2.api.SerialEntry;
 import net.azureaaron.hmapi.network.HypixelNetworking;
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.text.Text;
 import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.config.ConfigImpl;
@@ -49,6 +50,8 @@ public class PartyFeatures {
 
     public static boolean verboseDebug = false;
     public static long lastPartyCommand = 0;
+
+    private static final MinecraftClient client = MinecraftClient.getInstance();
 
     public static void registerEvents() {
         ClientReceiveMessageEvents.GAME.register((message, overlay) -> {
@@ -90,7 +93,7 @@ public class PartyFeatures {
                             return;
                         }
                         if (verboseDebug) sendDebugMessage("Sending '/p transfer " + name + "'");
-                        SkyblockTweaks.mc.getNetworkHandler().sendChatCommand("p transfer " + name);
+                        client.getNetworkHandler().sendChatCommand("p transfer " + name);
                     }
                     case "allinv", "allinvite" -> {
                         if (!SkyblockData.Party.leader) {
@@ -98,7 +101,7 @@ public class PartyFeatures {
                             return;
                         }
                         if (verboseDebug) sendDebugMessage("Sending '/p settings allinvite'");
-                        SkyblockTweaks.mc.getNetworkHandler().sendChatCommand("p settings allinvite");
+                        client.getNetworkHandler().sendChatCommand("p settings allinvite");
                     }
                     case "warp" -> {
                         if (!SkyblockData.Party.leader) {
@@ -106,15 +109,15 @@ public class PartyFeatures {
                             return;
                         }
                         if (verboseDebug) sendDebugMessage("Sending '/p warp'");
-                        SkyblockTweaks.mc.getNetworkHandler().sendChatCommand("p warp");
+                        client.getNetworkHandler().sendChatCommand("p warp");
                     }
                     case "help" -> {
-                        if ((name.equals(SkyblockTweaks.mc.player.getName().getString()))) {
+                        if ((name.equals(client.player.getName().getString()))) {
                             MessageManager.send("Available party commands: !ptme, !allinvite, !warp, !help");
                             return;
                         }
                         if (verboseDebug) sendDebugMessage("Sending help message");
-                        SkyblockTweaks.mc.getNetworkHandler().sendChatCommand("pc [SkyblockTweaks] Available party commands: !ptme, !allinvite, !warp, !help");
+                        client.getNetworkHandler().sendChatCommand("pc [SkyblockTweaks] Available party commands: !ptme, !allinvite, !warp, !help");
                     }
                 }
             } else if (s.startsWith("The party was transferred to")) {
@@ -124,7 +127,7 @@ public class PartyFeatures {
                 if (!matcher.matches()) return;
                 var name = matcher.group(1);
                 if (name.contains(" ")) name = name.split(" ")[1];
-                var me = SkyblockTweaks.mc.player.getName().getString();
+                var me = client.player.getName().getString();
                 SkyblockData.Party.leader = name.equals(me);
             } else if (s.matches("From .*: Boop!")) {
                 if (!SBTConfig.get().partyCommands.boopInvites) return;
@@ -132,7 +135,7 @@ public class PartyFeatures {
                 if (!matcher.matches()) return;
                 var n = matcher.group(1);
                 var name = n.contains(" ") ? n.split(" ")[1] : n;
-                SkyblockTweaks.mc.send(() -> MessageManager.send(getInviteMessage(name)));
+                client.send(() -> MessageManager.send(getInviteMessage(name)));
             }
         });
     }
@@ -235,7 +238,7 @@ public class PartyFeatures {
             TextUtils.withColor("]", Colors.DARK_GRAY)
     );
     private static void sendDebugMessage(String message) {
-        SkyblockTweaks.mc.player.sendMessage(TextUtils.join(DEBUG_PREFIX, TextUtils.SPACE, TextUtils.withColor(message, Colors.CYAN)), false);
+        client.player.sendMessage(TextUtils.join(DEBUG_PREFIX, TextUtils.SPACE, TextUtils.withColor(message, Colors.CYAN)), false);
     }
 
 

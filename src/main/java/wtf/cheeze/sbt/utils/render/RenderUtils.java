@@ -28,6 +28,8 @@ import wtf.cheeze.sbt.SkyblockTweaks;
 
 public class RenderUtils {
 
+    private static final MinecraftClient client = MinecraftClient.getInstance();
+
     public static void beginScale(DrawContext context, float scale) {
         context.getMatrices().push();
         context.getMatrices().scale(scale, scale, 1.0f);
@@ -45,10 +47,10 @@ public class RenderUtils {
         drawText(context, text, (int) (x/scale), (int) (y/scale), color, shadow);
     }
     public static void drawText(DrawContext context, Text text, int x, int y, int color, boolean shadow) {
-        context.drawText(SkyblockTweaks.mc.textRenderer, text, x, y, color, shadow);
+        context.drawText(client.textRenderer, text, x, y, color, shadow);
     }
     public static void drawTextWithOutline(DrawContext context, Text text, int x, int y, int color, int outlineColor) {
-        SkyblockTweaks.mc.textRenderer.drawWithOutline(
+        client.textRenderer.drawWithOutline(
                 text.asOrderedText(),
                 x, y, color, outlineColor,
                 context.getMatrices().peek().getPositionMatrix(),
@@ -78,17 +80,17 @@ public class RenderUtils {
     }
 
     public static int getStringWidth(Text text) {
-        return SkyblockTweaks.mc.textRenderer.getWidth(text);
+        return client.textRenderer.getWidth(text);
     }
     public static int getStringWidth(String text) {
-        return SkyblockTweaks.mc.textRenderer.getWidth(text);
+        return client.textRenderer.getWidth(text);
     }
 
     public static int getRelativeStringWidth(String text) {
-        return SkyblockTweaks.mc.textRenderer.getWidth(text) / MinecraftClient.getInstance().getWindow().getScaledWidth();
+        return client.textRenderer.getWidth(text) / MinecraftClient.getInstance().getWindow().getScaledWidth();
     }
     public static int getRelativeStringWidth(Text text) {
-        return SkyblockTweaks.mc.textRenderer.getWidth(text) / MinecraftClient.getInstance().getWindow().getScaledWidth();
+        return client.textRenderer.getWidth(text) / MinecraftClient.getInstance().getWindow().getScaledWidth();
     }
 
     public static void drawTexture(DrawContext context, Identifier texture, int x, int y, int width, int height, int textureWidth, int textureHeight) {

@@ -25,6 +25,7 @@ import net.azureaaron.hmapi.network.packet.s2c.HelloS2CPacket;
 import net.azureaaron.hmapi.network.packet.s2c.HypixelS2CPacket;
 import net.azureaaron.hmapi.network.packet.v1.s2c.LocationUpdateS2CPacket;
 import net.azureaaron.hmapi.network.packet.v2.s2c.PartyInfoS2CPacket;
+import net.minecraft.client.MinecraftClient;
 import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.utils.MessageManager;
 import wtf.cheeze.sbt.utils.NumberUtils;
@@ -39,6 +40,8 @@ import java.util.Optional;
 import java.util.UUID;
 
 public class SkyblockData {
+
+    private static final MinecraftClient client = MinecraftClient.getInstance();
 
 
     public static boolean inSB = false;
@@ -145,7 +148,7 @@ public class SkyblockData {
         switch (packet) {
             case PartyInfoS2CPacket(boolean parInParty, Map<UUID, PartyRole> members) -> {
                 Party.inParty = parInParty;
-                var myUUID = SkyblockTweaks.mc.player.getUuid();
+                var myUUID = client.player.getUuid();
                 if (myUUID == null || members == null)  {
                     Party.leader = false;
                     return;

@@ -28,6 +28,7 @@ import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import wtf.cheeze.sbt.SkyblockTweaks;
+import wtf.cheeze.sbt.hud.HudManager;
 import wtf.cheeze.sbt.utils.render.Colors;
 import wtf.cheeze.sbt.utils.render.RenderUtils;
 import wtf.cheeze.sbt.hud.HudScreen;
@@ -51,7 +52,7 @@ public class SkyblockTweaksScreenMain extends Screen {
             mc.send(() -> mc.setScreen(SBTConfig.getScreen(this)));
         }).dimensions(centerx - 100, 55, 200, 20).build();
         hudButton = ButtonWidget.builder(Text.literal("Edit HUD Positions"), button -> {
-            mc.send(() -> mc.setScreen(new HudScreen(Text.literal("SkyBlockTweaks"), SkyblockTweaks.HUDS, this)));
+            mc.send(() -> mc.setScreen(new HudScreen(Text.literal("SkyBlockTweaks"), HudManager.HUDS, this)));
         }).dimensions(centerx - 100, 85, 200, 20).build();
         ButtonWidget modrinthButton = ButtonWidget.builder(Text.literal("Modrinth"), button -> {
             ConfirmLinkScreen.open(this, "https://modrinth.com/mod/sbt", true);

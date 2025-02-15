@@ -1,5 +1,6 @@
 package wtf.cheeze.sbt.hud.bases;
 
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.hud.bounds.Bounds;
@@ -13,21 +14,14 @@ import java.util.Arrays;
 
 public abstract class MultilineTextHUD extends HUD {
 
+    private static final MinecraftClient client = MinecraftClient.getInstance();
+
     protected MultilineTextHUD() {
         this.supportsNonLeftAnchors = false;
     }
     public HudComponent[] lines;
 
-//    public HudComponent[] getLines(){
-//        return lines;
-//    }
 
-//    public void setLines(HudComponent[] lines){
-//        this.lines = lines;
-//        this.lineNo = Arrays.stream(lines).filter(it -> it instanceof SingleHudLine).toArray().length;
-//        this.lineNo+= Arrays.stream(lines).filter(it -> it instanceof MultilineTextHUD).map(it -> ((MultilineTextHUD) it).getLineNo()).reduce(0, Integer::sum);
-//
-//    }
 
 
 
@@ -55,14 +49,14 @@ public abstract class MultilineTextHUD extends HUD {
         var scale = (float) INFO.getScale.get();
         var w = getLongestLineWidth();
         var h = getLineNo();
-        return new Bounds(getActualX(INFO.getX.get()), getActualY(INFO.getY.get()), w * scale, h * SkyblockTweaks.mc.textRenderer.fontHeight * scale, scale);
+        return new Bounds(getActualX(INFO.getX.get()), getActualY(INFO.getY.get()), w * scale, h * client.textRenderer.fontHeight * scale, scale);
     }
     @Override
     public BoundsRelative getCurrentBoundsRelative() {
         var scale = (float) INFO.getScale.get();
         var w = getLongestLineWidth();
         var h = getLineNo();
-        return new BoundsRelative(INFO.getX.get(), INFO.getY.get(), w * scale, h * SkyblockTweaks.mc.textRenderer.fontHeight * scale, scale);
+        return new BoundsRelative(INFO.getX.get(), INFO.getY.get(), w * scale, h * client.textRenderer.fontHeight * scale, scale);
     }
 
     @Override

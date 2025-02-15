@@ -71,7 +71,7 @@ public abstract class AbstractTickerHUD extends HUD {
     }
 
     private int getRelativeWidth() {
-        return getWidth() / SkyblockTweaks.mc.getWindow().getWidth();
+        return getWidth() / client.getWindow().getWidth();
     }
 
     @Override
