@@ -35,6 +35,7 @@ import wtf.cheeze.sbt.hud.utils.HudInformation;
 import wtf.cheeze.sbt.hud.bases.TextHUD;
 import wtf.cheeze.sbt.hud.components.SingleHudLine;
 import wtf.cheeze.sbt.utils.render.Colors;
+import wtf.cheeze.sbt.utils.skyblock.SkyblockData;
 
 
 import java.awt.*;
@@ -56,7 +57,7 @@ public class ManaHUD extends TextHUD {
                 () -> SBTConfig.huds().mana.color,
                 () -> SBTConfig.huds().mana.outlineColor,
                 () -> SBTConfig.huds().mana.mode,
-                () -> Text.literal(NumberUtils.formatNumber((int) SkyblockTweaks.DATA.mana, SBTConfig.huds().mana.separator) + "/" + NumberUtils.formatNumber((int) SkyblockTweaks.DATA.maxMana, SBTConfig.huds().mana.separator) + (SBTConfig.huds().mana.icon ? "✎" : ""))
+                () -> Text.literal(NumberUtils.formatNumber((int) SkyblockData.Stats.mana, SBTConfig.huds().mana.separator) + "/" + NumberUtils.formatNumber((int) SkyblockData.Stats.maxMana, SBTConfig.huds().mana.separator) + (SBTConfig.huds().mana.icon ? "✎" : ""))
                 //,
 //                () -> Icons.SKILL_ICONS.get(Skills.MINING),
 //                () -> true
@@ -65,7 +66,7 @@ public class ManaHUD extends TextHUD {
     @Override
     public boolean shouldRender(boolean fromHudScreen) {
         if (!super.shouldRender(fromHudScreen)) return false;
-        return (SkyblockTweaks.DATA.inSB && SBTConfig.huds().mana.enabled) || fromHudScreen;
+        return (SkyblockData.inSB && SBTConfig.huds().mana.enabled) || fromHudScreen;
     }
 //    @Override
 //    public String getText() {

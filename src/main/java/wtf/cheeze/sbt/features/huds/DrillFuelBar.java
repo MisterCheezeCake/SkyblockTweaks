@@ -31,6 +31,7 @@ import wtf.cheeze.sbt.utils.TextUtils;
 import wtf.cheeze.sbt.hud.bases.BarHUD;
 import wtf.cheeze.sbt.hud.utils.HudInformation;
 import wtf.cheeze.sbt.utils.render.Colors;
+import wtf.cheeze.sbt.utils.skyblock.SkyblockData;
 import wtf.cheeze.sbt.utils.skyblock.SkyblockUtils;
 
 import java.awt.Color;
@@ -44,7 +45,7 @@ public class DrillFuelBar extends BarHUD {
                 () -> SBTConfig.huds().drillFuelBar.scale,
                 () -> SBTConfig.huds().drillFuelBar.anchor,
                 () -> SBTConfig.huds().drillFuelBar.color,
-                () -> SkyblockTweaks.DATA.drillFuel / SkyblockTweaks.DATA.maxDrillFuel,
+                () -> SkyblockData.Stats.drillFuel / SkyblockData.Stats.maxDrillFuel,
                 x -> SBTConfig.huds().drillFuelBar.x = x,
                 y -> SBTConfig.huds().drillFuelBar.y = y,
                 scale -> SBTConfig.huds().drillFuelBar.scale = scale,
@@ -61,7 +62,7 @@ public class DrillFuelBar extends BarHUD {
     @Override
     public boolean shouldRender(boolean fromHudScreen) {
         if (!super.shouldRender(fromHudScreen)) return false;
-        return (SkyblockTweaks.DATA.inSB && SBTConfig.huds().drillFuelBar.enabled) && SkyblockUtils.isThePlayerHoldingADrill() || fromHudScreen;
+        return (SkyblockData.inSB && SBTConfig.huds().drillFuelBar.enabled) && SkyblockUtils.isThePlayerHoldingADrill() || fromHudScreen;
     }
 
     public static class Config {

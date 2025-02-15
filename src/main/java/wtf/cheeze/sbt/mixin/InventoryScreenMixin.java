@@ -29,8 +29,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.config.SBTConfig;
-
-
+import wtf.cheeze.sbt.utils.skyblock.SkyblockData;
 
 
 //? if =1.21.1 {
@@ -47,7 +46,7 @@ public abstract class InventoryScreenMixin {
     @Inject(method = "method_64513", at = @At("HEAD"), cancellable = true)
     //?}
     private void sbt$onPressRBook(ButtonWidget button, CallbackInfo ci) {
-        if (SBTConfig.get().inventory.redirectRecipeBook && SkyblockTweaks.DATA.inSB) {
+        if (SBTConfig.get().inventory.redirectRecipeBook && SkyblockData.inSB) {
             ci.cancel();
             MinecraftClient.getInstance().getNetworkHandler().sendChatCommand("recipebook");
         }

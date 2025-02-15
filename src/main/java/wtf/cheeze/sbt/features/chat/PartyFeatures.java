@@ -33,6 +33,7 @@ import wtf.cheeze.sbt.config.SBTConfig;
 import wtf.cheeze.sbt.utils.MessageManager;
 import wtf.cheeze.sbt.utils.TextUtils;
 import wtf.cheeze.sbt.utils.render.Colors;
+import wtf.cheeze.sbt.utils.skyblock.SkyblockData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -84,7 +85,7 @@ public class PartyFeatures {
                 if (verboseDebug) sendDebugMessage("Arg0 is '" + args[0]+"'");
                 switch (args[0]) {
                     case "pt", "ptme" -> {
-                        if (!SkyblockTweaks.DATA.amITheLeader) {
+                        if (!SkyblockData.Party.leader) {
                             if (verboseDebug) sendDebugMessage("Party Transfer Requested, but I am not the leader.");
                             return;
                         }
@@ -92,7 +93,7 @@ public class PartyFeatures {
                         SkyblockTweaks.mc.getNetworkHandler().sendChatCommand("p transfer " + name);
                     }
                     case "allinv", "allinvite" -> {
-                        if (!SkyblockTweaks.DATA.amITheLeader) {
+                        if (!SkyblockData.Party.leader) {
                             if (verboseDebug) sendDebugMessage("All Invite Requested, but I am not the leader.");
                             return;
                         }
@@ -100,7 +101,7 @@ public class PartyFeatures {
                         SkyblockTweaks.mc.getNetworkHandler().sendChatCommand("p settings allinvite");
                     }
                     case "warp" -> {
-                        if (!SkyblockTweaks.DATA.amITheLeader) {
+                        if (!SkyblockData.Party.leader) {
                             if (verboseDebug) sendDebugMessage("Warp Requested, but I am not the leader.");
                             return;
                         }
@@ -124,7 +125,7 @@ public class PartyFeatures {
                 var name = matcher.group(1);
                 if (name.contains(" ")) name = name.split(" ")[1];
                 var me = SkyblockTweaks.mc.player.getName().getString();
-                SkyblockTweaks.DATA.amITheLeader = name.equals(me);
+                SkyblockData.Party.leader = name.equals(me);
             } else if (s.matches("From .*: Boop!")) {
                 if (!SBTConfig.get().partyCommands.boopInvites) return;
                 var matcher = BOOP_PATTERN.matcher(s);

@@ -35,6 +35,7 @@ import wtf.cheeze.sbt.utils.TextUtils;
 import wtf.cheeze.sbt.hud.utils.HudInformation;
 import wtf.cheeze.sbt.hud.bases.TextHUD;
 import wtf.cheeze.sbt.utils.render.Colors;
+import wtf.cheeze.sbt.utils.skyblock.SkyblockData;
 
 import java.awt.*;
 
@@ -55,14 +56,14 @@ public class OverflowManaHUD extends TextHUD {
                 () -> SBTConfig.huds().overflowMana.color,
                 () -> SBTConfig.huds().overflowMana.outlineColor,
                 () -> SBTConfig.huds().overflowMana.mode,
-                () -> Text.literal(NumberUtils.formatNumber((int) SkyblockTweaks.DATA.overflowMana, SBTConfig.huds().overflowMana.separator) + (SBTConfig.huds().overflowMana.icon ? "ʬ" : ""))
+                () -> Text.literal(NumberUtils.formatNumber((int) SkyblockData.Stats.overflowMana, SBTConfig.huds().overflowMana.separator) + (SBTConfig.huds().overflowMana.icon ? "ʬ" : ""))
         );
 
     }
     @Override
     public boolean shouldRender(boolean fromHudScreen) {
         if (!super.shouldRender(fromHudScreen)) return false;
-        return (SkyblockTweaks.DATA.inSB && SBTConfig.huds().overflowMana.enabled && (!SBTConfig.huds().overflowMana.hideWhenZero || SkyblockTweaks.DATA.overflowMana != 0)) || fromHudScreen;
+        return (SkyblockData.inSB && SBTConfig.huds().overflowMana.enabled && (!SBTConfig.huds().overflowMana.hideWhenZero || SkyblockData.Stats.overflowMana != 0)) || fromHudScreen;
     }
 
     @Override

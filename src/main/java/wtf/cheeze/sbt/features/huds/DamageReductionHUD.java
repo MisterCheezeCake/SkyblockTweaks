@@ -34,6 +34,7 @@ import wtf.cheeze.sbt.utils.TextUtils;
 import wtf.cheeze.sbt.hud.utils.HudInformation;
 import wtf.cheeze.sbt.hud.bases.TextHUD;
 import wtf.cheeze.sbt.utils.render.Colors;
+import wtf.cheeze.sbt.utils.skyblock.SkyblockData;
 
 import java.awt.Color;
 
@@ -54,14 +55,14 @@ public class DamageReductionHUD extends TextHUD {
                 () -> SBTConfig.huds().dr.color,
                 () -> SBTConfig.huds().dr.outlineColor,
                 () -> SBTConfig.huds().dr.mode,
-                () -> Text.literal(NumberUtils.round(SkyblockTweaks.DATA.damageReduction(), 1) + "%")
+                () -> Text.literal(NumberUtils.round(SkyblockData.Stats.damageReduction(), 1) + "%")
         );
 
     }
     @Override
     public boolean shouldRender(boolean fromHudScreen) {
         if (!super.shouldRender(fromHudScreen)) return false;
-        return (SkyblockTweaks.DATA.inSB && SBTConfig.huds().dr.enabled) || fromHudScreen;
+        return (SkyblockData.inSB && SBTConfig.huds().dr.enabled) || fromHudScreen;
     }
 
     @Override

@@ -32,6 +32,8 @@ import wtf.cheeze.sbt.hud.components.SingleHudLine;
 import wtf.cheeze.sbt.hud.utils.HudInformation;
 import wtf.cheeze.sbt.hud.bases.TextHUD;
 import wtf.cheeze.sbt.utils.render.Colors;
+import wtf.cheeze.sbt.utils.skyblock.SkyblockData;
+import wtf.cheeze.sbt.utils.skyblock.SkyblockUtils;
 
 import java.awt.Color;
 
@@ -52,7 +54,7 @@ public class SpeedHUD extends TextHUD {
                 () -> SBTConfig.huds().speed.color,
                 () -> SBTConfig.huds().speed.outlineColor,
                 () -> SBTConfig.huds().speed.mode,
-                () -> Text.literal((SkyblockTweaks.DATA.getSpeed()+"").split("\\.")[0] + "%")
+                () -> Text.literal((SkyblockUtils.getSpeed()+"").split("\\.")[0] + "%")
                 // Test Only
 //                ,
 //                () ->  new HudIcon(SkyblockTweaks.mc.player.getMainHandStack()),
@@ -68,7 +70,7 @@ public class SpeedHUD extends TextHUD {
     @Override
     public boolean shouldRender(boolean fromHudScreen) {
         if (!super.shouldRender(fromHudScreen)) return false;
-        return (SkyblockTweaks.DATA.inSB && SBTConfig.huds().speed.enabled) || fromHudScreen;
+        return (SkyblockData.inSB && SBTConfig.huds().speed.enabled) || fromHudScreen;
     }
 
 

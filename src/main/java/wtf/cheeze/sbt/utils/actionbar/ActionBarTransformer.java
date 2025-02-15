@@ -31,6 +31,7 @@ import wtf.cheeze.sbt.utils.NumberUtils;
 import wtf.cheeze.sbt.utils.TextUtils;
 import wtf.cheeze.sbt.utils.errors.ErrorHandler;
 import wtf.cheeze.sbt.utils.errors.ErrorLevel;
+import wtf.cheeze.sbt.utils.skyblock.SkyblockData;
 
 import static wtf.cheeze.sbt.config.categories.General.key;
 import static wtf.cheeze.sbt.config.categories.General.keyD;
@@ -234,7 +235,7 @@ public class ActionBarTransformer {
            // SkyblockTweaks.LOGGER.info("Old: " + message.getString());
             var data = ActionBarTransformer.run(message.getString());
             //SkyblockTweaks.LOGGER.info("New: " + data.transformedText);
-            SkyblockTweaks.DATA.update(data);
+            SkyblockData.update(data);
             return Text.of(data.transformedText);
 
         });

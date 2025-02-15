@@ -34,6 +34,7 @@ import wtf.cheeze.sbt.hud.utils.HudInformation;
 import wtf.cheeze.sbt.utils.TextUtils;
 import wtf.cheeze.sbt.utils.render.Colors;
 import wtf.cheeze.sbt.hud.icon.Icons;
+import wtf.cheeze.sbt.utils.skyblock.SkyblockData;
 import wtf.cheeze.sbt.utils.skyblock.SkyblockUtils;
 
 import java.awt.*;
@@ -77,7 +78,7 @@ public class QuiverHUD extends TextHUD {
     @Override
     public boolean shouldRender(boolean fromHudScreen) {
         if (!super.shouldRender(fromHudScreen)) return false;
-        return (SkyblockTweaks.DATA.inSB && SBTConfig.huds().quiver.enabled && SkyblockUtils.quiverActive()) || fromHudScreen;
+        return (SkyblockData.inSB && SBTConfig.huds().quiver.enabled && SkyblockUtils.quiverActive()) || fromHudScreen;
     }
 
 

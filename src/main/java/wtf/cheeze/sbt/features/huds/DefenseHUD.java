@@ -35,6 +35,7 @@ import wtf.cheeze.sbt.hud.utils.HudInformation;
 import wtf.cheeze.sbt.hud.bases.TextHUD;
 import wtf.cheeze.sbt.hud.components.SingleHudLine;
 import wtf.cheeze.sbt.utils.render.Colors;
+import wtf.cheeze.sbt.utils.skyblock.SkyblockData;
 
 import java.awt.Color;
 
@@ -56,13 +57,13 @@ public class DefenseHUD extends TextHUD {
                 () -> SBTConfig.huds().defense.color,
                 () -> SBTConfig.huds().defense.outlineColor,
                 () -> SBTConfig.huds().defense.mode,
-                () -> Text.literal(NumberUtils.formatNumber(SkyblockTweaks.DATA.defense, SBTConfig.huds().defense.separator)+ (SBTConfig.huds().defense.icon ? "❈" : ""))
+                () -> Text.literal(NumberUtils.formatNumber(SkyblockData.Stats.defense, SBTConfig.huds().defense.separator) + (SBTConfig.huds().defense.icon ? "❈" : ""))
         );
     }
     @Override
     public boolean shouldRender(boolean fromHudScreen) {
         if (!super.shouldRender(fromHudScreen)) return false;
-        return (SkyblockTweaks.DATA.inSB && SBTConfig.huds().defense.enabled) || fromHudScreen;
+        return (SkyblockData.inSB && SBTConfig.huds().defense.enabled) || fromHudScreen;
     }
 
 

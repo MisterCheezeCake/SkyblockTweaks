@@ -25,6 +25,7 @@ import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.mixin.PlayerListHudAccessor;
 import wtf.cheeze.sbt.utils.errors.ErrorHandler;
 import wtf.cheeze.sbt.utils.errors.ErrorLevel;
+import wtf.cheeze.sbt.utils.skyblock.SkyblockData;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -92,8 +93,8 @@ public class TabListParser {
 
     public static void registerEvents() {
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
-            if (!SkyblockTweaks.DATA.inSB) return;
-            SkyblockTweaks.DATA.update(parseTabList());
+            if (!SkyblockData.inSB) return;
+            SkyblockData.update(parseTabList());
         });
     }
 

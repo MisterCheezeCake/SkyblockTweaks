@@ -91,15 +91,21 @@ public class CommandUtils {
 
 
     static Text getDebugText(String name, boolean value) {
-        return getDebugText(name, String.valueOf(value));
+        return getDebugText(name, String.valueOf(value), value ? Colors.LIME : Colors.RED);
     }
     static Text getDebugText(String name, int value) {
-        return getDebugText(name, String.valueOf(value));
+        return getDebugText(name, String.valueOf(value), Colors.YELLOW);
     }
     static Text getDebugText(String name, float value) {
-        return getDebugText(name, String.valueOf(value));
+        return getDebugText(name, String.valueOf(value), Colors.YELLOW);
     }
 
+    static Text getDebugText(String name, String value, int color) {
+        return TextUtils.join(
+                TextUtils.withColor(name + ": ", Colors.CYAN),
+                TextUtils.withColor(value, color)
+        );
+    }
     static Text getDebugText(String name, String value) {
         return TextUtils.join(
                 TextUtils.withColor(name + ": ", Colors.CYAN),

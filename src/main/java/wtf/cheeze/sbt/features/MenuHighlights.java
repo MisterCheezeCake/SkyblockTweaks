@@ -64,7 +64,7 @@ public class MenuHighlights {
         }
         if (title.contains("Widget") || title.contains("Setting")) {
           tryDrawHighlightWidget(context, slot);
-        } else if (title.startsWith("Tasks") ||title.contains(" ➜ ")) {
+        } else if (title.equals("Ways to Level Up") || title.equals("Skill Related Tasks") ||title.contains(" ➜ ")) {
           tryDrawHighlightTasks(context, slot);
         }
 
@@ -143,6 +143,8 @@ public class MenuHighlights {
             else if (s.contains("Total Progress: ")) highlight(context, slot, HIGHLIGHT_RED2);
             else if (s.equals("You have completed this task!")) highlight(context, slot, HIGHLIGHT_GREEN2);
             else if (s.equals("This task can only be completed once!")) highlight(context, slot, HIGHLIGHT_RED2);
+            else if (s.equals("Progress to Complete Category: 100%")) highlight(context, slot, HIGHLIGHT_GREEN2);
+            else if (s.contains("Progress to Complete Category: ")) highlight(context, slot, HIGHLIGHT_RED2);
 
         }
     }

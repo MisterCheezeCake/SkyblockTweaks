@@ -61,7 +61,7 @@ public class MiningData {
             case "Lava Springs Titanium", "Royal Mines Titanium", "Cliffside Veins Titanium",
                  "Rampart's Quarry Titanium", "Upper Mines Titanium", "Treasure Hoarder Puncher", "Star Sentry Puncher",
                  "Maniac Slayer" -> 10;
-            case "Goblin Slayer" -> SkyblockTweaks.DATA.location.equals(Location.CRYSTAL_HOLLOWS) ? 13 : 100;
+            case "Goblin Slayer" -> SkyblockData.location.equals(Location.CRYSTAL_HOLLOWS) ? 13 : 100;
             case "Glacite Walker Slayer", "Mines Slayer" -> 50;
             case "Goblin Raid Slayer", "Lucky Raffle" -> 20;
             case "Golden Goblin Slayer", "Boss Corleone Slayer", "Mineshaft Explorer", "Scrap Collector", "Goblin Raid",

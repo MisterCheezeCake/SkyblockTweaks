@@ -45,6 +45,8 @@ import wtf.cheeze.sbt.utils.errors.ErrorHandler;
 import wtf.cheeze.sbt.utils.errors.ErrorLevel;
 import wtf.cheeze.sbt.utils.render.Colors;
 import wtf.cheeze.sbt.utils.skyblock.SkyblockConstants;
+import wtf.cheeze.sbt.utils.skyblock.SkyblockData;
+import wtf.cheeze.sbt.utils.skyblock.SkyblockData.Stats;
 import wtf.cheeze.sbt.utils.skyblock.SkyblockUtils;
 import wtf.cheeze.sbt.hud.HudScreen;
 import wtf.cheeze.sbt.utils.tablist.TabListParser;
@@ -333,13 +335,13 @@ public class SBTCommand {
                                                             if (value.equals("null")) value = null;
 
                                                             switch (StringArgumentType.getString(context, "key")) {
-                                                                case "inSB" -> SkyblockTweaks.DATA.inSB = Boolean.parseBoolean(value);
-                                                                case "alphaNetwork" -> SkyblockTweaks.DATA.alphaNetwork = Boolean.parseBoolean(value);
-                                                                case "inParty" -> SkyblockTweaks.DATA.inParty = Boolean.parseBoolean(value);
-                                                                case "amITheLeader" -> SkyblockTweaks.DATA.amITheLeader = Boolean.parseBoolean(value);
-                                                                case "currentProfile" -> SkyblockTweaks.DATA.currentProfile = value;
-                                                                case "mode" -> SkyblockTweaks.DATA.mode = value;
-                                                                case "riftSeconds" -> SkyblockTweaks.DATA.riftSeconds = Integer.parseInt(value);
+                                                                case "inSB" -> SkyblockData.inSB = Boolean.parseBoolean(value);
+                                                                case "alphaNetwork" -> SkyblockData.alphaNetwork = Boolean.parseBoolean(value);
+                                                                case "inParty" -> SkyblockData.Party.inParty = Boolean.parseBoolean(value);
+                                                                case "leader" -> SkyblockData.Party.leader = Boolean.parseBoolean(value);
+                                                                case "currentProfile" -> SkyblockData.currentProfile = value;
+                                                                case "mode" -> SkyblockData.mode = value;
+                                                                case "riftSeconds" -> Stats.riftSeconds = Integer.parseInt(value);
                                                                 default -> {
                                                                     send(context, INVALID);
                                                                     return 0;
@@ -443,21 +445,21 @@ public class SBTCommand {
                                 .then(literal("fullData").executes(context -> {
                                     var source = context.getSource();
                                     send(context, TextUtils.withColor("Full Data Dump", Colors.CYAN));
-                                    source.sendFeedback(CommandUtils.getDebugText("Defence", SkyblockTweaks.DATA.defense));
-                                    source.sendFeedback(CommandUtils.getDebugText("Max Health", SkyblockTweaks.DATA.maxHealth));
-                                    source.sendFeedback(CommandUtils.getDebugText("Health", SkyblockTweaks.DATA.health));
-                                    source.sendFeedback(CommandUtils.getDebugText("Max Mana", SkyblockTweaks.DATA.maxMana));
-                                    source.sendFeedback(CommandUtils.getDebugText("Mana", SkyblockTweaks.DATA.mana));
-                                    source.sendFeedback(CommandUtils.getDebugText("Overflow Mana", SkyblockTweaks.DATA.overflowMana));
-                                    source.sendFeedback(CommandUtils.getDebugText("Drill Fuel", SkyblockTweaks.DATA.drillFuel));
-                                    source.sendFeedback(CommandUtils.getDebugText("Max Drill Fuel", SkyblockTweaks.DATA.maxDrillFuel));
-                                    source.sendFeedback(CommandUtils.getDebugText("Rift Seconds", SkyblockTweaks.DATA.riftSeconds));
-                                    source.sendFeedback(CommandUtils.getDebugText("Rift Ticking", SkyblockTweaks.DATA.riftTicking));
-                                    source.sendFeedback(CommandUtils.getDebugText("Max Tickers", SkyblockTweaks.DATA.maxTickers));
-                                    source.sendFeedback(CommandUtils.getDebugText("Tickers", SkyblockTweaks.DATA.tickers));
-                                    source.sendFeedback(CommandUtils.getDebugText("Ticker Active", SkyblockTweaks.DATA.tickerActive));
-                                    source.sendFeedback(CommandUtils.getDebugText("Armor Stack", SkyblockTweaks.DATA.armorStack));
-                                    source.sendFeedback(CommandUtils.getDebugText("Stack String", SkyblockTweaks.DATA.stackString));
+                                    source.sendFeedback(CommandUtils.getDebugText("Defence", Stats.defense));
+                                    source.sendFeedback(CommandUtils.getDebugText("Max Health", Stats.maxHealth));
+                                    source.sendFeedback(CommandUtils.getDebugText("Health", Stats.health));
+                                    source.sendFeedback(CommandUtils.getDebugText("Max Mana", Stats.maxMana));
+                                    source.sendFeedback(CommandUtils.getDebugText("Mana", Stats.mana));
+                                    source.sendFeedback(CommandUtils.getDebugText("Overflow Mana", Stats.overflowMana));
+                                    source.sendFeedback(CommandUtils.getDebugText("Drill Fuel", Stats.drillFuel));
+                                    source.sendFeedback(CommandUtils.getDebugText("Max Drill Fuel", Stats.maxDrillFuel));
+                                    source.sendFeedback(CommandUtils.getDebugText("Rift Seconds", Stats.riftSeconds));
+                                    source.sendFeedback(CommandUtils.getDebugText("Rift Ticking", Stats.riftTicking));
+                                    source.sendFeedback(CommandUtils.getDebugText("Max Tickers", Stats.maxTickers));
+                                    source.sendFeedback(CommandUtils.getDebugText("Tickers", Stats.tickers));
+                                    source.sendFeedback(CommandUtils.getDebugText("Ticker Active", Stats.tickerActive));
+                                    source.sendFeedback(CommandUtils.getDebugText("Armor Stack", Stats.armorStack));
+                                    source.sendFeedback(CommandUtils.getDebugText("Stack String", Stats.stackString));
 
 
                                     return 1;
@@ -470,14 +472,14 @@ public class SBTCommand {
                                     var source = context.getSource();
                                     send(context, TextUtils.withColor("Debug Information", Colors.CYAN));
                                     source.sendFeedback(CommandUtils.getDebugText("Version", SkyblockTweaks.VERSION.getVersionString()));
-                                    source.sendFeedback(CommandUtils.getDebugText("In Skyblock", SkyblockTweaks.DATA.inSB));
-                                    //source.sendFeedback(CommandUtils.getDebugText("Mode", SkyblockTweaks.DATA.mode));
-                                    source.sendFeedback(CommandUtils.getDebugText("Location", SkyblockTweaks.DATA.location.getName()));
-                                    source.sendFeedback(CommandUtils.getDebugText("On Alpha Network", SkyblockTweaks.DATA.alphaNetwork));
-                                    source.sendFeedback(CommandUtils.getDebugText("In Party", SkyblockTweaks.DATA.inParty));
-                                    source.sendFeedback(CommandUtils.getDebugText("Am I The Leader", SkyblockTweaks.DATA.amITheLeader));
-                                    source.sendFeedback(CommandUtils.getDebugText("Current Profile", SkyblockTweaks.DATA.currentProfile));
-                                    source.sendFeedback(CommandUtils.getDebugText("Unique Profile ID", SkyblockTweaks.DATA.getCurrentProfileUnique()));
+                                    source.sendFeedback(CommandUtils.getDebugText("In Skyblock", SkyblockData.inSB));
+                                    //source.sendFeedback(CommandUtils.getDebugText("Mode", SkyblockData.Stats.mode));
+                                    source.sendFeedback(CommandUtils.getDebugText("Location", SkyblockData.location.getName()));
+                                    source.sendFeedback(CommandUtils.getDebugText("On Alpha Network", SkyblockData.alphaNetwork));
+                                    source.sendFeedback(CommandUtils.getDebugText("In Party", SkyblockData.Party.inParty));
+                                    source.sendFeedback(CommandUtils.getDebugText("Am I The Leader", SkyblockData.Party.leader));
+                                    source.sendFeedback(CommandUtils.getDebugText("Current Profile", SkyblockData.currentProfile));
+                                    source.sendFeedback(CommandUtils.getDebugText("Unique Profile ID", SkyblockData.getCurrentProfileUnique()));
 
                                     return 1;
                                 })

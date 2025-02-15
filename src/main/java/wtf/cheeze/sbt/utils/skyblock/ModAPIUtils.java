@@ -31,8 +31,8 @@ public class ModAPIUtils {
         HypixelNetworking.registerToEvents(Util.make(new Object2IntOpenHashMap<>(), map -> {
             map.put(LocationUpdateS2CPacket.ID, 1);
         }));
-        HypixelPacketEvents.PARTY_INFO.register(SkyblockTweaks.DATA::handlePacket);
-        HypixelPacketEvents.HELLO.register(SkyblockTweaks.DATA::handlePacket);
-        HypixelPacketEvents.LOCATION_UPDATE.register(SkyblockTweaks.DATA::handlePacket);
+        HypixelPacketEvents.PARTY_INFO.register(SkyblockData::handlePacket);
+        HypixelPacketEvents.HELLO.register(SkyblockData::handlePacket);
+        HypixelPacketEvents.LOCATION_UPDATE.register(SkyblockData::handlePacket);
     }
 }

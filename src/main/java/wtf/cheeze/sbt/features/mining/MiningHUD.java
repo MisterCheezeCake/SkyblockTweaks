@@ -46,6 +46,8 @@ import wtf.cheeze.sbt.utils.TextUtils;
 import wtf.cheeze.sbt.utils.render.Colors;
 import wtf.cheeze.sbt.hud.icon.Icons;
 import wtf.cheeze.sbt.utils.skyblock.MiningData;
+import wtf.cheeze.sbt.utils.skyblock.SkyblockData;
+import wtf.cheeze.sbt.utils.skyblock.SkyblockUtils;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -80,7 +82,7 @@ public class MiningHUD extends MultilineTextHUD {
     @Override
     public boolean shouldRender(boolean fromHudScreen) {
         if (!super.shouldRender(fromHudScreen)) return false;
-        return (SkyblockTweaks.DATA.inMiningIsland() && this.lines.length > 0) && (SBTConfig.mining().hud.enabled || fromHudScreen);
+        return (SkyblockUtils.inMiningIsland() && this.lines.length > 0) && (SBTConfig.mining().hud.enabled || fromHudScreen);
     }
 
     private final Supplier<Boolean> useIconSupplier = () -> SBTConfig.mining().hud.icons;
@@ -103,7 +105,7 @@ public class MiningHUD extends MultilineTextHUD {
                         () -> TextUtils.join(
                                 TextUtils.withColor("Mithril Powder:", SBTConfig.mining().hud.color),
                                 TextUtils.SPACE,
-                                TextUtils.withColor(SBTConfig.mining().hud.abbreviatePowder ? NumberUtils.addKOrM(SkyblockTweaks.DATA.miningData.mithPowder, ",") : NumberUtils.formatNumber(SkyblockTweaks.DATA.miningData.mithPowder, ","), Colors.DARK_GREEN)
+                                TextUtils.withColor(SBTConfig.mining().hud.abbreviatePowder ? NumberUtils.addKOrM(SkyblockData.miningData.mithPowder, ",") : NumberUtils.formatNumber(SkyblockData.miningData.mithPowder, ","), Colors.DARK_GREEN)
                         ),
                         () -> Icons.MINING_ICONS.get("MITHRIL_POWDER"),
                         useIconSupplier
@@ -115,7 +117,7 @@ public class MiningHUD extends MultilineTextHUD {
                         () -> TextUtils.join(
                                 TextUtils.withColor("Gemstone Powder:", SBTConfig.mining().hud.color),
                                 TextUtils.SPACE,
-                                TextUtils.withColor(SBTConfig.mining().hud.abbreviatePowder ? NumberUtils.addKOrM(SkyblockTweaks.DATA.miningData.gemPowder, ",") : NumberUtils.formatNumber(SkyblockTweaks.DATA.miningData.gemPowder, ","), Colors.PINK)
+                                TextUtils.withColor(SBTConfig.mining().hud.abbreviatePowder ? NumberUtils.addKOrM(SkyblockData.miningData.gemPowder, ",") : NumberUtils.formatNumber(SkyblockData.miningData.gemPowder, ","), Colors.PINK)
                         ),
                         () -> Icons.MINING_ICONS.get("GEMSTONE_POWDER"),
                         useIconSupplier
@@ -127,7 +129,7 @@ public class MiningHUD extends MultilineTextHUD {
                         () -> TextUtils.join(
                                 TextUtils.withColor("Glacite Power:", SBTConfig.mining().hud.color),
                                 TextUtils.SPACE,
-                                TextUtils.withColor(SBTConfig.mining().hud.abbreviatePowder ? NumberUtils.addKOrM(SkyblockTweaks.DATA.miningData.glacPowder, ",") : NumberUtils.formatNumber(SkyblockTweaks.DATA.miningData.glacPowder, ","), Colors.LIGHT_BLUE)
+                                TextUtils.withColor(SBTConfig.mining().hud.abbreviatePowder ? NumberUtils.addKOrM(SkyblockData.miningData.glacPowder, ",") : NumberUtils.formatNumber(SkyblockData.miningData.glacPowder, ","), Colors.LIGHT_BLUE)
                         ),
                         () -> Icons.MINING_ICONS.get("GLACITE_POWDER"),
                         useIconSupplier
@@ -145,8 +147,8 @@ public class MiningHUD extends MultilineTextHUD {
 
     private Supplier<FlexibleHudLine.Part[]> getComParts() {
         return () -> {
-            var arr = new FlexibleHudLine.Part[SkyblockTweaks.DATA.miningData.comNo];
-            for (int i = 0; i < SkyblockTweaks.DATA.miningData.comNo; i++) {
+            var arr = new FlexibleHudLine.Part[SkyblockData.miningData.comNo];
+            for (int i = 0; i < SkyblockData.miningData.comNo; i++) {
 
                 var suppliers = genComSuppliers(i);
                 if (comCache.toArray().length <= i || comCache.get(i) == null) {
@@ -170,7 +172,7 @@ public class MiningHUD extends MultilineTextHUD {
 
         return new Pair<>(
                 () -> {
-                    var com = SkyblockTweaks.DATA.miningData.coms[i];
+                    var com = SkyblockData.miningData.coms[i];
                     var max = MiningData.getComMax(com.getLeft());
                     var num = com.getRight();
                     return TextUtils.join(
@@ -179,7 +181,7 @@ public class MiningHUD extends MultilineTextHUD {
                             num == 1 ? TextUtils.withColor("DONE", Colors.LIME) : TextUtils.withColor(((max == -1 || !SBTConfig.mining().hud.useNumbers) ? NumberUtils.formatPercent(num) : Math.round(num * max) + "/" + max), Colors.fromFloatValue(num))
                     );
                 },
-                () -> MiningData.getComIcon(SkyblockTweaks.DATA.miningData.coms[i].getLeft()));
+                () -> MiningData.getComIcon(SkyblockData.miningData.coms[i].getLeft()));
 
     }
 

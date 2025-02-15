@@ -31,6 +31,7 @@ import wtf.cheeze.sbt.utils.TextUtils;
 import wtf.cheeze.sbt.hud.bases.BarHUD;
 import wtf.cheeze.sbt.hud.utils.HudInformation;
 import wtf.cheeze.sbt.utils.render.Colors;
+import wtf.cheeze.sbt.utils.skyblock.SkyblockData;
 
 import java.awt.Color;
 
@@ -42,8 +43,8 @@ public class HealthBar extends BarHUD {
                 () -> SBTConfig.huds().healthBar.y,
                 () -> SBTConfig.huds().healthBar.scale,
                 () -> SBTConfig.huds().healthBar.anchor,
-                () -> SkyblockTweaks.DATA.health > SkyblockTweaks.DATA.maxHealth ? SBTConfig.huds().healthBar.colorAbsorption : SBTConfig.huds().healthBar.color,
-                () -> SkyblockTweaks.DATA.health / SkyblockTweaks.DATA.maxHealth,
+                () -> SkyblockData.Stats.health > SkyblockData.Stats.maxHealth ? SBTConfig.huds().healthBar.colorAbsorption : SBTConfig.huds().healthBar.color,
+                () -> SkyblockData.Stats.health / SkyblockData.Stats.maxHealth,
                 x -> SBTConfig.huds().healthBar.x = x,
                 y -> SBTConfig.huds().healthBar.y = y,
                 scale -> SBTConfig.huds().healthBar.scale = scale,
@@ -60,7 +61,7 @@ public class HealthBar extends BarHUD {
     @Override
     public boolean shouldRender(boolean fromHudScreen) {
         if (!super.shouldRender(fromHudScreen)) return false;
-        return (SkyblockTweaks.DATA.inSB && SBTConfig.huds().healthBar.enabled) || fromHudScreen;
+        return (SkyblockData.inSB && SBTConfig.huds().healthBar.enabled) || fromHudScreen;
     }
 
     public static class Config {

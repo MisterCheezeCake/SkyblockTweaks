@@ -35,6 +35,7 @@ import wtf.cheeze.sbt.hud.utils.HudInformation;
 import wtf.cheeze.sbt.hud.bases.TextHUD;
 import wtf.cheeze.sbt.hud.components.SingleHudLine;
 import wtf.cheeze.sbt.utils.render.Colors;
+import wtf.cheeze.sbt.utils.skyblock.SkyblockData;
 import wtf.cheeze.sbt.utils.skyblock.SkyblockUtils;
 
 import java.awt.Color;
@@ -57,15 +58,15 @@ public class DrillFuelHUD extends TextHUD {
                 () -> SBTConfig.huds().drillFuel.outlineColor,
                 () -> SBTConfig.huds().drillFuel.mode,
                 () ->
-                        Text.literal((NumberUtils.formatNumber((int) SkyblockTweaks.DATA.drillFuel, SBTConfig.huds().drillFuel.separator))
+                        Text.literal((NumberUtils.formatNumber((int) SkyblockData.Stats.drillFuel, SBTConfig.huds().drillFuel.separator))
                         + "/"
-                        + (SBTConfig.huds().drillFuel.abridgeSecondNumber ? NumberUtils.addKOrM((int) SkyblockTweaks.DATA.maxDrillFuel, SBTConfig.huds().drillFuel.separator) : NumberUtils.formatNumber((int) SkyblockTweaks.DATA.maxDrillFuel, SBTConfig.huds().drillFuel.separator)))
+                        + (SBTConfig.huds().drillFuel.abridgeSecondNumber ? NumberUtils.addKOrM((int) SkyblockData.Stats.maxDrillFuel, SBTConfig.huds().drillFuel.separator) : NumberUtils.formatNumber((int) SkyblockData.Stats.maxDrillFuel, SBTConfig.huds().drillFuel.separator)))
         );
     }
     @Override
     public boolean shouldRender(boolean fromHudScreen) {
         if (!super.shouldRender(fromHudScreen)) return false;
-        return (SkyblockTweaks.DATA.inSB && SBTConfig.huds().drillFuel.enabled) && SkyblockUtils.isThePlayerHoldingADrill() || fromHudScreen;
+        return (SkyblockData.inSB && SBTConfig.huds().drillFuel.enabled) && SkyblockUtils.isThePlayerHoldingADrill() || fromHudScreen;
     }
 
 

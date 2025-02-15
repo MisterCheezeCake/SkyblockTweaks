@@ -21,7 +21,6 @@ package wtf.cheeze.sbt.features.huds;
 import dev.isxander.yacl3.api.Option;
 import dev.isxander.yacl3.api.OptionGroup;
 import dev.isxander.yacl3.api.controller.ColorControllerBuilder;
-import dev.isxander.yacl3.api.controller.StringControllerBuilder;
 import dev.isxander.yacl3.config.v2.api.SerialEntry;
 import net.minecraft.text.Text;
 import wtf.cheeze.sbt.SkyblockTweaks;
@@ -36,6 +35,7 @@ import wtf.cheeze.sbt.utils.NumberUtils;
 import wtf.cheeze.sbt.utils.TextUtils;
 import wtf.cheeze.sbt.utils.enums.Location;
 import wtf.cheeze.sbt.utils.render.Colors;
+import wtf.cheeze.sbt.utils.skyblock.SkyblockData;
 
 import java.awt.*;
 
@@ -53,17 +53,17 @@ public class RiftTimeHUD extends TextHUD {
                 anchor -> SBTConfig.huds().riftTime.anchor = anchor
         );
         line = new SingleHudLine(
-                () -> SkyblockTweaks.DATA.riftTicking ? SBTConfig.huds().riftTime.color : SBTConfig.huds().riftTime.inactiveColor,
+                () -> SkyblockData.Stats.riftTicking ? SBTConfig.huds().riftTime.color : SBTConfig.huds().riftTime.inactiveColor,
                 () -> SBTConfig.huds().riftTime.outlineColor,
                 () -> SBTConfig.huds().riftTime.mode,
-                () -> Text.literal(NumberUtils.toDuration(SkyblockTweaks.DATA.riftSeconds) + (SBTConfig.huds().riftTime.icon ? "ф" : "") + (SBTConfig.huds().riftTime.showLeftText ? " Left" : ""))
+                () -> Text.literal(NumberUtils.toDuration(SkyblockData.Stats.riftSeconds) + (SBTConfig.huds().riftTime.icon ? "ф" : "") + (SBTConfig.huds().riftTime.showLeftText ? " Left" : ""))
         );
 
     }
     @Override
     public boolean shouldRender(boolean fromHudScreen) {
         if (!super.shouldRender(fromHudScreen)) return false;
-        return SkyblockTweaks.DATA.location == Location.RIFT && SBTConfig.huds().riftTime.enabled || fromHudScreen;
+        return SkyblockData.location == Location.RIFT && SBTConfig.huds().riftTime.enabled || fromHudScreen;
     }
 
 //    @Override

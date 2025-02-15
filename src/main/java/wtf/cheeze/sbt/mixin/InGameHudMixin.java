@@ -38,6 +38,7 @@ import wtf.cheeze.sbt.config.SBTConfig;
 import wtf.cheeze.sbt.events.HudRenderEvents;
 import wtf.cheeze.sbt.utils.enums.Location;
 import wtf.cheeze.sbt.utils.render.SBTDrawContext;
+import wtf.cheeze.sbt.utils.skyblock.SkyblockData;
 
 @Mixin(InGameHud.class)
 public abstract class InGameHudMixin {
@@ -55,21 +56,21 @@ public abstract class InGameHudMixin {
 
     @Inject(method = "renderArmor" , at = @At("HEAD"), cancellable = true)
     private static void sbt$onRenderArmor(CallbackInfo ci) {
-        if (SBTConfig.get().hudTweaks.noRenderArmor && SkyblockTweaks.DATA.inSB) {
+        if (SBTConfig.get().hudTweaks.noRenderArmor && SkyblockData.inSB) {
             ci.cancel();
         }
     }
 
     @Inject(method = "renderHealthBar" , at = @At("HEAD"), cancellable = true)
     private void sbt$onRenderHealth(CallbackInfo ci) {
-        if (SBTConfig.get().hudTweaks.noRenderHearts && SkyblockTweaks.DATA.inSB && (!SBTConfig.get().hudTweaks.showHearsInRift || SkyblockTweaks.DATA.location != Location.RIFT)) {
+        if (SBTConfig.get().hudTweaks.noRenderHearts && SkyblockData.inSB && (!SBTConfig.get().hudTweaks.showHearsInRift || SkyblockData.location != Location.RIFT)) {
             ci.cancel();
         }
     }
 
     @Inject(method = "renderFood" , at = @At("HEAD"), cancellable = true)
     private void sbt$onRenderFood(CallbackInfo ci) {
-        if (SBTConfig.get().hudTweaks.noRenderHunger && SkyblockTweaks.DATA.inSB) {
+        if (SBTConfig.get().hudTweaks.noRenderHunger && SkyblockData.inSB) {
             ci.cancel();
         }
     }

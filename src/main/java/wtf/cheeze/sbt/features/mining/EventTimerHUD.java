@@ -28,16 +28,16 @@ import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SBTConfig;
 import wtf.cheeze.sbt.config.categories.Mining;
 import wtf.cheeze.sbt.hud.bases.TextHUD;
-import wtf.cheeze.sbt.hud.cache.UpdateTiming;
 import wtf.cheeze.sbt.hud.components.SingleHudLine;
 import wtf.cheeze.sbt.hud.utils.AnchorPoint;
 import wtf.cheeze.sbt.hud.utils.DrawMode;
 import wtf.cheeze.sbt.hud.utils.HudInformation;
-import wtf.cheeze.sbt.utils.DataUtils;
 import wtf.cheeze.sbt.utils.NumberUtils;
 import wtf.cheeze.sbt.utils.TextUtils;
 import wtf.cheeze.sbt.utils.render.Colors;
 import wtf.cheeze.sbt.utils.skyblock.MiningData;
+import wtf.cheeze.sbt.utils.skyblock.SkyblockData;
+import wtf.cheeze.sbt.utils.skyblock.SkyblockUtils;
 
 import java.awt.*;
 
@@ -60,18 +60,18 @@ public class EventTimerHUD extends TextHUD {
                 () -> SBTConfig.mining().eventTimer.outlineColor,
                 () -> SBTConfig.mining().eventTimer.mode,
                 () -> {
-                    if (!SkyblockTweaks.DATA.miningData.event) return TextUtils.withColor("No Event", Colors.GRAY);
+                    if (!SkyblockData.miningData.event) return TextUtils.withColor("No Event", Colors.GRAY);
                     return TextUtils.join(
-                            TextUtils.withColor(SkyblockTweaks.DATA.miningData.eventName + ": ", SBTConfig.mining().eventTimer.colorPrimary),
+                            TextUtils.withColor(SkyblockData.miningData.eventName + ": ", SBTConfig.mining().eventTimer.colorPrimary),
                             // Format the time as MM:SS
                             TextUtils.withColor(
-                                    NumberUtils.formatTime(SkyblockTweaks.DATA.miningData.eventTimeLeft, false),
+                                    NumberUtils.formatTime(SkyblockData.miningData.eventTimeLeft, false),
                                     SBTConfig.mining().eventTimer.colorSecondary
                             )
                     );
                 },
-                () -> MiningData.getEventIcon(SkyblockTweaks.DATA.miningData.eventName),
-                () -> (SBTConfig.mining().eventTimer.icons && MiningData.getEventIcon(SkyblockTweaks.DATA.miningData.eventName) != null)
+                () -> MiningData.getEventIcon(SkyblockData.miningData.eventName),
+                () -> (SBTConfig.mining().eventTimer.icons && MiningData.getEventIcon(SkyblockData.miningData.eventName) != null)
         );
 
     }
@@ -84,7 +84,7 @@ public class EventTimerHUD extends TextHUD {
     @Override
     public boolean shouldRender(boolean fromHudScreen) {
         if (!super.shouldRender(fromHudScreen)) return false;
-        return (SkyblockTweaks.DATA.inMiningIsland()) && (SBTConfig.mining().eventTimer.enabled || fromHudScreen);
+        return (SkyblockUtils.inMiningIsland()) && (SBTConfig.mining().eventTimer.enabled || fromHudScreen);
     }
 
     public static class Config {

@@ -48,7 +48,8 @@ import java.util.ArrayList;
 public class SkyblockTweaks implements ModInitializer {
 	public static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     public static final Logger LOGGER = LoggerFactory.getLogger("SkyblockTweaks");
-	public static final SkyblockData DATA = new SkyblockData();
+
+
 	public static final PersistentData PD = PersistentData.load();
 	public static final ArrayList<HUD> HUDS = new ArrayList<HUD>();
 	//public static final Version VERSION = new Version(Version.VersionType.ALPHA, 0, 1, 0, 10);
@@ -59,8 +60,6 @@ public class SkyblockTweaks implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
-
-		//CompletableFuture.runAsync(ItemStackUtils.SkullMap::load, MinecraftClient.getInstance());
 
 		//MigrationManager.handleMigrations();
 

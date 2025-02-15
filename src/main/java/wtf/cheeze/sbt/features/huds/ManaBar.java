@@ -31,6 +31,7 @@ import wtf.cheeze.sbt.utils.TextUtils;
 import wtf.cheeze.sbt.hud.bases.BarHUD;
 import wtf.cheeze.sbt.hud.utils.HudInformation;
 import wtf.cheeze.sbt.utils.render.Colors;
+import wtf.cheeze.sbt.utils.skyblock.SkyblockData;
 
 import java.awt.Color;
 
@@ -43,7 +44,7 @@ public class ManaBar extends BarHUD {
                 () -> SBTConfig.huds().manaBar.scale,
                 () -> SBTConfig.huds().manaBar.anchor,
                 () -> SBTConfig.huds().manaBar.color,
-                () -> SkyblockTweaks.DATA.mana / SkyblockTweaks.DATA.maxMana,
+                () -> SkyblockData.Stats.mana / SkyblockData.Stats.maxMana,
                 x -> SBTConfig.huds().manaBar.x = x,
                 y -> SBTConfig.huds().manaBar.y = y,
                 scale -> SBTConfig.huds().manaBar.scale = scale,
@@ -60,7 +61,7 @@ public class ManaBar extends BarHUD {
     @Override
     public boolean shouldRender(boolean fromHudScreen) {
         if (!super.shouldRender(fromHudScreen)) return false;
-        return (SkyblockTweaks.DATA.inSB && SBTConfig.huds().manaBar.enabled) || fromHudScreen;
+        return (SkyblockData.inSB && SBTConfig.huds().manaBar.enabled) || fromHudScreen;
     }
 
     public static class Config {

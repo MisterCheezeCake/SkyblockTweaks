@@ -141,4 +141,13 @@ public class SkyblockUtils {
     }
 
 
+    public static float getSpeed() {
+        MinecraftClient mc = MinecraftClient.getInstance();
+        // sprint = 1.3 x base speed
+        return mc.player.isSprinting() ? (mc.player.getMovementSpeed() / 1.3f) * 1000 : mc.player.getMovementSpeed() * 1000;
+    }
+
+    public static boolean inMiningIsland() {
+        return SkyblockData.location == Location.DWARVEN_MINES|| SkyblockData.location == Location.CRYSTAL_HOLLOWS|| SkyblockData.location == Location.GLACITE_MINESHAFT;
+    }
 }

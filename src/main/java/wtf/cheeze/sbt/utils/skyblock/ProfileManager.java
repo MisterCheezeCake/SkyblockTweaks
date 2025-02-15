@@ -42,8 +42,8 @@ public class ProfileManager {
             var messageString = message.getString();
             var matcher = ID_MESSAGE_PATTERN.matcher(messageString);
             if (matcher.find()) {
-                SkyblockTweaks.DATA.currentProfile = matcher.group(1);
-                SkyblockTweaks.PD.profiles.putIfAbsent(SkyblockTweaks.DATA.getCurrentProfileUnique(), new ProfileData());
+                SkyblockData.currentProfile = matcher.group(1);
+                SkyblockTweaks.PD.profiles.putIfAbsent(SkyblockData.getCurrentProfileUnique(), new ProfileData());
                 SkyblockTweaks.PD.save();
                 return;
 
@@ -53,7 +53,7 @@ public class ProfileManager {
             if (levelUpMatcher.find()) {
                 var skill = SkyblockUtils.strictCastStringToSkill(levelUpMatcher.group(1));
                 if (skill == null) return;
-                var profile = SkyblockTweaks.PD.profiles.get(SkyblockTweaks.DATA.getCurrentProfileUnique());
+                var profile = SkyblockTweaks.PD.profiles.get(SkyblockData.getCurrentProfileUnique());
                 if (profile == null) return;
                 var level = Integer.parseInt(levelUpMatcher.group(2));
                 profile.skillLevels.put(skill, level);
@@ -81,7 +81,7 @@ public class ProfileManager {
                         if (matcher.matches()) {
                             var skill = SkyblockUtils.strictCastStringToSkill(matcher.group(1));
                             if (skill == null) return;
-                            var profile = SkyblockTweaks.PD.profiles.get(SkyblockTweaks.DATA.getCurrentProfileUnique());
+                            var profile = SkyblockTweaks.PD.profiles.get(SkyblockData.getCurrentProfileUnique());
                             if (profile == null) return;
                             var level = Integer.parseInt(matcher.group(2));
                             profile.skillLevels.put(skill, level);

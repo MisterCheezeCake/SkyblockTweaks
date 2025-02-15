@@ -43,6 +43,7 @@ import wtf.cheeze.sbt.utils.errors.ErrorLevel;
 import wtf.cheeze.sbt.utils.render.Colors;
 import wtf.cheeze.sbt.hud.icon.Icons;
 import wtf.cheeze.sbt.utils.skyblock.SkyblockConstants;
+import wtf.cheeze.sbt.utils.skyblock.SkyblockData;
 import wtf.cheeze.sbt.utils.skyblock.SkyblockUtils;
 
 import java.awt.*;
@@ -176,7 +177,7 @@ public class SkillHUDManager {
         }
 
         private static int tryAndGetSkillLevel(Skills skill) {
-            var profile = SkyblockTweaks.PD.profiles.get(SkyblockTweaks.DATA.getCurrentProfileUnique());
+            var profile = SkyblockTweaks.PD.profiles.get(SkyblockData.getCurrentProfileUnique());
             if (profile == null) return -1;
             return profile.skillLevels.getOrDefault(skill, -1);
         }
@@ -204,7 +205,7 @@ public class SkillHUDManager {
         public boolean shouldRender(boolean fromHudScreen) {
             if (!super.shouldRender(fromHudScreen)) return false;
             if (timeLeft <= 0 && !fromHudScreen) return false;
-            return (SkyblockTweaks.DATA.inSB && SBTConfig.huds().skills.enabled) || fromHudScreen;
+            return (SkyblockData.inSB && SBTConfig.huds().skills.enabled) || fromHudScreen;
         }
 
         public enum Mode implements NameableEnum {
@@ -399,7 +400,7 @@ public class SkillHUDManager {
             if (timeLeft <= 0) return false;
             // Don't display at max level
             if  (percent == 0 && total == 0 ) return false;
-            return (SkyblockTweaks.DATA.inSB && SBTConfig.huds().skillBar.enabled);
+            return (SkyblockData.inSB && SBTConfig.huds().skillBar.enabled);
         }
 
         public static class Config {

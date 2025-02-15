@@ -25,7 +25,6 @@ import net.azureaaron.hmapi.network.packet.s2c.HelloS2CPacket;
 import net.azureaaron.hmapi.network.packet.s2c.HypixelS2CPacket;
 import net.azureaaron.hmapi.network.packet.v1.s2c.LocationUpdateS2CPacket;
 import net.azureaaron.hmapi.network.packet.v2.s2c.PartyInfoS2CPacket;
-import net.minecraft.client.MinecraftClient;
 import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.utils.MessageManager;
 import wtf.cheeze.sbt.utils.NumberUtils;
@@ -42,117 +41,116 @@ import java.util.UUID;
 public class SkyblockData {
 
 
-    public boolean inSB = false;
-    public boolean alphaNetwork = false;
-    public boolean inParty = false;
-    public boolean amITheLeader = false;
+    public static boolean inSB = false;
+    public static boolean alphaNetwork = false;
 
+    public static String currentProfile = null;
+    public static String mode = null;
+    public static Location location = Location.UNKNOWN;
 
-    public String currentProfile = null;
-    public String mode = null;
-    public Location location = Location.UNKNOWN;
-
-    public int defense = 0;
-    public float maxHealth = 0;
-    public float health = 0;
-    public float maxMana = 0;
-    public float mana = 0;
-    public float overflowMana = 0;
-
-    public float drillFuel = 0;
-    public float maxDrillFuel = 0;
-
-    public int riftSeconds = 0;
-    public boolean riftTicking = false;
-
-    public int maxTickers = 0;
-    public int tickers = 0;
-    public boolean tickerActive = false;
-
-    public int armorStack = 0;
-    public String stackString = null;
-
-    public TabListData tabData = TabListData.EMPTY;
-
-    public MiningData miningData = MiningData.EMPTY;
-
-
-    public float getSpeed() {
-        MinecraftClient mc = MinecraftClient.getInstance();
-        // sprint = 1.3 x base speed
-        return mc.player.isSprinting() ? (mc.player.getMovementSpeed() / 1.3f) * 1000 : mc.player.getMovementSpeed() * 1000;
+    public static class Party {
+        public static boolean inParty = false;
+        public static boolean leader = false;
     }
-    public float effectiveHealth() {
-        return Math.round( health * (1 + (defense / 100f)));
+
+    public static class Stats {
+
+        public static int defense = 0;
+        public static float maxHealth = 0;
+        public static float health = 0;
+        public static float maxMana = 0;
+        public static float mana = 0;
+        public static float overflowMana = 0;
+
+        public static float drillFuel = 0;
+        public static float maxDrillFuel = 0;
+
+        public static int riftSeconds = 0;
+        public static boolean riftTicking = false;
+
+        public static int maxTickers = 0;
+        public static int tickers = 0;
+        public static boolean tickerActive = false;
+
+        public static int armorStack = 0;
+        public static String stackString = null;
+
+        public static float effectiveHealth() {
+            return Math.round( Stats.health * (1 + (Stats.defense / 100f)));
+        }
+        public static float damageReduction() {
+            return (Stats.defense / (Stats.defense + 100f)) * 100;
+        }
+
+
     }
-    public float damageReduction() {
-        return (defense / (defense + 100f)) * 100;
-    }
+
+    public static TabListData tabData = TabListData.EMPTY;
+
+    public static MiningData miningData = MiningData.EMPTY;
+
 
     /**
      * Provides the profile ID with an appended "_ALPHA" if the player is in the alpha network
      * We do this so that what players do on the Alpha network does not affect persistent data for their main profile
      */
-    public String getCurrentProfileUnique() {
+    public static String getCurrentProfileUnique() {
         return alphaNetwork ?  currentProfile + "_ALPHA" : currentProfile;
     }
 
-    public void update(ActionBarData data) {
+    public static void update(ActionBarData data) {
         if (data == null) return;
-        if (data.defense != null) this.defense = data.defense;
-        if (data.maxHealth != null) this.maxHealth = data.maxHealth;
-        if (data.currentHealth != null) this.health = data.currentHealth;
-        if (data.maxMana != null) this.maxMana = data.maxMana;
-        if (data.currentMana != null) this.mana = data.currentMana;
-        if (data.overflowMana != null) this.overflowMana = data.overflowMana;
-        if (data.drillFuel != null) this.drillFuel = data.drillFuel;
-        if (data.maxDrillFuel != null) this.maxDrillFuel = data.maxDrillFuel;
+        if (data.defense != null) Stats.defense = data.defense;
+        if (data.maxHealth != null) Stats.maxHealth = data.maxHealth;
+        if (data.currentHealth != null) Stats.health = data.currentHealth;
+        if (data.maxMana != null) Stats.maxMana = data.maxMana;
+        if (data.currentMana != null) Stats.mana = data.currentMana;
+        if (data.overflowMana != null) Stats.overflowMana = data.overflowMana;
+        if (data.drillFuel != null) Stats.drillFuel = data.drillFuel;
+        if (data.maxDrillFuel != null) Stats.maxDrillFuel = data.maxDrillFuel;
         if (data.maxTickers != null && data.currentTickers != null) {
-            this.maxTickers = data.maxTickers;
-            this.tickers = data.currentTickers;
-            this.tickerActive = true;
+            Stats.maxTickers = data.maxTickers;
+            Stats.tickers = data.currentTickers;
+            Stats.tickerActive = true;
         } else {
-            this.tickerActive = false;
+            Stats.tickerActive = false;
         }
         if (data.stackSymbol != null && data.stackAmount !=null) {
-            this.stackString = data.stackSymbol;
-            this.armorStack = data.stackAmount;
+            Stats.stackString = data.stackSymbol;
+            Stats.armorStack = data.stackAmount;
         } else {
-            this.stackString = null;
-            this.armorStack = 0;
+            Stats.stackString = null;
+            Stats.armorStack = 0;
         }
 
         if (data.riftTime != null) {
-            this.riftSeconds = NumberUtils.parseDuration(data.riftTime);
-            this.riftTicking = Objects.requireNonNullElse(data.riftTicking, false);
+            Stats.riftSeconds = NumberUtils.parseDuration(data.riftTime);
+            Stats.riftTicking = Objects.requireNonNullElse(data.riftTicking, false);
         } else {
-            this.riftSeconds = 0;
-            this.riftTicking = false;
+            Stats.riftSeconds = 0;
+            Stats.riftTicking = false;
 
         }
 
     }
 
-    public void update(TabListData data) {
-        this.tabData = data;
-        this.miningData = inMiningIsland() ? MiningData.of(this.tabData) : MiningData.EMPTY;
+    public static void update(TabListData data) {
+        tabData = data;
+        miningData = SkyblockUtils.inMiningIsland() ? MiningData.of(tabData) : MiningData.EMPTY;
 
     }
 
-    public void handlePacket(HypixelS2CPacket packet) {
+    public static void handlePacket(HypixelS2CPacket packet) {
         //SkyBlockTweaks.LOGGER.info("Handling packet");
         switch (packet) {
             case PartyInfoS2CPacket(boolean parInParty, Map<UUID, PartyRole> members) -> {
-                //SkyBlockTweaks.LOGGER.info("Handling party info packet");
-                inParty = parInParty;
-                //SkyBlockTweaks.LOGGER.info("I am in a party: {}", inParty);
+                Party.inParty = parInParty;
                 var myUUID = SkyblockTweaks.mc.player.getUuid();
                 if (myUUID == null || members == null)  {
-                    amITheLeader = false;
+                    Party.leader = false;
                     return;
                 }
-                amITheLeader = members.get(myUUID) == PartyRole.LEADER;
-                //SkyBlockTweaks.LOGGER.info("I am the leader: {}", amITheLeader);
+                Party.leader = members.get(myUUID) == PartyRole.LEADER;
             }
             case HelloS2CPacket(Environment environment) -> {
                 // Beta is alpha
@@ -160,30 +158,21 @@ public class SkyblockData {
                 alphaNetwork = environment == Environment.BETA;
             }
             case LocationUpdateS2CPacket(String serverName, Optional<String> serverType, Optional<String> lobbyName, Optional<String> mode, Optional<String> map) -> {
-//                this.mode = mode.orElse(null);
                 SkyblockTweaks.LOGGER.info("Location update packet received. Server: {}, Type: {}, Mode: {}", serverName, serverType.orElse("unknown"), mode.orElse("unknown"));
-                this.inSB = serverType.orElse("").equals("SKYBLOCK");
+                inSB = serverType.orElse("").equals("SKYBLOCK");
                 if (inSB) {
-                    this.location = SkyblockUtils.getLocationFromMode(mode.orElse("unknown"));
+                    location = SkyblockUtils.getLocationFromMode(mode.orElse("unknown"));
                 } else {
-                    this.location = Location.UNKNOWN;
+                    location = Location.UNKNOWN;
                 }
             }
             case ErrorS2CPacket(var id, var errorReason) -> {
                 MessageManager.send("The Hypixel Mod API experienced an error. ID: " + id + " Reason: " + errorReason, Colors.RED);
                 SkyblockTweaks.LOGGER.error("The Hypixel Mod API experienced an error. ID: {} Reason: {}", id, errorReason);
             }
-//            case LocationUpdateS2CPacket(String serverName, Optional<String> serverType, Optional<String> lobbyName, Optional<String> mode, Optional<String> map) -> {
-//                SkyBlockTweaks.LOGGER.info(serverName);
-//            }
-            default -> {
-                //Do nothing
-            }
+            default -> {}
         }
 
     }
 
-    public boolean inMiningIsland() {
-        return location == Location.DWARVEN_MINES|| location == Location.CRYSTAL_HOLLOWS|| location == Location.GLACITE_MINESHAFT;
-    }
 }

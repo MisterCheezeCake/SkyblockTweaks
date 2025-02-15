@@ -33,6 +33,7 @@ import wtf.cheeze.sbt.hud.utils.HudInformation;
 import wtf.cheeze.sbt.hud.bases.TextHUD;
 import wtf.cheeze.sbt.utils.TextUtils;
 import wtf.cheeze.sbt.utils.render.Colors;
+import wtf.cheeze.sbt.utils.skyblock.SkyblockData;
 
 import java.awt.Color;
 
@@ -53,14 +54,14 @@ public class ArmorStackHUD extends TextHUD {
                 () -> SBTConfig.huds().armorStack.color,
                 () -> SBTConfig.huds().armorStack.outlineColor,
                 () -> SBTConfig.huds().armorStack.mode,
-                () -> SkyblockTweaks.DATA.stackString != null ? Text.literal(SkyblockTweaks.DATA.armorStack + SkyblockTweaks.DATA.stackString) : Text.literal("0ᝐ")
+                () -> SkyblockData.Stats.stackString != null ? Text.literal(SkyblockData.Stats.armorStack + SkyblockData.Stats.stackString) : Text.literal("0ᝐ")
         );
     }
     @Override
     public boolean shouldRender(boolean fromHudScreen) {
         if (!super.shouldRender(fromHudScreen)) return false;
-        if (SkyblockTweaks.DATA.stackString == null && !fromHudScreen) return false;
-        return (SkyblockTweaks.DATA.inSB && SBTConfig.huds().armorStack.enabled) || fromHudScreen;
+        if (SkyblockData.Stats.stackString == null && !fromHudScreen) return false;
+        return (SkyblockData.inSB && SBTConfig.huds().armorStack.enabled) || fromHudScreen;
     }
 
     @Override

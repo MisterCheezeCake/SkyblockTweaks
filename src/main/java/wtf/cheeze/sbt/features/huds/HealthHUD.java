@@ -35,6 +35,7 @@ import wtf.cheeze.sbt.utils.TextUtils;
 import wtf.cheeze.sbt.hud.utils.HudInformation;
 import wtf.cheeze.sbt.hud.bases.TextHUD;
 import wtf.cheeze.sbt.utils.render.Colors;
+import wtf.cheeze.sbt.utils.skyblock.SkyblockData;
 
 import java.awt.Color;
 
@@ -52,16 +53,16 @@ public class HealthHUD extends TextHUD {
                 anchor -> SBTConfig.huds().health.anchor = anchor
         );
         line = new SingleHudLine(
-                () -> SkyblockTweaks.DATA.health > SkyblockTweaks.DATA.maxHealth ? SBTConfig.huds().health.colorAbsorption : SBTConfig.huds().health.color,
+                () -> SkyblockData.Stats.health > SkyblockData.Stats.maxHealth ? SBTConfig.huds().health.colorAbsorption : SBTConfig.huds().health.color,
                 () -> SBTConfig.huds().health.outlineColor,
                 () -> SBTConfig.huds().health.mode,
-                () -> Text.literal(NumberUtils.formatNumber((int) SkyblockTweaks.DATA.health, SBTConfig.huds().health.separator) + "/" + NumberUtils.formatNumber((int) SkyblockTweaks.DATA.maxHealth, SBTConfig.huds().health.separator) + (SBTConfig.huds().health.icon ? "❤" : ""))
+                () -> Text.literal(NumberUtils.formatNumber((int)SkyblockData.Stats.health, SBTConfig.huds().health.separator) + "/" + NumberUtils.formatNumber((int) SkyblockData.Stats.maxHealth, SBTConfig.huds().health.separator) + (SBTConfig.huds().health.icon ? "❤" : ""))
         );
     }
     @Override
     public boolean shouldRender(boolean fromHudScreen) {
         if (!super.shouldRender(fromHudScreen)) return false;
-        return (SkyblockTweaks.DATA.inSB && SBTConfig.huds().health.enabled) || fromHudScreen;
+        return (SkyblockData.inSB && SBTConfig.huds().health.enabled) || fromHudScreen;
     }
 
     @Override

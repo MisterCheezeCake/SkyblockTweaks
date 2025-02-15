@@ -30,6 +30,7 @@ import wtf.cheeze.sbt.utils.TextUtils;
 import wtf.cheeze.sbt.hud.bases.AbstractTickerHUD;
 import wtf.cheeze.sbt.hud.utils.HudInformation;
 import wtf.cheeze.sbt.utils.render.Colors;
+import wtf.cheeze.sbt.utils.skyblock.SkyblockData;
 
 public class TickerHUD extends AbstractTickerHUD {
 
@@ -55,21 +56,21 @@ public class TickerHUD extends AbstractTickerHUD {
     @Override
     public boolean shouldRender(boolean fromHudScreen) {
         if (!super.shouldRender(fromHudScreen)) return false;
-        return (SkyblockTweaks.DATA.inSB && SBTConfig.huds().ticker.enabled && SkyblockTweaks.DATA.tickerActive) || fromHudScreen;
+        return (SkyblockData.inSB && SBTConfig.huds().ticker.enabled && SkyblockData.Stats.tickerActive) || fromHudScreen;
     }
 
 
     @Override
     public int getMax(boolean fromHudScreen) {
-        if (!fromHudScreen) return SkyblockTweaks.DATA.maxTickers;
-        if (SkyblockTweaks.DATA.tickerActive) return SkyblockTweaks.DATA.maxTickers;
+        if (!fromHudScreen) return SkyblockData.Stats.maxTickers;
+        if (SkyblockData.Stats.tickerActive) return SkyblockData.Stats.maxTickers;
         return 5;
     }
 
     @Override
     public int getUsable(boolean fromHudScreen) {
-        if (!fromHudScreen) return SkyblockTweaks.DATA.tickers;
-        if (SkyblockTweaks.DATA.tickerActive) return SkyblockTweaks.DATA.tickers;
+        if (!fromHudScreen) return SkyblockData.Stats.tickers;
+        if (SkyblockData.Stats.tickerActive) return SkyblockData.Stats.tickers;
         return 5;
 
     }

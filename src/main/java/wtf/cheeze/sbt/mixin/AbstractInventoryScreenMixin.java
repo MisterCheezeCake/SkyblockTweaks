@@ -34,18 +34,19 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 *///?}
 import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.config.SBTConfig;
+import wtf.cheeze.sbt.utils.skyblock.SkyblockData;
 
 @Mixin(/*? if >=1.21.3 {*/InventoryScreen.class /*?} else {*/ /*AbstractInventoryScreen.class *//*?}*/)
 public abstract class AbstractInventoryScreenMixin {
     //? if >=1.21.3 {
     @WrapWithCondition(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/ingame/StatusEffectsDisplay;drawStatusEffects(Lnet/minecraft/client/gui/DrawContext;IIF)V"))
     private boolean sbt$onDrawStatusEffects(StatusEffectsDisplay instance, DrawContext context, int mouseX, int mouseY, float tickDelta){
-        return !SBTConfig.get().inventory.noRenderPotionHud || !SkyblockTweaks.DATA.inSB;
+        return !SBTConfig.get().inventory.noRenderPotionHud || !SkyblockData.inSB;
     }
     //?} else {
     /*@Inject(method = "drawStatusEffects", at = @At("HEAD"), cancellable = true)
     private void sbt$onDrawStatusEffects(DrawContext context, int mouseX, int mouseY, CallbackInfo ci){
-        if (SBTConfig.get().inventory.noRenderPotionHud && SkyblockTweaks.DATA.inSB) {
+        if (SBTConfig.get().inventory.noRenderPotionHud && SkyblockData.inSB) {
             ci.cancel();
         }
     }
