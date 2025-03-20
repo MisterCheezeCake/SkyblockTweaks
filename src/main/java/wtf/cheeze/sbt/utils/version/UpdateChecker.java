@@ -35,7 +35,11 @@ public class UpdateChecker {
             try {
                 SkyblockTweaks.LOGGER.info("Checking for updates");
                 var result = HTTPUtils.get(REMOTE_VERSION_FILE);
-                Version.RemoteVersionFile remote = SkyblockTweaks.GSON.fromJson(result, Version.RemoteVersionFile.class);
+                if (result.statusCode() != 200) {
+                    SkyblockTweaks.LOGGER.error("Failed to check for updates, status code: {}", result.statusCode());
+                    return;
+                }
+                Version.RemoteVersionFile remote = SkyblockTweaks.GSON.fromJson(result.body(), Version.RemoteVersionFile.class);
                 if (remote == null) {
                     SkyblockTweaks.LOGGER.error("Failed to parse remote version file");
                 } else {
@@ -92,7 +96,7 @@ public class UpdateChecker {
                     //"§7[§aSkyblockTweaks§f§7] §3Update §e" + remoteVersion.versionString + " §3is available! §2[Download]",
                     TextUtils.withColor("Click to open Modrinth in your browser", Colors.CYAN),
                     link);
-            NotificationHandler.NOTIFICATION_QUEUE.add(message);
+            NotificationHandler.pushChat(message);
         }
     }
 

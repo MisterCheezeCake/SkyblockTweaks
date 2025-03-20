@@ -21,6 +21,8 @@ package wtf.cheeze.sbt.utils;
 import dev.isxander.yacl3.api.NameableEnum;
 import dev.isxander.yacl3.api.Option;
 import dev.isxander.yacl3.api.controller.EnumControllerBuilder;
+import net.minecraft.MinecraftVersion;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.text.Text;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.categories.General;
@@ -94,6 +96,10 @@ public class Version {
         } else {
             return String.format("%d.%d.%d", MAJOR, MINOR, PATCH);
         }
+    }
+
+    public String getVersionStrringWithMc() {
+        return getVersionString() + "+mc" + MinecraftVersion.CURRENT.getName();
     }
 
     public static VersionComparison compareVersions(Version a, Version b) {
