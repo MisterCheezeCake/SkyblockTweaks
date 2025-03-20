@@ -188,7 +188,7 @@ public class ActionBarTransformer {
               } else if (unformatted.contains("second") || unformatted.contains("DPS")) {
                   // Trial of Fire
                   newText.append(SEPERATOR3).append(trimmed);
-              } else if (unformatted.contains("ⓩ") || unformatted.contains("Ⓞ")){
+              } else if (unformatted.contains("ⓩ") || unformatted.contains("Ⓞ")) {
                   //TODO: Still uses string manipulation
 
                   // Ornate/Florid: §e§lⓩⓩⓩ§6§lⓄⓄ
@@ -196,22 +196,24 @@ public class ActionBarTransformer {
                   // Foil: §e§lⓄⓄ§7§lⓄⓄ
                   data.maxTickers = unformatted.length();
                   if (trimmed.contains("§6§l")) {
-                        var split = trimmed.split("§6§l") ;
+                      var split = trimmed.split("§6§l");
                       data.currentTickers = TextUtils.removeFormatting(split[0]).length();
                   } else if (trimmed.contains("§2§l")) {
-                      var split = trimmed.split("§2§l") ;
+                      var split = trimmed.split("§2§l");
                       data.currentTickers = TextUtils.removeFormatting(split[0]).length();
-                  }
-                  else if (trimmed.contains("§7§l")) {
-                      var split = trimmed.split("§7§l") ;
+                  } else if (trimmed.contains("§7§l")) {
+                      var split = trimmed.split("§7§l");
                       data.currentTickers = TextUtils.removeFormatting(split[0]).length();
                   }
 
                   if (!SBTConfig.get().actionBarFilters.hideTickers) {
-                        newText.append(SEPERATOR4).append(trimmed);
+                      newText.append(SEPERATOR4).append(trimmed);
                   }
-
-
+              } else if (unformatted.contains("⏣")) {
+                    // Location
+                    if (!SBTConfig.get().actionBarFilters.hideLocation) {
+                        newText.append(SEPERATOR5).append(trimmed);
+                    }
               } else {
                   newText.append(SEPERATOR5).append(trimmed);
               }
@@ -269,6 +271,9 @@ public class ActionBarTransformer {
 
         @SerialEntry
         public boolean hideRiftTime = false;
+
+        @SerialEntry
+        public boolean hideLocation = false;
 
 
         public static OptionGroup getGroup(ConfigImpl defaults, ConfigImpl config) {
@@ -364,6 +369,17 @@ public class ActionBarTransformer {
                     )
                     .build();
 
+            var location = Option.<Boolean>createBuilder()
+                    .name(key("actionBarFilters.hideLocation"))
+                    .description(keyD("actionBarFilters.hideLocation"))
+                    .controller(SBTConfig::generateBooleanController)
+                    .binding(
+                            defaults.actionBarFilters.hideLocation,
+                            () -> config.actionBarFilters.hideLocation,
+                            value -> config.actionBarFilters.hideLocation = (boolean) value
+                    )
+                    .build();
+
 
             return OptionGroup.createBuilder()
                     .name(key("actionBarFilters"))
@@ -377,6 +393,7 @@ public class ActionBarTransformer {
                     .option(secrets)
                     .option(tickers)
                     .option(riftTime)
+                    .option(location)
                     .build();
         }
     }

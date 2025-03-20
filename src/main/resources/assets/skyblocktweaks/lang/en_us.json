@@ -38,6 +38,8 @@
   "sbt.config.general.actionBarFilters.hideTickers.desc": "Hides the tickers/charges in the action bar",
   "sbt.config.general.actionBarFilters.hideRiftTime": "Hide Rift Time in Action Bar",
   "sbt.config.general.actionBarFilters.hideRiftTime.desc": "Hides the rift time in the action bar",
+  "sbt.config.general.actionBarFilters.hideLocation": "Hide Location in Action Bar",
+  "sbt.config.general.actionBarFilters.hideLocation.desc": "Hides the location change messages in the action bar",
   "sbt.config.general.brewingStandOverlay": "Brewing Stand Overlay",
   "sbt.config.general.brewingStandOverlay.desc": "Options for the brewing stand overlay",
   "sbt.config.general.brewingStandOverlay.enabled": "Brewing Stand Overlay",
