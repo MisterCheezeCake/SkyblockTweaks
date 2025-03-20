@@ -20,21 +20,26 @@ package wtf.cheeze.sbt.utils.constants;
 
 import wtf.cheeze.sbt.SkyblockTweaks;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 
-public record DisabledFeatures(
+public record  DisabledFeatures(
         Map<String, RemoteEntry> features
 ) {
 
     public Map<String, Entry> getDisabledFeatures() {
         String currentVersion = SkyblockTweaks.VERSION.getVersionStringWithMc();
+        SkyblockTweaks.LOGGER.info("Current version: " + currentVersion);
         HashMap<String, Entry> map = new HashMap<>();
+        SkyblockTweaks.LOGGER.info("Features: " + Arrays.toString(features.entrySet().toArray()));
         for (var entry: features.entrySet()) {
             var value =  entry.getValue();
+            SkyblockTweaks.LOGGER.info("Checking feature " + entry.getKey());
             for (var version: value.versions()) {
+                SkyblockTweaks.LOGGER.info("Checking version " + version + " against mod version " + currentVersion);
                 if (currentVersion.equals(version)) {
                     map.put(entry.getKey(), new Entry(value.message(), value.link()));
                     break;

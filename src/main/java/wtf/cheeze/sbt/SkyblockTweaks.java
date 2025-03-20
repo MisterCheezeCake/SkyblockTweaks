@@ -29,6 +29,7 @@ import wtf.cheeze.sbt.config.persistent.PersistentData;
 import wtf.cheeze.sbt.features.MenuHighlights;
 import wtf.cheeze.sbt.features.MouseLock;
 import wtf.cheeze.sbt.hud.HudManager;
+import wtf.cheeze.sbt.utils.KillSwitch;
 import wtf.cheeze.sbt.utils.NotificationHandler;
 import wtf.cheeze.sbt.utils.version.UpdateChecker;
 import wtf.cheeze.sbt.utils.version.Version;
@@ -56,6 +57,7 @@ public class SkyblockTweaks implements ModInitializer {
 
 		SBTConfig.load();
 
+		KillSwitch.registerEvents();
 		ConstantLoader.registerEvents();
 		HudManager.registerEvents();
 		SBTCommand.registerEvents();
