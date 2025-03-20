@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 MisterCheezeCake
+ * Copyright (C) 2025 MisterCheezeCake
  *
  * This file is part of SkyblockTweaks.
  *
