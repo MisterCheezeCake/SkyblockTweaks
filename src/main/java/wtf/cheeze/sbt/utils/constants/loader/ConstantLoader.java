@@ -214,7 +214,6 @@ public class ConstantLoader {
 
 
     public static void loadFromFiles() throws IOException {
-        SkyblockTweaks.LOGGER.info("Loading constants cl");
         LocalManifest manifest = SkyblockTweaks.GSON.fromJson(
                 Files.readString(REPO_FOLDER.resolve("manifest.json")),
                 LocalManifest.class

@@ -75,10 +75,9 @@ public class TickerHUD extends AbstractTickerHUD {
 
     }
 
-    @Override
-    public int getMax() {
-        return getMax(false);
-    }
+//    public int getMax() {
+//        return getMax(false);
+//    }
 
     public static class Config {
         @SerialEntry

@@ -34,10 +34,10 @@ public abstract class AbstractTickerHUD extends HUD {
     private static final Identifier BLANK = Identifier.of("skyblocktweaks", "tickers/blank.png");
     private static final int DIMENSION = 9;
 
+    protected boolean fhs = false;
 
     public abstract int getMax(boolean fromHudScreen);
     public abstract int getUsable(boolean fromHudScreen);
-    public abstract int getMax();
 
     @Override
     public void render(DrawContext context, boolean fromHudScreen, boolean hovered) {
@@ -45,6 +45,9 @@ public abstract class AbstractTickerHUD extends HUD {
         var bounds = getCurrentBounds();
         if (fromHudScreen) {
             drawBackground(context, hovered ? BACKGROUND_HOVERED : BACKGROUND_NOT_HOVERED);
+            fhs = true;
+        } else {
+            fhs = false;
         }
         if (bounds.scale != 1.0f) {
             RenderUtils.beginScale(context, bounds.scale);
@@ -67,7 +70,7 @@ public abstract class AbstractTickerHUD extends HUD {
     }
 
     private int getWidth() {
-        return DIMENSION * getMax() + 2 * getMax();
+        return DIMENSION * getMax(fhs) + 2 * getMax(fhs);
     }
 
     private int getRelativeWidth() {
