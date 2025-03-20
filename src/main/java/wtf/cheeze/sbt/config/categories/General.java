@@ -10,9 +10,9 @@ import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SBTConfig;
 import wtf.cheeze.sbt.features.BrewingStandOverlay;
 import wtf.cheeze.sbt.features.MenuHighlights;
-import wtf.cheeze.sbt.utils.Version;
 import wtf.cheeze.sbt.utils.actionbar.ActionBarTransformer;
 import wtf.cheeze.sbt.utils.errors.ErrorHandler;
+import wtf.cheeze.sbt.utils.version.UpdateChecker;
 
 public class General {
     public static ConfigCategory getCategory(ConfigImpl defaults, ConfigImpl config) {
@@ -20,7 +20,7 @@ public class General {
                 .name(Text.translatable("sbt.config.general"))
                 .tooltip(Text.translatable("sbt.config.general.desc"))
                 .option(GlobalSearchCategory.getOpenGlobalSearchButton(defaults, config))
-                .option(Version.getStreamOption(defaults, config))
+                .option(UpdateChecker.getStreamOption(defaults, config))
                 .option(ErrorHandler.getChatAll(defaults, config))
                 .group(InventoryTweaks.getGroup(defaults, config))
                 .group(MenuHighlights.Config.getGroup(defaults, config))

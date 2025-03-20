@@ -19,10 +19,10 @@
 package wtf.cheeze.sbt.utils.enums;
 
 /**
- * Skills
+ * Skill
  * Unknown is used rather than null when no skill is known to prevent NPEs
  */
-public enum Skills {
+public enum Skill {
     COMBAT,
     MINING,
     FARMING,

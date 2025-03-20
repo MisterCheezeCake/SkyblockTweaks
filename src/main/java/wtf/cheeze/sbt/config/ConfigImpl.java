@@ -26,18 +26,22 @@ import wtf.cheeze.sbt.features.BrewingStandOverlay;
 import wtf.cheeze.sbt.features.MenuHighlights;
 import wtf.cheeze.sbt.features.chat.ChatProtections;
 import wtf.cheeze.sbt.features.chat.PartyFeatures;
-import wtf.cheeze.sbt.utils.Version;
 import wtf.cheeze.sbt.utils.actionbar.ActionBarTransformer;
+import wtf.cheeze.sbt.utils.constants.loader.ConstantLoader;
+import wtf.cheeze.sbt.utils.version.UpdateChecker;
 
 public class ConfigImpl extends VersionedObject {
     @SerialEntry // This defines the spec version of the config, so that in the future, migration code can be written if necessary
     public int configVersion = 1;
 
     @SerialEntry
-    public Version.NotificationStream notificationStream = Version.NotificationStream.ALPHA;
+    public UpdateChecker.NotificationStream notificationStream = UpdateChecker.NotificationStream.ALPHA;
 
     @SerialEntry
     public boolean chatAllErrors = true;
+
+    @SerialEntry
+    public ConstantLoader.Config constantLoader = new ConstantLoader.Config();
 
     @SerialEntry
     public General.HudTweaks hudTweaks = new General.HudTweaks();

@@ -20,6 +20,8 @@ package wtf.cheeze.sbt.hud.bases;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.gui.Narratable;
+import net.minecraft.client.gui.widget.ClickableWidget;
 import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.hud.utils.DrawMode;
 import wtf.cheeze.sbt.hud.bounds.Bounds;

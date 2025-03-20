@@ -64,7 +64,7 @@ public class ProfileManager {
         //TODO: Switch to public API
         ScreenEvents.AFTER_INIT.register(((client, screen, scaledWidth, scaledHeight) -> {
             if (screen.getTitle().getString(
-            ).equals("Your Skills")) {
+            ).equals("Your Skill")) {
                 new Thread(() -> {
                     try {
                         Thread.sleep(1000);

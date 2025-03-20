@@ -24,6 +24,7 @@ import dev.isxander.yacl3.config.v2.api.SerialEntry;
 import net.fabricmc.fabric.api.client.message.v1.ClientSendMessageEvents;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SBTConfig;
+import wtf.cheeze.sbt.utils.KillSwitch;
 import wtf.cheeze.sbt.utils.MessageManager;
 import wtf.cheeze.sbt.utils.timing.TimedValue;
 import wtf.cheeze.sbt.utils.render.Colors;
@@ -35,6 +36,10 @@ import java.util.regex.Pattern;
 
 public class ChatProtections {
 
+    private static final String COOP_ID = "chat_protections_coop";
+    private static final String IP_ID = "chat_protections_ip";
+
+
     private static TimedValue<String> lastMessageCoop = TimedValue.of(null);
     private static TimedValue<String> lastMessageIp = TimedValue.of(null);
     //TODO: Switch this away from legacy formatting
@@ -45,7 +50,10 @@ public class ChatProtections {
     public static void registerEvents() {
         ClientSendMessageEvents.ALLOW_COMMAND.register((message) -> {
             if (message.startsWith("coopadd") && !message.trim().equals("coopadd") && SBTConfig.get().chatProtections.coop) {
-
+                if (KillSwitch.shouldKill(COOP_ID)) {
+                    // If the killswitch is enabled, we don't want to act on the message
+                    return true;
+                }
                 if (lastMessageCoop.getValue() != null && lastMessageCoop.getValue().equals(message)) {
                     return true;
                 }
@@ -64,6 +72,10 @@ public class ChatProtections {
             if (SBTConfig.get().chatProtections.ip) {
                 var i = checkIp(message);
                 if (i != 0) {
+                    if (KillSwitch.shouldKill(IP_ID)) {
+                        // If the killswitch is enabled, we don't want to act on the message
+                        return true;
+                    }
                     return handleIpMessage(message, i == 2);
                 }
             }
@@ -82,9 +94,9 @@ public class ChatProtections {
             }
             lastMessageIp = TimedValue.of(message, 5000);
             if (address) {
-               MessageManager.send("Are you sure you want to send a message with an ip address? Hypixel may ban you for this! Send the message again to confirm.", Colors.LIGHT_RED);
+               MessageManager.send("Are you sure you want to send a message with an ip address? Hypixel may ban you for this! Send the message again to confirm.", Colors.RED);
             } else {
-               MessageManager.send("Are you sure you want to send a message with the word \"ip\" in it? Hypixel has been known to auto mute/ban messages containing \"ip\"! Send the message again to confirm.", Colors.LIGHT_RED);
+               MessageManager.send("Are you sure you want to send a message with the word \"ip\" in it? Hypixel has been known to auto mute/ban messages containing \"ip\"! Send the message again to confirm.", Colors.RED);
             }
 
             return false;

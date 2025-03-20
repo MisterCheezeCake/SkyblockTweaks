@@ -63,6 +63,7 @@ public abstract class InGameHudMixin {
 
     @Inject(method = "renderHealthBar" , at = @At("HEAD"), cancellable = true)
     private void sbt$onRenderHealth(CallbackInfo ci) {
+
         if (SBTConfig.get().hudTweaks.noRenderHearts && SkyblockData.inSB && (!SBTConfig.get().hudTweaks.showHearsInRift || SkyblockData.location != Location.RIFT)) {
             ci.cancel();
         }

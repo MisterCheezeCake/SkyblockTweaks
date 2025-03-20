@@ -8,7 +8,7 @@ import wtf.cheeze.sbt.features.mining.MiningHUD;
 import java.util.ArrayList;
 
 public class HudManager {
-    public static final ArrayList<HUD> HUDS = new ArrayList<HUD>();
+    public static final ArrayList<HUD> HUDS = new ArrayList<>();
 
     public static void registerEvents() {
         HUDS.add(SkillHUDManager.INSTANCE.SKILL_HUD);
@@ -36,8 +36,6 @@ public class HudManager {
         HUDS.add(new EventTimerHUD());
 
 
-        HudRenderEvents.AFTER_MAIN_HUD.register((context, tickCounter) -> {
-            HUDS.forEach(hud -> hud.render(context, false));
-        });
+        HudRenderEvents.AFTER_MAIN_HUD.register((context, tickCounter) -> HUDS.forEach(hud -> hud.render(context, false)));
     }
 }

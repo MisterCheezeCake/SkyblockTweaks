@@ -18,7 +18,7 @@
  */
 package wtf.cheeze.sbt.utils.enums;
 
-public enum Slayers {
+public enum Slayer {
     ZOMBIE,
     SPIDER,
     WOLF,

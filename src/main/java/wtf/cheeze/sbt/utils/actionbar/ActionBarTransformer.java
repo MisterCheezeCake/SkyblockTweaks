@@ -221,7 +221,7 @@ public class ActionBarTransformer {
           return data;
       } catch (Exception e) {
          // SkyblockTweaks.LOGGER.error("Error parsing action bar text: {}", actionBarText, e);
-          ErrorHandler.handleError(e, "Error Parsing action bar text/*LOGONLY: {}*/", ErrorLevel.WARNING, actionBarText);
+          ErrorHandler.handleError(e, "Error Parsing action bar text/*LOGONLY: {}*/", ErrorLevel.WARNING, false, actionBarText);
           //SkyblockTweaks.LOGGER.warn("Some features may not work correctly. Please report this to MisterCheezeCake immediately.");
           var data = new ActionBarData();
           // data.transformedText = actionBarText;

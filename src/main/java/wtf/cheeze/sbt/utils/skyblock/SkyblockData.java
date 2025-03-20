@@ -28,7 +28,7 @@ import net.azureaaron.hmapi.network.packet.v2.s2c.PartyInfoS2CPacket;
 import net.minecraft.client.MinecraftClient;
 import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.utils.MessageManager;
-import wtf.cheeze.sbt.utils.NumberUtils;
+import wtf.cheeze.sbt.utils.TimeUtils;
 import wtf.cheeze.sbt.utils.actionbar.ActionBarData;
 import wtf.cheeze.sbt.utils.enums.Location;
 import wtf.cheeze.sbt.utils.render.Colors;
@@ -127,7 +127,7 @@ public class SkyblockData {
         }
 
         if (data.riftTime != null) {
-            Stats.riftSeconds = NumberUtils.parseDuration(data.riftTime);
+            Stats.riftSeconds = TimeUtils.parseDuration(data.riftTime);
             Stats.riftTicking = Objects.requireNonNullElse(data.riftTicking, false);
         } else {
             Stats.riftSeconds = 0;

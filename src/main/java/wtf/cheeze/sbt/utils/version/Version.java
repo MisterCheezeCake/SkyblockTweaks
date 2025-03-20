@@ -16,18 +16,8 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with SkyblockTweaks. If not, see <https://www.gnu.org/licenses/>.
  */
-package wtf.cheeze.sbt.utils;
+package wtf.cheeze.sbt.utils.version;
 
-import dev.isxander.yacl3.api.NameableEnum;
-import dev.isxander.yacl3.api.Option;
-import dev.isxander.yacl3.api.controller.EnumControllerBuilder;
-import net.minecraft.MinecraftVersion;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.text.Text;
-import wtf.cheeze.sbt.config.ConfigImpl;
-import wtf.cheeze.sbt.config.categories.General;
-
-import java.util.Map;
 import java.util.regex.Pattern;
 
 public class Version {
@@ -88,6 +78,16 @@ public class Version {
         }
     }
 
+    public static String getBuildMCVersion() {
+        //? if =1.21.1 {
+        /*return "1.21.1";
+         *///?} else if =1.21.3 {
+        /*return "1.21.3";
+         *///?} else if =1.21.4 {
+        return "1.21.4";
+        //?}
+    }
+
     public String getVersionString() {
         if (STREAM == VersionType.UNSTABLE) {
             return "Unstable";
@@ -98,104 +98,13 @@ public class Version {
         }
     }
 
-    public String getVersionStrringWithMc() {
-        return getVersionString() + "+mc" + MinecraftVersion.CURRENT.getName();
-    }
-
-    public static VersionComparison compareVersions(Version a, Version b) {
-        try {
-            if (a.STREAM == VersionType.UNSTABLE || b.STREAM == VersionType.UNSTABLE) {
-                return VersionComparison.FAILURE;
-            }
-
-            if (a.MAJOR > b.MAJOR) {
-                return VersionComparison.GREATER;
-            } else if (a.MAJOR < b.MAJOR) {
-                return VersionComparison.LESS;
-            }
-            if (a.MINOR > b.MINOR) {
-                return VersionComparison.GREATER;
-            } else if (a.MINOR < b.MINOR) {
-                return VersionComparison.LESS;
-            }
-            if (a.PATCH > b.PATCH) {
-                return VersionComparison.GREATER;
-            } else if (a.PATCH < b.PATCH) {
-                return VersionComparison.LESS;
-            }
-            // If we get here, the semvers are equal
-            if (a.STREAM == VersionType.ALPHA && b.STREAM == VersionType.BETA) {
-                return VersionComparison.LESS;
-            } else if (a.STREAM == VersionType.BETA && b.STREAM == VersionType.ALPHA) {
-                return VersionComparison.GREATER;
-            }
-            if (a.BUILD > b.BUILD) {
-                return VersionComparison.GREATER;
-            } else if (a.BUILD < b.BUILD) {
-                return VersionComparison.LESS;
-            }
-            return VersionComparison.EQUAL;
-        } catch (Exception e) {
-            return VersionComparison.FAILURE;
-        }
+    public String getVersionStringWithMc() {
+        return getVersionString() + "+mc" + getBuildMCVersion();
     }
 
 
-
-    public static Option<NotificationStream> getStreamOption(ConfigImpl defaults, ConfigImpl config) {
-        return Option.<NotificationStream>createBuilder()
-                .name(General.key("notificationStream"))
-                .description(General.keyD("notificationStream"))
-                .controller(opt -> EnumControllerBuilder.create(opt).enumClass(NotificationStream.class))
-                .binding(
-                        defaults.notificationStream,
-                        () -> config.notificationStream,
-                        value -> config.notificationStream = value
-                )
-                .build();
-    }
     public static String getModrinthLink(String name) {
         return "https://modrinth.com/mod/sbt/version/" + name;
     }
 
-    public enum VersionType {
-        // Development versions, ideally, a user should never be using these
-        UNSTABLE,
-        // Alpha versions, these are the least stable jars that will go out to users, and may have bugs
-        ALPHA,
-        // Beta versions, more stable than alpha, but still may have bugs and not ready for full release
-        BETA,
-        // Full releases, stable and ideally not released with any known bugs
-        RELEASE
-    }
-    public enum NotificationStream implements NameableEnum {
-        ALPHA,
-        BETA,
-        RELEASE,
-        NONE;
-
-        @Override
-        public Text getDisplayName() {
-            return Text.literal(name());
-        }
-    }
-
-    public enum VersionComparison {
-        EQUAL,
-        GREATER,
-        LESS,
-        FAILURE
-    }
-
-    public static class RemoteVersionFile {
-        public boolean enabled;
-        public Map<String, RemoteVersion> latestAlpha;
-        public Map<String, RemoteVersion> latestBeta;
-        public Map<String, RemoteVersion> latestRelease;
-    }
-
-    public static class RemoteVersion {
-        public String versionString;
-        public String modrinthName;
-    }
 }

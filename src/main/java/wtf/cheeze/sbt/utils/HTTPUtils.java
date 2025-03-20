@@ -19,32 +19,47 @@
 package wtf.cheeze.sbt.utils;
 
 import wtf.cheeze.sbt.SkyblockTweaks;
-import wtf.cheeze.sbt.utils.errors.ErrorHandler;
-import wtf.cheeze.sbt.utils.errors.ErrorLevel;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.channels.Channels;
+import java.nio.channels.FileChannel;
 
 public class HTTPUtils {
 
-    public static String get(String uri){
-        try {
-            URL url = new URI(uri).toURL();
-            var connection = url.openConnection();
-            connection.setRequestProperty("User-Agent", "Mozilla/5.0 SkyblockTweaks " + SkyblockTweaks.VERSION.getVersionString());
-            var reader = new java.io.BufferedReader(new java.io.InputStreamReader(connection.getInputStream()));
-            var response = new StringBuilder();
-            String line;
-            while ((line = reader.readLine()) != null) {
-                response.append(line);
-            }
-            reader.close();
-            return response.toString();
-        } catch (Exception e) {
-            ErrorHandler.handleError(e, "The Update Checker experienced an error", ErrorLevel.WARNING);
-            return null;
+    public static HTTPResponse get(String uri) throws URISyntaxException, IOException {
+        URL url = new URI(uri).toURL();
+        var connection = url.openConnection();
+        connection.setRequestProperty("User-Agent", "Mozilla/5.0 SkyblockTweaks " + SkyblockTweaks.VERSION.getVersionString());
+        var reader = new java.io.BufferedReader(new java.io.InputStreamReader(connection.getInputStream()));
+
+        var response = new StringBuilder();
+        String line;
+        while ((line = reader.readLine()) != null) {
+            response.append(line);
+        }
+        reader.close();
+        return new HTTPResponse(((HttpURLConnection) connection).getResponseCode(), response.toString());
+    }
+
+    public static void downloadFile(String uri, File destination) throws URISyntaxException, IOException {
+        URL url = new URI(uri).toURL();
+        var connection = url.openConnection();
+        connection.setRequestProperty("User-Agent", "Mozilla/5.0 SkyblockTweaks " + SkyblockTweaks.VERSION.getVersionString());
+        var channel = Channels.newChannel(connection.getInputStream());
+        try (FileOutputStream fileOutputStream = new FileOutputStream(destination)) {
+            FileChannel fileChannel = fileOutputStream.getChannel();
+            fileChannel.transferFrom(channel, 0, Long.MAX_VALUE);
         }
     }
+
+    public record HTTPResponse(
+            int statusCode,
+            String body
+    ) {}
 }

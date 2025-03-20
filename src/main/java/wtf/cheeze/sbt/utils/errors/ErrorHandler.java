@@ -12,6 +12,7 @@ import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SBTConfig;
 import wtf.cheeze.sbt.utils.MessageManager;
+import wtf.cheeze.sbt.utils.NotificationHandler;
 import wtf.cheeze.sbt.utils.TextUtils;
 import wtf.cheeze.sbt.utils.timing.TimedSet;
 import wtf.cheeze.sbt.utils.render.Colors;
@@ -39,7 +40,7 @@ public class ErrorHandler {
 //
 //    }
 
-    public static void handleError(Exception e, String message, ErrorLevel level, Object... params) {
+    public static void handleError(Exception e, String message, ErrorLevel level, boolean sendDelayedIfNotInWorld , Object... params) {
         Pair<String, String> messages = getMessages(message);
         String logMessage = messages.getLeft();
         String chatMessage = messages.getRight();
@@ -54,9 +55,18 @@ public class ErrorHandler {
         if (errorSet.contains(message)) return;
         errorSet.add(message);
         //LOGGER.info(String.valueOf(e.hashCode()));
-        if (MessageManager.checkPlayer()) MessageManager.send(Text.literal("Error: " + chatMessage + ". Click to copy the stack trace.").withColor(Colors.RED).styled(it -> it.withClickEvent(TextUtils.copyEvent(Arrays.toString(e.getStackTrace()))).withHoverEvent(TextUtils.showText(TextUtils.withColor("Click to copy the stack trace", Colors.CYAN)))));
+        var msg = Text.literal("Error: " + chatMessage + ". Click to copy the stack trace.").withColor(Colors.RED).styled(it -> it.withClickEvent(TextUtils.copyEvent(Arrays.toString(e.getStackTrace()))).withHoverEvent(TextUtils.showText(TextUtils.withColor("Click to copy the stack trace", Colors.CYAN))));
+        if (MessageManager.checkPlayer()) {
+            MessageManager.send(msg);
+        } else {
+            if (sendDelayedIfNotInWorld) {
+                NotificationHandler.pushChat(msg);
+            }
+        }
+    }
 
-
+    public static void handleError(Exception e, String message, ErrorLevel level) {
+        handleError(e, message, level, true);
     }
 
     private static void sendMessage(String message, Exception e) {

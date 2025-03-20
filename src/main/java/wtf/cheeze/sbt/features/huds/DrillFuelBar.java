@@ -23,7 +23,6 @@ import dev.isxander.yacl3.api.OptionGroup;
 import dev.isxander.yacl3.api.controller.ColorControllerBuilder;
 import dev.isxander.yacl3.config.v2.api.SerialEntry;
 import net.minecraft.text.Text;
-import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SBTConfig;
 import wtf.cheeze.sbt.hud.utils.AnchorPoint;
@@ -56,8 +55,9 @@ public class DrillFuelBar extends BarHUD {
 
     @Override
     public Text getName() {
-        return TextUtils.withColor("Drill Fuel Bar", Colors.DARK_GREEN);
+        return TextUtils.withColor("Drill Fuel Bar", Colors.GREEN);
     }
+
 
     @Override
     public boolean shouldRender(boolean fromHudScreen) {

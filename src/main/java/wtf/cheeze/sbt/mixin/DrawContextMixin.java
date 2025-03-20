@@ -34,6 +34,7 @@ import java.util.Objects;
 
 @Mixin(DrawContext.class)
 public abstract class DrawContextMixin implements SBTDrawContext {
+    @Final
     @Shadow
     private MinecraftClient client;
 

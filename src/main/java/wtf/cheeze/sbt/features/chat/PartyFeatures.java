@@ -31,6 +31,7 @@ import net.minecraft.text.Text;
 import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SBTConfig;
+import wtf.cheeze.sbt.utils.KillSwitch;
 import wtf.cheeze.sbt.utils.MessageManager;
 import wtf.cheeze.sbt.utils.TextUtils;
 import wtf.cheeze.sbt.utils.render.Colors;
@@ -43,6 +44,8 @@ import static wtf.cheeze.sbt.config.categories.Chat.key;
 import static wtf.cheeze.sbt.config.categories.Chat.keyD;
 
 public class PartyFeatures {
+
+    private static final String FEATURE_ID = "party_commands";
 
     public static final Pattern PARTY_PATTERN = Pattern.compile("Party > ([^:]+): !(.+)");
     public static final Pattern BACKUP_UPDATE_PATTERN = Pattern.compile("The party was transferred to (.+) by .+");
@@ -63,6 +66,10 @@ public class PartyFeatures {
                 var matcher = PARTY_PATTERN.matcher(s);
                 if (!matcher.matches()) {
                     if (verboseDebug) sendDebugMessage("Party message did not match pattern");
+                    return;
+                }
+                if (KillSwitch.shouldKill(FEATURE_ID)) {
+                    MessageManager.send("Party commands have been disabled remotely", Colors.RED);
                     return;
                 }
                 if (System.currentTimeMillis() - lastPartyCommand < SBTConfig.get().partyCommands.cooldown) {
@@ -234,7 +241,7 @@ public class PartyFeatures {
 
     private static final Text DEBUG_PREFIX = TextUtils.join(
             TextUtils.withColor("[", Colors.DARK_GRAY),
-            TextUtils.withColor("SBT Party Debugger", Colors.DARK_GREEN),
+            TextUtils.withColor("SBT Party Debugger", Colors.GREEN),
             TextUtils.withColor("]", Colors.DARK_GRAY)
     );
     private static void sendDebugMessage(String message) {

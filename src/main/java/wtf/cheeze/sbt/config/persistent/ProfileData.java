@@ -18,10 +18,10 @@
  */
 package wtf.cheeze.sbt.config.persistent;
 
-import wtf.cheeze.sbt.utils.enums.Skills;
+import wtf.cheeze.sbt.utils.enums.Skill;
 
 import java.util.EnumMap;
 
 public class ProfileData {
-    public EnumMap<Skills, Integer> skillLevels = new EnumMap<>(Skills.class);
+    public EnumMap<Skill, Integer> skillLevels = new EnumMap<>(Skill.class);
 }

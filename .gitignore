@@ -41,8 +41,5 @@ replay_*.log
 
 scripts/
 holding/
-# Don't include dev mixins
-src/main/java/wtf/cheeze/sbt/mixin/dev
-sbtdev.mixins.json
-# still a draft
-CONTRIBUTING.md
+
+src/main/resources/fallback/

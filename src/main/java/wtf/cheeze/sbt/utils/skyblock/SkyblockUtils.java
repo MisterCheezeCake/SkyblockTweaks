@@ -18,17 +18,7 @@
  */
 package wtf.cheeze.sbt.utils.skyblock;
 
-import dev.isxander.yacl3.gui.utils.ItemRegistryHelper;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.component.ComponentChanges;
-import net.minecraft.component.DataComponentTypes;
-import net.minecraft.component.type.NbtComponent;
-import net.minecraft.item.ItemConvertible;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.util.Identifier;
-import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.utils.enums.*;
 
 public class SkyblockUtils {
@@ -48,51 +38,51 @@ public class SkyblockUtils {
         };
     }
 
-    public static Slayers castStringToSlayerType(String input) {
+    public static Slayer castStringToSlayerType(String input) {
         input = input.toLowerCase();
         return switch (input) {
-            case "zombie", "zom", "z", "revenant", "rev" -> Slayers.ZOMBIE;
-            case "spider", "spi", "s", "tarantula", "tara" -> Slayers.SPIDER;
-            case "wolf", "wol", "w", "sven" -> Slayers.WOLF;
-            case "enderman", "ender", "e", "eman", "void", "voidgloom" -> Slayers.ENDERMAN;
-            case "blaze", "bla", "b", "inferno", "inf" -> Slayers.BLAZE;
-            case "vampire", "vamp", "v", "rift", "riftstalker", "blood" -> Slayers.VAMPIRE;
+            case "zombie", "zom", "z", "revenant", "rev" -> Slayer.ZOMBIE;
+            case "spider", "spi", "s", "tarantula", "tara" -> Slayer.SPIDER;
+            case "wolf", "wol", "w", "sven" -> Slayer.WOLF;
+            case "enderman", "ender", "e", "eman", "void", "voidgloom" -> Slayer.ENDERMAN;
+            case "blaze", "bla", "b", "inferno", "inf" -> Slayer.BLAZE;
+            case "vampire", "vamp", "v", "rift", "riftstalker", "blood" -> Slayer.VAMPIRE;
             default -> null;
         };
     }
 
-    public static Crops castStringToCrop(String input) {
+    public static Crop castStringToCrop(String input) {
         input = input.toLowerCase();
         return switch (input) {
-            case "wheat", "whe", "w" -> Crops.WHEAT;
-            case "carrot", "car", "c" -> Crops.CARROT;
-            case "potato", "pot" -> Crops.POTATO;
-            case "pumpkin", "pum" -> Crops.PUMPKIN;
-            case "melon", "mel" -> Crops.MELON;
-            case "cane", "sugarcane", "sugar" -> Crops.SUGAR_CANE;
-            case "cocoa", "coc", "beans", "cocoabeans" -> Crops.COCOA_BEANS;
-            case "cactus", "cac" -> Crops.CACTUS;
-            case "wart", "netherwart", "nether" -> Crops.NETHER_WART;
-            case "mushroom", "mush" -> Crops.MUSHROOM;
+            case "wheat", "whe", "w" -> Crop.WHEAT;
+            case "carrot", "car", "c" -> Crop.CARROT;
+            case "potato", "pot" -> Crop.POTATO;
+            case "pumpkin", "pum" -> Crop.PUMPKIN;
+            case "melon", "mel" -> Crop.MELON;
+            case "cane", "sugarcane", "sugar" -> Crop.SUGAR_CANE;
+            case "cocoa", "coc", "beans", "cocoabeans" -> Crop.COCOA_BEANS;
+            case "cactus", "cac" -> Crop.CACTUS;
+            case "wart", "netherwart", "nether" -> Crop.NETHER_WART;
+            case "mushroom", "mush" -> Crop.MUSHROOM;
             default -> null;
         };
     }
 
-    public static Skills strictCastStringToSkill(String skill) {
+    public static Skill strictCastStringToSkill(String skill) {
         skill = skill.toLowerCase();
         return switch (skill) {
-            case "farming" -> Skills.FARMING;
-            case "mining" -> Skills.MINING;
-            case "combat" -> Skills.COMBAT;
-            case "foraging" -> Skills.FORAGING;
-            case "fishing" -> Skills.FISHING;
-            case "enchanting" -> Skills.ENCHANTING;
-            case "alchemy" -> Skills.ALCHEMY;
-            case "taming" -> Skills.TAMING;
-            case "carpentry" -> Skills.CARPENTRY;
-            case "runecrafting" -> Skills.RUNECRAFTING;
-            case "social" -> Skills.SOCIAL;
-            default -> Skills.UNKNOWN;
+            case "farming" -> Skill.FARMING;
+            case "mining" -> Skill.MINING;
+            case "combat" -> Skill.COMBAT;
+            case "foraging" -> Skill.FORAGING;
+            case "fishing" -> Skill.FISHING;
+            case "enchanting" -> Skill.ENCHANTING;
+            case "alchemy" -> Skill.ALCHEMY;
+            case "taming" -> Skill.TAMING;
+            case "carpentry" -> Skill.CARPENTRY;
+            case "runecrafting" -> Skill.RUNECRAFTING;
+            case "social" -> Skill.SOCIAL;
+            default -> Skill.UNKNOWN;
         };
     }
 

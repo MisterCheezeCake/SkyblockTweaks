@@ -23,7 +23,6 @@ import dev.isxander.yacl3.api.ConfigCategory;
 import dev.isxander.yacl3.api.OptionDescription;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.text.Text;
-import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SBTConfig;
 import wtf.cheeze.sbt.features.BrewingStandOverlay;
@@ -34,9 +33,9 @@ import wtf.cheeze.sbt.features.huds.*;
 import wtf.cheeze.sbt.features.mining.EventTimerHUD;
 import wtf.cheeze.sbt.features.mining.MiningHUD;
 import wtf.cheeze.sbt.mixin.YACLScreenAccessor;
-import wtf.cheeze.sbt.utils.Version;
 import wtf.cheeze.sbt.utils.actionbar.ActionBarTransformer;
 import wtf.cheeze.sbt.utils.errors.ErrorHandler;
+import wtf.cheeze.sbt.utils.version.UpdateChecker;
 
 
 public class GlobalSearchCategory {
@@ -45,7 +44,7 @@ public class GlobalSearchCategory {
         return ConfigCategory.createBuilder()
                 .name(Text.translatable("sbt.config.globalSearch"))
                 .tooltip(Text.translatable("sbt.config.globalSearch.desc"))
-                .option(Version.getStreamOption(defaults, config))
+                .option(UpdateChecker.getStreamOption(defaults, config))
                 .option(ErrorHandler.getChatAll(defaults, config))
                 .group(General.InventoryTweaks.getGroup(defaults, config))
                 .group(MenuHighlights.Config.getGroup(defaults, config))

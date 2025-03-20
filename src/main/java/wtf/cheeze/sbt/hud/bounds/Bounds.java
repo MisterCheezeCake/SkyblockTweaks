@@ -19,11 +19,11 @@
 package wtf.cheeze.sbt.hud.bounds;
 
 public class Bounds {
-    public int x;
-    public int y;
-    public float width;
-    public float height;
-    public float scale;
+    public final int x;
+    public final int y;
+    public final float width;
+    public final float height;
+    public final float scale;
 
     public Bounds(int x, int y, float width, float height, float scale) {
         this.x = x;

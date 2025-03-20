@@ -115,15 +115,9 @@ public class FlexibleHudLine implements HudComponent {
     private static void renderLine(DrawContext context, Text text, HudIcon icon, int x, int y, float scale, DrawMode mode, int color, int outlineColor) {
         icon.render(context, x, y, scale);
         switch (mode) {
-            case PURE -> {
-                RenderUtils.drawText(context, text, x + (int) (10 * scale), y, color, false, scale, true);
-            }
-            case SHADOW -> {
-                RenderUtils.drawText(context, text, x + (int) (10 * scale), y, color, true, scale, true);
-            }
-            case OUTLINE -> {
-                RenderUtils.drawTextWithOutline(context, text, x + (int) (10 * scale), y, color, outlineColor, scale, true);
-            }
+            case PURE -> RenderUtils.drawText(context, text, x + (int) (10 * scale), y, color, false, scale, true);
+            case SHADOW -> RenderUtils.drawText(context, text, x + (int) (10 * scale), y, color, true, scale, true);
+            case OUTLINE -> RenderUtils.drawTextWithOutline(context, text, x + (int) (10 * scale), y, color, outlineColor, scale, true);
         }
     }
 

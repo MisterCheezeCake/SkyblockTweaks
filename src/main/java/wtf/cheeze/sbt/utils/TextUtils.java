@@ -28,7 +28,7 @@ public class TextUtils {
     }
     public static final Text SPACE = Text.literal(" ");
 
-    public static Text getTextThatLinksToURL(MutableText text, Text hovered, String url) {
+    public static MutableText getTextThatLinksToURL(MutableText text, Text hovered, String url) {
         return text.styled(style -> {
             style = style.withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, hovered));
             style = style.withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, url));

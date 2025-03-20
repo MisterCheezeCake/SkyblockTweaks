@@ -18,12 +18,16 @@
  */
 package wtf.cheeze.sbt.features;
 
+import wtf.cheeze.sbt.utils.KillSwitch;
 import wtf.cheeze.sbt.utils.MessageManager;
 import wtf.cheeze.sbt.utils.TextUtils;
 import wtf.cheeze.sbt.events.WorldLoadEvents;
 import wtf.cheeze.sbt.utils.render.Colors;
 
 public class MouseLock {
+
+    private static final String FEATURE_ID = "mouse_lock";
+
     public static boolean locked = false;
 
     public static void registerEvents() {
@@ -37,10 +41,15 @@ public class MouseLock {
     }
 
     public static void toggle() {
+        if (KillSwitch.shouldKill(FEATURE_ID)) {
+            locked = false;
+            MessageManager.send(TextUtils.withColor("This feature has been remotely disabled", Colors.RED));
+            return;
+        }
         locked = !locked;
         MessageManager.send(
                 MouseLock.locked ?
-                        TextUtils.withColor("Enabled Mouse Lock", Colors.GREEN) :
+                        TextUtils.withColor("Enabled Mouse Lock", Colors.LIME) :
                         TextUtils.withColor("Disabled Mouse Lock", Colors.RED)
         );
     }

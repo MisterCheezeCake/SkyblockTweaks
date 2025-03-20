@@ -24,7 +24,6 @@ import dev.isxander.yacl3.api.controller.ColorControllerBuilder;
 import dev.isxander.yacl3.api.controller.StringControllerBuilder;
 import dev.isxander.yacl3.config.v2.api.SerialEntry;
 import net.minecraft.text.Text;
-import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SBTConfig;
 import wtf.cheeze.sbt.hud.utils.AnchorPoint;
@@ -72,7 +71,7 @@ public class DrillFuelHUD extends TextHUD {
 
     @Override
     public Text getName() {
-        return TextUtils.withColor("Drill Fuel Hud", Colors.DARK_GREEN);
+        return TextUtils.withColor("Drill Fuel Hud", Colors.GREEN);
     }
 
     public static class Config {

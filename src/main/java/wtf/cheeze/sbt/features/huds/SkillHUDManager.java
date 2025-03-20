@@ -37,12 +37,13 @@ import wtf.cheeze.sbt.hud.bases.BarHUD;
 import wtf.cheeze.sbt.hud.utils.HudInformation;
 import wtf.cheeze.sbt.hud.components.SingleHudLine;
 import wtf.cheeze.sbt.hud.bases.TextHUD;
-import wtf.cheeze.sbt.utils.enums.Skills;
+import wtf.cheeze.sbt.utils.constants.loader.ConstantLoader;
+import wtf.cheeze.sbt.utils.constants.loader.Constants;
+import wtf.cheeze.sbt.utils.enums.Skill;
 import wtf.cheeze.sbt.utils.errors.ErrorHandler;
 import wtf.cheeze.sbt.utils.errors.ErrorLevel;
 import wtf.cheeze.sbt.utils.render.Colors;
 import wtf.cheeze.sbt.hud.icon.Icons;
-import wtf.cheeze.sbt.utils.skyblock.SkyblockConstants;
 import wtf.cheeze.sbt.utils.skyblock.SkyblockData;
 import wtf.cheeze.sbt.utils.skyblock.SkyblockUtils;
 
@@ -69,7 +70,7 @@ public class SkillHUDManager {
     private static final int PERSIST_TICKS = 60;
 
     private int timeLeft = 0;
-    private Skills currentSkill = Skills.UNKNOWN;
+    private Skill currentSkill = Skill.UNKNOWN;
     private float gained = 0;
     private float total = 0;
     private float progress = 0;
@@ -176,18 +177,18 @@ public class SkillHUDManager {
             );
         }
 
-        private static int tryAndGetSkillLevel(Skills skill) {
+        private static int tryAndGetSkillLevel(Skill skill) {
             var profile = SkyblockTweaks.PD.profiles.get(SkyblockData.getCurrentProfileUnique());
             if (profile == null) return -1;
             return profile.skillLevels.getOrDefault(skill, -1);
         }
 
-        private static int[] getSkillTable(Skills skill) {
+        private static int[] getSkillTable(Skill skill) {
             return switch (skill) {
                 case FARMING, FISHING, FORAGING, MINING, COMBAT, ENCHANTING, ALCHEMY, TAMING, CARPENTRY, UNKNOWN ->
-                        SkyblockConstants.SKILL_LEVELS;
-                case RUNECRAFTING -> SkyblockConstants.RUNECRAFTING_LEVELS;
-                case SOCIAL -> SkyblockConstants.SOCIAL_LEVELS;
+                        Constants.skills().mainSkillLevels();
+                case RUNECRAFTING ->   Constants.skills().runeLevels();
+                case SOCIAL -> Constants.skills().socialLevels();
             };
         }
 

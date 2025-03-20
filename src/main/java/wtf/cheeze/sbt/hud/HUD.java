@@ -21,6 +21,8 @@ package wtf.cheeze.sbt.hud;
 import dev.isxander.yacl3.api.OptionDescription;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.gui.Narratable;
+import net.minecraft.client.gui.widget.AbstractTextWidget;
 import net.minecraft.text.Text;
 import wtf.cheeze.sbt.hud.bounds.Bounds;
 import wtf.cheeze.sbt.hud.bounds.BoundsRelative;
@@ -28,13 +30,13 @@ import wtf.cheeze.sbt.hud.utils.HudInformation;
 
 /**
  * Represents any sort of HUD that can be drawn to the screen, and handles logic that is that same no matter how the HUD renders
+ * TODO: Figure out narration
  */
-public abstract class HUD  {
+public abstract class HUD {
 
     public static final MinecraftClient client = MinecraftClient.getInstance();
 
     public HudInformation INFO;
-
 
     /**
      * Whether the HUD supports non-left anchors
@@ -59,19 +61,20 @@ public abstract class HUD  {
     }
 
     /**
-     * Calls the render method with hovered set to false
-     */
-    public void render(DrawContext context, boolean fromHudScreen) {
-        render(context, fromHudScreen, false);
-    }
-
-    /**
      * Draws the HUD to the screen
      * @param context the DrawContext
      * @param fromHudScreen whether the HUD is being drawn in the context of the edit screen
      * @param hovered whether the HUD is hovered while being drawn in the context of the edit screen
      */
     public abstract void render(DrawContext context, boolean fromHudScreen, boolean hovered);
+
+    /**
+     * Calls the render method with hovered set to false
+     */
+    public void render(DrawContext context, boolean fromHudScreen) {
+        render(context, fromHudScreen, false);
+    }
+
 
     /**
      * Updates the position of the HUD
@@ -136,5 +139,6 @@ public abstract class HUD  {
     public static OptionDescription keyD(String key) {
         return OptionDescription.of(Text.translatable(BASE_KEY + key + ".desc"));
     }
+
 
 }

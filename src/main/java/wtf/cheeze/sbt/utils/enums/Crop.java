@@ -18,7 +18,7 @@
  */
 package wtf.cheeze.sbt.utils.enums;
 
-public enum Crops {
+public enum Crop {
     WHEAT,
     CARROT,
     POTATO,

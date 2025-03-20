@@ -1,7 +1,20 @@
+import com.google.gson.Gson
+import java.io.FileOutputStream
+import java.net.URI
+import java.net.URL
+import java.nio.channels.Channels
+import java.nio.channels.ReadableByteChannel
+
 plugins {
 	id("fabric-loom") version "1.9-SNAPSHOT"
 	id("maven-publish")
+//	id("dev.yumi.gradle.licenser") version "2.1.+"
 }
+
+//license {
+//	rule(file("../../HEADER"))
+//	include("**/*.java")
+//}
 
 version = property("mod_version")!! as String + "+mc" + property("minecraft_version")!!
 group = property("maven_group")!!
@@ -63,3 +76,101 @@ tasks.named<Jar>("jar") {
 		rename { "${it}_${project.base.archivesName.get()}" }
 	}
 }
+
+
+
+
+
+object RepoDownloader {
+
+	private data class Branch(val name: String, val commit: Commit)
+	private data class Commit(val sha: String, val url: String)
+
+
+	private const val user = "SkyblockTweaks"
+	private const val repo = "data"
+	private const val branch = "main"
+
+	fun downloadRepoZip (fallbackFolder: File) {
+		val url: String = "https://api.github.com/repos/$user/$repo/zipball/$branch"
+		downloadFile(url, fallbackFolder.resolve("repo.zip"))
+		val sha = getLatestSha()
+		val fallbackManifest = fallbackFolder.resolve("manifest.json")
+		fallbackManifest.writeText(
+			"""
+			{
+				"generatedAt": ${System.currentTimeMillis()},
+				"repo": "$user/$repo#$branch",
+				"commit": "$sha"
+			}
+			""".trimIndent());
+
+	}
+
+	fun getLatestSha(): String {
+		val url = "https://api.github.com/repos/$user/$repo/branches/$branch"
+		val connection = URI(url).toURL().openConnection()
+		connection.setRequestProperty(
+			"User-Agent",
+			"Mozilla/5.0 SkyblockTweaks Build Pipeline"
+		)
+		val response = connection.getInputStream().bufferedReader().readText()
+		val branch = Gson().fromJson(response, Branch::class.java)
+		return branch.commit.sha
+	}
+
+	private fun downloadFile(uri: String, destination: File) {
+		val url: URL = URI(uri).toURL()
+		val connection = url.openConnection()
+		connection.setRequestProperty(
+			"User-Agent",
+			"Mozilla/5.0 SkyblockTweaks Build Pipeline"
+		)
+		val channel: ReadableByteChannel = Channels.newChannel(connection.getInputStream())
+		FileOutputStream(destination).use { fileOutputStream ->
+			val fileChannel = fileOutputStream.channel
+			fileChannel.transferFrom(channel, 0, Long.MAX_VALUE)
+		}
+	}
+
+}
+
+/**
+ * This task updates the fallback repo zip file in the resources folder to the latest version.
+ */
+tasks.register("updateFallbackRepo") {
+	group = "sbt"
+	doLast {
+		val fallbackFolder = rootDir.resolve("src/main/resources/fallback")
+		fallbackFolder.mkdir()
+		RepoDownloader.downloadRepoZip(fallbackFolder)
+	}
+}
+
+tasks.register("validateJson") {
+	group = "sbt"
+	doLast {
+		val resources = File(rootDir, "src/main/resources")
+		val files = resources.walkTopDown()
+			.filter { it.extension == "json" }
+			.toList()
+		for (file in files) {
+			try {
+				val content = file.readText()
+				Gson().fromJson(content, Any::class.java)
+			} catch (e: Exception) {
+				println("Invalid JSON in file: ${file.absolutePath}")
+				println("Error: ${e.message}")
+			}
+		}
+	}
+}
+
+tasks.named("processResources") {
+	mustRunAfter("validateJson", "updateFallbackRepo")
+}
+
+tasks.named("build") {
+	dependsOn("validateJson", "updateFallbackRepo")
+}
+

@@ -22,7 +22,7 @@ import net.minecraft.util.Identifier;
 
 import java.util.Map;
 
-import wtf.cheeze.sbt.utils.enums.Skills;
+import wtf.cheeze.sbt.utils.enums.Skill;
 import wtf.cheeze.sbt.utils.skyblock.ItemStackUtils;
 
 import static java.util.Map.entry;
@@ -41,17 +41,17 @@ public class Icons {
     public static final HudIcon DEFAULT_HEAD = itemStack("player_head");
 
     public static final HudIcon DEFAULT_ICON = HudIcon.of(Identifier.of("skyblocktweaks", "missing.png"));
-    public static final Map<Skills, HudIcon> SKILL_ICONS = Map.ofEntries(
-            entry(Skills.COMBAT, IRON_SWORD),
-            entry(Skills.FARMING, itemID("golden_hoe")),
-            entry(Skills.MINING, DIAMOND_PICKAXE),
-            entry(Skills.FORAGING, blockID("oak_sapling")),
-            entry(Skills.FISHING, itemID("fishing_rod")),
-            entry(Skills.ENCHANTING, itemStack("enchanting_table")),
-            entry(Skills.ALCHEMY, itemID("brewing_stand")),
-            entry(Skills.CARPENTRY, itemStack("crafting_table")),
-            entry(Skills.RUNECRAFTING, itemID("magma_cream")),
-            entry(Skills.SOCIAL , itemID("emerald"))
+    public static final Map<Skill, HudIcon> SKILL_ICONS = Map.ofEntries(
+            entry(Skill.COMBAT, IRON_SWORD),
+            entry(Skill.FARMING, itemID("golden_hoe")),
+            entry(Skill.MINING, DIAMOND_PICKAXE),
+            entry(Skill.FORAGING, blockID("oak_sapling")),
+            entry(Skill.FISHING, itemID("fishing_rod")),
+            entry(Skill.ENCHANTING, itemStack("enchanting_table")),
+            entry(Skill.ALCHEMY, itemID("brewing_stand")),
+            entry(Skill.CARPENTRY, itemStack("crafting_table")),
+            entry(Skill.RUNECRAFTING, itemID("magma_cream")),
+            entry(Skill.SOCIAL , itemID("emerald"))
     );
 
     public static final Map<String, HudIcon> MINING_ICONS = Map.ofEntries(

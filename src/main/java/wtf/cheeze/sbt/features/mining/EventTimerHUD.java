@@ -23,7 +23,6 @@ import dev.isxander.yacl3.api.OptionGroup;
 import dev.isxander.yacl3.api.controller.ColorControllerBuilder;
 import dev.isxander.yacl3.config.v2.api.SerialEntry;
 import net.minecraft.text.Text;
-import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SBTConfig;
 import wtf.cheeze.sbt.config.categories.Mining;
@@ -32,8 +31,8 @@ import wtf.cheeze.sbt.hud.components.SingleHudLine;
 import wtf.cheeze.sbt.hud.utils.AnchorPoint;
 import wtf.cheeze.sbt.hud.utils.DrawMode;
 import wtf.cheeze.sbt.hud.utils.HudInformation;
-import wtf.cheeze.sbt.utils.NumberUtils;
 import wtf.cheeze.sbt.utils.TextUtils;
+import wtf.cheeze.sbt.utils.TimeUtils;
 import wtf.cheeze.sbt.utils.render.Colors;
 import wtf.cheeze.sbt.utils.skyblock.MiningData;
 import wtf.cheeze.sbt.utils.skyblock.SkyblockData;
@@ -65,7 +64,7 @@ public class EventTimerHUD extends TextHUD {
                             TextUtils.withColor(SkyblockData.miningData.eventName + ": ", SBTConfig.mining().eventTimer.colorPrimary),
                             // Format the time as MM:SS
                             TextUtils.withColor(
-                                    NumberUtils.formatTime(SkyblockData.miningData.eventTimeLeft, false),
+                                    TimeUtils.formatTime(SkyblockData.miningData.eventTimeLeft, false),
                                     SBTConfig.mining().eventTimer.colorSecondary
                             )
                     );

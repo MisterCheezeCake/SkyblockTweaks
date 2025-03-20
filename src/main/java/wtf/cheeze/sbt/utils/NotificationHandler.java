@@ -19,16 +19,15 @@
 package wtf.cheeze.sbt.utils;
 
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.text.Text;
-import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.utils.errors.ErrorHandler;
 import wtf.cheeze.sbt.utils.errors.ErrorLevel;
 
 import java.util.ArrayList;
-
 public class NotificationHandler {
 
-    public static final ArrayList<Text> NOTIFICATION_QUEUE = new ArrayList<Text>();
+    private static final ArrayList<Text> NOTIFICATION_QUEUE = new ArrayList<Text>();
 
     public static void registerEvents() {
         ClientPlayConnectionEvents.JOIN.register((handler, sender, client) -> {
@@ -48,5 +47,11 @@ public class NotificationHandler {
                 });
             }).start();
         });
+    }
+    public static void pushChat(Text message) {
+        if (MinecraftClient.getInstance().player == null)  NOTIFICATION_QUEUE.add(message);
+        else {
+            MinecraftClient.getInstance().player.sendMessage(message, false);
+        }
     }
 }

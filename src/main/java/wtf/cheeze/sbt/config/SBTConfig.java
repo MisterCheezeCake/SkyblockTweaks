@@ -30,6 +30,8 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import wtf.cheeze.sbt.config.categories.*;
+import wtf.cheeze.sbt.config.migration.BarColorTransformation;
+import wtf.cheeze.sbt.config.migration.MigrationManager;
 import wtf.cheeze.sbt.hud.utils.DrawMode;
 import wtf.cheeze.sbt.events.EventUtils;
 
@@ -59,6 +61,15 @@ public class  SBTConfig {
                 .build().generateScreen(parent);
 
     }
+
+    public static void load() {
+        //MigrationManager.handleMigrations();
+        SBTConfig.HANDLER.load();
+		MigrationManager.runTransformation(BarColorTransformation.INSTANCE);
+        HANDLER.load();
+    }
+
+
     public static Screen getGlobalSearchScreen(Screen parent) {
         return baseBuilder().category(GlobalSearchCategory.getCategory(HANDLER.defaults(), HANDLER.instance())).build().generateScreen(parent);
     }

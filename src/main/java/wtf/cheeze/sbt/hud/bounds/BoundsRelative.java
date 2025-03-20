@@ -19,11 +19,11 @@
 package wtf.cheeze.sbt.hud.bounds;
 
 public class BoundsRelative {
-    public float x;
-    public float y;
-    public float width;
-    public float height;
-    public float scale = 1.0f;
+    public final float x;
+    public final float y;
+    public final float width;
+    public final float height;
+    public final float scale;
 
     public BoundsRelative(float x, float y, float width, float height, float scale) {
         this.x = x;

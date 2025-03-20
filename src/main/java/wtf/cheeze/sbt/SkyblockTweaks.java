@@ -25,20 +25,20 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import wtf.cheeze.sbt.command.SBTCommand;
 import wtf.cheeze.sbt.config.SBTConfig;
-import wtf.cheeze.sbt.config.migration.BarColorTransformation;
-import wtf.cheeze.sbt.config.migration.MigrationManager;
 import wtf.cheeze.sbt.config.persistent.PersistentData;
 import wtf.cheeze.sbt.features.MenuHighlights;
 import wtf.cheeze.sbt.features.MouseLock;
 import wtf.cheeze.sbt.hud.HudManager;
 import wtf.cheeze.sbt.utils.NotificationHandler;
-import wtf.cheeze.sbt.utils.UpdateChecker;
-import wtf.cheeze.sbt.utils.Version;
+import wtf.cheeze.sbt.utils.version.UpdateChecker;
+import wtf.cheeze.sbt.utils.version.Version;
 import wtf.cheeze.sbt.utils.actionbar.ActionBarTransformer;
+import wtf.cheeze.sbt.utils.constants.loader.ConstantLoader;
 import wtf.cheeze.sbt.utils.skyblock.ModAPIUtils;
 import wtf.cheeze.sbt.utils.skyblock.ProfileManager;
 import wtf.cheeze.sbt.utils.tablist.TabListParser;
 import wtf.cheeze.sbt.features.chat.*;
+import wtf.cheeze.sbt.utils.version.VersionType;
 
 public class SkyblockTweaks implements ModInitializer {
 	public static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
@@ -47,20 +47,16 @@ public class SkyblockTweaks implements ModInitializer {
 
 	public static final PersistentData PD = PersistentData.load();
 	//public static final Version VERSION = new Version(Version.VersionType.ALPHA, 0, 1, 0, 10);
-	public static final Version VERSION = new Version(Version.VersionType.UNSTABLE);
+	public static final Version VERSION = new Version(VersionType.UNSTABLE);
 
 
 
 	@Override
 	public void onInitialize() {
 
-		//MigrationManager.handleMigrations();
+		SBTConfig.load();
 
-		SBTConfig.HANDLER.load();
-
-		MigrationManager.runTransformation(BarColorTransformation.INSTANCE);
-
-
+		ConstantLoader.registerEvents();
 		HudManager.registerEvents();
 		SBTCommand.registerEvents();
 		ActionBarTransformer.registerEvents();
@@ -72,6 +68,7 @@ public class SkyblockTweaks implements ModInitializer {
 		TabListParser.registerEvents();
 		MouseLock.registerEvents();
 		MenuHighlights.registerEvents();
+
 		UpdateChecker.checkForUpdates();
 	}
 }

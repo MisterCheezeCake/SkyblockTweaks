@@ -21,10 +21,6 @@ public abstract class MultilineTextHUD extends HUD {
     }
     public HudComponent[] lines;
 
-
-
-
-
     public int getLongestLineWidth(boolean relative){
         int longest = 0;
         for(var line : lines){

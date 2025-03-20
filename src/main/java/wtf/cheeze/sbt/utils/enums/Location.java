@@ -18,6 +18,8 @@
  */
 package wtf.cheeze.sbt.utils.enums;
 
+import wtf.cheeze.sbt.utils.skyblock.SkyblockData;
+
 // Inspired by Skyblocker's Location enum
 public enum Location {
     PRIVATE_ISLAND("dynamic", "Private Location"),
@@ -39,6 +41,7 @@ public enum Location {
     DARK_AUCTION("dark_auction", "The Dark Auction"),
     DUNGEON("dungeon", "Dungeons"),
     KUUDRA("kuudra", "Kuudra"),
+    BACKWATER_BAYOU("fishing_1", "Backwater Bayou"),
     UNKNOWN("unknown", "Unknown Location");
 
     Location(String mode, String name) {

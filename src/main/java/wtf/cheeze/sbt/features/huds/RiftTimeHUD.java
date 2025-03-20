@@ -23,7 +23,6 @@ import dev.isxander.yacl3.api.OptionGroup;
 import dev.isxander.yacl3.api.controller.ColorControllerBuilder;
 import dev.isxander.yacl3.config.v2.api.SerialEntry;
 import net.minecraft.text.Text;
-import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SBTConfig;
 import wtf.cheeze.sbt.hud.bases.TextHUD;
@@ -31,8 +30,8 @@ import wtf.cheeze.sbt.hud.components.SingleHudLine;
 import wtf.cheeze.sbt.hud.utils.AnchorPoint;
 import wtf.cheeze.sbt.hud.utils.DrawMode;
 import wtf.cheeze.sbt.hud.utils.HudInformation;
-import wtf.cheeze.sbt.utils.NumberUtils;
 import wtf.cheeze.sbt.utils.TextUtils;
+import wtf.cheeze.sbt.utils.TimeUtils;
 import wtf.cheeze.sbt.utils.enums.Location;
 import wtf.cheeze.sbt.utils.render.Colors;
 import wtf.cheeze.sbt.utils.skyblock.SkyblockData;
@@ -56,7 +55,7 @@ public class RiftTimeHUD extends TextHUD {
                 () -> SkyblockData.Stats.riftTicking ? SBTConfig.huds().riftTime.color : SBTConfig.huds().riftTime.inactiveColor,
                 () -> SBTConfig.huds().riftTime.outlineColor,
                 () -> SBTConfig.huds().riftTime.mode,
-                () -> Text.literal(NumberUtils.toDuration(SkyblockData.Stats.riftSeconds) + (SBTConfig.huds().riftTime.icon ? "ф" : "") + (SBTConfig.huds().riftTime.showLeftText ? " Left" : ""))
+                () -> Text.literal(TimeUtils.toDuration(SkyblockData.Stats.riftSeconds) + (SBTConfig.huds().riftTime.icon ? "ф" : "") + (SBTConfig.huds().riftTime.showLeftText ? " Left" : ""))
         );
 
     }

@@ -38,7 +38,7 @@ public enum WidgetType {
     TIMERS("Timers", "Timers"),
     BESTIARY("Bestiary", "Bestiary"),
     PET("Pet", "Pet"),
-    SKILLS("Skills", "Skills"),
+    SKILLS("Skill", "Skill"),
     ESSENCE("Essence", "Essence"),
 
     MINIONS("Minions", "Minions", Location.PRIVATE_ISLAND),

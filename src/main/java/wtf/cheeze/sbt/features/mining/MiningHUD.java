@@ -27,7 +27,6 @@ import dev.isxander.yacl3.api.controller.EnumControllerBuilder;
 import dev.isxander.yacl3.config.v2.api.SerialEntry;
 import net.minecraft.text.Text;
 import net.minecraft.util.Pair;
-import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SBTConfig;
 import wtf.cheeze.sbt.config.categories.Mining;
@@ -105,7 +104,7 @@ public class MiningHUD extends MultilineTextHUD {
                         () -> TextUtils.join(
                                 TextUtils.withColor("Mithril Powder:", SBTConfig.mining().hud.color),
                                 TextUtils.SPACE,
-                                TextUtils.withColor(SBTConfig.mining().hud.abbreviatePowder ? NumberUtils.addKOrM(SkyblockData.miningData.mithPowder, ",") : NumberUtils.formatNumber(SkyblockData.miningData.mithPowder, ","), Colors.DARK_GREEN)
+                                TextUtils.withColor(SBTConfig.mining().hud.abbreviatePowder ? NumberUtils.addKOrM(SkyblockData.miningData.mithPowder, ",") : NumberUtils.formatNumber(SkyblockData.miningData.mithPowder, ","), Colors.GREEN)
                         ),
                         () -> Icons.MINING_ICONS.get("MITHRIL_POWDER"),
                         useIconSupplier
@@ -188,7 +187,7 @@ public class MiningHUD extends MultilineTextHUD {
 
     public enum Entry implements NameableEnum {
         COMMISSIONS(TextUtils.withColor("Commissions", Colors.CYAN)),
-        MITHRIL_POWDER(TextUtils.withColor("Mithril Powder", Colors.DARK_GREEN)),
+        MITHRIL_POWDER(TextUtils.withColor("Mithril Powder", Colors.GREEN)),
         GEMSTONE_POWDER(TextUtils.withColor("Gemstone Powder", Colors.PINK)),
         GLACITE_POWER(TextUtils.withColor("Glacite Power", Colors.LIGHT_BLUE)),
         COOLDOWN(TextUtils.withColor("Pickaxe Cooldown", Colors.LIME)),

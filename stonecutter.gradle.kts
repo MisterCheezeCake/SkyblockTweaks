@@ -3,8 +3,8 @@ plugins {
 }
 stonecutter active "1.21.4" /* [SC] DO NOT EDIT */
 
-stonecutter registerChiseled tasks.register("chiseledBuild", stonecutter.chiseled) { 
-    group = "project"
+stonecutter registerChiseled tasks.register("chiseledBuild", stonecutter.chiseled) {
+    group = "chiseled"
     ofTask("build")
 }
 
