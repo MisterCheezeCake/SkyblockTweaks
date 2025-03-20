@@ -18,11 +18,9 @@
  */
 package wtf.cheeze.sbt.hud.bases;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.util.Identifier;
-import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.hud.bounds.Bounds;
 import wtf.cheeze.sbt.hud.bounds.BoundsRelative;
 import wtf.cheeze.sbt.hud.HUD;
@@ -31,7 +29,7 @@ import wtf.cheeze.sbt.utils.render.RenderUtils;
 /**
  * A HUD that displays a bar, code liberally inspired by SBA, but way simpler thanks to modern mc, bar textures taken directly from SBA
  */
-public abstract class BarHUD extends HUD {
+public abstract class BarHud extends HUD {
     public static final Identifier UNFILLED = Identifier.of("skyblocktweaks", "bars/unfilled.png");
     public static final Identifier FILLED = Identifier.of("skyblocktweaks", "bars/filled.png");
     public static final int BAR_WIDTH = 71;

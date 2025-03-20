@@ -32,15 +32,15 @@ import wtf.cheeze.sbt.hud.utils.DrawMode;
 import wtf.cheeze.sbt.hud.components.SingleHudLine;
 import wtf.cheeze.sbt.utils.TextUtils;
 import wtf.cheeze.sbt.hud.utils.HudInformation;
-import wtf.cheeze.sbt.hud.bases.TextHUD;
+import wtf.cheeze.sbt.hud.bases.TextHud;
 import wtf.cheeze.sbt.utils.render.Colors;
 import wtf.cheeze.sbt.utils.skyblock.SkyblockData;
 
 import java.awt.Color;
 
-public class EhpHUD extends TextHUD {
+public class EhpHud extends TextHud {
 
-    public EhpHUD() {
+    public EhpHud() {
         INFO = new HudInformation(
                 () -> SBTConfig.huds().ehp.x,
                 () -> SBTConfig.huds().ehp.y,

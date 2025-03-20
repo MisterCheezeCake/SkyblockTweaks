@@ -22,25 +22,23 @@ import dev.isxander.yacl3.api.Option;
 import dev.isxander.yacl3.api.OptionGroup;
 import dev.isxander.yacl3.api.controller.ColorControllerBuilder;
 import dev.isxander.yacl3.config.v2.api.SerialEntry;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.text.Text;
-import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SBTConfig;
+import wtf.cheeze.sbt.hud.bases.TextHud;
 import wtf.cheeze.sbt.hud.utils.AnchorPoint;
 import wtf.cheeze.sbt.hud.utils.DrawMode;
 import wtf.cheeze.sbt.hud.components.SingleHudLine;
 import wtf.cheeze.sbt.hud.utils.HudInformation;
-import wtf.cheeze.sbt.hud.bases.TextHUD;
 import wtf.cheeze.sbt.utils.render.Colors;
 import wtf.cheeze.sbt.utils.skyblock.SkyblockData;
 
 import java.awt.Color;
 
-public class FpsHUD extends TextHUD {
+public class FpsHud extends TextHud {
 
 
-    public FpsHUD() {
+    public FpsHud() {
         INFO = new HudInformation(
                 () -> SBTConfig.huds().fps.x,
                 () -> SBTConfig.huds().fps.y,

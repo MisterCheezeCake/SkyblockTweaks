@@ -22,19 +22,18 @@ import dev.isxander.yacl3.api.Option;
 import dev.isxander.yacl3.api.OptionGroup;
 import dev.isxander.yacl3.config.v2.api.SerialEntry;
 import net.minecraft.text.Text;
-import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SBTConfig;
 import wtf.cheeze.sbt.hud.utils.AnchorPoint;
 import wtf.cheeze.sbt.utils.TextUtils;
-import wtf.cheeze.sbt.hud.bases.AbstractTickerHUD;
+import wtf.cheeze.sbt.hud.bases.AbstractTickerHud;
 import wtf.cheeze.sbt.hud.utils.HudInformation;
 import wtf.cheeze.sbt.utils.render.Colors;
 import wtf.cheeze.sbt.utils.skyblock.SkyblockData;
 
-public class TickerHUD extends AbstractTickerHUD {
+public class TickerHud extends AbstractTickerHud {
 
-    public TickerHUD() {
+    public TickerHud() {
         INFO = new HudInformation(
                 () -> SBTConfig.huds().ticker.x,
                 () -> SBTConfig.huds().ticker.y,

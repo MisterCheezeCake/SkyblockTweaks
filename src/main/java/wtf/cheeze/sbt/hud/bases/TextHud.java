@@ -18,11 +18,7 @@
  */
 package wtf.cheeze.sbt.hud.bases;
 
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.Narratable;
-import net.minecraft.client.gui.widget.ClickableWidget;
-import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.hud.utils.DrawMode;
 import wtf.cheeze.sbt.hud.bounds.Bounds;
 import wtf.cheeze.sbt.hud.bounds.BoundsRelative;
@@ -30,7 +26,7 @@ import wtf.cheeze.sbt.hud.HUD;
 import wtf.cheeze.sbt.hud.components.SingleHudLine;
 import wtf.cheeze.sbt.utils.render.RenderUtils;
 
-public abstract class TextHUD extends HUD {
+public abstract class TextHud extends HUD {
     //public abstract String getText();
 
 

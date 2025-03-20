@@ -29,15 +29,14 @@ import net.minecraft.text.Text;
 import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SBTConfig;
+import wtf.cheeze.sbt.hud.bases.TextHud;
 import wtf.cheeze.sbt.hud.utils.AnchorPoint;
 import wtf.cheeze.sbt.utils.NumberUtils;
 import wtf.cheeze.sbt.utils.TextUtils;
 import wtf.cheeze.sbt.hud.utils.DrawMode;
-import wtf.cheeze.sbt.hud.bases.BarHUD;
+import wtf.cheeze.sbt.hud.bases.BarHud;
 import wtf.cheeze.sbt.hud.utils.HudInformation;
 import wtf.cheeze.sbt.hud.components.SingleHudLine;
-import wtf.cheeze.sbt.hud.bases.TextHUD;
-import wtf.cheeze.sbt.utils.constants.loader.ConstantLoader;
 import wtf.cheeze.sbt.utils.constants.loader.Constants;
 import wtf.cheeze.sbt.utils.enums.Skill;
 import wtf.cheeze.sbt.utils.errors.ErrorHandler;
@@ -64,7 +63,7 @@ public class SkillHUDManager {
         });
     }
 
-    public final SkillHUD SKILL_HUD = new SkillHUD();
+    public final SkillHud SKILL_HUD = new SkillHud();
     public final SkillBar SKILL_BAR = new SkillBar();
 
     private static final int PERSIST_TICKS = 60;
@@ -96,8 +95,8 @@ public class SkillHUDManager {
         gained = gainedP;
     }
 
-    public class SkillHUD extends TextHUD {
-        public SkillHUD() {
+    public class SkillHud extends TextHud {
+        public SkillHud() {
             INFO = new HudInformation(
                     () -> SBTConfig.huds().skills.x,
                     () -> SBTConfig.huds().skills.y,
@@ -366,7 +365,7 @@ public class SkillHUDManager {
         }
 
     }
-    public class SkillBar extends BarHUD {
+    public class SkillBar extends BarHud {
         public SkillBar() {
             INFO = new HudInformation(
                     () -> SBTConfig.huds().skillBar.x,

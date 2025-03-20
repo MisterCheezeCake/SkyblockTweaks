@@ -25,7 +25,7 @@ import dev.isxander.yacl3.config.v2.api.SerialEntry;
 import net.minecraft.text.Text;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SBTConfig;
-import wtf.cheeze.sbt.hud.bases.TextHUD;
+import wtf.cheeze.sbt.hud.bases.TextHud;
 import wtf.cheeze.sbt.hud.components.SingleHudLine;
 import wtf.cheeze.sbt.hud.utils.AnchorPoint;
 import wtf.cheeze.sbt.hud.utils.DrawMode;
@@ -38,9 +38,9 @@ import wtf.cheeze.sbt.utils.skyblock.SkyblockData;
 
 import java.awt.*;
 
-public class RiftTimeHUD extends TextHUD {
+public class RiftTimeHud extends TextHud {
 
-    public RiftTimeHUD() {
+    public RiftTimeHud() {
         INFO = new HudInformation(
                 () -> SBTConfig.huds().riftTime.x,
                 () -> SBTConfig.huds().riftTime.y,

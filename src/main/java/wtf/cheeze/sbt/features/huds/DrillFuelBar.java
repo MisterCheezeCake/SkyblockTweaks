@@ -27,7 +27,7 @@ import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SBTConfig;
 import wtf.cheeze.sbt.hud.utils.AnchorPoint;
 import wtf.cheeze.sbt.utils.TextUtils;
-import wtf.cheeze.sbt.hud.bases.BarHUD;
+import wtf.cheeze.sbt.hud.bases.BarHud;
 import wtf.cheeze.sbt.hud.utils.HudInformation;
 import wtf.cheeze.sbt.utils.render.Colors;
 import wtf.cheeze.sbt.utils.skyblock.SkyblockData;
@@ -35,7 +35,7 @@ import wtf.cheeze.sbt.utils.skyblock.SkyblockUtils;
 
 import java.awt.Color;
 
-public class DrillFuelBar extends BarHUD {
+public class DrillFuelBar extends BarHud {
 
     public DrillFuelBar() {
         INFO = new HudInformation(

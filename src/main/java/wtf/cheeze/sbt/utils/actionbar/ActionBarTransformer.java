@@ -148,7 +148,7 @@ public class ActionBarTransformer {
                           String[] xp = matcher.group(3).split("/");
                           data.totalXP = NumberUtils.parseFloatWithKorM(xp[1]);
                           data.nextLevelXP = NumberUtils.parseFloatWithKorM(xp[0]);
-                          // TODO: Transition uses of this to an event which SkillHUD can subscribe to
+                          // TODO: Transition uses of this to an event which SkillHud can subscribe to
                           SkillHUDManager.INSTANCE.update(data.skillType, data.gainedXP, data.totalXP, data.nextLevelXP);
                       } else {
                           data.skillPercentage = Float.parseFloat(matcher.group(3).replace("%", ""));

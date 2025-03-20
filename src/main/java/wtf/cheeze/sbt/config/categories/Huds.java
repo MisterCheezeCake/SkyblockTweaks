@@ -28,64 +28,64 @@ public class Huds {
 
 
     @SerialEntry
-    public ManaHUD.Config mana = new ManaHUD.Config();
+    public ManaHud.Config mana = new ManaHud.Config();
 
     @SerialEntry
-    public OverflowManaHUD.Config overflowMana = new OverflowManaHUD.Config();
+    public OverflowManaHud.Config overflowMana = new OverflowManaHud.Config();
 
     @SerialEntry
     public ManaBar.Config manaBar = new ManaBar.Config();
 
     @SerialEntry
-    public HealthHUD.Config health = new HealthHUD.Config();
+    public HealthHud.Config health = new HealthHud.Config();
 
     @SerialEntry
     public HealthBar.Config healthBar = new HealthBar.Config();
 
     @SerialEntry
-    public EhpHUD.Config ehp = new EhpHUD.Config();
+    public EhpHud.Config ehp = new EhpHud.Config();
 
     @SerialEntry
-    public SpeedHUD.Config speed = new SpeedHUD.Config();
+    public SpeedHud.Config speed = new SpeedHud.Config();
 
     @SerialEntry
-    public DefenseHUD.Config defense = new DefenseHUD.Config();
+    public DefenseHud.Config defense = new DefenseHud.Config();
 
     @SerialEntry
-    public DamageReductionHUD.Config dr = new DamageReductionHUD.Config();
+    public DamageReductionHud.Config dr = new DamageReductionHud.Config();
 
     @SerialEntry
-    public DrillFuelHUD.Config drillFuel = new DrillFuelHUD.Config();
+    public DrillFuelHud.Config drillFuel = new DrillFuelHud.Config();
 
     @SerialEntry
     public DrillFuelBar.Config drillFuelBar = new DrillFuelBar.Config();
 
     @SerialEntry
-    public CoordinatesHUD.Config coordinates = new CoordinatesHUD.Config();
+    public CoordinatesHud.Config coordinates = new CoordinatesHud.Config();
 
     @SerialEntry
-    public RealTimeHUD.Config time = new RealTimeHUD.Config();
+    public RealTimeHud.Config time = new RealTimeHud.Config();
 
     @SerialEntry
-    public FpsHUD.Config fps = new FpsHUD.Config();
+    public FpsHud.Config fps = new FpsHud.Config();
 
     @SerialEntry
-    public SkillHUDManager.SkillHUD.Config skills = new SkillHUDManager.SkillHUD.Config();
+    public SkillHUDManager.SkillHud.Config skills = new SkillHUDManager.SkillHud.Config();
 
     @SerialEntry
     public SkillHUDManager.SkillBar.Config skillBar = new SkillHUDManager.SkillBar.Config();
 
     @SerialEntry
-    public TickerHUD.Config ticker = new TickerHUD.Config();
+    public TickerHud.Config ticker = new TickerHud.Config();
 
     @SerialEntry
-    public QuiverHUD.Config quiver = new QuiverHUD.Config();
+    public QuiverHud.Config quiver = new QuiverHud.Config();
 
     @SerialEntry
-    public ArmorStackHUD.Config armorStack = new ArmorStackHUD.Config();
+    public ArmorStackHud.Config armorStack = new ArmorStackHud.Config();
 
     @SerialEntry
-    public RiftTimeHUD.Config riftTime = new RiftTimeHUD.Config();
+    public RiftTimeHud.Config riftTime = new RiftTimeHud.Config();
 
 
 
@@ -93,26 +93,26 @@ public class Huds {
         return ConfigCategory.createBuilder()
                 .name(Text.translatable("sbt.config.huds"))
                 .tooltip(Text.translatable("sbt.config.huds.desc"))
-                .group(SkillHUDManager.SkillHUD.Config.getGroup(defaults, config))
+                .group(SkillHUDManager.SkillHud.Config.getGroup(defaults, config))
                 .group(SkillHUDManager.SkillBar.Config.getGroup(defaults, config))
-                .group(HealthHUD.Config.getGroup(defaults, config))
+                .group(HealthHud.Config.getGroup(defaults, config))
                 .group(HealthBar.Config.getGroup(defaults, config))
-                .group(ManaHUD.Config.getGroup(defaults, config))
+                .group(ManaHud.Config.getGroup(defaults, config))
                 .group(ManaBar.Config.getGroup(defaults, config))
-                .group(OverflowManaHUD.Config.getGroup(defaults, config))
-                .group(EhpHUD.Config.getGroup(defaults, config))
-                .group(SpeedHUD.Config.getGroup(defaults, config))
-                .group(DefenseHUD.Config.getGroup(defaults, config))
-                .group(DamageReductionHUD.Config.getGroup(defaults, config))
-                .group(DrillFuelHUD.Config.getGroup(defaults, config))
+                .group(OverflowManaHud.Config.getGroup(defaults, config))
+                .group(EhpHud.Config.getGroup(defaults, config))
+                .group(SpeedHud.Config.getGroup(defaults, config))
+                .group(DefenseHud.Config.getGroup(defaults, config))
+                .group(DamageReductionHud.Config.getGroup(defaults, config))
+                .group(DrillFuelHud.Config.getGroup(defaults, config))
                 .group(DrillFuelBar.Config.getGroup(defaults, config))
-                .group(CoordinatesHUD.Config.getGroup(defaults, config))
-                .group(RealTimeHUD.Config.getGroup(defaults, config))
-                .group(FpsHUD.Config.getGroup(defaults, config))
-                .group(TickerHUD.Config.getGroup(defaults, config))
-                .group(QuiverHUD.Config.getGroup(defaults, config))
-                .group(ArmorStackHUD.Config.getGroup(defaults, config))
-                .group(RiftTimeHUD.Config.getGroup(defaults, config))
+                .group(CoordinatesHud.Config.getGroup(defaults, config))
+                .group(RealTimeHud.Config.getGroup(defaults, config))
+                .group(FpsHud.Config.getGroup(defaults, config))
+                .group(TickerHud.Config.getGroup(defaults, config))
+                .group(QuiverHud.Config.getGroup(defaults, config))
+                .group(ArmorStackHud.Config.getGroup(defaults, config))
+                .group(RiftTimeHud.Config.getGroup(defaults, config))
                 .build();
     }
 }

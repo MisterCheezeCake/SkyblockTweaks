@@ -20,16 +20,16 @@ package wtf.cheeze.sbt.hud.bases;
 
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.util.Identifier;
-import wtf.cheeze.sbt.SkyblockTweaks;
+import wtf.cheeze.sbt.features.huds.TickerHud;
 import wtf.cheeze.sbt.hud.bounds.Bounds;
 import wtf.cheeze.sbt.hud.bounds.BoundsRelative;
 import wtf.cheeze.sbt.hud.HUD;
 import wtf.cheeze.sbt.utils.render.RenderUtils;
 
 /**
- * The abstract representation of the ticker HUD, for the implementation, see {@link wtf.cheeze.sbt.features.huds.TickerHUD}
+ * The abstract representation of the ticker HUD, for the implementation, see {@link TickerHud}
  */
-public abstract class AbstractTickerHUD extends HUD {
+public abstract class AbstractTickerHud extends HUD {
     private static final Identifier FULL = Identifier.of("skyblocktweaks", "tickers/full.png");
     private static final Identifier BLANK = Identifier.of("skyblocktweaks", "tickers/blank.png");
     private static final int DIMENSION = 9;

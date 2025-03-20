@@ -23,10 +23,9 @@ import dev.isxander.yacl3.api.OptionGroup;
 import dev.isxander.yacl3.api.controller.ColorControllerBuilder;
 import dev.isxander.yacl3.config.v2.api.SerialEntry;
 import net.minecraft.text.Text;
-import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SBTConfig;
-import wtf.cheeze.sbt.hud.bases.TextHUD;
+import wtf.cheeze.sbt.hud.bases.TextHud;
 import wtf.cheeze.sbt.hud.components.SingleHudLine;
 import wtf.cheeze.sbt.hud.utils.AnchorPoint;
 import wtf.cheeze.sbt.hud.utils.DrawMode;
@@ -39,9 +38,9 @@ import wtf.cheeze.sbt.utils.skyblock.SkyblockUtils;
 
 import java.awt.*;
 
-public class QuiverHUD extends TextHUD {
+public class QuiverHud extends TextHud {
 
-    public QuiverHUD() {
+    public QuiverHud() {
         INFO = new HudInformation(
                 () -> SBTConfig.huds().quiver.x,
                 () -> SBTConfig.huds().quiver.y,

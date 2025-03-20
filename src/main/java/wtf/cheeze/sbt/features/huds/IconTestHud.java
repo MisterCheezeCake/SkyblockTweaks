@@ -19,8 +19,8 @@
 package wtf.cheeze.sbt.features.huds;
 
 import net.minecraft.text.Text;
+import wtf.cheeze.sbt.hud.bases.MultilineTextHud;
 import wtf.cheeze.sbt.hud.icon.HudIcon;
-import wtf.cheeze.sbt.hud.bases.MultilineTextHUD;
 import wtf.cheeze.sbt.hud.components.SingleHudLine;
 import wtf.cheeze.sbt.hud.utils.DrawMode;
 import wtf.cheeze.sbt.hud.utils.HudInformation;
@@ -35,7 +35,7 @@ import java.util.List;
  * A HUD for testing icons.
  * Not meant to be used in production.
  */
-public class IconTestHUD extends MultilineTextHUD {
+public class IconTestHud extends MultilineTextHud {
     @Override
     public Text getName() {
         return Text.literal("Icon Test HUD");
@@ -45,7 +45,7 @@ public class IconTestHUD extends MultilineTextHUD {
     private float y = 0.5f;
     private float scale = 1.0f;
 
-    public IconTestHUD() {
+    public IconTestHud() {
         super();
         lines = getLines().toArray(new SingleHudLine[0]);
         INFO = new HudInformation(

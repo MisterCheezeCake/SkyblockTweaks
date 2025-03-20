@@ -30,8 +30,8 @@ import wtf.cheeze.sbt.features.MenuHighlights;
 import wtf.cheeze.sbt.features.chat.ChatProtections;
 import wtf.cheeze.sbt.features.chat.PartyFeatures;
 import wtf.cheeze.sbt.features.huds.*;
-import wtf.cheeze.sbt.features.mining.EventTimerHUD;
-import wtf.cheeze.sbt.features.mining.MiningHUD;
+import wtf.cheeze.sbt.features.mining.EventTimerHud;
+import wtf.cheeze.sbt.features.mining.MiningHud;
 import wtf.cheeze.sbt.mixin.YACLScreenAccessor;
 import wtf.cheeze.sbt.utils.actionbar.ActionBarTransformer;
 import wtf.cheeze.sbt.utils.errors.ErrorHandler;
@@ -54,29 +54,29 @@ public class GlobalSearchCategory {
                 .group(PartyFeatures.Config.getGroup(defaults, config))
                 .group(PartyFeatures.Config.getBlackList(defaults, config))
                 .group(ChatProtections.Config.getGroup(defaults, config))
-                .group(SkillHUDManager.SkillHUD.Config.getGroup(defaults, config))
+                .group(SkillHUDManager.SkillHud.Config.getGroup(defaults, config))
                 .group(SkillHUDManager.SkillBar.Config.getGroup(defaults, config))
-                .group(HealthHUD.Config.getGroup(defaults, config))
+                .group(HealthHud.Config.getGroup(defaults, config))
                 .group(HealthBar.Config.getGroup(defaults, config))
-                .group(ManaHUD.Config.getGroup(defaults, config))
+                .group(ManaHud.Config.getGroup(defaults, config))
                 .group(ManaBar.Config.getGroup(defaults, config))
-                .group(OverflowManaHUD.Config.getGroup(defaults, config))
-                .group(EhpHUD.Config.getGroup(defaults, config))
-                .group(SpeedHUD.Config.getGroup(defaults, config))
-                .group(DefenseHUD.Config.getGroup(defaults, config))
-                .group(DamageReductionHUD.Config.getGroup(defaults, config))
-                .group(DrillFuelHUD.Config.getGroup(defaults, config))
+                .group(OverflowManaHud.Config.getGroup(defaults, config))
+                .group(EhpHud.Config.getGroup(defaults, config))
+                .group(SpeedHud.Config.getGroup(defaults, config))
+                .group(DefenseHud.Config.getGroup(defaults, config))
+                .group(DamageReductionHud.Config.getGroup(defaults, config))
+                .group(DrillFuelHud.Config.getGroup(defaults, config))
                 .group(DrillFuelBar.Config.getGroup(defaults, config))
-                .group(CoordinatesHUD.Config.getGroup(defaults, config))
-                .group(RealTimeHUD.Config.getGroup(defaults, config))
-                .group(FpsHUD.Config.getGroup(defaults, config))
-                .group(TickerHUD.Config.getGroup(defaults, config))
-                .group(QuiverHUD.Config.getGroup(defaults, config))
-                .group(ArmorStackHUD.Config.getGroup(defaults, config))
-                .group(RiftTimeHUD.Config.getGroup(defaults, config))
-                .group(MiningHUD.Config.getGroup(defaults, config))
-                .group(MiningHUD.Config.getCompositionOption(defaults, config))
-                .group(EventTimerHUD.Config.getGroup(defaults, config))
+                .group(CoordinatesHud.Config.getGroup(defaults, config))
+                .group(RealTimeHud.Config.getGroup(defaults, config))
+                .group(FpsHud.Config.getGroup(defaults, config))
+                .group(TickerHud.Config.getGroup(defaults, config))
+                .group(QuiverHud.Config.getGroup(defaults, config))
+                .group(ArmorStackHud.Config.getGroup(defaults, config))
+                .group(RiftTimeHud.Config.getGroup(defaults, config))
+                .group(MiningHud.Config.getGroup(defaults, config))
+                .group(MiningHud.Config.getCompositionOption(defaults, config))
+                .group(EventTimerHud.Config.getGroup(defaults, config))
                 .build();
     }
 

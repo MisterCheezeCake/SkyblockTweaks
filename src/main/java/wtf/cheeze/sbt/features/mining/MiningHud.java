@@ -30,8 +30,8 @@ import net.minecraft.util.Pair;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SBTConfig;
 import wtf.cheeze.sbt.config.categories.Mining;
+import wtf.cheeze.sbt.hud.bases.MultilineTextHud;
 import wtf.cheeze.sbt.hud.icon.HudIcon;
-import wtf.cheeze.sbt.hud.bases.MultilineTextHUD;
 import wtf.cheeze.sbt.hud.cache.Cache;
 import wtf.cheeze.sbt.hud.cache.UpdateTiming;
 import wtf.cheeze.sbt.hud.components.FlexibleHudLine;
@@ -55,11 +55,11 @@ import java.util.List;
 import java.util.function.Supplier;
 
 
-public class MiningHUD extends MultilineTextHUD {
+public class MiningHud extends MultilineTextHud {
 
-    public static final MiningHUD INSTANCE = new MiningHUD();
+    public static final MiningHud INSTANCE = new MiningHud();
 
-    private MiningHUD() {
+    private MiningHud() {
         super();
         refreshComposition();
         INFO = new HudInformation(

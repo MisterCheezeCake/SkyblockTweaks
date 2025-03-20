@@ -26,7 +26,7 @@ import net.minecraft.text.Text;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SBTConfig;
 import wtf.cheeze.sbt.config.categories.Mining;
-import wtf.cheeze.sbt.hud.bases.TextHUD;
+import wtf.cheeze.sbt.hud.bases.TextHud;
 import wtf.cheeze.sbt.hud.components.SingleHudLine;
 import wtf.cheeze.sbt.hud.utils.AnchorPoint;
 import wtf.cheeze.sbt.hud.utils.DrawMode;
@@ -40,9 +40,9 @@ import wtf.cheeze.sbt.utils.skyblock.SkyblockUtils;
 
 import java.awt.*;
 
-public class EventTimerHUD extends TextHUD {
+public class EventTimerHud extends TextHud {
 
-    public EventTimerHUD() {
+    public EventTimerHud() {
         super();
         INFO = new HudInformation(
                 () -> SBTConfig.mining().eventTimer.x,

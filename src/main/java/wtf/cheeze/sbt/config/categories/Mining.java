@@ -23,25 +23,25 @@ import dev.isxander.yacl3.api.OptionDescription;
 import dev.isxander.yacl3.config.v2.api.SerialEntry;
 import net.minecraft.text.Text;
 import wtf.cheeze.sbt.config.ConfigImpl;
-import wtf.cheeze.sbt.features.mining.EventTimerHUD;
-import wtf.cheeze.sbt.features.mining.MiningHUD;
+import wtf.cheeze.sbt.features.mining.EventTimerHud;
+import wtf.cheeze.sbt.features.mining.MiningHud;
 
 public class Mining {
 
     @SerialEntry
-    public MiningHUD.Config hud = new MiningHUD.Config();
+    public MiningHud.Config hud = new MiningHud.Config();
 
     @SerialEntry
-    public EventTimerHUD.Config eventTimer = new EventTimerHUD.Config();
+    public EventTimerHud.Config eventTimer = new EventTimerHud.Config();
 
 
     public static ConfigCategory getCategory(ConfigImpl defaults, ConfigImpl configThing) {
         return ConfigCategory.createBuilder()
                 .name(Text.translatable("sbt.config.mining"))
                 .tooltip(Text.translatable("sbt.config.mining.desc"))
-                .group(MiningHUD.Config.getGroup(defaults, configThing))
-                .group(MiningHUD.Config.getCompositionOption(defaults, configThing))
-                .group(EventTimerHUD.Config.getGroup(defaults, configThing))
+                .group(MiningHud.Config.getGroup(defaults, configThing))
+                .group(MiningHud.Config.getCompositionOption(defaults, configThing))
+                .group(EventTimerHud.Config.getGroup(defaults, configThing))
                 .build();
     }
 

@@ -24,175 +24,166 @@ import dev.isxander.yacl3.api.controller.ColorControllerBuilder;
 import dev.isxander.yacl3.api.controller.StringControllerBuilder;
 import dev.isxander.yacl3.config.v2.api.SerialEntry;
 import net.minecraft.text.Text;
-import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SBTConfig;
+import wtf.cheeze.sbt.hud.bases.TextHud;
 import wtf.cheeze.sbt.hud.utils.AnchorPoint;
 import wtf.cheeze.sbt.utils.NumberUtils;
 import wtf.cheeze.sbt.utils.TextUtils;
 import wtf.cheeze.sbt.hud.utils.DrawMode;
 import wtf.cheeze.sbt.hud.utils.HudInformation;
-import wtf.cheeze.sbt.hud.bases.TextHUD;
 import wtf.cheeze.sbt.hud.components.SingleHudLine;
 import wtf.cheeze.sbt.utils.render.Colors;
 import wtf.cheeze.sbt.utils.skyblock.SkyblockData;
 
+import java.awt.Color;
 
-import java.awt.*;
+public class DefenseHud extends TextHud {
 
-public class ManaHUD extends TextHUD {
-
-    public ManaHUD() {
+    public DefenseHud() {
         INFO = new HudInformation(
-                () -> SBTConfig.huds().mana.x,
-                () -> SBTConfig.huds().mana.y,
-                () -> SBTConfig.huds().mana.scale,
-                () -> SBTConfig.huds().mana.anchor,
-                x -> SBTConfig.huds().mana.x = x,
-                y -> SBTConfig.huds().mana.y = y,
-                scale -> SBTConfig.huds().mana.scale = scale,
-                anchor -> SBTConfig.huds().mana.anchor = anchor
+                () -> SBTConfig.huds().defense.x,
+                () -> SBTConfig.huds().defense.y,
+                () -> SBTConfig.huds().defense.scale,
+                () -> SBTConfig.huds().defense.anchor,
+                x -> SBTConfig.huds().defense.x = x,
+                y -> SBTConfig.huds().defense.y = y,
+                scale -> SBTConfig.huds().defense.scale = scale,
+                anchor -> SBTConfig.huds().defense.anchor = anchor
         );
+
         line = new SingleHudLine(
-                () -> SBTConfig.huds().mana.color,
-                () -> SBTConfig.huds().mana.outlineColor,
-                () -> SBTConfig.huds().mana.mode,
-                () -> Text.literal(NumberUtils.formatNumber((int) SkyblockData.Stats.mana, SBTConfig.huds().mana.separator) + "/" + NumberUtils.formatNumber((int) SkyblockData.Stats.maxMana, SBTConfig.huds().mana.separator) + (SBTConfig.huds().mana.icon ? "✎" : ""))
-                //,
-//                () -> Icons.SKILL_ICONS.get(Skill.MINING),
-//                () -> true
+                () -> SBTConfig.huds().defense.color,
+                () -> SBTConfig.huds().defense.outlineColor,
+                () -> SBTConfig.huds().defense.mode,
+                () -> Text.literal(NumberUtils.formatNumber(SkyblockData.Stats.defense, SBTConfig.huds().defense.separator) + (SBTConfig.huds().defense.icon ? "❈" : ""))
         );
     }
     @Override
     public boolean shouldRender(boolean fromHudScreen) {
         if (!super.shouldRender(fromHudScreen)) return false;
-        return (SkyblockData.inSB && SBTConfig.huds().mana.enabled) || fromHudScreen;
+        return (SkyblockData.inSB && SBTConfig.huds().defense.enabled) || fromHudScreen;
     }
-//    @Override
-//    public String getText() {
-//        return TextUtils.formatNumber((int) SkyBlockTweaks.DATA.mana, SBTConfig.huds().mana.separator) + "/" + TextUtils.formatNumber((int) SkyBlockTweaks.DATA.maxMana, SBTConfig.huds().mana.separator) + (SBTConfig.huds().mana.icon ? "✎" : "");
-//    }
+
+
 
     @Override
     public Text getName() {
-        return TextUtils.withColor("Mana Hud", Colors.BLUE);
+        return TextUtils.withColor("Defense HUD", Colors.LIME);
     }
 
     public static class Config {
-
         @SerialEntry
         public boolean enabled = false;
 
-//        @SerialEntry
-//        public boolean shadow = true;
-
         @SerialEntry
         public DrawMode mode = DrawMode.SHADOW;
+
+        @SerialEntry
+        public int color = Colors.LIME;
+
+        @SerialEntry
+        public int outlineColor = Colors.BLACK;
 
         @SerialEntry // Not handled by YACL Gui
         public float x = 0;
 
         @SerialEntry // Not handled by YACL Gui
-        public float y = 0.30f;
+        public float y = 0.05f;
 
         @SerialEntry
         public float scale = 1.0f;
 
         @SerialEntry
-        public int color = Colors.BLUE;
-
-        @SerialEntry
-        public int outlineColor = Colors.BLACK;
+        public AnchorPoint anchor = AnchorPoint.LEFT;
 
         @SerialEntry
         public boolean icon = true;
 
         @SerialEntry
-        public String separator = ",";
-
-        @SerialEntry
-        public AnchorPoint anchor = AnchorPoint.LEFT;
+        public String separator  = ",";
 
         public static OptionGroup getGroup(ConfigImpl defaults, ConfigImpl config) {
             var enabled = Option.<Boolean>createBuilder()
-                    .name(key("mana.enabled"))
-                    .description(keyD("mana.enabled"))
+                    .name(key("defense.enabled"))
+                    .description(keyD("defense.enabled"))
                     .controller(SBTConfig::generateBooleanController)
                     .binding(
-                            defaults.huds.mana.enabled,
-                            () -> config.huds.mana.enabled,
-                            value -> config.huds.mana.enabled = (boolean) value
+                            defaults.huds.defense.enabled,
+                            () -> config.huds.defense.enabled,
+                            value -> config.huds.defense.enabled = (boolean) value
                     )
                     .build();
             var color = Option.<Color>createBuilder()
-                    .name(key("mana.color"))
-                    .description(keyD("mana.color"))
+                    .name(key("defense.color"))
+                    .description(keyD("defense.color"))
                     .controller(ColorControllerBuilder::create)
                     .binding(
-                            new Color(defaults.huds.mana.color),
-                            () ->  new Color(config.huds.mana.color),
-                            value -> config.huds.mana.color = value.getRGB()
+                            new Color(defaults.huds.defense.color),
+                            () ->  new Color(config.huds.defense.color),
+                            value -> config.huds.defense.color = value.getRGB()
 
                     )
                     .build();
             var outline = Option.<Color>createBuilder()
-                    .name(key("mana.outlineColor"))
-                    .description(keyD("mana.outlineColor"))
+                    .name(key("defense.outlineColor"))
+                    .description(keyD("defense.outlineColor"))
                     .controller(ColorControllerBuilder::create)
-                    .available(config.huds.mana.mode == DrawMode.OUTLINE)
+                    .available(config.huds.defense.mode == DrawMode.OUTLINE)
                     .binding(
-                            new Color(defaults.huds.mana.outlineColor),
-                            () ->  new Color(config.huds.mana.outlineColor),
-                            value -> config.huds.mana.outlineColor = value.getRGB()
+                            new Color(defaults.huds.defense.outlineColor),
+                            () ->  new Color(config.huds.defense.outlineColor),
+                            value -> config.huds.defense.outlineColor = value.getRGB()
 
                     )
                     .build();
             var mode = Option.<DrawMode>createBuilder()
-                    .name(key("mana.mode"))
-                    .description(keyD("mana.mode"))
+                    .name(key("defense.mode"))
+                    .description(keyD("defense.mode"))
                     .controller(SBTConfig::generateDrawModeController)
                     .binding(
-                            defaults.huds.mana.mode,
-                            () -> config.huds.mana.mode,
+                            defaults.huds.defense.mode,
+                            () -> config.huds.defense.mode,
                             value -> {
-                                config.huds.mana.mode = value;
+                                config.huds.defense.mode = value;
                                 outline.setAvailable(value == DrawMode.OUTLINE);
                             }
                     )
                     .build();
             var icon = Option.<Boolean>createBuilder()
-                    .name(key("mana.icon"))
-                    .description(keyD("mana.icon"))
+                    .name(key("defense.icon"))
+                    .description(keyD("defense.icon"))
                     .controller(SBTConfig::generateBooleanController)
                     .binding(
-                            defaults.huds.mana.icon,
-                            () -> config.huds.mana.icon,
-                            value -> config.huds.mana.icon = (boolean) value
+                            defaults.huds.defense.icon,
+                            () -> config.huds.defense.icon,
+                            value -> config.huds.defense.icon = (boolean) value
                     )
                     .build();
             var separator = Option.<String>createBuilder()
-                    .name(key("mana.separator"))
-                    .description(keyD("mana.separator"))
+                    .name(key("defense.separator"))
+                    .description(keyD("defense.separator"))
                     .controller(StringControllerBuilder::create)
                     .binding(
-                            defaults.huds.mana.separator,
-                            () -> config.huds.mana.separator,
-                            value -> config.huds.mana.separator = value
+                            defaults.huds.defense.separator,
+                            () -> config.huds.defense.separator,
+                            value -> config.huds.defense.separator = value
                     )
                     .build();
             var scale = Option.<Float>createBuilder()
-                    .name(key("mana.scale"))
-                    .description(keyD("mana.scale"))
+                    .name(key("defense.scale"))
+                    .description(keyD("defense.scale"))
                     .controller(SBTConfig::generateScaleController)
                     .binding(
-                            defaults.huds.mana.scale,
-                            () -> config.huds.mana.scale,
-                            value -> config.huds.mana.scale = value
+                            defaults.huds.defense.scale,
+                            () -> config.huds.defense.scale,
+                            value -> config.huds.defense.scale = value
                     )
                     .build();
+
             return OptionGroup.createBuilder()
-                    .name(key("mana"))
-                    .description(keyD("mana"))
+                    .name(key("defense"))
+                    .description(keyD("defense"))
                     .option(enabled)
                     .option(mode)
                     .option(color)
@@ -203,6 +194,7 @@ public class ManaHUD extends TextHUD {
                     .collapsed(true)
                     .build();
         }
-
     }
 }
+
+

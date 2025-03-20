@@ -2,21 +2,17 @@ package wtf.cheeze.sbt.hud.bases;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
-import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.hud.bounds.Bounds;
 import wtf.cheeze.sbt.hud.bounds.BoundsRelative;
 import wtf.cheeze.sbt.hud.HUD;
 import wtf.cheeze.sbt.hud.components.HudComponent;
-import wtf.cheeze.sbt.hud.components.SingleHudLine;
 import wtf.cheeze.sbt.utils.render.RenderUtils;
 
-import java.util.Arrays;
-
-public abstract class MultilineTextHUD extends HUD {
+public abstract class MultilineTextHud extends HUD {
 
     private static final MinecraftClient client = MinecraftClient.getInstance();
 
-    protected MultilineTextHUD() {
+    protected MultilineTextHud() {
         this.supportsNonLeftAnchors = false;
     }
     public HudComponent[] lines;
