@@ -6,7 +6,7 @@ import java.nio.channels.Channels
 import java.nio.channels.ReadableByteChannel
 
 plugins {
-	id("fabric-loom") version "1.9-SNAPSHOT"
+	id("fabric-loom") version "1.10-SNAPSHOT"
 	id("maven-publish")
 //	id("dev.yumi.gradle.licenser") version "2.1.+"
 }

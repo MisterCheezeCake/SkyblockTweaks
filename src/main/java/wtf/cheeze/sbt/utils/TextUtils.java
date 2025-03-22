@@ -20,6 +20,8 @@ package wtf.cheeze.sbt.utils;
 
 import net.minecraft.text.*;
 
+import java.net.URI;
+
 public class TextUtils {
     public static final String SECTION  = "§";
     //FIXME: Support uppercase letters in codes
@@ -30,8 +32,8 @@ public class TextUtils {
 
     public static MutableText getTextThatLinksToURL(MutableText text, Text hovered, String url) {
         return text.styled(style -> {
-            style = style.withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, hovered));
-            style = style.withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, url));
+            style = style.withHoverEvent(showTextEvent(hovered));
+            style = style.withClickEvent(openURIEvent(url));
             return style;
         });
     }
@@ -42,8 +44,8 @@ public class TextUtils {
 
     public static Text getTextThatRunsCommand(MutableText text, Text hovered, String command) {
         return text.styled(style -> {
-            style = style.withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, hovered));
-            style = style.withClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, command));
+            style = style.withHoverEvent(showTextEvent(hovered));
+            style = style.withClickEvent(runCommandEvent(command));
             return style;
         });
     }
@@ -99,9 +101,41 @@ public class TextUtils {
     }
 
     public static ClickEvent copyEvent(String text) {
+        //? if <=1.21.4 {
         return new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, text);
+        //?} else {
+        /*return new ClickEvent.CopyToClipboard(text);
+        *///?}
+
+
     }
-    public static HoverEvent showText(Text text) {
+
+    public static ClickEvent openURIEvent(String uri) {
+        //? if <=1.21.4 {
+        return new ClickEvent(ClickEvent.Action.OPEN_URL, uri);
+         //?} else {
+        /*return new ClickEvent.OpenUrl(URI.create(uri));
+        *///?}
+    }
+
+    public static ClickEvent runCommandEvent(String command) {
+        //? if <=1.21.4 {
+        return new ClickEvent(ClickEvent.Action.RUN_COMMAND, command);
+         //?} else {
+        /*return new ClickEvent.RunCommand(command);
+        *///?}
+    }
+
+    public static HoverEvent showTextEvent(Text text) {
+        //? if <=1.21.4 {
         return new HoverEvent(HoverEvent.Action.SHOW_TEXT, text);
+         //?} else {
+        /*return new HoverEvent.ShowText(text);
+        *///?}
     }
+
+
+
+
+
 }
