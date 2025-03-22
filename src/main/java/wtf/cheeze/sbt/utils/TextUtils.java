@@ -20,8 +20,6 @@ package wtf.cheeze.sbt.utils;
 
 import net.minecraft.text.*;
 
-import java.net.URI;
-
 public class TextUtils {
     public static final String SECTION  = "§";
     //FIXME: Support uppercase letters in codes
@@ -114,7 +112,7 @@ public class TextUtils {
         //? if <=1.21.4 {
         return new ClickEvent(ClickEvent.Action.OPEN_URL, uri);
          //?} else {
-        /*return new ClickEvent.OpenUrl(URI.create(uri));
+        /*return new ClickEvent.OpenUrl(java.net.URI.create(uri));
         *///?}
     }
 
