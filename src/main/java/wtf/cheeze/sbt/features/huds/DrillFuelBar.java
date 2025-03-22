@@ -26,6 +26,7 @@ import net.minecraft.text.Text;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SBTConfig;
 import wtf.cheeze.sbt.hud.utils.AnchorPoint;
+import wtf.cheeze.sbt.hud.utils.HudName;
 import wtf.cheeze.sbt.utils.TextUtils;
 import wtf.cheeze.sbt.hud.bases.BarHud;
 import wtf.cheeze.sbt.hud.utils.HudInformation;
@@ -54,8 +55,9 @@ public class DrillFuelBar extends BarHud {
     }
 
     @Override
-    public Text getName() {
-        return TextUtils.withColor("Drill Fuel Bar", Colors.GREEN);
+    public HudName getName() {
+
+        return new HudName("Drill Fuel Bar", "Fuel Bar", Colors.GREEN);
     }
 
 

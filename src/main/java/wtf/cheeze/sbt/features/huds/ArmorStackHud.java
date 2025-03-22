@@ -30,6 +30,7 @@ import wtf.cheeze.sbt.hud.utils.DrawMode;
 import wtf.cheeze.sbt.hud.components.SingleHudLine;
 import wtf.cheeze.sbt.hud.utils.HudInformation;
 import wtf.cheeze.sbt.hud.bases.TextHud;
+import wtf.cheeze.sbt.hud.utils.HudName;
 import wtf.cheeze.sbt.utils.TextUtils;
 import wtf.cheeze.sbt.utils.render.Colors;
 import wtf.cheeze.sbt.utils.skyblock.SkyblockData;
@@ -64,8 +65,8 @@ public class ArmorStackHud extends TextHud {
     }
 
     @Override
-    public Text getName() {
-        return TextUtils.withColor("Armor Stack HUD", Colors.ORANGE);
+    public HudName getName() {
+        return new HudName("Armor Stack HUD", "Stack HUD", Colors.ORANGE);
     }
 
     public static class Config {

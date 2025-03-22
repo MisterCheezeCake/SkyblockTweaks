@@ -11,8 +11,8 @@ public class HudManager {
     public static final ArrayList<HUD> HUDS = new ArrayList<>();
 
     public static void registerEvents() {
-        HUDS.add(SkillHUDManager.INSTANCE.SKILL_HUD);
-        HUDS.add(SkillHUDManager.INSTANCE.SKILL_BAR);
+        HUDS.add(SkillHudManager.INSTANCE.SKILL_HUD);
+        HUDS.add(SkillHudManager.INSTANCE.SKILL_BAR);
         HUDS.add(new SpeedHud());
         HUDS.add(new DefenseHud());
         HUDS.add(new EhpHud());

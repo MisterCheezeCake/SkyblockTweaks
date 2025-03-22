@@ -22,6 +22,7 @@
 	"mixins": [
 		"skyblocktweaks.mixins.json"
 	],
+	"accessWidener": "skyblocktweaks.accesswidener",
 	"entrypoints": {
 		"main": [
           "wtf.cheeze.sbt.SkyblockTweaks"

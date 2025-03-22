@@ -24,6 +24,7 @@ import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.hud.icon.HudIcon;
 import wtf.cheeze.sbt.hud.icon.Icons;
 import wtf.cheeze.sbt.mixin.BossBarHudAccessor;
+import wtf.cheeze.sbt.utils.CheezePair;
 import wtf.cheeze.sbt.utils.NumberUtils;
 import wtf.cheeze.sbt.utils.TextUtils;
 import wtf.cheeze.sbt.utils.enums.Location;
@@ -43,7 +44,7 @@ public class MiningData {
     private static final Pattern ACTIVE_EVENT = Pattern.compile("EVENT (?<name>.+) ACTIVE IN (?<location>.+) for (?<minutes>\\d\\d):(?<seconds>\\d\\d)");
     private static final Pattern PASSIVE_EVENT = Pattern.compile("PASSIVE EVENT (?<name>.+) RUNNING FOR (?<minutes>\\d\\d):(?<seconds>\\d\\d)");
     public final int comNo;
-    public final Pair<String, Float>[] coms;
+    public final CheezePair<String, Float>[] coms;
     public int mithPowder = 0;
     public int gemPowder = 0;
     public int glacPowder = 0;
@@ -153,12 +154,12 @@ public class MiningData {
                         //TODO: Could a regex work here
                         String[] split = it.trim().split(": ");
                         float com = NumberUtils.parsePercentage(split[1]);
-                        return new Pair<>(split[0], com);
-                    }).toArray(Pair[]::new);
+                        return new CheezePair<>(split[0], com);
+                    }).toArray(CheezePair[]::new);
             comNo = coms.length;
         } else {
             comNo = 0;
-            coms = new Pair[0];
+            coms = new CheezePair[0];
         }
 
         if (data.widgetLines.get(WidgetType.POWDER) != null) {
@@ -212,7 +213,7 @@ public class MiningData {
     }
     private MiningData() {
         comNo = 0;
-        coms = new Pair[0];
+        coms = new CheezePair[0];
     }
 
     public static final MiningData EMPTY = new MiningData();

@@ -20,11 +20,14 @@ package wtf.cheeze.sbt.utils.render;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.gui.ScreenRect;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import wtf.cheeze.sbt.SkyblockTweaks;
+
+import java.util.Set;
 
 public class RenderUtils {
 
@@ -93,6 +96,24 @@ public class RenderUtils {
         return client.textRenderer.getWidth(text) / MinecraftClient.getInstance().getWindow().getScaledWidth();
     }
 
+    public static BreachResult  isOffscreen(ScreenRect rect) {
+        var screenBounds = getScreenBounds();
+        return new BreachResult(
+                rect.position().x() < 0,
+                rect.position().y() < 0,
+                rect.position().x() + rect.width() > screenBounds.width,
+                rect.position().y() + rect.height() > screenBounds.height);
+    }
+
+    public record BreachResult(boolean left, boolean top, boolean right, boolean bottom) {
+
+        public boolean fullyOnscreen() {
+            return !left && !top && !right && !bottom;
+        }
+
+    }
+
+
     public static void drawTexture(DrawContext context, Identifier texture, int x, int y, int width, int height, int textureWidth, int textureHeight) {
         //? if =1.21.1 {
         /*context.drawTexture(texture, x, y, 0, 0, width, height, textureWidth, textureHeight);
@@ -100,13 +121,6 @@ public class RenderUtils {
         context.drawTexture(RenderLayer::getGuiTextured, texture, x, y, 0, 0, width, height, textureWidth, textureHeight);
         //?}
     }
-//    public static void drawTextureWithColor(DrawContext context, Identifier texture, int x, int y, int width, int height, int textureWidth, int textureHeight, int color) {
-//        //? if <1.21.1 {
-//        /*context.drawTexture(texture, x, y, 0, 0, width, height, textureWidth, textureHeight, color);
-//         *///?} else {
-//        context.drawTexture(RenderLayer::getGuiTextured, texture, x, y, 0, 0, width, height, textureWidth, textureHeight, color);
-//        //?}
-//    }
 
     //? if >=1.21.3 {
     public static VertexConsumerProvider.Immediate getVertexConsumers(DrawContext context) {

@@ -30,6 +30,7 @@ import wtf.cheeze.sbt.hud.components.SingleHudLine;
 import wtf.cheeze.sbt.hud.utils.AnchorPoint;
 import wtf.cheeze.sbt.hud.utils.DrawMode;
 import wtf.cheeze.sbt.hud.utils.HudInformation;
+import wtf.cheeze.sbt.hud.utils.HudName;
 import wtf.cheeze.sbt.utils.TextUtils;
 import wtf.cheeze.sbt.utils.TimeUtils;
 import wtf.cheeze.sbt.utils.enums.Location;
@@ -71,8 +72,8 @@ public class RiftTimeHud extends TextHud {
 //    }
 
     @Override
-    public Text getName() {
-        return TextUtils.withColor("Rift Time HUD", Colors.LIME);
+    public HudName getName() {
+        return new HudName("Rift Time HUD", "Rift HUD", Colors.LIME);
     }
 
 

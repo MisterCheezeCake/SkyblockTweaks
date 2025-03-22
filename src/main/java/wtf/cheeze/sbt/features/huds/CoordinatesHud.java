@@ -27,6 +27,7 @@ import net.minecraft.text.Text;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SBTConfig;
 import wtf.cheeze.sbt.hud.utils.AnchorPoint;
+import wtf.cheeze.sbt.hud.utils.HudName;
 import wtf.cheeze.sbt.utils.NumberUtils;
 import wtf.cheeze.sbt.hud.utils.DrawMode;
 import wtf.cheeze.sbt.hud.components.SingleHudLine;
@@ -64,8 +65,8 @@ public class CoordinatesHud extends TextHud {
     }
 
     @Override
-    public Text getName() {
-        return Text.literal("Coordinates HUD");
+    public HudName getName() {
+        return new HudName("Coordinates HUD", "Coords HUD", Colors.LIGHT_BLUE);
     }
 
     public static class Config {

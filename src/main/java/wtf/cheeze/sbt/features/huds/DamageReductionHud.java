@@ -29,6 +29,7 @@ import wtf.cheeze.sbt.hud.bases.TextHud;
 import wtf.cheeze.sbt.hud.utils.AnchorPoint;
 import wtf.cheeze.sbt.hud.utils.DrawMode;
 import wtf.cheeze.sbt.hud.components.SingleHudLine;
+import wtf.cheeze.sbt.hud.utils.HudName;
 import wtf.cheeze.sbt.utils.NumberUtils;
 import wtf.cheeze.sbt.utils.TextUtils;
 import wtf.cheeze.sbt.hud.utils.HudInformation;
@@ -65,8 +66,8 @@ public class DamageReductionHud extends TextHud {
     }
 
     @Override
-    public Text getName() {
-        return TextUtils.withColor("Damage Reduction Percentage HUD", Colors.LIME);
+    public HudName getName() {
+        return new HudName("Damage Reduction Percentage HUD", "DR % HUD",Colors.LIME);
     }
 
 

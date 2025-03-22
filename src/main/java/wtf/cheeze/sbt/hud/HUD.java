@@ -21,12 +21,12 @@ package wtf.cheeze.sbt.hud;
 import dev.isxander.yacl3.api.OptionDescription;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.Narratable;
-import net.minecraft.client.gui.widget.AbstractTextWidget;
 import net.minecraft.text.Text;
 import wtf.cheeze.sbt.hud.bounds.Bounds;
 import wtf.cheeze.sbt.hud.bounds.BoundsRelative;
+import wtf.cheeze.sbt.hud.screen.HudScreen;
 import wtf.cheeze.sbt.hud.utils.HudInformation;
+import wtf.cheeze.sbt.hud.utils.HudName;
 
 /**
  * Represents any sort of HUD that can be drawn to the screen, and handles logic that is that same no matter how the HUD renders
@@ -46,7 +46,7 @@ public abstract class HUD {
     /**
      * @return the name of the HUD that will be shown in the HUD screen
      */
-    public abstract Text getName();
+    public abstract HudName getName();
 
 
     public abstract Bounds getCurrentBounds();

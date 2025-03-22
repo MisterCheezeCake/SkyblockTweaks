@@ -28,6 +28,7 @@ import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SBTConfig;
 import wtf.cheeze.sbt.hud.bases.TextHud;
 import wtf.cheeze.sbt.hud.utils.AnchorPoint;
+import wtf.cheeze.sbt.hud.utils.HudName;
 import wtf.cheeze.sbt.utils.NumberUtils;
 import wtf.cheeze.sbt.utils.TextUtils;
 import wtf.cheeze.sbt.hud.utils.DrawMode;
@@ -73,10 +74,9 @@ public class ManaHud extends TextHud {
 //    }
 
     @Override
-    public Text getName() {
-        return TextUtils.withColor("Mana Hud", Colors.BLUE);
+    public HudName getName() {
+        return new HudName("Mana HUD", Colors.BLUE);
     }
-
     public static class Config {
 
         @SerialEntry

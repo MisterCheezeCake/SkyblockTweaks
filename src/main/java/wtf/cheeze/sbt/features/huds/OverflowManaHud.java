@@ -27,6 +27,7 @@ import net.minecraft.text.Text;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SBTConfig;
 import wtf.cheeze.sbt.hud.utils.AnchorPoint;
+import wtf.cheeze.sbt.hud.utils.HudName;
 import wtf.cheeze.sbt.utils.NumberUtils;
 import wtf.cheeze.sbt.hud.utils.DrawMode;
 import wtf.cheeze.sbt.hud.components.SingleHudLine;
@@ -69,8 +70,9 @@ public class OverflowManaHud extends TextHud {
 //    public String getName() {
 //        return TextUtils.SECTION +  "3Oveflow Mana HUD";
 //    }
-    public Text getName() {
-        return TextUtils.withColor("Overflow Mana Hud", Colors.CYAN);
+    public HudName getName() {
+
+        return new HudName("Overflow Mana HUD", "OF Mana HUD", Colors.CYAN);
     }
 
     public static class Config {

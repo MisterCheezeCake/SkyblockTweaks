@@ -26,6 +26,7 @@ import net.minecraft.text.Text;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SBTConfig;
 import wtf.cheeze.sbt.hud.utils.AnchorPoint;
+import wtf.cheeze.sbt.hud.utils.HudName;
 import wtf.cheeze.sbt.utils.TextUtils;
 import wtf.cheeze.sbt.hud.bases.BarHud;
 import wtf.cheeze.sbt.hud.utils.HudInformation;
@@ -52,8 +53,8 @@ public class HealthBar extends BarHud {
     }
 
     @Override
-    public Text getName() {
-        return TextUtils.withColor("Health Bar", Colors.RED);
+    public HudName getName() {
+        return new HudName("Health Bar", "HP Bar", Colors.RED);
     }
 
 

@@ -10,10 +10,10 @@
     "HandledScreenMixin",
     "InGameHudMixin",
     "InventoryScreenMixin",
-    "PlayerListHudAccessor",
-    "YACLScreenAccessor",
     "MinecraftClientMixin",
-    "MouseMixin"
+    "MouseMixin",
+    "PlayerListHudAccessor",
+    "YACLScreenAccessor"
   ],
   "injectors": {
     "defaultRequire": 1

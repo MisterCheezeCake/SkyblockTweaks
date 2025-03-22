@@ -16,12 +16,18 @@ plugins {
 //	include("**/*.java")
 //}
 
+
 version = property("mod_version")!! as String + "+mc" + property("minecraft_version")!!
 group = property("maven_group")!!
 
 base {
 	archivesName.set(property("archives_base_name") as String)
 }
+
+loom {
+	accessWidenerPath = rootProject.file("src/main/resources/skyblocktweaks.accesswidener")
+}
+
 
 repositories {
 	maven("https://maven.isxander.dev/releases")

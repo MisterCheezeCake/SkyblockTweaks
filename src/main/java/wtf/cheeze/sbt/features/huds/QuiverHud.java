@@ -30,6 +30,7 @@ import wtf.cheeze.sbt.hud.components.SingleHudLine;
 import wtf.cheeze.sbt.hud.utils.AnchorPoint;
 import wtf.cheeze.sbt.hud.utils.DrawMode;
 import wtf.cheeze.sbt.hud.utils.HudInformation;
+import wtf.cheeze.sbt.hud.utils.HudName;
 import wtf.cheeze.sbt.utils.TextUtils;
 import wtf.cheeze.sbt.utils.render.Colors;
 import wtf.cheeze.sbt.hud.icon.Icons;
@@ -70,8 +71,9 @@ public class QuiverHud extends TextHud {
     }
 
     @Override
-    public Text getName() {
-        return Text.literal("Quiver Hud");
+    public HudName getName() {
+
+        return new HudName("Quiver Hud", Colors.ORANGE);
     }
 
     @Override

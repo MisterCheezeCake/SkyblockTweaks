@@ -25,6 +25,7 @@ import net.minecraft.text.Text;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SBTConfig;
 import wtf.cheeze.sbt.hud.utils.AnchorPoint;
+import wtf.cheeze.sbt.hud.utils.HudName;
 import wtf.cheeze.sbt.utils.TextUtils;
 import wtf.cheeze.sbt.hud.bases.AbstractTickerHud;
 import wtf.cheeze.sbt.hud.utils.HudInformation;
@@ -48,8 +49,8 @@ public class TickerHud extends AbstractTickerHud {
 
 
     @Override
-    public Text getName() {
-        return TextUtils.withColor("Ticker/Charges Hud", Colors.YELLOW);
+    public HudName getName() {
+        return new HudName("Ticker/Charges HUD", "Ticker HUD", Colors.YELLOW);
     }
 
     @Override

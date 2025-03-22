@@ -27,6 +27,7 @@ import net.minecraft.text.Text;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SBTConfig;
 import wtf.cheeze.sbt.hud.utils.AnchorPoint;
+import wtf.cheeze.sbt.hud.utils.HudName;
 import wtf.cheeze.sbt.utils.NumberUtils;
 import wtf.cheeze.sbt.utils.TextUtils;
 import wtf.cheeze.sbt.hud.utils.DrawMode;
@@ -70,8 +71,9 @@ public class DrillFuelHud extends TextHud {
 
 
     @Override
-    public Text getName() {
-        return TextUtils.withColor("Drill Fuel Hud", Colors.GREEN);
+    public HudName getName() {
+
+        return new HudName("Drill Fuel HUD", "Fuel HUD", Colors.GREEN);
     }
 
     public static class Config {

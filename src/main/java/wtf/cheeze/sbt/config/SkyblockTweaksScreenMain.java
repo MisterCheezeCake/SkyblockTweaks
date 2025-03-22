@@ -31,7 +31,7 @@ import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.hud.HudManager;
 import wtf.cheeze.sbt.utils.render.Colors;
 import wtf.cheeze.sbt.utils.render.RenderUtils;
-import wtf.cheeze.sbt.hud.HudScreen;
+import wtf.cheeze.sbt.hud.screen.HudScreen;
 
 public class SkyblockTweaksScreenMain extends Screen {
     public static final Identifier ICON = Identifier.of("skyblocktweaks", "icon.png");

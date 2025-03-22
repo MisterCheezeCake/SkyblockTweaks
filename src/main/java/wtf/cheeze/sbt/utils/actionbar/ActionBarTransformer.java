@@ -23,10 +23,9 @@ import dev.isxander.yacl3.api.OptionGroup;
 import dev.isxander.yacl3.config.v2.api.SerialEntry;
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents;
 import net.minecraft.text.Text;
-import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SBTConfig;
-import wtf.cheeze.sbt.features.huds.SkillHUDManager;
+import wtf.cheeze.sbt.features.huds.SkillHudManager;
 import wtf.cheeze.sbt.utils.NumberUtils;
 import wtf.cheeze.sbt.utils.TextUtils;
 import wtf.cheeze.sbt.utils.errors.ErrorHandler;
@@ -149,10 +148,10 @@ public class ActionBarTransformer {
                           data.totalXP = NumberUtils.parseFloatWithKorM(xp[1]);
                           data.nextLevelXP = NumberUtils.parseFloatWithKorM(xp[0]);
                           // TODO: Transition uses of this to an event which SkillHud can subscribe to
-                          SkillHUDManager.INSTANCE.update(data.skillType, data.gainedXP, data.totalXP, data.nextLevelXP);
+                          SkillHudManager.INSTANCE.update(data.skillType, data.gainedXP, data.totalXP, data.nextLevelXP);
                       } else {
                           data.skillPercentage = Float.parseFloat(matcher.group(3).replace("%", ""));
-                          SkillHUDManager.INSTANCE.update(data.skillType, data.gainedXP, data.skillPercentage);
+                          SkillHudManager.INSTANCE.update(data.skillType, data.gainedXP, data.skillPercentage);
                       }
                       if (!SBTConfig.get().actionBarFilters.hideSkill) {
                           newText.append(SEPERATOR5).append(trimmed);

@@ -31,6 +31,7 @@ import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SBTConfig;
 import wtf.cheeze.sbt.hud.bases.TextHud;
 import wtf.cheeze.sbt.hud.utils.AnchorPoint;
+import wtf.cheeze.sbt.hud.utils.HudName;
 import wtf.cheeze.sbt.utils.NumberUtils;
 import wtf.cheeze.sbt.utils.TextUtils;
 import wtf.cheeze.sbt.hud.utils.DrawMode;
@@ -51,11 +52,11 @@ import java.awt.*;
 /**
  * Manages the Skill HUD and Skill Bar, storing data and common functions, Singleton
  */
-public class SkillHUDManager {
+public class SkillHudManager {
 
-    public static final SkillHUDManager INSTANCE = new SkillHUDManager();
+    public static final SkillHudManager INSTANCE = new SkillHudManager();
 
-    private SkillHUDManager() {
+    private SkillHudManager() {
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             if (timeLeft > 0) {
                 timeLeft--;
@@ -197,8 +198,8 @@ public class SkillHUDManager {
         }
 
 
-        public Text getName() {
-            return TextUtils.withColor("Skill HUD", Colors.CYAN);
+        public HudName getName() {
+            return new HudName("Skill Progress HUD", "Skill HUD", Colors.CYAN);
         }
 
         @Override
@@ -389,8 +390,8 @@ public class SkillHUDManager {
         }
 
         @Override
-        public Text getName() {
-            return TextUtils.withColor("Skill Progress Bar", Colors.CYAN);
+        public HudName getName() {
+            return new HudName("Skill Progress Bar", "Skill Bar", Colors.CYAN);
         }
 
         @Override

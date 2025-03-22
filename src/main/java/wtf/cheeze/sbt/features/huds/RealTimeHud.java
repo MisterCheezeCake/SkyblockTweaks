@@ -30,6 +30,7 @@ import wtf.cheeze.sbt.hud.utils.AnchorPoint;
 import wtf.cheeze.sbt.hud.utils.DrawMode;
 import wtf.cheeze.sbt.hud.components.SingleHudLine;
 import wtf.cheeze.sbt.hud.utils.HudInformation;
+import wtf.cheeze.sbt.hud.utils.HudName;
 import wtf.cheeze.sbt.utils.render.Colors;
 import wtf.cheeze.sbt.utils.skyblock.SkyblockData;
 
@@ -87,8 +88,8 @@ public class RealTimeHud extends TextHud {
 
 
     @Override
-    public Text getName() {
-        return Text.literal("Real Time HUD");
+    public HudName getName() {
+        return new HudName("Real Time HUD", "Time HUD", Colors.LIGHT_BLUE);
     }
 
     public static class Config {

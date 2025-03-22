@@ -70,10 +70,10 @@ public class Huds {
     public FpsHud.Config fps = new FpsHud.Config();
 
     @SerialEntry
-    public SkillHUDManager.SkillHud.Config skills = new SkillHUDManager.SkillHud.Config();
+    public SkillHudManager.SkillHud.Config skills = new SkillHudManager.SkillHud.Config();
 
     @SerialEntry
-    public SkillHUDManager.SkillBar.Config skillBar = new SkillHUDManager.SkillBar.Config();
+    public SkillHudManager.SkillBar.Config skillBar = new SkillHudManager.SkillBar.Config();
 
     @SerialEntry
     public TickerHud.Config ticker = new TickerHud.Config();
@@ -93,8 +93,8 @@ public class Huds {
         return ConfigCategory.createBuilder()
                 .name(Text.translatable("sbt.config.huds"))
                 .tooltip(Text.translatable("sbt.config.huds.desc"))
-                .group(SkillHUDManager.SkillHud.Config.getGroup(defaults, config))
-                .group(SkillHUDManager.SkillBar.Config.getGroup(defaults, config))
+                .group(SkillHudManager.SkillHud.Config.getGroup(defaults, config))
+                .group(SkillHudManager.SkillBar.Config.getGroup(defaults, config))
                 .group(HealthHud.Config.getGroup(defaults, config))
                 .group(HealthBar.Config.getGroup(defaults, config))
                 .group(ManaHud.Config.getGroup(defaults, config))

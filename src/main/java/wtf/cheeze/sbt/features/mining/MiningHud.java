@@ -26,7 +26,6 @@ import dev.isxander.yacl3.api.controller.ColorControllerBuilder;
 import dev.isxander.yacl3.api.controller.EnumControllerBuilder;
 import dev.isxander.yacl3.config.v2.api.SerialEntry;
 import net.minecraft.text.Text;
-import net.minecraft.util.Pair;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SBTConfig;
 import wtf.cheeze.sbt.config.categories.Mining;
@@ -39,6 +38,8 @@ import wtf.cheeze.sbt.hud.components.HudComponent;
 import wtf.cheeze.sbt.hud.components.SingleHudLine;
 import wtf.cheeze.sbt.hud.utils.DrawMode;
 import wtf.cheeze.sbt.hud.utils.HudInformation;
+import wtf.cheeze.sbt.hud.utils.HudName;
+import wtf.cheeze.sbt.utils.CheezePair;
 import wtf.cheeze.sbt.utils.DataUtils;
 import wtf.cheeze.sbt.utils.NumberUtils;
 import wtf.cheeze.sbt.utils.TextUtils;
@@ -74,8 +75,9 @@ public class MiningHud extends MultilineTextHud {
     }
 
     @Override
-    public Text getName() {
-        return TextUtils.withColor("Mining HUD", Colors.CYAN);
+    public HudName getName() {
+
+        return new HudName("Mining HUD", Colors.CYAN);
     }
 
     @Override
@@ -151,15 +153,15 @@ public class MiningHud extends MultilineTextHud {
 
                 var suppliers = genComSuppliers(i);
                 if (comCache.toArray().length <= i || comCache.get(i) == null) {
-                    comCache.add(new Cache<>(UpdateTiming.TICK, suppliers.getLeft(), HudComponent.ERROR));
+                    comCache.add(new Cache<>(UpdateTiming.TICK, suppliers.key(), HudComponent.ERROR));
                 }
                 arr[i] = new FlexibleHudLine.Part(
-                        suppliers.getLeft(),
+                        suppliers.key(),
                         () -> SBTConfig.mining().hud.mode,
                         DataUtils.alwaysZero,
                         () -> SBTConfig.mining().hud.outlineColor,
-                        suppliers.getRight(),
-                        () -> suppliers.getRight().get() != null && useIconSupplier.get(),
+                        suppliers.val(),
+                        () -> suppliers.val().get() != null && useIconSupplier.get(),
                         comCache.get(i)
                 );
             }
@@ -167,20 +169,20 @@ public class MiningHud extends MultilineTextHud {
         };
     }
 
-    private Pair<Supplier<Text>, Supplier<HudIcon>> genComSuppliers(int i) {
+    private CheezePair<Supplier<Text>, Supplier<HudIcon>> genComSuppliers(int i) {
 
-        return new Pair<>(
+        return new CheezePair<>(
                 () -> {
                     var com = SkyblockData.miningData.coms[i];
-                    var max = MiningData.getComMax(com.getLeft());
-                    var num = com.getRight();
+                    var max = MiningData.getComMax(com.key());
+                    var num = com.val();
                     return TextUtils.join(
-                            TextUtils.withColor(com.getLeft() + ":", SBTConfig.mining().hud.color),
+                            TextUtils.withColor(com.key() + ":", SBTConfig.mining().hud.color),
                             TextUtils.SPACE,
                             num == 1 ? TextUtils.withColor("DONE", Colors.LIME) : TextUtils.withColor(((max == -1 || !SBTConfig.mining().hud.useNumbers) ? NumberUtils.formatPercent(num) : Math.round(num * max) + "/" + max), Colors.fromFloatValue(num))
                     );
                 },
-                () -> MiningData.getComIcon(SkyblockData.miningData.coms[i].getLeft()));
+                () -> MiningData.getComIcon(SkyblockData.miningData.coms[i].key()));
 
     }
 
