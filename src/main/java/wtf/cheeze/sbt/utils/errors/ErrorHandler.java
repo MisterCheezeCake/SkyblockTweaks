@@ -59,7 +59,7 @@ public class ErrorHandler {
         if (errorSet.contains(message)) return;
         errorSet.add(message);
         //LOGGER.info(String.valueOf(e.hashCode()));
-        var msg = Text.literal("Error: " + chatMessage + ". Click to copy the stack trace.").withColor(Colors.RED).styled(it -> it.withClickEvent(TextUtils.copyEvent(Arrays.toString(e.getStackTrace()))).withHoverEvent(TextUtils.showText(TextUtils.withColor("Click to copy the stack trace", Colors.CYAN))));
+        var msg = Text.literal("Error: " + chatMessage + ". Click to copy the stack trace.").withColor(Colors.RED).styled(it -> it.withClickEvent(TextUtils.copyEvent(Arrays.toString(e.getStackTrace()))).withHoverEvent(TextUtils.showTextEvent(TextUtils.withColor("Click to copy the stack trace", Colors.CYAN))));
         if (MessageManager.checkPlayer()) {
             MessageManager.send(msg);
         } else {

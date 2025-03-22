@@ -7,15 +7,7 @@ import java.nio.channels.ReadableByteChannel
 
 plugins {
 	id("fabric-loom") version "1.10-SNAPSHOT"
-	id("maven-publish")
-//	id("dev.yumi.gradle.licenser") version "2.1.+"
 }
-
-//license {
-//	rule(file("../../HEADER"))
-//	include("**/*.java")
-//}
-
 
 version = property("mod_version")!! as String + "+mc" + property("minecraft_version")!!
 group = property("maven_group")!!
