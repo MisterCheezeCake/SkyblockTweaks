@@ -58,7 +58,8 @@ public class ConstantLoader {
             "slayers", Slayers.class,
             "pets", Pets.class,
             "hotm", Hotm.class,
-            "disabledFeatures", DisabledFeatures.class
+            "disabledFeatures", DisabledFeatures.class,
+            "minions", Minions.class
     );
 
     static Garden garden = Garden.empty();
@@ -67,6 +68,7 @@ public class ConstantLoader {
     static Pets pets = Pets.empty();
     static Hotm hotm = Hotm.empty();
     static DisabledFeatures disabledFeatures = DisabledFeatures.empty();
+    static Minions minions = Minions.empty();
 
     public static void registerEvents() {
       if (!REPO_FOLDER.toFile().exists()) {
@@ -235,6 +237,7 @@ public class ConstantLoader {
                     case "pets" -> pets = (Pets) contents;
                     case "hotm" -> hotm = (Hotm) contents;
                     case "disabledFeatures" -> disabledFeatures = (DisabledFeatures) contents;
+                    case "minions" -> minions = (Minions) contents;
                 }
             }
         }

@@ -36,13 +36,14 @@ import wtf.cheeze.sbt.hud.HUD;
 import wtf.cheeze.sbt.hud.bounds.Bounds;
 import wtf.cheeze.sbt.hud.utils.AnchorPoint;
 import wtf.cheeze.sbt.utils.CheezePair;
+import wtf.cheeze.sbt.utils.Predicates;
 import wtf.cheeze.sbt.utils.render.RenderUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 
-import static wtf.cheeze.sbt.hud.screen.Popup.POPUP_Z;
+import static wtf.cheeze.sbt.hud.screen.EditorPopup.POPUP_Z;
 
 public class HudScreen extends Screen {
 
@@ -63,7 +64,7 @@ public class HudScreen extends Screen {
     private float offsetY = 0;
     private boolean textToggledOff = false;
     @Nullable
-    private Popup popup = null;
+    private EditorPopup popup = null;
 
     public HudScreen(Text title, ArrayList<HUD> huds, Screen parent) {
         super(title);
@@ -181,7 +182,7 @@ public class HudScreen extends Screen {
                     updateOffset(hud, mouseX, mouseY);
                 }
                 if (hasControlDown() || (this.mode == Mode.TEXT && !clickInBounds(popup.getBounds(), mouseX, mouseY))) {
-                    this.addPopup(hud.getName().name(Popup.WIDTH), (int) mouseX, (int) mouseY, getPopupWidgets(hud));
+                    this.addPopup(hud.getName().name(EditorPopup.WIDTH), (int) mouseX, (int) mouseY, getPopupWidgets(hud));
                     return b;
                 }
             }
@@ -357,8 +358,8 @@ public class HudScreen extends Screen {
                 context.getMatrices().pop();
             }
         };
-        x.setTextPredicate(NumberPredicate.INSTANCE);
-        y.setTextPredicate(NumberPredicate.INSTANCE);
+        x.setTextPredicate(Predicates.ZERO_TO_ONE);
+        y.setTextPredicate(Predicates.ZERO_TO_ONE);
         x.setChangedListener(s -> {
             if (s.isEmpty()) return;
             hud.updatePosition(Float.parseFloat(s), hud.getCurrentBoundsRelative().y);
@@ -410,7 +411,7 @@ public class HudScreen extends Screen {
         ScreenRect bounds;
         int i = 0;
         while (i < 1E6) { // prevent infinite loops if something goes wrong
-            bounds = new ScreenRect(desiredX, desiredY, Popup.WIDTH, Popup.HEIGHT);
+            bounds = new ScreenRect(desiredX, desiredY, EditorPopup.WIDTH, EditorPopup.HEIGHT);
             RenderUtils.BreachResult breachResult = RenderUtils.isOffscreen(bounds);
             if (breachResult.fullyOnscreen()) {
                 break;
@@ -430,33 +431,12 @@ public class HudScreen extends Screen {
         if (this.popup != null) {
             this.popup.remove();
         }
-        this.popup = new Popup(this, desiredX, desiredY, title, widgets);
+        this.popup = new EditorPopup(this, desiredX, desiredY, title, widgets);
 
     }
 
     private enum Mode {
         DRAG, TEXT, RESET
-    }
-
-    private static class NumberPredicate implements Predicate<String> {
-
-        public static final NumberPredicate INSTANCE = new NumberPredicate();
-
-        private NumberPredicate() {
-        }
-
-        @Override
-        public boolean test(String s) {
-            if (s.isEmpty()) return true; // allow empty strings
-            if (s.startsWith(".")) return false; // don't allow just a dot
-            if (s.endsWith(".")) s = s + "0"; // allow trailing dots
-            try {
-                var f = Float.parseFloat(s);
-                return !(f < 0) && !(f > 1);
-            } catch (NumberFormatException e) {
-                return false;
-            }
-        }
     }
 
 }

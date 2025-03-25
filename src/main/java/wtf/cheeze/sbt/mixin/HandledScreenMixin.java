@@ -21,37 +21,54 @@ package wtf.cheeze.sbt.mixin;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
+import net.minecraft.client.gui.widget.ButtonWidget;
+import net.minecraft.component.DataComponentTypes;
 import net.minecraft.screen.BrewingStandScreenHandler;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.text.Text;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.events.DrawSlotEvents;
-import wtf.cheeze.sbt.features.BrewingStandOverlay;
+import wtf.cheeze.sbt.features.overlay.BrewingStandOverlay;
+import wtf.cheeze.sbt.utils.injected.SBTHandledScreen;
+import wtf.cheeze.sbt.utils.render.Popup;
+import wtf.cheeze.sbt.utils.skyblock.SkyblockData;
+
+import java.util.List;
 
 @Mixin(HandledScreen.class)
-public abstract class HandledScreenMixin<T extends ScreenHandler> extends Screen {
-
+public abstract class HandledScreenMixin<T extends ScreenHandler> extends Screen implements SBTHandledScreen {
 
     @Shadow
     @Final
     protected T handler;
 
-    @Shadow
-    protected int x;
+    @Unique @Nullable
+    private Popup sbt$popup;
 
-    @Shadow
-    protected int y;
+    @Unique @Override
+    public @Nullable Popup sbt$getPopup() {
+        return sbt$popup;
+    }
+    @Unique @Override
+    public void sbt$setPopup(@Nullable Popup popup) {
+        if (this.sbt$popup != null) {
+            this.sbt$popup.remove();
+        }
+        this.sbt$popup = popup;
+    }
 
     @Inject(method = "drawSlot", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawItem(Lnet/minecraft/item/ItemStack;III)V"))
     protected void sbt$beforeDrawItem(DrawContext context, Slot slot, CallbackInfo ci) {
         DrawSlotEvents.BEFORE_ITEM.invoker().onDrawSlot(getTitle(), context, slot);
-
     }
 
     @Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/ingame/HandledScreen;drawSlots(Lnet/minecraft/client/gui/DrawContext;)V"))

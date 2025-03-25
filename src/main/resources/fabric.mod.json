@@ -40,5 +40,11 @@
 	},
 	"suggests": {
 		"modmenu": "*"
+	},
+	"custom": {
+		"loom:injected_interfaces": {
+			"net/minecraft/class_332": ["wtf/cheeze/sbt/utils/injected/SBTDrawContext"],
+			"net/minecraft/class_465": ["wtf/cheeze/sbt/utils/injected/SBTHandledScreen"]
+		}
 	}
 }

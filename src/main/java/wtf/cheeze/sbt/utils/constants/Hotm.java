@@ -18,7 +18,7 @@
  */
 package wtf.cheeze.sbt.utils.constants;
 
-import wtf.cheeze.sbt.features.CalcPowder;
+import wtf.cheeze.sbt.features.misc.CalcPowder;
 
 import java.util.Map;
 

@@ -18,6 +18,8 @@
  */
 package wtf.cheeze.sbt.utils.enums;
 
+import wtf.cheeze.sbt.utils.TextUtils;
+
 /**
  * Skill
  * Unknown is used rather than null when no skill is known to prevent NPEs
@@ -34,5 +36,10 @@ public enum Skill {
     CARPENTRY,
     RUNECRAFTING,
     SOCIAL,
-    UNKNOWN
+    UNKNOWN;
+
+    public String getName() {
+        return TextUtils.firstLetterUppercase(this.name().toLowerCase());
+    }
+
 }

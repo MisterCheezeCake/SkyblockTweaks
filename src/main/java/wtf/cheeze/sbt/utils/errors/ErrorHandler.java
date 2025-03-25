@@ -73,14 +73,6 @@ public class ErrorHandler {
         handleError(e, message, level, true);
     }
 
-    private static void sendMessage(String message, Exception e) {
-
-    }
-
-
-
-
-
     private static boolean shouldChat (ErrorLevel level) {
         return level == ErrorLevel.CRITICAL || (level == ErrorLevel.WARNING && SBTConfig.get().chatAllErrors);
     }

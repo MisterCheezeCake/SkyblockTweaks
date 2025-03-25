@@ -55,10 +55,13 @@ public class TextUtils {
 
 
     public static MutableText withColor(String text, int color) {
-        return Text.literal(text).styled(style -> style.withColor(color));
+        return withColor(Text.literal(text), color);
     }
     public static MutableText withColor(MutableText text, int color) {
         return text.styled(style -> style.withColor(color));
+    }
+    public static MutableText withBold(String text) {
+        return withBold(Text.literal(text));
     }
     public static MutableText withBold(MutableText text) {
         return text.styled(style -> style.withBold(true));

@@ -26,8 +26,9 @@ import org.slf4j.LoggerFactory;
 import wtf.cheeze.sbt.command.SBTCommand;
 import wtf.cheeze.sbt.config.SBTConfig;
 import wtf.cheeze.sbt.config.persistent.PersistentData;
-import wtf.cheeze.sbt.features.MenuHighlights;
-import wtf.cheeze.sbt.features.MouseLock;
+import wtf.cheeze.sbt.features.overlay.MenuHighlights;
+import wtf.cheeze.sbt.features.overlay.MinionExp;
+import wtf.cheeze.sbt.features.misc.MouseLock;
 import wtf.cheeze.sbt.hud.HudManager;
 import wtf.cheeze.sbt.utils.KillSwitch;
 import wtf.cheeze.sbt.utils.NotificationHandler;
@@ -70,6 +71,7 @@ public class SkyblockTweaks implements ModInitializer {
 		TabListParser.registerEvents();
 		MouseLock.registerEvents();
 		MenuHighlights.registerEvents();
+		MinionExp.registerEvents();
 
 		UpdateChecker.checkForUpdates();
 	}

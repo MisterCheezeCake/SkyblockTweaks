@@ -22,8 +22,9 @@ import dev.isxander.yacl3.config.v2.api.SerialEntry;
 import wtf.cheeze.sbt.config.categories.General;
 import wtf.cheeze.sbt.config.categories.Huds;
 import wtf.cheeze.sbt.config.categories.Mining;
-import wtf.cheeze.sbt.features.BrewingStandOverlay;
-import wtf.cheeze.sbt.features.MenuHighlights;
+import wtf.cheeze.sbt.features.overlay.BrewingStandOverlay;
+import wtf.cheeze.sbt.features.overlay.MenuHighlights;
+import wtf.cheeze.sbt.features.overlay.MinionExp;
 import wtf.cheeze.sbt.features.chat.ChatProtections;
 import wtf.cheeze.sbt.features.chat.PartyFeatures;
 import wtf.cheeze.sbt.utils.actionbar.ActionBarTransformer;
@@ -48,6 +49,9 @@ public class ConfigImpl extends VersionedObject {
 
     @SerialEntry
     public General.InventoryTweaks inventory = new General.InventoryTweaks();
+
+    @SerialEntry
+    public MinionExp.Config minionExp = new MinionExp.Config();
 
     @SerialEntry
     public ActionBarTransformer.Config actionBarFilters = new ActionBarTransformer.Config();

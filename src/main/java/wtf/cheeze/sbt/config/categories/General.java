@@ -8,8 +8,9 @@ import dev.isxander.yacl3.config.v2.api.SerialEntry;
 import net.minecraft.text.Text;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SBTConfig;
-import wtf.cheeze.sbt.features.BrewingStandOverlay;
-import wtf.cheeze.sbt.features.MenuHighlights;
+import wtf.cheeze.sbt.features.overlay.BrewingStandOverlay;
+import wtf.cheeze.sbt.features.overlay.MenuHighlights;
+import wtf.cheeze.sbt.features.overlay.MinionExp;
 import wtf.cheeze.sbt.utils.actionbar.ActionBarTransformer;
 import wtf.cheeze.sbt.utils.errors.ErrorHandler;
 import wtf.cheeze.sbt.utils.version.UpdateChecker;
@@ -25,6 +26,7 @@ public class General {
                 .group(InventoryTweaks.getGroup(defaults, config))
                 .group(MenuHighlights.Config.getGroup(defaults, config))
                 .group(BrewingStandOverlay.Config.getGroup(defaults, config))
+                .group(MinionExp.Config.getGroup(defaults, config))
                 .group(HudTweaks.getGroup(defaults, config))
                 .group(ActionBarTransformer.Config.getGroup(defaults, config))
                 .build();

@@ -6,7 +6,7 @@ import net.minecraft.client.Mouse;
 import net.minecraft.client.network.ClientPlayerEntity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import wtf.cheeze.sbt.features.MouseLock;
+import wtf.cheeze.sbt.features.misc.MouseLock;
 
 @Mixin(Mouse.class)
 public abstract class MouseMixin {

@@ -20,6 +20,7 @@ package wtf.cheeze.sbt.utils.skyblock;
 
 import com.mojang.authlib.properties.Property;
 import com.mojang.authlib.properties.PropertyMap;
+import net.minecraft.client.render.RenderLayer;
 import net.minecraft.component.ComponentChanges;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.NbtComponent;
@@ -41,6 +42,19 @@ import java.util.Map;
 import java.util.Optional;
 
 public class ItemStackUtils {
+
+    public static String getSkyblockId(ItemStack stack) {
+        var data = stack.get(DataComponentTypes.CUSTOM_DATA);
+        if (data == null) return "";
+        var customId = data.nbt.get("id");
+        if (customId == null) return "";
+
+        //? if <=1.21.4 {
+        return customId.asString();
+         //?} else {
+        /*return customId.asString().orElse("");
+        *///?}
+    }
 
 
     public static ItemStack getVanillaItem(String minecraftID) {

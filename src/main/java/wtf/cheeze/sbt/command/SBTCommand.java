@@ -32,7 +32,7 @@ import net.minecraft.text.Text;
 import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.config.SBTConfig;
 import wtf.cheeze.sbt.config.SkyblockTweaksScreenMain;
-import wtf.cheeze.sbt.features.MouseLock;
+import wtf.cheeze.sbt.features.misc.MouseLock;
 import wtf.cheeze.sbt.features.chat.PartyFeatures;
 import wtf.cheeze.sbt.hud.HudManager;
 import wtf.cheeze.sbt.hud.screen.HudScreen;

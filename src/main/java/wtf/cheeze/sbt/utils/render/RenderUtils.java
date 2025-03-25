@@ -25,9 +25,7 @@ import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
-import wtf.cheeze.sbt.SkyblockTweaks;
-
-import java.util.Set;
+import wtf.cheeze.sbt.utils.injected.SBTDrawContext;
 
 public class RenderUtils {
 

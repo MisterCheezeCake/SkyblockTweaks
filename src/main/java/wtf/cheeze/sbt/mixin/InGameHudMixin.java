@@ -33,11 +33,10 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.Slice;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.config.SBTConfig;
 import wtf.cheeze.sbt.events.HudRenderEvents;
 import wtf.cheeze.sbt.utils.enums.Location;
-import wtf.cheeze.sbt.utils.render.SBTDrawContext;
+import wtf.cheeze.sbt.utils.injected.SBTDrawContext;
 import wtf.cheeze.sbt.utils.skyblock.SkyblockData;
 
 @Mixin(InGameHud.class)

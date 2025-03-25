@@ -24,4 +24,5 @@ import java.util.EnumMap;
 
 public class ProfileData {
     public EnumMap<Skill, Integer> skillLevels = new EnumMap<>(Skill.class);
+    public EnumMap<Skill, Integer> skillWisdom = new EnumMap<>(Skill.class);
 }

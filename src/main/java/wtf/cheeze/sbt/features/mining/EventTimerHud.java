@@ -44,7 +44,6 @@ import java.awt.*;
 public class EventTimerHud extends TextHud {
 
     public EventTimerHud() {
-        super();
         INFO = new HudInformation(
                 () -> SBTConfig.mining().eventTimer.x,
                 () -> SBTConfig.mining().eventTimer.y,

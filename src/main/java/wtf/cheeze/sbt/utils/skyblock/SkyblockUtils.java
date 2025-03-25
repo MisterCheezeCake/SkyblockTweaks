@@ -140,6 +140,6 @@ public class SkyblockUtils {
     }
 
     public static boolean inMiningIsland() {
-        return SkyblockData.location == Location.DWARVEN_MINES|| SkyblockData.location == Location.CRYSTAL_HOLLOWS|| SkyblockData.location == Location.GLACITE_MINESHAFT;
+        return SkyblockData.location == Location.DWARVEN_MINES || SkyblockData.location == Location.CRYSTAL_HOLLOWS|| SkyblockData.location == Location.GLACITE_MINESHAFT;
     }
 }
