@@ -51,6 +51,7 @@ public class General {
         @SerialEntry
         public boolean noRenderPotionHud = true;
 
+
         public static OptionGroup getGroup(ConfigImpl defaults, ConfigImpl config) {
             var noRenderPotionHud = Option.<Boolean>createBuilder()
                     .name(key("inventory.noRenderPotionHud"))
@@ -72,6 +73,7 @@ public class General {
                             value -> config.inventory.redirectRecipeBook = (boolean) value
                     )
                     .build();
+
 
             return OptionGroup.createBuilder()
                     .name(key("inventory"))
@@ -100,6 +102,9 @@ public class General {
 
         @SerialEntry
         public boolean noRenderHunger = true;
+
+        @SerialEntry
+        public boolean noRenderPotionOverlay = true;
 
         public static OptionGroup getGroup(ConfigImpl defaults, ConfigImpl config) {
             var noShadowActionBar = Option.<Boolean>createBuilder()
@@ -173,6 +178,16 @@ public class General {
                     )
                     .build();
 
+            var noRenderPotionOverlay = Option.<Boolean>createBuilder()
+                    .name(key("hudTweaks.noRenderPotionOverlay"))
+                    .description(keyD("hudTweaks.noRenderPotionOverlay"))
+                    .controller(SBTConfig::generateBooleanController)
+                    .binding(
+                            defaults.hudTweaks.noRenderPotionOverlay,
+                            () -> config.hudTweaks.noRenderPotionOverlay,
+                            value -> config.hudTweaks.noRenderPotionOverlay = (boolean) value
+                    )
+                    .build();
 
 
             return OptionGroup.createBuilder()
@@ -184,6 +199,7 @@ public class General {
                     .option(showHearsInRift)
                     .option(noRenderArmor)
                     .option(noRenderHunger)
+                    .option(noRenderPotionOverlay)
                     .build();
         }
     }

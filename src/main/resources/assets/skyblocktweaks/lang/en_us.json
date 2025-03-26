@@ -59,6 +59,8 @@
   "sbt.config.general.hudTweaks.noRenderHunger.desc": "Disables rendering of the hunger bar",
   "sbt.config.general.hudTweaks.noShadowActionBar": "Disable Action Bar Shadow",
   "sbt.config.general.hudTweaks.noShadowActionBar.desc": "Removes the shadow from the action bar",
+  "sbt.config.general.hudTweaks.noRenderPotionOverlay": "Disable Potion Overlay",
+  "sbt.config.general.hudTweaks.noRenderPotionOverlay.desc": "Disables rendering of the potion overlay in the HUD",
   "sbt.config.general.inventory": "Inventory Tweaks",
   "sbt.config.general.inventory.desc": "Various tweaks to the inventory screen",
   "sbt.config.general.inventory.noRenderPotionHud": "Disable Potion HUD",

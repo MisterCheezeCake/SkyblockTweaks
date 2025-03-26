@@ -26,7 +26,6 @@ import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.gui.screen.ChatScreen;
 import net.minecraft.util.Identifier;
-
 import java.nio.file.Path;
 import java.util.HashMap;
 
@@ -59,7 +58,6 @@ public class PersistentData {
         needsSave = true;
     }
     private static void save() {
-//        SkyblockTweaks.LOGGER.debug("Saving persistent data to {}", pdPath);
         HANDLER.instance().needsSave = false; // Reset the flag
         HANDLER.save();
     }

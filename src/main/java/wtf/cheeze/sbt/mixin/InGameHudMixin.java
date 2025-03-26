@@ -75,6 +75,13 @@ public abstract class InGameHudMixin {
         }
     }
 
+    @Inject(method = "renderStatusEffectOverlay" , at = @At("HEAD"), cancellable = true)
+    private void sbt$onRenderStatusEffectOverlay(CallbackInfo ci) {
+        if (SBTConfig.get().hudTweaks.noRenderPotionOverlay && SkyblockData.inSB) {
+            ci.cancel();
+        }
+    }
+
     // The following injectors power HudRenderEvents and were likewise taken from Skyblocker
     @ModifyArg(method = "<init>", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/LayeredDrawer;addLayer(Lnet/minecraft/client/gui/LayeredDrawer$Layer;)Lnet/minecraft/client/gui/LayeredDrawer;", ordinal = 2))
     private LayeredDrawer.Layer sbt$afterMainHud(LayeredDrawer.Layer mainHudLayer) {
