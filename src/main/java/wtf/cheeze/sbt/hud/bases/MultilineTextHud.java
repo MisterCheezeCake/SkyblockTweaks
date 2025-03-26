@@ -2,6 +2,7 @@ package wtf.cheeze.sbt.hud.bases;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
+import org.jetbrains.annotations.NotNull;
 import wtf.cheeze.sbt.hud.bounds.Bounds;
 import wtf.cheeze.sbt.hud.bounds.BoundsRelative;
 import wtf.cheeze.sbt.hud.HUD;
@@ -37,14 +38,14 @@ public abstract class MultilineTextHud extends HUD {
     }
 
     @Override
-    public Bounds getCurrentBounds() {
+    public @NotNull Bounds getCurrentBounds() {
         var scale = (float) INFO.getScale.get();
         var w = getLongestLineWidth();
         var h = getLineNo();
         return new Bounds(getActualX(INFO.getX.get()), getActualY(INFO.getY.get()), w * scale, h * client.textRenderer.fontHeight * scale, scale);
     }
     @Override
-    public BoundsRelative getCurrentBoundsRelative() {
+    public @NotNull BoundsRelative getCurrentBoundsRelative() {
         var scale = (float) INFO.getScale.get();
         var w = getLongestLineWidth();
         var h = getLineNo();

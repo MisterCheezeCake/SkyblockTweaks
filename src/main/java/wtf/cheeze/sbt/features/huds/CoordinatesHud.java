@@ -24,6 +24,7 @@ import dev.isxander.yacl3.api.controller.ColorControllerBuilder;
 import dev.isxander.yacl3.api.controller.IntegerSliderControllerBuilder;
 import dev.isxander.yacl3.config.v2.api.SerialEntry;
 import net.minecraft.text.Text;
+import org.jetbrains.annotations.NotNull;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SBTConfig;
 import wtf.cheeze.sbt.hud.utils.AnchorPoint;
@@ -67,7 +68,7 @@ public class CoordinatesHud extends TextHud {
     }
 
     @Override
-    public HudName getName() {
+    public @NotNull HudName getName() {
         return new HudName("Coordinates HUD", "Coords HUD", Colors.LIGHT_BLUE);
     }
 

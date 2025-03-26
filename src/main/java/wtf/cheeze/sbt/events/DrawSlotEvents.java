@@ -17,6 +17,7 @@ public class DrawSlotEvents {
 
 
 
+
     @FunctionalInterface
     public interface OnDrawSlot {
         void onDrawSlot(Text screenTitle, DrawContext context, Slot slot);

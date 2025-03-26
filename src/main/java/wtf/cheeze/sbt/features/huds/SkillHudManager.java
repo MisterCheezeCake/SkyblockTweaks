@@ -26,6 +26,7 @@ import dev.isxander.yacl3.api.controller.EnumControllerBuilder;
 import dev.isxander.yacl3.config.v2.api.SerialEntry;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.minecraft.text.Text;
+import org.jetbrains.annotations.NotNull;
 import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SBTConfig;
@@ -198,7 +199,7 @@ public class SkillHudManager {
         }
 
 
-        public HudName getName() {
+        public @NotNull HudName getName() {
             return new HudName("Skill Progress HUD", "Skill HUD", Colors.CYAN);
         }
 
@@ -390,7 +391,7 @@ public class SkillHudManager {
         }
 
         @Override
-        public HudName getName() {
+        public @NotNull HudName getName() {
             return new HudName("Skill Progress Bar", "Skill Bar", Colors.CYAN);
         }
 

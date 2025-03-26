@@ -51,6 +51,9 @@ public class HudManager {
         HUDS.add(RiftTimeHud.INSTANCE);
         HUDS.add(MiningHud.INSTANCE);
         HUDS.add(EventTimerHud.INSTANCE);
+        HUDS.add(RainmakerHud.INSTANCE);
+
+        RainmakerHud.INSTANCE.registerEvents();
 
         HudRenderEvents.AFTER_MAIN_HUD.register((context, tickCounter) -> HUDS.forEach(hud -> hud.render(context, false)));
     }

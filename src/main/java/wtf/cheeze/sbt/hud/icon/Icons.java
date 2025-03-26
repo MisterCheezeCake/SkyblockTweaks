@@ -38,6 +38,7 @@ public class Icons {
     public static final HudIcon NETHER_STAR = itemID("nether_star");
     public static final HudIcon GOLDEN_HELMET = itemID("golden_helmet");
     public static final HudIcon COMPASS = itemStack("compass");
+    public static final HudIcon WATER_BUCKET = itemID("water_bucket");
     public static final HudIcon DEFAULT_HEAD = itemStack("player_head");
 
     public static final HudIcon DEFAULT_ICON = HudIcon.of(Identifier.of("skyblocktweaks", "missing.png"));

@@ -22,6 +22,7 @@ import dev.isxander.yacl3.api.OptionDescription;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.text.Text;
+import org.jetbrains.annotations.NotNull;
 import wtf.cheeze.sbt.hud.bounds.Bounds;
 import wtf.cheeze.sbt.hud.bounds.BoundsRelative;
 import wtf.cheeze.sbt.hud.screen.HudScreen;
@@ -46,12 +47,11 @@ public abstract class HUD {
     /**
      * @return the name of the HUD that will be shown in the HUD screen
      */
-    public abstract HudName getName();
+    public abstract @NotNull HudName getName();
 
+    public abstract @NotNull Bounds getCurrentBounds();
 
-    public abstract Bounds getCurrentBounds();
-
-    public abstract BoundsRelative getCurrentBoundsRelative();
+    public abstract @NotNull BoundsRelative getCurrentBoundsRelative();
 
 
     public boolean shouldRender(boolean fromHudScreen) {

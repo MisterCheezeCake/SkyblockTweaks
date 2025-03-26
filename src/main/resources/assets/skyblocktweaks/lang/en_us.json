@@ -415,8 +415,19 @@
   "sbt.config.general.constantLoader.repo": "Github Repo",
   "sbt.config.general.constantLoader.repo.desc": "The Github repo name to use for the data repo\n§cDon't change this unless you know what you're doing!",
   "sbt.config.general.constantLoader.branch": "Github Branch",
-  "sbt.config.general.constantLoader.branch.desc": "The Github branch to use for the data repo\n§cDon't change this unless you know what you're doing!"
-
-
-
+  "sbt.config.general.constantLoader.branch.desc": "The Github branch to use for the data repo\n§cDon't change this unless you know what you're doing!",
+  "sbt.config.huds.rainmaker": "Rainmaker Timer HUD",
+  "sbt.config.huds.rainmaker.desc": "Settings for the Rainmaker Timer HUD",
+  "sbt.config.huds.rainmaker.enabled": "Enable Rainmaker Timer HUD",
+  "sbt.config.huds.rainmaker.enabled.desc": "Enables the Rainmaker Timer HUD",
+  "sbt.config.huds.rainmaker.mode": "Rainmaker Timer HUD Mode",
+  "sbt.config.huds.rainmaker.mode.desc": "The draw mode of the Rainmaker Timer HUD. Pure will render without shadow, Shadow will render with a shadow, and Outline will render with an outline.",
+  "sbt.config.huds.rainmaker.outlineColor": "Rainmaker Timer HUD Outline Color",
+  "sbt.config.huds.rainmaker.outlineColor.desc": "The outline color of the Rainmaker Timer HUD",
+  "sbt.config.huds.rainmaker.scale": "Rainmaker Timer HUD Scale",
+  "sbt.config.huds.rainmaker.scale.desc": "The scale of the Rainmaker Timer HUD",
+  "sbt.config.huds.rainmaker.color": "Rainmaker Timer HUD Color",
+  "sbt.config.huds.rainmaker.color.desc": "The color of the Rainmaker Timer HUD",
+  "sbt.config.huds.rainmaker.icon": "Rainmaker Timer HUD Icon",
+  "sbt.config.huds.rainmaker.icon.desc": "Enables the water bucket icon in the Rainmaker Timer HUD"
 }

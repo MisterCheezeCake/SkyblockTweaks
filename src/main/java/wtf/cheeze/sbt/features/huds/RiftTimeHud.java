@@ -23,6 +23,7 @@ import dev.isxander.yacl3.api.OptionGroup;
 import dev.isxander.yacl3.api.controller.ColorControllerBuilder;
 import dev.isxander.yacl3.config.v2.api.SerialEntry;
 import net.minecraft.text.Text;
+import org.jetbrains.annotations.NotNull;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SBTConfig;
 import wtf.cheeze.sbt.hud.bases.TextHud;
@@ -74,7 +75,7 @@ public class RiftTimeHud extends TextHud {
 //    }
 
     @Override
-    public HudName getName() {
+    public @NotNull HudName getName() {
         return new HudName("Rift Time HUD", "Rift HUD", Colors.LIME);
     }
 

@@ -87,6 +87,9 @@ public class Huds {
     @SerialEntry
     public RiftTimeHud.Config riftTime = new RiftTimeHud.Config();
 
+    @SerialEntry
+    public RainmakerHud.Config rainmaker = new RainmakerHud.Config();
+
 
 
     public static ConfigCategory getCategory(ConfigImpl defaults, ConfigImpl config) {
@@ -113,6 +116,7 @@ public class Huds {
                 .group(QuiverHud.Config.getGroup(defaults, config))
                 .group(ArmorStackHud.Config.getGroup(defaults, config))
                 .group(RiftTimeHud.Config.getGroup(defaults, config))
+                .group(RainmakerHud.Config.getGroup(defaults, config))
                 .build();
     }
 }

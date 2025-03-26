@@ -19,6 +19,7 @@
 package wtf.cheeze.sbt.features.huds;
 
 import net.minecraft.text.Text;
+import org.jetbrains.annotations.NotNull;
 import wtf.cheeze.sbt.hud.bases.MultilineTextHud;
 import wtf.cheeze.sbt.hud.icon.HudIcon;
 import wtf.cheeze.sbt.hud.components.SingleHudLine;
@@ -38,7 +39,7 @@ import java.util.List;
  */
 public class IconTestHud extends MultilineTextHud {
     @Override
-    public HudName getName() {
+    public @NotNull HudName getName() {
         return new HudName("Icon Test HUD", "Icon HUD", Colors.WHITE);
     }
 

@@ -78,6 +78,7 @@ public class GlobalSearchCategory {
                 .group(QuiverHud.Config.getGroup(defaults, config))
                 .group(ArmorStackHud.Config.getGroup(defaults, config))
                 .group(RiftTimeHud.Config.getGroup(defaults, config))
+                .group(RainmakerHud.Config.getGroup(defaults, config))
                 .group(MiningHud.Config.getGroup(defaults, config))
                 .group(MiningHud.Config.getCompositionOption(defaults, config))
                 .group(EventTimerHud.Config.getGroup(defaults, config))

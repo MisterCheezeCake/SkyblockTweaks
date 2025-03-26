@@ -20,6 +20,7 @@ package wtf.cheeze.sbt.hud.bases;
 
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.util.Identifier;
+import org.jetbrains.annotations.NotNull;
 import wtf.cheeze.sbt.features.huds.TickerHud;
 import wtf.cheeze.sbt.hud.bounds.Bounds;
 import wtf.cheeze.sbt.hud.bounds.BoundsRelative;
@@ -78,7 +79,7 @@ public abstract class AbstractTickerHud extends HUD {
     }
 
     @Override
-    public Bounds getCurrentBounds() {
+    public @NotNull Bounds getCurrentBounds() {
         var scale = (float) INFO.getScale.get();
         switch (INFO.getAnchorPoint.get()) {
             case LEFT -> {
@@ -94,7 +95,7 @@ public abstract class AbstractTickerHud extends HUD {
         }
     }
     @Override
-    public BoundsRelative getCurrentBoundsRelative() {
+    public @NotNull BoundsRelative getCurrentBoundsRelative() {
         var scale = (float) INFO.getScale.get();
         switch (INFO.getAnchorPoint.get()) {
             case LEFT -> {

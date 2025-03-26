@@ -50,7 +50,7 @@ public class SkyblockData {
     public static String currentProfile = null;
     public static String mode = null;
     public static Location location = Location.UNKNOWN;
-
+    public static String currentServer = "Unknown Server";
     public static class Party {
         public static boolean inParty = false;
         public static boolean leader = false;
@@ -161,6 +161,7 @@ public class SkyblockData {
                 alphaNetwork = environment == Environment.BETA;
             }
             case LocationUpdateS2CPacket(String serverName, Optional<String> serverType, Optional<String> lobbyName, Optional<String> mode, Optional<String> map) -> {
+                currentServer = serverName;
                 SkyblockTweaks.LOGGER.info("Location update packet received. Server: {}, Type: {}, Mode: {}", serverName, serverType.orElse("unknown"), mode.orElse("unknown"));
                 inSB = serverType.orElse("").equals("SKYBLOCK");
                 if (inSB) {

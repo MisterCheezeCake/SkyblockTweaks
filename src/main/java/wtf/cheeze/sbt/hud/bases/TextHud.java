@@ -19,6 +19,7 @@
 package wtf.cheeze.sbt.hud.bases;
 
 import net.minecraft.client.gui.DrawContext;
+import org.jetbrains.annotations.NotNull;
 import wtf.cheeze.sbt.hud.utils.DrawMode;
 import wtf.cheeze.sbt.hud.bounds.Bounds;
 import wtf.cheeze.sbt.hud.bounds.BoundsRelative;
@@ -45,7 +46,7 @@ public abstract class TextHud extends HUD {
         RenderUtils.endScale(context);
     }
 
-    public Bounds getCurrentBounds() {
+    public @NotNull Bounds getCurrentBounds() {
         var scale = (float) INFO.getScale.get();
         switch (INFO.getAnchorPoint.get()) {
             case LEFT -> {
@@ -76,7 +77,7 @@ public abstract class TextHud extends HUD {
         }
     }
 
-    public BoundsRelative getCurrentBoundsRelative() {
+    public @NotNull BoundsRelative getCurrentBoundsRelative() {
         var scale = (float) INFO.getScale.get();
         switch (INFO.getAnchorPoint.get()) {
             case LEFT -> {
