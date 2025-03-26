@@ -4,6 +4,7 @@ import dev.isxander.yacl3.api.Option;
 import dev.isxander.yacl3.api.OptionGroup;
 import dev.isxander.yacl3.config.v2.api.SerialEntry;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
@@ -67,7 +68,7 @@ public class MinionExp {
             this.y = screen.y;
             this.screen = screen;
             this.isChest = screen.getTitle().getString().equals("Minion Chest");
-            var textWidget = new TextFieldWidget(screen.getTextRenderer(), x + 10, y + 95, 60, 15, Text.empty());
+            var textWidget = new TextFieldWidget(MinecraftClient.getInstance().textRenderer, x + 10, y + 95, 60, 15, Text.empty());
             textWidget.setTextPredicate(Predicates.INT);
             textWidget.setMaxLength(4);
             textWidget.setText(contents);

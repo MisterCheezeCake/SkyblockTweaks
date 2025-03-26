@@ -36,6 +36,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import wtf.cheeze.sbt.SkyblockTweaks;
+import wtf.cheeze.sbt.config.SBTConfig;
 import wtf.cheeze.sbt.events.DrawSlotEvents;
 import wtf.cheeze.sbt.features.overlay.BrewingStandOverlay;
 import wtf.cheeze.sbt.utils.injected.SBTHandledScreen;
@@ -69,8 +70,16 @@ public abstract class HandledScreenMixin<T extends ScreenHandler> extends Screen
     @Inject(method = "drawSlot", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawItem(Lnet/minecraft/item/ItemStack;III)V"))
     protected void sbt$beforeDrawItem(DrawContext context, Slot slot, CallbackInfo ci) {
         DrawSlotEvents.BEFORE_ITEM.invoker().onDrawSlot(getTitle(), context, slot);
+        //? if =1.21.1 {
+        /*if (getTitle().getString().equals("Brewing Stand") && slot.id == 1) {
+            if (this.handler instanceof BrewingStandScreenHandler) return;
+            BrewingStandOverlay.render(handler.slots, context);
+        }
+        *///?}
     }
 
+    //? if >=1.21.3 {
+    
     @Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/ingame/HandledScreen;drawSlots(Lnet/minecraft/client/gui/DrawContext;)V"))
     protected void sbtBeforeDrawSlots(DrawContext context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
         if (getTitle().getString().equals("Brewing Stand")) {
@@ -78,6 +87,10 @@ public abstract class HandledScreenMixin<T extends ScreenHandler> extends Screen
             BrewingStandOverlay.render(handler.slots, context);
         }
     }
+    //?}
+
+
+
 
     private HandledScreenMixin(Text t) {
         super(t);
