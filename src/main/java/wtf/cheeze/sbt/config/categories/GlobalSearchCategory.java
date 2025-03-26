@@ -32,8 +32,10 @@ import wtf.cheeze.sbt.features.chat.PartyFeatures;
 import wtf.cheeze.sbt.features.huds.*;
 import wtf.cheeze.sbt.features.mining.EventTimerHud;
 import wtf.cheeze.sbt.features.mining.MiningHud;
+import wtf.cheeze.sbt.features.overlay.MinionExp;
 import wtf.cheeze.sbt.mixin.YACLScreenAccessor;
 import wtf.cheeze.sbt.utils.actionbar.ActionBarTransformer;
+import wtf.cheeze.sbt.utils.constants.loader.ConstantLoader;
 import wtf.cheeze.sbt.utils.errors.ErrorHandler;
 import wtf.cheeze.sbt.utils.version.UpdateChecker;
 
@@ -49,8 +51,10 @@ public class GlobalSearchCategory {
                 .group(General.InventoryTweaks.getGroup(defaults, config))
                 .group(MenuHighlights.Config.getGroup(defaults, config))
                 .group(BrewingStandOverlay.Config.getGroup(defaults, config))
+                .group(MinionExp.Config.getGroup(defaults, config))
                 .group(General.HudTweaks.getGroup(defaults, config))
                 .group(ActionBarTransformer.Config.getGroup(defaults, config))
+                .group(ConstantLoader.Config.getGroup(defaults, config))
                 .group(PartyFeatures.Config.getGroup(defaults, config))
                 .group(PartyFeatures.Config.getBlackList(defaults, config))
                 .group(ChatProtections.Config.getGroup(defaults, config))

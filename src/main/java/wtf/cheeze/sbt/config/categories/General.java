@@ -12,6 +12,7 @@ import wtf.cheeze.sbt.features.overlay.BrewingStandOverlay;
 import wtf.cheeze.sbt.features.overlay.MenuHighlights;
 import wtf.cheeze.sbt.features.overlay.MinionExp;
 import wtf.cheeze.sbt.utils.actionbar.ActionBarTransformer;
+import wtf.cheeze.sbt.utils.constants.loader.ConstantLoader;
 import wtf.cheeze.sbt.utils.errors.ErrorHandler;
 import wtf.cheeze.sbt.utils.version.UpdateChecker;
 
@@ -29,6 +30,7 @@ public class General {
                 .group(MinionExp.Config.getGroup(defaults, config))
                 .group(HudTweaks.getGroup(defaults, config))
                 .group(ActionBarTransformer.Config.getGroup(defaults, config))
+                .group(ConstantLoader.Config.getGroup(defaults, config))
                 .build();
     }
 

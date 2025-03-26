@@ -18,6 +18,9 @@
  */
 package wtf.cheeze.sbt.utils.constants.loader;
 
+import dev.isxander.yacl3.api.Option;
+import dev.isxander.yacl3.api.OptionGroup;
+import dev.isxander.yacl3.api.controller.StringControllerBuilder;
 import dev.isxander.yacl3.config.v2.api.SerialEntry;
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.loader.api.FabricLoader;
@@ -25,7 +28,9 @@ import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import wtf.cheeze.sbt.SkyblockTweaks;
+import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SBTConfig;
+import wtf.cheeze.sbt.config.categories.General;
 import wtf.cheeze.sbt.events.EventUtils;
 import wtf.cheeze.sbt.utils.MessageManager;
 import wtf.cheeze.sbt.utils.NotificationHandler;
@@ -43,6 +48,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Map;
+
+import static wtf.cheeze.sbt.config.categories.General.key;
+import static wtf.cheeze.sbt.config.categories.General.keyD;
 
 public class ConstantLoader {
 
@@ -87,6 +95,9 @@ public class ConstantLoader {
                 Files.writeString(REPO_FOLDER.resolve("manifest.json"), SkyblockTweaks.GSON.toJson(new LocalManifest()));
             } else {
                 loadFromFiles();
+            }
+            if (!SBTConfig.get().constantLoader.autoUpdate) {
+                return;
             }
             var commitHash = checkForUpdate();
             if (commitHash != null) {
@@ -266,6 +277,10 @@ public class ConstantLoader {
     }
 
     public static class Config {
+
+        @SerialEntry
+        public boolean autoUpdate = true;
+
         @SerialEntry
         public String user = "SkyblockTweaks";
 
@@ -274,6 +289,54 @@ public class ConstantLoader {
 
         @SerialEntry
         public String branch = "main";
+
+        public static OptionGroup getGroup(ConfigImpl defaults, ConfigImpl config) {
+            var autoUpdate =  Option.<Boolean>createBuilder()
+                    .name(key("constantLoader.autoUpdate"))
+                    .description(keyD("constantLoader.autoUpdate"))
+                    .controller(SBTConfig::generateBooleanController)
+                    .binding(
+                            defaults.constantLoader.autoUpdate,
+                            () -> config.constantLoader.autoUpdate,
+                            (value) -> config.constantLoader.autoUpdate = value
+                    ).build();
+            var user = Option.<String>createBuilder()
+                    .name(key("constantLoader.user"))
+                    .description(keyD("constantLoader.user"))
+                    .controller(StringControllerBuilder::create)
+                    .binding(
+                            defaults.constantLoader.user,
+                            () -> config.constantLoader.user,
+                            (value) -> config.constantLoader.user = value
+                    ).build();
+            var repo = Option.<String>createBuilder()
+                    .name(key("constantLoader.repo"))
+                    .description(keyD("constantLoader.repo"))
+                    .controller(StringControllerBuilder::create)
+                    .binding(
+                            defaults.constantLoader.repo,
+                            () -> config.constantLoader.repo,
+                            (value) -> config.constantLoader.repo = value
+                    ).build();
+            var branch = Option.<String>createBuilder()
+                    .name(key("constantLoader.branch"))
+                    .description(keyD("constantLoader.branch"))
+                    .controller(StringControllerBuilder::create)
+                    .binding(
+                            defaults.constantLoader.branch,
+                            () -> config.constantLoader.branch,
+                            (value) -> config.constantLoader.branch = value
+                    ).build();
+            return OptionGroup.createBuilder()
+                    .name(key("constantLoader"))
+                    .description(keyD("constantLoader"))
+                    .option(autoUpdate)
+                    .option(user)
+                    .option(repo)
+                    .option(branch)
+                    .collapsed(true)
+                    .build();
+        }
     }
 
 

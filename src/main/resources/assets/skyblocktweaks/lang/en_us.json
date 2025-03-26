@@ -405,5 +405,18 @@
   "sbt.config.general.minionExp.enabled": "Enable Minion EXP Overlay",
   "sbt.config.general.minionExp.enabled.desc": "Enables the Minion Skill EXP Overlay",
   "sbt.config.general.minionExp.desc": "Settings for the Minion Skill EXP Overlay",
-  "sbt.config.general.minionExp": "Minion Skill EXP Overlay"
+  "sbt.config.general.minionExp": "Minion Skill EXP Overlay",
+  "sbt.config.general.constantLoader": "Data Repo",
+  "sbt.config.general.constantLoader.desc": "Settings related to the data repo used by the mod",
+  "sbt.config.general.constantLoader.autoUpdate": "Auto Update Repo",
+  "sbt.config.general.constantLoader.autoUpdate.desc": "Whether to automatically download the latest data",
+  "sbt.config.general.constantLoader.user": "Github User",
+  "sbt.config.general.constantLoader.user.desc": "The Github user to use for the data repo\n§cDon't change this unless you know what you're doing!",
+  "sbt.config.general.constantLoader.repo": "Github Repo",
+  "sbt.config.general.constantLoader.repo.desc": "The Github repo name to use for the data repo\n§cDon't change this unless you know what you're doing!",
+  "sbt.config.general.constantLoader.branch": "Github Branch",
+  "sbt.config.general.constantLoader.branch.desc": "The Github branch to use for the data repo\n§cDon't change this unless you know what you're doing!"
+
+
+
 }
