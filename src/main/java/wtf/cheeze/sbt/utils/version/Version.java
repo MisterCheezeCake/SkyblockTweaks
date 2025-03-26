@@ -81,11 +81,9 @@ public class Version {
     public static String getBuildMCVersion() {
         //? if =1.21.1 {
         /*return "1.21.1";
-         *///?} else if =1.21.3 {
-        /*return "1.21.3";
          *///?} else if =1.21.4 {
         return "1.21.4";
-         //?} else if >1.21.4 {
+         //?} else if =1.21.5 {
         /*return "1.21.5";
         *///?}
 
