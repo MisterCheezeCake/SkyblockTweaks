@@ -41,7 +41,9 @@ import java.awt.Color;
 
 public class EhpHud extends TextHud {
 
-    public EhpHud() {
+    public static final EhpHud INSTANCE = new EhpHud();
+
+    private EhpHud() {
         INFO = new HudInformation(
                 () -> SBTConfig.huds().ehp.x,
                 () -> SBTConfig.huds().ehp.y,

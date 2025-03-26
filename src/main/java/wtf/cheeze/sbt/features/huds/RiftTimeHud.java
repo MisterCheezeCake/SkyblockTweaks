@@ -41,7 +41,9 @@ import java.awt.*;
 
 public class RiftTimeHud extends TextHud {
 
-    public RiftTimeHud() {
+    public static final RiftTimeHud INSTANCE = new RiftTimeHud();
+
+    private RiftTimeHud() {
         INFO = new HudInformation(
                 () -> SBTConfig.huds().riftTime.x,
                 () -> SBTConfig.huds().riftTime.y,

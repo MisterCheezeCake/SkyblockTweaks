@@ -41,7 +41,9 @@ import java.awt.Color;
 
 public class DefenseHud extends TextHud {
 
-    public DefenseHud() {
+    public static final DefenseHud INSTANCE = new DefenseHud();
+
+    private DefenseHud() {
         INFO = new HudInformation(
                 () -> SBTConfig.huds().defense.x,
                 () -> SBTConfig.huds().defense.y,

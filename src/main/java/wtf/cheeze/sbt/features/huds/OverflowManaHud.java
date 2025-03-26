@@ -41,7 +41,9 @@ import java.awt.*;
 
 public class OverflowManaHud extends TextHud {
 
-    public OverflowManaHud() {
+    public static final OverflowManaHud INSTANCE = new OverflowManaHud();
+
+    private OverflowManaHud() {
         INFO = new HudInformation(
                 () -> SBTConfig.huds().overflowMana.x,
                 () -> SBTConfig.huds().overflowMana.y,

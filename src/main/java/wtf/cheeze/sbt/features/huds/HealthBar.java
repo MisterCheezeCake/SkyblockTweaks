@@ -37,7 +37,9 @@ import java.awt.Color;
 
 public class HealthBar extends BarHud {
 
-    public HealthBar() {
+    public static final HealthBar INSTANCE = new HealthBar();
+
+    private HealthBar() {
         INFO = new HudInformation(
                 () -> SBTConfig.huds().healthBar.x,
                 () -> SBTConfig.huds().healthBar.y,

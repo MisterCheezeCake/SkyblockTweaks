@@ -55,8 +55,6 @@ public class KillSwitch {
         });
     }
 
-
-
     public static boolean shouldKill(String feature) {
         return disabledFeatures.containsKey(feature);
 

@@ -26,9 +26,9 @@ import wtf.cheeze.sbt.utils.render.RenderUtils;
 public class TextureIcon implements HudIcon {
 
     private final Identifier iconTexture;
+
     public TextureIcon(@NotNull Identifier texture) {
         this.iconTexture = texture;
-
     }
 
     @Override

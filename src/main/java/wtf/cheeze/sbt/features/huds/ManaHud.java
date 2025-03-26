@@ -42,7 +42,9 @@ import java.awt.*;
 
 public class ManaHud extends TextHud {
 
-    public ManaHud() {
+    public static final ManaHud INSTANCE = new ManaHud();
+
+    private ManaHud() {
         INFO = new HudInformation(
                 () -> SBTConfig.huds().mana.x,
                 () -> SBTConfig.huds().mana.y,
@@ -58,9 +60,6 @@ public class ManaHud extends TextHud {
                 () -> SBTConfig.huds().mana.outlineColor,
                 () -> SBTConfig.huds().mana.mode,
                 () -> Text.literal(NumberUtils.formatNumber((int) SkyblockData.Stats.mana, SBTConfig.huds().mana.separator) + "/" + NumberUtils.formatNumber((int) SkyblockData.Stats.maxMana, SBTConfig.huds().mana.separator) + (SBTConfig.huds().mana.icon ? "✎" : ""))
-                //,
-//                () -> Icons.SKILL_ICONS.get(Skill.MINING),
-//                () -> true
         );
     }
     @Override
@@ -68,10 +67,6 @@ public class ManaHud extends TextHud {
         if (!super.shouldRender(fromHudScreen)) return false;
         return (SkyblockData.inSB && SBTConfig.huds().mana.enabled) || fromHudScreen;
     }
-//    @Override
-//    public String getText() {
-//        return TextUtils.formatNumber((int) SkyBlockTweaks.DATA.mana, SBTConfig.huds().mana.separator) + "/" + TextUtils.formatNumber((int) SkyBlockTweaks.DATA.maxMana, SBTConfig.huds().mana.separator) + (SBTConfig.huds().mana.icon ? "✎" : "");
-//    }
 
     @Override
     public HudName getName() {

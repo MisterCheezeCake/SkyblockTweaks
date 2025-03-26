@@ -31,28 +31,26 @@ public class HudManager {
     public static void registerEvents() {
         HUDS.add(SkillHudManager.INSTANCE.SKILL_HUD);
         HUDS.add(SkillHudManager.INSTANCE.SKILL_BAR);
-        HUDS.add(new SpeedHud());
-        HUDS.add(new DefenseHud());
-        HUDS.add(new EhpHud());
-        HUDS.add(new DamageReductionHud());
-        HUDS.add(new HealthHud());
-        HUDS.add(new ManaHud());
-        HUDS.add(new OverflowManaHud());
-        HUDS.add(new DrillFuelHud());
-        HUDS.add(new DrillFuelBar());
-        HUDS.add(new HealthBar());
-        HUDS.add(new ManaBar());
-        HUDS.add(new CoordinatesHud());
-        HUDS.add(new RealTimeHud());
-        HUDS.add(new FpsHud());
-        HUDS.add(new TickerHud());
-        HUDS.add(new QuiverHud());
-        HUDS.add(new ArmorStackHud());
-        HUDS.add(new RiftTimeHud());
-
+        HUDS.add(SpeedHud.INSTANCE);
+        HUDS.add(DefenseHud.INSTANCE);
+        HUDS.add(EhpHud.INSTANCE);
+        HUDS.add(DamageReductionHud.INSTANCE);
+        HUDS.add(HealthHud.INSTANCE);
+        HUDS.add(ManaHud.INSTANCE);
+        HUDS.add(OverflowManaHud.INSTANCE);
+        HUDS.add(DrillFuelHud.INSTANCE);
+        HUDS.add(DrillFuelBar.INSTANCE);
+        HUDS.add(HealthBar.INSTANCE);
+        HUDS.add(ManaBar.INSTANCE);
+        HUDS.add(CoordinatesHud.INSTANCE);
+        HUDS.add(RealTimeHud.INSTANCE);
+        HUDS.add(FpsHud.INSTANCE);
+        HUDS.add(TickerHud.INSTANCE);
+        HUDS.add(QuiverHud.INSTANCE);
+        HUDS.add(ArmorStackHud.INSTANCE);
+        HUDS.add(RiftTimeHud.INSTANCE);
         HUDS.add(MiningHud.INSTANCE);
-        HUDS.add(new EventTimerHud());
-
+        HUDS.add(EventTimerHud.INSTANCE);
 
         HudRenderEvents.AFTER_MAIN_HUD.register((context, tickCounter) -> HUDS.forEach(hud -> hud.render(context, false)));
     }

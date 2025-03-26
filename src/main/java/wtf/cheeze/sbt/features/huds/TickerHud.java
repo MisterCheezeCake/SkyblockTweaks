@@ -34,7 +34,9 @@ import wtf.cheeze.sbt.utils.skyblock.SkyblockData;
 
 public class TickerHud extends AbstractTickerHud {
 
-    public TickerHud() {
+    public static final TickerHud INSTANCE = new TickerHud();
+
+    private TickerHud() {
         INFO = new HudInformation(
                 () -> SBTConfig.huds().ticker.x,
                 () -> SBTConfig.huds().ticker.y,

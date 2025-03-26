@@ -40,7 +40,9 @@ import java.awt.Color;
 
 public class CoordinatesHud extends TextHud {
 
-    public CoordinatesHud() {
+    public static final CoordinatesHud INSTANCE = new CoordinatesHud();
+
+    private CoordinatesHud() {
         INFO = new HudInformation(
                 () -> SBTConfig.huds().coordinates.x,
                 () -> SBTConfig.huds().coordinates.y,

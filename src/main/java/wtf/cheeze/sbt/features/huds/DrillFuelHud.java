@@ -42,7 +42,9 @@ import java.awt.Color;
 
 public class DrillFuelHud extends TextHud {
 
-    public DrillFuelHud() {
+    public static final DrillFuelHud INSTANCE = new DrillFuelHud();
+
+    private DrillFuelHud() {
         INFO = new HudInformation(
                 () -> SBTConfig.huds().drillFuel.x,
                 () -> SBTConfig.huds().drillFuel.y,

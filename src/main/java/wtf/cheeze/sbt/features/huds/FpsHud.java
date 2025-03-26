@@ -38,8 +38,9 @@ import java.awt.Color;
 
 public class FpsHud extends TextHud {
 
+    public static final FpsHud INSTANCE = new FpsHud();
 
-    public FpsHud() {
+    private FpsHud() {
         INFO = new HudInformation(
                 () -> SBTConfig.huds().fps.x,
                 () -> SBTConfig.huds().fps.y,

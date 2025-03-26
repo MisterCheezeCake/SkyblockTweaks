@@ -40,7 +40,9 @@ import java.awt.Color;
 
 public class DamageReductionHud extends TextHud {
 
-    public DamageReductionHud() {
+    public static final DamageReductionHud INSTANCE = new DamageReductionHud();
+
+    private DamageReductionHud() {
         INFO = new HudInformation(
                 () -> SBTConfig.huds().dr.x,
                 () -> SBTConfig.huds().dr.y,

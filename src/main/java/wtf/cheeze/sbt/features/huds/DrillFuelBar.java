@@ -38,7 +38,9 @@ import java.awt.Color;
 
 public class DrillFuelBar extends BarHud {
 
-    public DrillFuelBar() {
+    public static final DrillFuelBar INSTANCE = new DrillFuelBar();
+
+    private DrillFuelBar() {
         INFO = new HudInformation(
                 () -> SBTConfig.huds().drillFuelBar.x,
                 () -> SBTConfig.huds().drillFuelBar.y,

@@ -39,7 +39,9 @@ import java.awt.Color;
 
 public class SpeedHud extends TextHud {
 
-    public SpeedHud() {
+    public static final SpeedHud INSTANCE = new SpeedHud();
+
+    private SpeedHud() {
         INFO = new HudInformation(
                 () -> SBTConfig.huds().speed.x,
                 () -> SBTConfig.huds().speed.y,
@@ -55,10 +57,6 @@ public class SpeedHud extends TextHud {
                 () -> SBTConfig.huds().speed.outlineColor,
                 () -> SBTConfig.huds().speed.mode,
                 () -> Text.literal((SkyblockUtils.getSpeed()+"").split("\\.")[0] + "%")
-                // Test Only
-//                ,
-//                () ->  new HudIcon(SkyblockTweaks.mc.player.getMainHandStack()),
-//                () -> SkyblockTweaks.mc.player.getMainHandStack() != null
         );
     }
 

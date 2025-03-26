@@ -26,6 +26,7 @@ import net.minecraft.client.render.RenderTickCounter;
 /**
  * Fabric's Hud Render callback is not that good, so we use this instead
  * This class is copied from Skyblocker, massive credit to Aaron for writing this
+ * TODO: Migrate to Fabric API's new events, at least post 1.21.1
  * @author AzureAaron
  */
 public class HudRenderEvents {

@@ -41,7 +41,9 @@ import java.awt.*;
 
 public class QuiverHud extends TextHud {
 
-    public QuiverHud() {
+    public static final QuiverHud INSTANCE = new QuiverHud();
+
+    private QuiverHud() {
         INFO = new HudInformation(
                 () -> SBTConfig.huds().quiver.x,
                 () -> SBTConfig.huds().quiver.y,

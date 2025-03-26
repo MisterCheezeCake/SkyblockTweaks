@@ -41,7 +41,9 @@ import java.awt.Color;
 
 public class HealthHud extends TextHud {
 
-    public HealthHud() {
+    public static final HealthHud INSTANCE = new HealthHud();
+
+    private HealthHud() {
         INFO = new HudInformation(
                 () -> SBTConfig.huds().health.x,
                 () -> SBTConfig.huds().health.y,

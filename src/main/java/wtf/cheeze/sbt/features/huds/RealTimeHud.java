@@ -39,7 +39,9 @@ import java.time.LocalDateTime;
 
 public class RealTimeHud extends TextHud {
 
-    public RealTimeHud() {
+    public static final RealTimeHud INSTANCE = new RealTimeHud();
+
+    private RealTimeHud() {
         INFO = new HudInformation(
                 () -> SBTConfig.huds().time.x,
                 () -> SBTConfig.huds().time.y,

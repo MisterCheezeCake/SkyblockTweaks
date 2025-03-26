@@ -39,7 +39,9 @@ import java.awt.Color;
 
 public class ArmorStackHud extends TextHud {
 
-    public ArmorStackHud() {
+    public static final ArmorStackHud INSTANCE = new ArmorStackHud();
+
+    private ArmorStackHud() {
         INFO = new HudInformation(
                 () -> SBTConfig.huds().armorStack.x,
                 () -> SBTConfig.huds().armorStack.y,
@@ -57,6 +59,7 @@ public class ArmorStackHud extends TextHud {
                 () -> SkyblockData.Stats.stackString != null ? Text.literal(SkyblockData.Stats.armorStack + SkyblockData.Stats.stackString) : Text.literal("0ᝐ")
         );
     }
+
     @Override
     public boolean shouldRender(boolean fromHudScreen) {
         if (!super.shouldRender(fromHudScreen)) return false;

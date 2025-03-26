@@ -37,7 +37,9 @@ import java.awt.Color;
 
 public class ManaBar extends BarHud {
 
-    public ManaBar() {
+    public static final ManaBar INSTANCE = new ManaBar();
+
+    private ManaBar() {
         INFO = new HudInformation(
                 () -> SBTConfig.huds().manaBar.x,
                 () -> SBTConfig.huds().manaBar.y,
