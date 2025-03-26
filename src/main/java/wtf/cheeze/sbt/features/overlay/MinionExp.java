@@ -1,3 +1,21 @@
+/*
+ * Copyright (C) 2025 MisterCheezeCake
+ *
+ * This file is part of SkyblockTweaks.
+ *
+ * SkyblockTweaks is free software: you can redistribute it
+ * and/or modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation, either
+ * version 3 of the License, or (at your option) any later version.
+ *
+ * SkyblockTweaks is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with SkyblockTweaks. If not, see <https://www.gnu.org/licenses/>.
+ */
 package wtf.cheeze.sbt.features.overlay;
 
 import dev.isxander.yacl3.api.Option;
@@ -10,7 +28,6 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.gui.widget.ClickableWidget;
 import net.minecraft.client.gui.widget.TextFieldWidget;
-import net.minecraft.client.gui.widget.TextWidget;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.text.Text;
 import org.intellij.lang.annotations.Language;

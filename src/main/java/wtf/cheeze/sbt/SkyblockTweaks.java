@@ -48,8 +48,7 @@ public class SkyblockTweaks implements ModInitializer {
 
 
 	public static final PersistentData PD = PersistentData.load();
-	//public static final Version VERSION = new Version(Version.VersionType.ALPHA, 0, 1, 0, 10);
-	public static final Version VERSION = new Version(VersionType.UNSTABLE);
+	public static final Version VERSION = new Version(VersionType.ALPHA, 0, 1, 0, 11);
 
 
 
