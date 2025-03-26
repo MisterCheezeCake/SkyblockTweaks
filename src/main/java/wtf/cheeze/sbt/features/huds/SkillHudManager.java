@@ -30,6 +30,7 @@ import org.jetbrains.annotations.NotNull;
 import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SBTConfig;
+import wtf.cheeze.sbt.config.persistent.PersistentData;
 import wtf.cheeze.sbt.hud.bases.TextHud;
 import wtf.cheeze.sbt.hud.utils.AnchorPoint;
 import wtf.cheeze.sbt.hud.utils.HudName;
@@ -179,7 +180,7 @@ public class SkillHudManager {
         }
 
         private static int tryAndGetSkillLevel(Skill skill) {
-            var profile = SkyblockTweaks.PD.profiles.get(SkyblockData.getCurrentProfileUnique());
+            var profile = PersistentData.get().profiles.get(SkyblockData.getCurrentProfileUnique());
             if (profile == null) return -1;
             return profile.skillLevels.getOrDefault(skill, -1);
         }

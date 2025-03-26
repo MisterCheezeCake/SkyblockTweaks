@@ -35,6 +35,7 @@ import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SBTConfig;
 import wtf.cheeze.sbt.config.categories.General;
+import wtf.cheeze.sbt.config.persistent.PersistentData;
 import wtf.cheeze.sbt.utils.NumberUtils;
 import wtf.cheeze.sbt.utils.Predicates;
 import wtf.cheeze.sbt.utils.TextUtils;
@@ -128,7 +129,7 @@ public class MinionExp {
             var minionExp = getMinionExp();
             if (this.children.getFirst().getText().equals("____")) {
                 var primarySkill = getPrimarySkill(minionExp.keySet());
-                this.children.getFirst().setText(SkyblockTweaks.PD.profiles.get(SkyblockData.getCurrentProfileUnique()).skillWisdom.getOrDefault(primarySkill, 0) + "");
+                this.children.getFirst().setText(PersistentData.get().profiles.get(SkyblockData.getCurrentProfileUnique()).skillWisdom.getOrDefault(primarySkill, 0) + "");
             }
             for (var entry : minionExp.entrySet()) {
                 RenderUtils.drawCenteredText(context, Text.literal(entry.getKey().getName() + ":"), x + WIDTH / 2, renderY, Colors.CYAN, false);

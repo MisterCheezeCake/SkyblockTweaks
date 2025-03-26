@@ -21,9 +21,14 @@ package wtf.cheeze.sbt.utils.skyblock;
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
 import net.minecraft.client.gui.screen.ingame.GenericContainerScreen;
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.LoreComponent;
 import wtf.cheeze.sbt.SkyblockTweaks;
+import wtf.cheeze.sbt.config.persistent.PersistentData;
 import wtf.cheeze.sbt.config.persistent.ProfileData;
+import wtf.cheeze.sbt.events.DrawSlotEvents;
 import wtf.cheeze.sbt.utils.TextUtils;
+import wtf.cheeze.sbt.utils.enums.Skill;
 import wtf.cheeze.sbt.utils.errors.ErrorHandler;
 import wtf.cheeze.sbt.utils.errors.ErrorLevel;
 
@@ -33,6 +38,7 @@ public class ProfileManager {
     private static final Pattern ID_MESSAGE_PATTERN = Pattern.compile("Profile ID: (.{36})");
     private static final Pattern SKILL_PATTERN = Pattern.compile("(.*) (\\d\\d?)");
     private static final Pattern SKILL_LEVEL_UP_PATTERN = Pattern.compile("SKILL LEVEL UP (.*) \\d\\d?➜(\\d\\d?)");
+    private static final Pattern WISDOM_PATTERN = Pattern.compile("☯ (.+) Wisdom (\\d+)");
     //SKILL LEVEL UP Farming 8➜9
 
     public static void registerEvents() {
@@ -43,8 +49,8 @@ public class ProfileManager {
             var matcher = ID_MESSAGE_PATTERN.matcher(messageString);
             if (matcher.find()) {
                 SkyblockData.currentProfile = matcher.group(1);
-                SkyblockTweaks.PD.profiles.putIfAbsent(SkyblockData.getCurrentProfileUnique(), new ProfileData());
-                SkyblockTweaks.PD.save();
+                PersistentData.get().profiles.putIfAbsent(SkyblockData.getCurrentProfileUnique(), new ProfileData());
+                PersistentData.get().requestSave();
                 return;
 
             }
@@ -53,43 +59,42 @@ public class ProfileManager {
             if (levelUpMatcher.find()) {
                 var skill = SkyblockUtils.strictCastStringToSkill(levelUpMatcher.group(1));
                 if (skill == null) return;
-                var profile = SkyblockTweaks.PD.profiles.get(SkyblockData.getCurrentProfileUnique());
+                var profile = PersistentData.get().profiles.get(SkyblockData.getCurrentProfileUnique());
                 if (profile == null) return;
                 var level = Integer.parseInt(levelUpMatcher.group(2));
                 profile.skillLevels.put(skill, level);
-                SkyblockTweaks.PD.save();
+                PersistentData.get().requestSave();
             }
         });
 
         //TODO: Switch to public API
-        ScreenEvents.AFTER_INIT.register(((client, screen, scaledWidth, scaledHeight) -> {
-            if (screen.getTitle().getString(
-            ).equals("Your Skill")) {
-                new Thread(() -> {
-                    try {
-                        Thread.sleep(1000);
-                    } catch (Exception e) {
-                        ErrorHandler.handleError(e, "Thread Sleep Error in Profile Manager", ErrorLevel.WARNING);
+        DrawSlotEvents.BEFORE_ITEM.register(((screenTitle, context, slot) -> {
+            if (screenTitle.getString().equals("Your Skills")) {
+                var name = slot.getStack().getName().getString();
+                var matcher = SKILL_PATTERN.matcher(name);
+                if (matcher.matches()) {
+                    var skill = SkyblockUtils.strictCastStringToSkill(matcher.group(1));
+                    if (skill == null) return;
+                    var profile = PersistentData.get().profiles.get(SkyblockData.getCurrentProfileUnique());
+                    if (profile == null) return;
+                    var level = Integer.parseInt(matcher.group(2));
+                    profile.skillLevels.put(skill, level);
+                }
+                PersistentData.get().requestSave();
+            } else if (screenTitle.getString().equals("Your Equipment and Stats") && slot.getStack() != null && slot.getStack().getName().getString().equals("Wisdom Stats")) {
+                var lines = slot.getStack().getOrDefault(DataComponentTypes.LORE, LoreComponent.DEFAULT).lines();
+                for (var line: lines) {
+                    var matcher = WISDOM_PATTERN.matcher(line.getString());
+                    if (matcher.find()) {
+                        var profile = PersistentData.get().profiles.get(SkyblockData.getCurrentProfileUnique());
+                        if (profile == null) return;
+                        var wisdom = Integer.parseInt(matcher.group(2));
+                        var skill = SkyblockUtils.strictCastStringToSkill(matcher.group(1));
+                        if (skill == Skill.UNKNOWN) return;
+                        profile.skillWisdom.put(SkyblockUtils.strictCastStringToSkill(matcher.group(1)), wisdom);
+                        PersistentData.get().requestSave();
                     }
-                    if (client.currentScreen != screen) return;
-                    var containerScreen = (GenericContainerScreen) screen;
-                    var handler = containerScreen.getScreenHandler();
-                    for (int i = 0; i < 45; i++) {
-                        var stack = handler.getSlot(i).getStack();
-                        var name = stack.getName().getString();
-                        var matcher = SKILL_PATTERN.matcher(name);
-                        if (matcher.matches()) {
-                            var skill = SkyblockUtils.strictCastStringToSkill(matcher.group(1));
-                            if (skill == null) return;
-                            var profile = SkyblockTweaks.PD.profiles.get(SkyblockData.getCurrentProfileUnique());
-                            if (profile == null) return;
-                            var level = Integer.parseInt(matcher.group(2));
-                            profile.skillLevels.put(skill, level);
-                        }
-                    }
-                    SkyblockTweaks.PD.save();
-                }).start();
-
+                }
             }
         }));
     }

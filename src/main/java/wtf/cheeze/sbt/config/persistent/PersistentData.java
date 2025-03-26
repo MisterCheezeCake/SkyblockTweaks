@@ -18,14 +18,15 @@
  */
 package wtf.cheeze.sbt.config.persistent;
 
+import com.google.gson.FieldNamingPolicy;
+import dev.isxander.yacl3.config.v2.api.ConfigClassHandler;
+import dev.isxander.yacl3.config.v2.api.SerialEntry;
+import dev.isxander.yacl3.config.v2.api.serializer.GsonConfigSerializerBuilder;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.loader.api.FabricLoader;
-import wtf.cheeze.sbt.SkyblockTweaks;
-import wtf.cheeze.sbt.utils.errors.ErrorHandler;
-import wtf.cheeze.sbt.utils.errors.ErrorLevel;
+import net.minecraft.client.gui.screen.ChatScreen;
+import net.minecraft.util.Identifier;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
 
@@ -36,40 +37,44 @@ import java.util.HashMap;
  */
 public class PersistentData {
 
+    @SerialEntry
     public HashMap<String, ProfileData> profiles = new HashMap<String, ProfileData>();
 
-    public void save() {
-        var configFile = new File(String.valueOf(configPath));
-        try {
-            configFile.createNewFile();
-            var toWrite = SkyblockTweaks.GSON.toJson(this);
-            var writer = new FileWriter(configFile);
-            writer.write(toWrite);
-            writer.close();
-        } catch (Exception e) {
-            ErrorHandler.handleError(e, "Failed to save persistent data", ErrorLevel.CRITICAL);
-        }
+
+    private static final Path pdPath = FabricLoader.getInstance().getConfigDir().resolve("skyblocktweaks-persistent.json");
+    private static final ConfigClassHandler<PersistentData> HANDLER = ConfigClassHandler.createBuilder(PersistentData.class)
+            .id(Identifier.of("skyblocktweaks", "persistent"))
+            .serializer(config -> GsonConfigSerializerBuilder.create(config).appendGsonBuilder(builder -> builder.setFieldNamingPolicy(FieldNamingPolicy.IDENTITY))
+                    .setPath(pdPath)
+                    .build())
+            .build();
+
+    public static PersistentData get() {
+        return HANDLER.instance();
     }
 
-    private static final Path configPath = FabricLoader.getInstance().getConfigDir().resolve("skyblocktweaks-persistent.json");
+    private boolean needsSave = false;
 
-    public static PersistentData load() {
-        var configFile = new File(String.valueOf(configPath));
-        try {
-            if (!configFile.exists()) {
-                var p = new PersistentData();
-                p.save();
-                return p;
+    public void requestSave() {
+        needsSave = true;
+    }
+    private static void save() {
+//        SkyblockTweaks.LOGGER.debug("Saving persistent data to {}", pdPath);
+        HANDLER.instance().needsSave = false; // Reset the flag
+        HANDLER.save();
+    }
+
+
+    public static void registerEvents() {
+        HANDLER.load();
+        ClientTickEvents.END_CLIENT_TICK.register(client -> {
+            if (!get().needsSave) return;
+            if (client.world != null) {
+                if (client.currentScreen != null && !(client.currentScreen instanceof ChatScreen)) return; // Don't save while in a screen, but allow the ChatScreen
+                save();
+            } else {
+                save();
             }
-            var content = Files.readString(configPath);
-            return SkyblockTweaks.GSON.fromJson(content, PersistentData.class);
-
-        } catch (Exception e) {
-            ErrorHandler.handleError(e, "Failed to load persistent data", ErrorLevel.CRITICAL);
-            return new PersistentData();
-        }
+        });
     }
-
-
-
 }

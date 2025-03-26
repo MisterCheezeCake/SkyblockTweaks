@@ -50,10 +50,10 @@ public class ItemStackUtils {
         if (customId == null) return "";
 
         //? if <=1.21.4 {
-        /*return customId.asString();
-         *///?} else {
-        return customId.asString().orElse("");
-        //?}
+        return customId.asString();
+         //?} else {
+        /*return customId.asString().orElse("");
+        *///?}
     }
 
 
