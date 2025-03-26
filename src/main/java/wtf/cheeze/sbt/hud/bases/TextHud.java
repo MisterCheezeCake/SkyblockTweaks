@@ -49,13 +49,28 @@ public abstract class TextHud extends HUD {
         var scale = (float) INFO.getScale.get();
         switch (INFO.getAnchorPoint.get()) {
             case LEFT -> {
-                return new Bounds(getActualX(INFO.getX.get()), getActualY(INFO.getY.get()), RenderUtils.getStringWidth(line.text.get()) * scale, client.textRenderer.fontHeight * scale, scale);
+                return new Bounds(
+                        getActualX(INFO.getX.get()),
+                        getActualY(INFO.getY.get()),
+                        (RenderUtils.getStringWidth(line.text.get()) + (line.useIcon.get() ? 10: 0)) * scale,
+                        client.textRenderer.fontHeight * scale,
+                        scale);
             }
             case RIGHT -> {
-                return new Bounds((int) (getActualX(INFO.getX.get()) - RenderUtils.getStringWidth(line.text.get()) * scale), getActualY(INFO.getY.get()), RenderUtils.getStringWidth(line.text.get()) * scale, client.textRenderer.fontHeight * scale, scale);
+                return new Bounds(
+                        (int) (getActualX(INFO.getX.get()) - (RenderUtils.getStringWidth(line.text.get()) + (line.useIcon.get() ? 10: 0)) * scale),
+                        getActualY(INFO.getY.get()),
+                        (RenderUtils.getStringWidth(line.text.get()) + (line.useIcon.get() ? 10: 0)) * scale,
+                        client.textRenderer.fontHeight * scale,
+                        scale);
             }
             case CENTER -> {
-                return new Bounds((int) (getActualX(INFO.getX.get()) - RenderUtils.getStringWidth(line.text.get()) * scale / 2), getActualY(INFO.getY.get()), RenderUtils.getStringWidth(line.text.get()) * scale, client.textRenderer.fontHeight * scale, scale);
+                return new Bounds(
+                        (int) (getActualX(INFO.getX.get()) - (RenderUtils.getStringWidth(line.text.get()) + (line.useIcon.get() ? 10: 0)) * scale / 2),
+                        getActualY(INFO.getY.get()),
+                        (RenderUtils.getStringWidth(line.text.get()) + (line.useIcon.get() ? 10: 0)) * scale,
+                        client.textRenderer.fontHeight * scale,
+                        scale);
             }
             default -> throw new IllegalStateException("Unexpected value: " + INFO.getAnchorPoint.get());
         }
