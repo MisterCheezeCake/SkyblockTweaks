@@ -180,7 +180,7 @@ public class SkillHudManager {
         }
 
         private static int tryAndGetSkillLevel(Skill skill) {
-            var profile = PersistentData.get().profiles.get(SkyblockData.getCurrentProfileUnique());
+            var profile = PersistentData.get().currentProfile();
             if (profile == null) return -1;
             return profile.skillLevels.getOrDefault(skill, -1);
         }

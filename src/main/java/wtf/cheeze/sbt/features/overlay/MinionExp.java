@@ -41,6 +41,8 @@ import wtf.cheeze.sbt.utils.Predicates;
 import wtf.cheeze.sbt.utils.TextUtils;
 import wtf.cheeze.sbt.utils.constants.loader.Constants;
 import wtf.cheeze.sbt.utils.enums.Skill;
+import wtf.cheeze.sbt.utils.errors.ErrorHandler;
+import wtf.cheeze.sbt.utils.errors.ErrorLevel;
 import wtf.cheeze.sbt.utils.injected.SBTHandledScreen;
 import wtf.cheeze.sbt.utils.render.Colors;
 import wtf.cheeze.sbt.utils.render.Popup;
@@ -120,25 +122,28 @@ public class MinionExp {
 
         @Override
         public void render(DrawContext context, int mouseX, int mouseY, float delta) {
-            Popup.super.renderBackground(context);
-            RenderUtils.drawCenteredText(context, TextUtils.withBold("Skill EXP"), x + WIDTH / 2, y + 5, Colors.WHITE, false);
-            RenderUtils.drawCenteredText(context, Text.literal("☯ Wisdom"), x + WIDTH / 2, y + 85 , Colors.CYAN, false);
-            RenderUtils.drawText(context, SBT_FOOTER, x + WIDTH - 3 - RenderUtils.getStringWidth(SBT_FOOTER.getString()), y + HEIGHT - 12, Colors.WHITE, false);
+            try {
+                Popup.super.renderBackground(context);
+                RenderUtils.drawCenteredText(context, TextUtils.withBold("Skill EXP"), x + WIDTH / 2, y + 5, Colors.WHITE, false);
+                RenderUtils.drawCenteredText(context, Text.literal("☯ Wisdom"), x + WIDTH / 2, y + 85, Colors.CYAN, false);
+                RenderUtils.drawText(context, SBT_FOOTER, x + WIDTH - 3 - RenderUtils.getStringWidth(SBT_FOOTER.getString()), y + HEIGHT - 12, Colors.WHITE, false);
 
-            var renderY = y + 20;
-            var minionExp = getMinionExp();
-            if (this.children.getFirst().getText().equals("____")) {
-                var primarySkill = getPrimarySkill(minionExp.keySet());
-                this.children.getFirst().setText(PersistentData.get().profiles.get(SkyblockData.getCurrentProfileUnique()).skillWisdom.getOrDefault(primarySkill, 0) + "");
-            }
-            for (var entry : minionExp.entrySet()) {
-                RenderUtils.drawCenteredText(context, Text.literal(entry.getKey().getName() + ":"), x + WIDTH / 2, renderY, Colors.CYAN, false);
-                var exp = entry.getValue();
-                RenderUtils.drawCenteredText(context, Text.literal(NumberUtils.addKOrM((int) (exp * getMult()), ",") + " XP"), x + WIDTH / 2, renderY + 10, Colors.WHITE, false);
-                renderY+=30;
+                var renderY = y + 20;
+                var minionExp = getMinionExp();
+                if (this.children.getFirst().getText().equals("____")) {
+                    var primarySkill = getPrimarySkill(minionExp.keySet());
+                    this.children.getFirst().setText(PersistentData.get().currentProfile().skillWisdom.getOrDefault(primarySkill, 0) + "");
+                }
+                for (var entry : minionExp.entrySet()) {
+                    RenderUtils.drawCenteredText(context, Text.literal(entry.getKey().getName() + ":"), x + WIDTH / 2, renderY, Colors.CYAN, false);
+                    var exp = entry.getValue();
+                    RenderUtils.drawCenteredText(context, Text.literal(NumberUtils.addKOrM((int) (exp * getMult()), ",") + " XP"), x + WIDTH / 2, renderY + 10, Colors.WHITE, false);
+                    renderY += 30;
+                }
+            } catch (Exception e) {
+                ErrorHandler.handleError(e, "Error rendering Minion EXP popup", ErrorLevel.WARNING);
             }
         }
-
 
         private List<Slot> getRelevantSlots() {
             return isChest ? screen.getScreenHandler().slots.stream().filter(slot -> slot.id < 27).toList() : Arrays.stream(MINION_SLOTS).mapToObj(slotId -> screen.getScreenHandler().slots.get(slotId)).toList();

@@ -47,7 +47,7 @@ public class SkyblockData {
     public static boolean inSB = false;
     public static boolean alphaNetwork = false;
 
-    public static String currentProfile = null;
+    public static String currentProfile = "unknown_profile";
     public static String mode = null;
     public static Location location = Location.UNKNOWN;
     public static String currentServer = "Unknown Server";

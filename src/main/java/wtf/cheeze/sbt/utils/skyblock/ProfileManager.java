@@ -59,7 +59,7 @@ public class ProfileManager {
             if (levelUpMatcher.find()) {
                 var skill = SkyblockUtils.strictCastStringToSkill(levelUpMatcher.group(1));
                 if (skill == null) return;
-                var profile = PersistentData.get().profiles.get(SkyblockData.getCurrentProfileUnique());
+                var profile = PersistentData.get().currentProfile();
                 if (profile == null) return;
                 var level = Integer.parseInt(levelUpMatcher.group(2));
                 profile.skillLevels.put(skill, level);
@@ -75,7 +75,7 @@ public class ProfileManager {
                 if (matcher.matches()) {
                     var skill = SkyblockUtils.strictCastStringToSkill(matcher.group(1));
                     if (skill == null) return;
-                    var profile = PersistentData.get().profiles.get(SkyblockData.getCurrentProfileUnique());
+                    var profile = PersistentData.get().currentProfile();
                     if (profile == null) return;
                     var level = Integer.parseInt(matcher.group(2));
                     profile.skillLevels.put(skill, level);
@@ -86,7 +86,7 @@ public class ProfileManager {
                 for (var line: lines) {
                     var matcher = WISDOM_PATTERN.matcher(line.getString());
                     if (matcher.find()) {
-                        var profile = PersistentData.get().profiles.get(SkyblockData.getCurrentProfileUnique());
+                        var profile = PersistentData.get().currentProfile();
                         if (profile == null) return;
                         var wisdom = Integer.parseInt(matcher.group(2));
                         var skill = SkyblockUtils.strictCastStringToSkill(matcher.group(1));

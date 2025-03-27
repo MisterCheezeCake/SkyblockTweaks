@@ -26,6 +26,8 @@ import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.gui.screen.ChatScreen;
 import net.minecraft.util.Identifier;
+import wtf.cheeze.sbt.utils.skyblock.SkyblockData;
+
 import java.nio.file.Path;
 import java.util.HashMap;
 
@@ -37,7 +39,11 @@ import java.util.HashMap;
 public class PersistentData {
 
     @SerialEntry
-    public HashMap<String, ProfileData> profiles = new HashMap<String, ProfileData>();
+    public HashMap<String, ProfileData> profiles = new HashMap<>();
+
+    public ProfileData currentProfile() {
+        return profiles.getOrDefault(SkyblockData.getCurrentProfileUnique(), new ProfileData());
+    }
 
 
     private static final Path pdPath = FabricLoader.getInstance().getConfigDir().resolve("skyblocktweaks-persistent.json");
