@@ -46,8 +46,8 @@ public class SkyblockTweaks implements ModInitializer {
 	public static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     public static final Logger LOGGER = LoggerFactory.getLogger("SkyblockTweaks");
 
-	//public static final Version VERSION = new Version(VersionType.ALPHA, 0, 1, 0, 11);
-	public static final Version VERSION = new Version(VersionType.UNSTABLE);
+	public static final Version VERSION = new Version(VersionType.ALPHA, 0, 1, 0, 12);
+	//public static final Version VERSION = new Version(VersionType.UNSTABLE);
 
 
 
@@ -55,7 +55,6 @@ public class SkyblockTweaks implements ModInitializer {
 	public void onInitialize() {
 
 		SBTConfig.load();
-//		PersistentData.INSTANCE.ensureLoaded();
 		PersistentData.registerEvents();
 
 		KillSwitch.registerEvents();
