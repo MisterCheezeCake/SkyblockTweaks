@@ -19,11 +19,9 @@
 package wtf.cheeze.sbt.utils.skyblock;
 
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.util.Pair;
-import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.hud.icon.HudIcon;
 import wtf.cheeze.sbt.hud.icon.Icons;
-import wtf.cheeze.sbt.mixin.BossBarHudAccessor;
+import wtf.cheeze.sbt.mixin.accessors.BossBarHudAccessor;
 import wtf.cheeze.sbt.utils.CheezePair;
 import wtf.cheeze.sbt.utils.NumberUtils;
 import wtf.cheeze.sbt.utils.TextUtils;

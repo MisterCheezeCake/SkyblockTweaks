@@ -16,19 +16,15 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with SkyblockTweaks. If not, see <https://www.gnu.org/licenses/>.
  */
-package wtf.cheeze.sbt.mixin;
+package wtf.cheeze.sbt.mixin.accessors;
 
-
-import net.minecraft.client.gui.hud.BossBarHud;
-import net.minecraft.client.gui.hud.ClientBossBar;
+import dev.isxander.yacl3.gui.YACLScreen;
+import net.minecraft.client.gui.screen.Screen;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
 
-import java.util.Map;
-import java.util.UUID;
-
-@Mixin(BossBarHud.class)
-public interface BossBarHudAccessor {
-    @Accessor("bossBars")
-    Map<UUID, ClientBossBar> getBossBars();
+@Mixin(YACLScreen.class)
+public interface YACLScreenAccessor {
+    @Accessor("parent")
+    Screen sbt$getParent();
 }

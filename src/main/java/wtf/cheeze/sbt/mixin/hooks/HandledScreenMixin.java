@@ -16,13 +16,11 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with SkyblockTweaks. If not, see <https://www.gnu.org/licenses/>.
  */
-package wtf.cheeze.sbt.mixin;
+package wtf.cheeze.sbt.mixin.hooks;
 
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
-import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.component.DataComponentTypes;
 import net.minecraft.screen.BrewingStandScreenHandler;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.slot.Slot;
@@ -35,15 +33,10 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import wtf.cheeze.sbt.SkyblockTweaks;
-import wtf.cheeze.sbt.config.SBTConfig;
 import wtf.cheeze.sbt.events.DrawSlotEvents;
 import wtf.cheeze.sbt.features.overlay.BrewingStandOverlay;
 import wtf.cheeze.sbt.utils.injected.SBTHandledScreen;
 import wtf.cheeze.sbt.utils.render.Popup;
-import wtf.cheeze.sbt.utils.skyblock.SkyblockData;
-
-import java.util.List;
 
 @Mixin(HandledScreen.class)
 public abstract class HandledScreenMixin<T extends ScreenHandler> extends Screen implements SBTHandledScreen {

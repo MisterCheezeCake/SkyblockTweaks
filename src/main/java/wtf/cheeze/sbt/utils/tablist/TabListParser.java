@@ -20,10 +20,8 @@ package wtf.cheeze.sbt.utils.tablist;
 
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.network.PlayerListEntry;
-import wtf.cheeze.sbt.SkyblockTweaks;
-import wtf.cheeze.sbt.mixin.PlayerListHudAccessor;
+import wtf.cheeze.sbt.mixin.accessors.PlayerListHudAccessor;
 import wtf.cheeze.sbt.utils.errors.ErrorHandler;
 import wtf.cheeze.sbt.utils.errors.ErrorLevel;
 import wtf.cheeze.sbt.utils.skyblock.SkyblockData;

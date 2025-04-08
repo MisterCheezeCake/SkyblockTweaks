@@ -33,7 +33,7 @@ import wtf.cheeze.sbt.features.huds.*;
 import wtf.cheeze.sbt.features.mining.EventTimerHud;
 import wtf.cheeze.sbt.features.mining.MiningHud;
 import wtf.cheeze.sbt.features.overlay.MinionExp;
-import wtf.cheeze.sbt.mixin.YACLScreenAccessor;
+import wtf.cheeze.sbt.mixin.accessors.YACLScreenAccessor;
 import wtf.cheeze.sbt.utils.actionbar.ActionBarTransformer;
 import wtf.cheeze.sbt.utils.constants.loader.ConstantLoader;
 import wtf.cheeze.sbt.utils.errors.ErrorHandler;

@@ -16,20 +16,18 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with SkyblockTweaks. If not, see <https://www.gnu.org/licenses/>.
  */
-package wtf.cheeze.sbt.mixin;
+package wtf.cheeze.sbt.mixin.features;
 
 import net.minecraft.client.MinecraftClient;
 
 import net.minecraft.client.gui.screen.ingame.*;
 
 import net.minecraft.client.gui.widget.ButtonWidget;
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.config.SBTConfig;
 import wtf.cheeze.sbt.utils.KillSwitch;
 import wtf.cheeze.sbt.utils.skyblock.SkyblockData;
@@ -41,7 +39,7 @@ import wtf.cheeze.sbt.utils.skyblock.SkyblockData;
 @Mixin(RecipeBookScreen.class)
 //?}
 
-public abstract class InventoryScreenMixin {
+public abstract class RecipeBookRedirectorMixin {
 
     @Unique private static final String FEATURE_ID = "recipe_book_redirect";
     // This injects into the head of the synthetic method that is triggered when you click the recipe book button

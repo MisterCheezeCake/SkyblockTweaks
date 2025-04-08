@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with SkyblockTweaks. If not, see <https://www.gnu.org/licenses/>.
  */
-package wtf.cheeze.sbt.mixin;
+package wtf.cheeze.sbt.mixin.hooks;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
@@ -44,43 +44,6 @@ public abstract class InGameHudMixin {
 
     @Final @Shadow
     private LayeredDrawer layeredDrawer;
-    @WrapOperation(method = "renderOverlayMessage", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawTextWithBackground(Lnet/minecraft/client/font/TextRenderer;Lnet/minecraft/text/Text;IIII)I"))
-    private int sbt$drawTextWithBackgroundNoShadowWrap(DrawContext instance, TextRenderer textRenderer, Text text, int x, int y, int width, int color, Operation<Integer> original) {
-        if (SBTConfig.get().hudTweaks.noShadowActionBar) {
-            return ((SBTDrawContext) instance).sbt$drawTextWithBackgroundNoShadow(textRenderer, text, x, y, width, color);
-        } else {
-            return original.call(instance, textRenderer, text, x, y, width, color);
-        }
-    }
-
-    @Inject(method = "renderArmor" , at = @At("HEAD"), cancellable = true)
-    private static void sbt$onRenderArmor(CallbackInfo ci) {
-        if (SBTConfig.get().hudTweaks.noRenderArmor && SkyblockData.inSB) {
-            ci.cancel();
-        }
-    }
-
-    @Inject(method = "renderHealthBar" , at = @At("HEAD"), cancellable = true)
-    private void sbt$onRenderHealth(CallbackInfo ci) {
-
-        if (SBTConfig.get().hudTweaks.noRenderHearts && SkyblockData.inSB && (!SBTConfig.get().hudTweaks.showHearsInRift || SkyblockData.location != Location.RIFT)) {
-            ci.cancel();
-        }
-    }
-
-    @Inject(method = "renderFood" , at = @At("HEAD"), cancellable = true)
-    private void sbt$onRenderFood(CallbackInfo ci) {
-        if (SBTConfig.get().hudTweaks.noRenderHunger && SkyblockData.inSB) {
-            ci.cancel();
-        }
-    }
-
-    @Inject(method = "renderStatusEffectOverlay" , at = @At("HEAD"), cancellable = true)
-    private void sbt$onRenderStatusEffectOverlay(CallbackInfo ci) {
-        if (SBTConfig.get().hudTweaks.noRenderPotionOverlay && SkyblockData.inSB) {
-            ci.cancel();
-        }
-    }
 
     // The following injectors power HudRenderEvents and were likewise taken from Skyblocker
     @ModifyArg(method = "<init>", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/LayeredDrawer;addLayer(Lnet/minecraft/client/gui/LayeredDrawer$Layer;)Lnet/minecraft/client/gui/LayeredDrawer;", ordinal = 2))
