@@ -24,6 +24,7 @@ import wtf.cheeze.sbt.utils.enums.*;
 public class SkyblockUtils {
 
     private static final MinecraftClient client = MinecraftClient.getInstance();
+    private static final float SPRINT_MULT = 1.3f;
 
     public static Rarity castStringToRarity(String input) {
         input = input.toLowerCase();
@@ -136,7 +137,7 @@ public class SkyblockUtils {
     public static float getSpeed() {
         MinecraftClient mc = MinecraftClient.getInstance();
         // sprint = 1.3 x base speed
-        return mc.player.isSprinting() ? (mc.player.getMovementSpeed() / 1.3f) * 1000 : mc.player.getMovementSpeed() * 1000;
+        return mc.player.isSprinting() ? (mc.player.getMovementSpeed() / SPRINT_MULT) * 1000 : mc.player.getMovementSpeed() * 1000;
     }
 
     public static boolean inMiningIsland() {

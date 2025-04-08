@@ -39,6 +39,7 @@ import java.util.Map;
 
 public class UpdateChecker {
     public static final String REMOTE_VERSION_FILE = "https://raw.githubusercontent.com/MisterCheezeCake/RemoteData/refs/heads/main/SBT/updateNew.json";
+    private static final int CODE_SUCCESS = 200;
 
 
     public static void checkForUpdates() {
@@ -46,7 +47,7 @@ public class UpdateChecker {
             try {
                 SkyblockTweaks.LOGGER.info("Checking for updates");
                 var result = HTTPUtils.get(REMOTE_VERSION_FILE);
-                if (result.statusCode() != 200) {
+                    if (result.statusCode() != CODE_SUCCESS) {
                     SkyblockTweaks.LOGGER.error("Failed to check for updates, status code: {}", result.statusCode());
                     return;
                 }

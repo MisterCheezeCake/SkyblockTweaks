@@ -24,6 +24,10 @@ import java.util.regex.Pattern;
 public class TimeUtils {
 
     private static final Pattern TIME_PATTERN = Pattern.compile("(?:(?<hours>\\d+)h)?(?:(?<minutes>\\d+)m)?(?:(?<seconds>\\d+)s)?");
+    private static final int SECONDS_PER_HOUR = 3600;
+    private static final int SECONDS_PER_MINUTE = 60;
+    private static final int MINUTES_PER_HOUR = SECONDS_PER_MINUTE;
+
 
     public static int parseDuration(String string) {
         Matcher matcher = TIME_PATTERN.matcher(string);
@@ -32,10 +36,10 @@ public class TimeUtils {
             return time;
         }
         if (matcher.group("hours") != null) {
-            time += Integer.parseInt(matcher.group("hours")) * 3600;
+            time += Integer.parseInt(matcher.group("hours")) * SECONDS_PER_HOUR;
         }
         if (matcher.group("minutes") != null) {
-            time += Integer.parseInt(matcher.group("minutes")) * 60;
+            time += Integer.parseInt(matcher.group("minutes")) * SECONDS_PER_MINUTE;
         }
         if (matcher.group("seconds") != null) {
             time += Integer.parseInt(matcher.group("seconds"));
@@ -44,9 +48,9 @@ public class TimeUtils {
     }
 
     public static String toDuration(int seconds) {
-        int hours = seconds / 3600;
-        int minutes = (seconds % 3600) / 60;
-        int secs = seconds % 60;
+        int hours = seconds / SECONDS_PER_HOUR;
+        int minutes = (seconds % SECONDS_PER_HOUR) / MINUTES_PER_HOUR;
+        int secs = seconds % SECONDS_PER_MINUTE;
         if (hours < 1) {
             if (minutes < 1) {
                 return String.format("%ds", secs);
@@ -59,9 +63,9 @@ public class TimeUtils {
     }
 
     public static String formatTime(int seconds, boolean hours) {
-        int hoursInt = seconds / 3600;
-        int minutes = (seconds % 3600) / 60;
-        int secs = seconds % 60;
+        int hoursInt = seconds / SECONDS_PER_HOUR;
+        int minutes = (seconds % SECONDS_PER_HOUR) / MINUTES_PER_HOUR;
+        int secs = seconds % SECONDS_PER_MINUTE;
         if (hours) {
             return String.format("%02d:%02d:%02d", hoursInt, minutes, secs);
         } else {

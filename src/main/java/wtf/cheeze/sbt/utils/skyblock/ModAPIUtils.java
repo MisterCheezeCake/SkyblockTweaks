@@ -27,9 +27,10 @@ import net.minecraft.util.Util;
 import wtf.cheeze.sbt.SkyblockTweaks;
 
 public class ModAPIUtils {
+    private static final int LOCATION_PACKET_VERSION = 1;
     public static void registerEvents() {
         HypixelNetworking.registerToEvents(Util.make(new Object2IntOpenHashMap<>(), map -> {
-            map.put(LocationUpdateS2CPacket.ID, 1);
+            map.put(LocationUpdateS2CPacket.ID, LOCATION_PACKET_VERSION);
         }));
         HypixelPacketEvents.PARTY_INFO.register(SkyblockData::handlePacket);
         HypixelPacketEvents.HELLO.register(SkyblockData::handlePacket);

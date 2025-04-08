@@ -40,17 +40,12 @@ public class Colors {
     public static final int SBT_GREEN = 3658595;
 
 
+    private static final float[] THRESHOLDS = {.25f, .5f, .75f};
+
     public static int fromFloatValue(float f) {
-        if (f < .25) return RED;
-        if (f < .5) return ORANGE;
-        if (f < .75) return YELLOW;
+        if (f < THRESHOLDS[0]) return RED;
+        if (f < THRESHOLDS[1]) return ORANGE;
+        if (f < THRESHOLDS[2]) return YELLOW;
         return LIME;
     }
-
-
-
-
-
-
-
 }

@@ -48,6 +48,8 @@ public class MenuHighlights {
     public static final int HIGHLIGHT_GREEN2 = -33423577;
     public static final int HIGHLIGHT_GREY = -27962027;
 
+    private static final int SLOT_DIMENSION = 16;
+
     public static void registerEvents() {
         DrawSlotEvents.BEFORE_ITEM.register(MenuHighlights::onDrawSlot);
     }
@@ -148,7 +150,7 @@ public class MenuHighlights {
     }
 
     private static void highlight(DrawContext context, Slot slot, int color) {
-        context.fill(slot.x, slot.y, slot.x + 16, slot.y + 16, color);
+        context.fill(slot.x, slot.y, slot.x + SLOT_DIMENSION, slot.y + SLOT_DIMENSION, color);
     }
 
     public static class Config {

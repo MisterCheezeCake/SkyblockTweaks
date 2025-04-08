@@ -32,6 +32,7 @@ import net.minecraft.util.Identifier;
 import wtf.cheeze.sbt.config.categories.*;
 import wtf.cheeze.sbt.config.migration.BarColorTransformation;
 import wtf.cheeze.sbt.config.migration.MigrationManager;
+import wtf.cheeze.sbt.hud.HUD;
 import wtf.cheeze.sbt.hud.utils.DrawMode;
 import wtf.cheeze.sbt.events.EventUtils;
 
@@ -101,8 +102,8 @@ public class  SBTConfig {
     }
     public static FloatSliderControllerBuilder generateScaleController(Option<Float> opt) {
         return FloatSliderControllerBuilder.create(opt)
-                .range(0.1f, 3.0f)
-                .step(0.1f);
+                .range(HUD.MIN_SCALE, HUD.MAX_SCALE)
+                .step(HUD.SCALE_STEP);
     }
 
     public static EnumControllerBuilder<DrawMode> generateDrawModeController(Option<DrawMode> opt) {

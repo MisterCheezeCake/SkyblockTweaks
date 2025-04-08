@@ -378,7 +378,7 @@ public class SkillHudManager {
                     () -> SBTConfig.huds().skillBar.color,
                     () -> {
                         if (percent != 0) {
-                            return percent/100f;
+                            return percent/ 100f;
                         } else {
                             return progress / total;
                         }

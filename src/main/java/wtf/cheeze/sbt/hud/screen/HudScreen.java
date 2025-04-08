@@ -37,16 +37,18 @@ import wtf.cheeze.sbt.hud.bounds.Bounds;
 import wtf.cheeze.sbt.hud.utils.AnchorPoint;
 import wtf.cheeze.sbt.utils.CheezePair;
 import wtf.cheeze.sbt.utils.Predicates;
+import wtf.cheeze.sbt.utils.render.Colors;
 import wtf.cheeze.sbt.utils.render.RenderUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Predicate;
 
 import static wtf.cheeze.sbt.hud.screen.EditorPopup.POPUP_Z;
 
 public class HudScreen extends Screen {
 
+    private static final float RELATIVE_MOVE_AMOUNT = 2.0f;
+    private static final float BUTTON_Z = 100;
     private final List<HUD> huds;
     private final Screen parent;
     @Nullable
@@ -85,7 +87,7 @@ public class HudScreen extends Screen {
     }
 
     private static float getMoveAmount() {
-        return 2.0f / MinecraftClient.getInstance().getWindow().getScaledWidth();
+        return RELATIVE_MOVE_AMOUNT / MinecraftClient.getInstance().getWindow().getScaledWidth();
     }
 
     private static void moveHorizontal(HUD hud, float amount) {
@@ -99,6 +101,7 @@ public class HudScreen extends Screen {
     }
 
     @Override
+    @SuppressWarnings("MagicNumber")
     protected void init() {
         super.init();
         MinecraftClient mc = MinecraftClient.getInstance();
@@ -107,12 +110,12 @@ public class HudScreen extends Screen {
         cancelButton = new MatrixConsumingButton(Text.literal("Exit"), button -> {
             this.selectedElement = null;
             setMode(Mode.DRAG);
-        }, centerX - 25, 95, 150, 20, (matrixStack -> matrixStack.translate(0, 0, 100)));
+        }, centerX - 25, 95, 150, 20, (matrixStack -> matrixStack.translate(0, 0, BUTTON_Z)));
 
         resetButton = new MatrixConsumingButton(Text.literal("Reset"), button -> {
             this.huds.get(this.resetModeIndex).updatePosition(0.1f, 0.f);
 
-        }, centerX - 25, 65, 150, 20, (matrixStack -> matrixStack.translate(0, 0, 100)));
+        }, centerX - 25, 65, 150, 20, (matrixStack -> matrixStack.translate(0, 0, BUTTON_Z)));
         resetModeButton = new MatrixConsumingButton(this.huds.getFirst().getName().primaryName(), button -> {
             this.resetModeIndex++;
             if (this.resetModeIndex >= this.huds.size()) {
@@ -120,7 +123,7 @@ public class HudScreen extends Screen {
             }
             resetModeButton.setMessage(this.huds.get(this.resetModeIndex).getName().primaryName());
 
-        }, centerX - 25, 35, 150, 20, (matrixStack -> matrixStack.translate(0, 0, 100)));
+        }, centerX - 25, 35, 150, 20, (matrixStack -> matrixStack.translate(0, 0, BUTTON_Z)));
 
         setMode(Mode.DRAG);
         this.addDrawableChild(cancelButton);
@@ -306,22 +309,22 @@ public class HudScreen extends Screen {
         context.getMatrices().push();
         context.getMatrices().translate(0, 0, 100);
         if (shouldShowText() && this.mode == Mode.DRAG) {
-            context.drawCenteredTextWithShadow(client.textRenderer, "Drag or use the arrow keys to move items", centerX, 5, 0xFFFFFF);
-            context.drawCenteredTextWithShadow(client.textRenderer, "Scroll or use the + and - keys to scale items", centerX, 15, 0xFFFFFF);
-            context.drawCenteredTextWithShadow(client.textRenderer, "Press shift and hover to see the name of the item", centerX, 25, 0xFFFFFF);
-            context.drawCenteredTextWithShadow(client.textRenderer, (macOS() ? "Command" : "Control") + " click for text mode/to edit anchor points", centerX, 35, 0xFFFFFF);
-            context.drawCenteredTextWithShadow(client.textRenderer, (macOS() ? "Command" : "Control") + "+ R to enter Reset Mode", centerX, 45, 0xFFFFFF);
-            context.drawCenteredTextWithShadow(client.textRenderer, "Hold " + (macOS() ? "option" : "alt") + " to hide this text or " + (macOS() ? "Cmd+Opt" : "Ctrl+Alt") + " to toggle it", centerX, 55, 0xFFFFFF);
+            context.drawCenteredTextWithShadow(client.textRenderer, "Drag or use the arrow keys to move items", centerX, 5, Colors.WHITE);
+            context.drawCenteredTextWithShadow(client.textRenderer, "Scroll or use the + and - keys to scale items", centerX, 15, Colors.WHITE);
+            context.drawCenteredTextWithShadow(client.textRenderer, "Press shift and hover to see the name of the item", centerX, 25, Colors.WHITE);
+            context.drawCenteredTextWithShadow(client.textRenderer, (macOS() ? "Command" : "Control") + " click for text mode/to edit anchor points", centerX, 35, Colors.WHITE);
+            context.drawCenteredTextWithShadow(client.textRenderer, (macOS() ? "Command" : "Control") + "+ R to enter Reset Mode", centerX, 45, Colors.WHITE);
+            context.drawCenteredTextWithShadow(client.textRenderer, "Hold " + (macOS() ? "option" : "alt") + " to hide this text or " + (macOS() ? "Cmd+Opt" : "Ctrl+Alt") + " to toggle it", centerX, 55, Colors.WHITE);
         } else if (shouldShowText() && this.mode == Mode.TEXT) {
-            context.drawCenteredTextWithShadow(client.textRenderer, "You are now in exact positioning mode", centerX, 5, 0xFFFFFF);
-            context.drawCenteredTextWithShadow(client.textRenderer, "Enter the x and y positions in the text fields below", centerX, 15, 0xFFFFFF);
-            context.drawCenteredTextWithShadow(client.textRenderer, "The number is relative, so 0 is fully up/left and 1 is fully down/right", centerX, 25, 0xFFFFFF);
-            context.drawCenteredTextWithShadow(client.textRenderer, "Press the anchor button to change where the hud anchors itself", centerX, 35, 0xFFFFFF);
-            context.drawCenteredTextWithShadow(client.textRenderer, "Hold " + (macOS() ? "option" : "alt") + " to hide this text or " + (macOS() ? "Cmd+Opt" : "Ctrl+Alt") + " to toggle it", centerX, 45, 0xFFFFFF);
+            context.drawCenteredTextWithShadow(client.textRenderer, "You are now in exact positioning mode", centerX, 5, Colors.WHITE);
+            context.drawCenteredTextWithShadow(client.textRenderer, "Enter the x and y positions in the text fields below", centerX, 15, Colors.WHITE);
+            context.drawCenteredTextWithShadow(client.textRenderer, "The number is relative, so 0 is fully up/left and 1 is fully down/right", centerX, 25, Colors.WHITE);
+            context.drawCenteredTextWithShadow(client.textRenderer, "Press the anchor button to change where the hud anchors itself", centerX, 35, Colors.WHITE);
+            context.drawCenteredTextWithShadow(client.textRenderer, "Hold " + (macOS() ? "option" : "alt") + " to hide this text or " + (macOS() ? "Cmd+Opt" : "Ctrl+Alt") + " to toggle it", centerX, 45, Colors.WHITE);
         } else if (this.mode == Mode.RESET) {
-            context.drawCenteredTextWithShadow(client.textRenderer, "You are now in reset mode", centerX, 5, 0xFFFFFF);
-            context.drawCenteredTextWithShadow(client.textRenderer, "Press the reset button to reset the selected item to the default position", centerX, 15, 0xFFFFFF);
-            context.drawCenteredTextWithShadow(client.textRenderer, "Press the first button to cycle between elements", centerX, 25, 0xFFFFFF);
+            context.drawCenteredTextWithShadow(client.textRenderer, "You are now in reset mode", centerX, 5, Colors.WHITE);
+            context.drawCenteredTextWithShadow(client.textRenderer, "Press the reset button to reset the selected item to the default position", centerX, 15, Colors.WHITE);
+            context.drawCenteredTextWithShadow(client.textRenderer, "Press the first button to cycle between elements", centerX, 25, Colors.WHITE);
         }
         context.getMatrices().pop();
     }

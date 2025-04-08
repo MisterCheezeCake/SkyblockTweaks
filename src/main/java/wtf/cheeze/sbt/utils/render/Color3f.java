@@ -23,6 +23,7 @@ public class Color3f {
     public float green;
     public float blue;
 
+    @SuppressWarnings("MagicNumbers")
     Color3f (int color) {
         this.red = (float) (color >> 16 & 255) / 255.0F;
         this.green = (float) (color >> 8 & 255) / 255.0F;

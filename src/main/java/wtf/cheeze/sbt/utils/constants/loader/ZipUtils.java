@@ -28,6 +28,8 @@ import java.util.zip.*;
 public class ZipUtils {
 
 
+    private static final int BUFFER_SIZE = 4096;
+
     public static void unzip(String zipFilePath, File destDirectory) throws IOException {
         try (FileInputStream fis = new FileInputStream(zipFilePath)) {
             unzip(fis, destDirectory);
@@ -61,7 +63,7 @@ public class ZipUtils {
         toWrite.createNewFile();
 
         try (BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(filePath))) {
-            byte[] bytesIn = new byte[4096];
+            byte[] bytesIn = new byte[BUFFER_SIZE];
             int read;
             while ((read = zipIn.read(bytesIn)) != -1) {
                 bos.write(bytesIn, 0, read);

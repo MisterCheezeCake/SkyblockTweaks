@@ -78,10 +78,6 @@ public class TickerHud extends AbstractTickerHud {
 
     }
 
-//    public int getMax() {
-//        return getMax(false);
-//    }
-
     public static class Config {
         @SerialEntry
         public boolean enabled = false;

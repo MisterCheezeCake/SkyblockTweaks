@@ -109,6 +109,7 @@ public abstract class HUD {
 
     public static final float MIN_SCALE = 0.1f;
     public static final float MAX_SCALE = 3.0f;
+    public static final float SCALE_STEP = 0.1f;
 
     public static final int BACKGROUND_NOT_HOVERED = 855638015;
     public static final int BACKGROUND_HOVERED = -1761607681;

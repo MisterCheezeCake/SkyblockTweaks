@@ -30,6 +30,7 @@ import wtf.cheeze.sbt.utils.injected.SBTDrawContext;
 public class RenderUtils {
 
     private static final MinecraftClient client = MinecraftClient.getInstance();
+    private static final int OUTLINE_LIGHT = 15728880;
 
     public static void beginScale(DrawContext context, float scale) {
         context.getMatrices().push();
@@ -60,7 +61,7 @@ public class RenderUtils {
                  *///?} else {
                 getVertexConsumers(context),
                 //?}
-                15728880);
+                OUTLINE_LIGHT);
     }
     public static void drawTextWithOutline(DrawContext context, Text text, int x, int y, int color, int outlineColor, float scale) {
         beginScale(context, scale);

@@ -27,6 +27,7 @@ import net.minecraft.util.collection.DefaultedList;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SBTConfig;
 import wtf.cheeze.sbt.config.categories.General;
+import wtf.cheeze.sbt.utils.render.Colors;
 import wtf.cheeze.sbt.utils.render.RenderUtils;
 
 public class BrewingStandOverlay {
@@ -35,24 +36,29 @@ public class BrewingStandOverlay {
     private static final int DRAW_OFFSET_Y = 4;
     public static final float Z_OFFSET = 251;
 
+    private static final int INPUT_SLOT = 13;
+    private static final int TIMER_SLOT = 24;
+    private static final int RIGHT_OUTPUT_SLOT = 42;
+
+
     public static void render(DefaultedList<Slot> slots, DrawContext context) {
         if (!SBTConfig.get().brewingStandOverlay.enabled) return;
 
-        var slot13 = slots.get(13);
-        var slot24 = slots.get(24);
-        var slot42 = slots.get(42);
+        var input = slots.get(INPUT_SLOT);
+        var timer = slots.get(TIMER_SLOT);
+        var output = slots.get(RIGHT_OUTPUT_SLOT);
 
         context.getMatrices().push();
         context.getMatrices().translate(0.0f, 0.0f, Z_OFFSET);
 
-        if (slot13.hasStack()) {
-            drawName(slot13, context);
+        if (input.hasStack()) {
+            drawName(input, context);
         }
-        if (!slot24.getStack().getName().getString().startsWith("Place Water Bottles")) {
-            drawName(slot24, context);
+        if (!timer.getStack().getName().getString().startsWith("Place Water Bottles")) {
+            drawName(timer, context);
         }
-        if (slot42.hasStack()) {
-            drawName(slot42, context);
+        if (output.hasStack()) {
+            drawName(output, context);
         }
         context.getMatrices().pop();
 
@@ -63,7 +69,7 @@ public class BrewingStandOverlay {
         var color =  name.getStyle().getColor();
         int rcolor;
         if (color == null) {
-            rcolor = 0xFFFFFF;
+            rcolor = Colors.WHITE;
         } else {
             rcolor = color.getRgb();
         }

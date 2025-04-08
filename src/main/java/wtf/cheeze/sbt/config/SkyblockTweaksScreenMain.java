@@ -43,6 +43,7 @@ public class SkyblockTweaksScreenMain extends Screen {
         this.parent = parent;
     }
     @Override
+    @SuppressWarnings("MagicNumber")
     public void init() {
         MinecraftClient mc = MinecraftClient.getInstance();
         var centerx = mc.getWindow().getScaledWidth() / 2;

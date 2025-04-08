@@ -55,9 +55,6 @@ import java.util.*;
 public class MinionExp {
 
 
-
-
-
     @Language("RegExp")
     public static final String MINION_EXP_SCREEN_REGEX = "Minion Chest|.+ Minion [IVX]+";
     private static final int[] MINION_SLOTS = {21, 22, 23, 24, 25, 30, 31, 32, 33, 34, 39, 40, 41, 42, 43};
@@ -76,12 +73,14 @@ public class MinionExp {
 
     public static class MinionExpPopup implements Popup {
 
+        private static final int CHEST_LAST_SLOT = 27;
         private final int x;
         private final int y;
         private final HandledScreen<?> screen;
         private final boolean isChest;
         private final List<TextFieldWidget> children;
         private static final Text SBT_FOOTER = TextUtils.withColor("SBT", Colors.SBT_GREEN);
+
 
         public MinionExpPopup(HandledScreen<?> screen) {
             this.x = screen.x + 256 - 64;
@@ -146,7 +145,7 @@ public class MinionExp {
         }
 
         private List<Slot> getRelevantSlots() {
-            return isChest ? screen.getScreenHandler().slots.stream().filter(slot -> slot.id < 27).toList() : Arrays.stream(MINION_SLOTS).mapToObj(slotId -> screen.getScreenHandler().slots.get(slotId)).toList();
+            return isChest ? screen.getScreenHandler().slots.stream().filter(slot -> slot.id < CHEST_LAST_SLOT).toList() : Arrays.stream(MINION_SLOTS).mapToObj(slotId -> screen.getScreenHandler().slots.get(slotId)).toList();
         }
 
         private Map<Skill, Double> getMinionExp() {

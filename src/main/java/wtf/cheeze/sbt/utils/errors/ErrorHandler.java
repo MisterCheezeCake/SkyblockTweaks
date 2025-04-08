@@ -40,9 +40,11 @@ import java.util.Arrays;
 
 public class ErrorHandler {
 
+    private static final int RETAIN_ERRORS_FOR_MS = 20000;
+
     private static final Logger LOGGER = LoggerFactory.getLogger("SkyblockTweaks Error Handler");
 
-    private static final TimedSet<String> errorSet = new TimedSet<>(20000);
+    private static final TimedSet<String> errorSet = new TimedSet<>(RETAIN_ERRORS_FOR_MS);
 
     public static void handleError(Exception e, String message, ErrorLevel level, boolean sendDelayedIfNotInWorld , Object... params) {
         Pair<String, String> messages = getMessages(message);

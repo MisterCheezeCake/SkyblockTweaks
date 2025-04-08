@@ -18,9 +18,11 @@
  */
 package wtf.cheeze.sbt.utils;
 
-import java.util.regex.Pattern;
 
 public class NumberUtils {
+
+    private static final int MILLION = 1_000_000;
+    private static final int THOUSAND = 1_000;
 
     public static double round(float number, int decimalPlaces) {
         return Math.round(number * Math.pow(10, decimalPlaces)) / Math.pow(10, decimalPlaces);
@@ -47,7 +49,7 @@ public class NumberUtils {
         if (text.endsWith("k")) {
             return i * 1000;
         } else if (text.endsWith("m")) {
-            return i * 1000000;
+            return i * 1_000_000;
         } else {
             return Integer.parseInt(text);
         }
@@ -68,8 +70,8 @@ public class NumberUtils {
         text = text.replaceAll(",", "");
 
         return switch (text.charAt(text.length() - 1)) {
-            case 'k' -> Float.parseFloat(text.substring(0, text.length() - 1)) * 1000;
-            case 'm' -> Float.parseFloat(text.substring(0, text.length() - 1)) * 1000000;
+            case 'k' -> Float.parseFloat(text.substring(0, text.length() - 1)) * THOUSAND;
+            case 'm' -> Float.parseFloat(text.substring(0, text.length() - 1)) * MILLION;
             default -> Float.parseFloat(text);
         };
 
@@ -99,10 +101,10 @@ public class NumberUtils {
 
 
     public static String addKOrM(int number, String separator) {
-        if (number >= 1000000) {
-            return formatNumber(number / 1000000, separator) + "M";
-        } else if (number >= 1000) {
-            return formatNumber(number / 1000, separator) + "K";
+        if (number >= MILLION) {
+            return formatNumber(number / MILLION, separator) + "M";
+        } else if (number >= THOUSAND) {
+            return formatNumber(number / THOUSAND, separator) + "K";
         } else {
             return formatNumber(number, separator);
         }
