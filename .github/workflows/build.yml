@@ -27,6 +27,8 @@ jobs:
           distribution: 'microsoft'
       - name: make gradle wrapper executable
         run: chmod +x ./gradlew
+      - name: download fallback repo
+        run: ./gradlew updateFallbackRepo
       - name: build
         run: ./gradlew chiseledBuild
       - name: capture build artifacts

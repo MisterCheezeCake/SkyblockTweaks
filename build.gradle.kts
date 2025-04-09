@@ -107,27 +107,23 @@ object RepoDownloader {
 
 	fun getLatestSha(): String {
 		val url = "https://api.github.com/repos/$user/$repo/branches/$branch"
-		val connection = URI(url).toURL().openConnection()
-		connection.setRequestProperty(
-			"User-Agent",
-			"Mozilla/5.0 SkyblockTweaks Build Pipeline"
-		)
+		val connection = URI(url).toURL().openConnection().apply {
+			setRequestProperty("User-Agent", "Mozilla/5.0 SkyblockTweaks Build Pipeline")
+		}
+
+
 		val response = connection.getInputStream().bufferedReader().readText()
 		val branch = Gson().fromJson(response, Branch::class.java)
 		return branch.commit.sha
 	}
 
 	private fun downloadFile(uri: String, destination: File) {
-		val url: URL = URI(uri).toURL()
-		val connection = url.openConnection()
-		connection.setRequestProperty(
-			"User-Agent",
-			"Mozilla/5.0 SkyblockTweaks Build Pipeline"
-		)
+		val connection =  URI(uri).toURL().openConnection().apply {
+			setRequestProperty("User-Agent", "Mozilla/5.0 SkyblockTweaks Build Pipeline")
+		}
 		val channel: ReadableByteChannel = Channels.newChannel(connection.getInputStream())
-		FileOutputStream(destination).use { fileOutputStream ->
-			val fileChannel = fileOutputStream.channel
-			fileChannel.transferFrom(channel, 0, Long.MAX_VALUE)
+		FileOutputStream(destination).use {
+			it.channel.transferFrom(channel, 0, Long.MAX_VALUE)
 		}
 	}
 
@@ -165,10 +161,10 @@ tasks.register("validateJson") {
 }
 
 tasks.named("processResources") {
-	mustRunAfter("validateJson", "updateFallbackRepo")
+	mustRunAfter("validateJson")
 }
 
-tasks.named("build") {
-	dependsOn("validateJson", "updateFallbackRepo")
+rootProject.tasks.named("chiseledBuild") {
+	dependsOn("validateJson")
 }
 
