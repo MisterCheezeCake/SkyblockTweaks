@@ -164,7 +164,7 @@ tasks.named("processResources") {
 	mustRunAfter("validateJson")
 }
 
-rootProject.tasks.named("chiseledBuild") {
+tasks.named("build") {
 	dependsOn("validateJson")
 }
 
