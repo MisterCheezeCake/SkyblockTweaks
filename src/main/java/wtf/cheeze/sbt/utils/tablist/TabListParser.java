@@ -52,7 +52,7 @@ public class TabListParser {
                 if (displayName == null) continue;
                 var content = displayName.getString();
                 var profileName = entry.getProfile().getName();
-                if (profileName.endsWith("a")) {
+                if (profileName.endsWith("a")) { // Column headers
                     if (content.trim().equals("Info")) {
                         inInfoColumn = true;
                         continue;

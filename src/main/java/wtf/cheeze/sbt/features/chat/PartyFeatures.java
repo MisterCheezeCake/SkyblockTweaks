@@ -24,7 +24,6 @@ import dev.isxander.yacl3.api.OptionGroup;
 import dev.isxander.yacl3.api.controller.IntegerFieldControllerBuilder;
 import dev.isxander.yacl3.api.controller.StringControllerBuilder;
 import dev.isxander.yacl3.config.v2.api.SerialEntry;
-import net.azureaaron.hmapi.network.HypixelNetworking;
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.text.Text;
@@ -35,6 +34,7 @@ import wtf.cheeze.sbt.utils.KillSwitch;
 import wtf.cheeze.sbt.utils.MessageManager;
 import wtf.cheeze.sbt.utils.TextUtils;
 import wtf.cheeze.sbt.utils.render.Colors;
+import wtf.cheeze.sbt.utils.skyblock.ModAPI;
 import wtf.cheeze.sbt.utils.skyblock.SkyblockData;
 
 import java.util.ArrayList;
@@ -76,7 +76,7 @@ public class PartyFeatures {
                     if (verboseDebug) sendDebugMessage("Party command on cooldown");
                     return;
                 }
-                HypixelNetworking.sendPartyInfoC2SPacket(2);
+                ModAPI.requestPartyInfo();
                 lastPartyCommand = System.currentTimeMillis();
                 var name = matcher.group(1);
                 if (verboseDebug) sendDebugMessage("Initial Name Field Is '" + name + "'");

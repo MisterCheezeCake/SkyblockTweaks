@@ -130,13 +130,11 @@ public class ItemStackUtils {
         var tag = new NbtCompound();
         tag.putString("id", skyblockID);
         return NbtComponent.of(tag);
-
     }
 
     private static RegistryEntry<Item> getRegistryEntry(String minecraftID) {
         return RegistryEntry.of(Registries.ITEM.get(Identifier.of(minecraftID)));
     }
-
 
     public static class SkullMap {
         private SkullMap() {}

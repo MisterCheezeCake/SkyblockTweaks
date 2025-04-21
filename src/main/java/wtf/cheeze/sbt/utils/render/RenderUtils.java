@@ -95,7 +95,7 @@ public class RenderUtils {
         return client.textRenderer.getWidth(text) / MinecraftClient.getInstance().getWindow().getScaledWidth();
     }
 
-    public static BreachResult  isOffscreen(ScreenRect rect) {
+    public static BreachResult isOffscreen(ScreenRect rect) {
         var screenBounds = getScreenBounds();
         return new BreachResult(
                 rect.position().x() < 0,

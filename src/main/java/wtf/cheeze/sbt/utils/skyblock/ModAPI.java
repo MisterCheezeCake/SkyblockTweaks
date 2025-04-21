@@ -24,9 +24,10 @@ import net.azureaaron.hmapi.events.HypixelPacketEvents;
 import net.azureaaron.hmapi.network.HypixelNetworking;
 import net.azureaaron.hmapi.network.packet.v1.s2c.LocationUpdateS2CPacket;
 import net.minecraft.util.Util;
-import wtf.cheeze.sbt.SkyblockTweaks;
 
-public class ModAPIUtils {
+public class ModAPI {
+
+
     private static final int LOCATION_PACKET_VERSION = 1;
     public static void registerEvents() {
         HypixelNetworking.registerToEvents(Util.make(new Object2IntOpenHashMap<>(), map -> {
@@ -36,4 +37,10 @@ public class ModAPIUtils {
         HypixelPacketEvents.HELLO.register(SkyblockData::handlePacket);
         HypixelPacketEvents.LOCATION_UPDATE.register(SkyblockData::handlePacket);
     }
+
+    public static void requestPartyInfo() {
+        HypixelNetworking.sendPartyInfoC2SPacket(2);
+    }
+
+
 }

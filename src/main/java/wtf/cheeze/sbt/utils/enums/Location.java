@@ -18,7 +18,8 @@
  */
 package wtf.cheeze.sbt.utils.enums;
 
-import wtf.cheeze.sbt.utils.skyblock.SkyblockData;
+
+import net.minecraft.item.Items;
 
 // Inspired by Skyblocker's Location enum
 public enum Location {

@@ -21,6 +21,7 @@ package wtf.cheeze.sbt;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import net.fabricmc.api.ModInitializer;
+import net.minecraft.block.ComposterBlock;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import wtf.cheeze.sbt.command.SBTCommand;
@@ -32,11 +33,12 @@ import wtf.cheeze.sbt.features.misc.MouseLock;
 import wtf.cheeze.sbt.hud.HudManager;
 import wtf.cheeze.sbt.utils.KillSwitch;
 import wtf.cheeze.sbt.utils.NotificationHandler;
+import wtf.cheeze.sbt.utils.enums.Location;
 import wtf.cheeze.sbt.utils.version.UpdateChecker;
 import wtf.cheeze.sbt.utils.version.Version;
 import wtf.cheeze.sbt.utils.actionbar.ActionBarTransformer;
 import wtf.cheeze.sbt.utils.constants.loader.ConstantLoader;
-import wtf.cheeze.sbt.utils.skyblock.ModAPIUtils;
+import wtf.cheeze.sbt.utils.skyblock.ModAPI;
 import wtf.cheeze.sbt.utils.skyblock.ProfileManager;
 import wtf.cheeze.sbt.utils.tablist.TabListParser;
 import wtf.cheeze.sbt.features.chat.*;
@@ -46,8 +48,9 @@ public class SkyblockTweaks implements ModInitializer {
 	public static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     public static final Logger LOGGER = LoggerFactory.getLogger("SkyblockTweaks");
 
-	public static final Version VERSION = new Version(VersionType.ALPHA, 0, 1, 0, 12);
-	//public static final Version VERSION = new Version(VersionType.UNSTABLE);
+	//public static final Version VERSION = new Version(VersionType.ALPHA, 0, 1, 0, 12);
+	public static final Version VERSION = new Version(VersionType.UNSTABLE);
+	Location r = Location.RIFT;
 
 
 
@@ -63,7 +66,7 @@ public class SkyblockTweaks implements ModInitializer {
 		SBTCommand.registerEvents();
 		ActionBarTransformer.registerEvents();
 		NotificationHandler.registerEvents();
-		ModAPIUtils.registerEvents();
+		ModAPI.registerEvents();
 		PartyFeatures.registerEvents();
 		ChatProtections.registerEvents();
 		ProfileManager.registerEvents();

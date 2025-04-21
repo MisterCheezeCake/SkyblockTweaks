@@ -52,6 +52,9 @@ import wtf.cheeze.sbt.utils.skyblock.SkyblockData;
 import wtf.cheeze.sbt.utils.skyblock.SkyblockData.Stats;
 import wtf.cheeze.sbt.utils.skyblock.SkyblockUtils;
 import wtf.cheeze.sbt.utils.tablist.TabListParser;
+import wtf.cheeze.sbt.utils.version.Version;
+import wtf.cheeze.sbt.utils.version.VersionComparison;
+
 import java.util.Arrays;
 import static net.fabricmc.fabric.api.client.command.v2.ClientCommandManager.argument;
 import static net.fabricmc.fabric.api.client.command.v2.ClientCommandManager.literal;
@@ -448,6 +451,16 @@ public class SBTCommand {
                                                     return 1;
                                                 }))
                                         )
+                                        .then(literal("compareVersions").then(argument("a", StringArgumentType.string()).then(argument("b", StringArgumentType.string())
+                                                .executes(context -> {
+                                                     Version a = new Version(StringArgumentType.getString(context, "a"));
+                                                     Version b = new Version(StringArgumentType.getString(context, "b"));
+                                                     VersionComparison comparison = VersionComparison.compare(a, b);
+                                                    MessageManager.send("The result of the comparison was: " + comparison.name(), Colors.LIME);
+                                                    return 1;
+                                                })
+
+                                        )))
                                         .then(literal("fullData").executes(context -> {
                                             var source = context.getSource();
                                             send(context, TextUtils.withColor("Full Data Dump", Colors.CYAN));

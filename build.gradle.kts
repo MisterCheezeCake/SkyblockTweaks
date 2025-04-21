@@ -73,6 +73,9 @@ tasks.named<Jar>("jar") {
 	from("LICENSE") {
 		rename { "${it}_${project.base.archivesName.get()}" }
 	}
+	manifest.attributes.run {
+		this["Main-Class"] = "SkyblockTweaksInstallerFrame"
+	}
 }
 
 
