@@ -35,11 +35,15 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import wtf.cheeze.sbt.events.DrawSlotEvents;
 import wtf.cheeze.sbt.features.overlay.BrewingStandOverlay;
+import wtf.cheeze.sbt.utils.KillSwitch;
 import wtf.cheeze.sbt.utils.injected.SBTHandledScreen;
 import wtf.cheeze.sbt.utils.render.Popup;
 
 @Mixin(HandledScreen.class)
 public abstract class HandledScreenMixin<T extends ScreenHandler> extends Screen implements SBTHandledScreen {
+
+    @Unique
+    private static final String SBT$FEATURE_ID_POPUP = "handled_screen_popups";
 
     @Shadow
     @Final
@@ -54,6 +58,10 @@ public abstract class HandledScreenMixin<T extends ScreenHandler> extends Screen
     }
     @Unique @Override
     public void sbt$setPopup(@Nullable Popup popup) {
+        if (!KillSwitch.shouldKill(SBT$FEATURE_ID_POPUP)) {
+            this.sbt$popup = null;
+            return;
+        }
         if (this.sbt$popup != null) {
             this.sbt$popup.remove();
         }

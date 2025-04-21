@@ -36,6 +36,7 @@ import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SBTConfig;
 import wtf.cheeze.sbt.config.categories.General;
 import wtf.cheeze.sbt.config.persistent.PersistentData;
+import wtf.cheeze.sbt.utils.KillSwitch;
 import wtf.cheeze.sbt.utils.NumberUtils;
 import wtf.cheeze.sbt.utils.Predicates;
 import wtf.cheeze.sbt.utils.TextUtils;
@@ -60,14 +61,14 @@ public class MinionExp {
     private static final int[] MINION_SLOTS = {21, 22, 23, 24, 25, 30, 31, 32, 33, 34, 39, 40, 41, 42, 43};
 
     private static String contents = "____";
+    private static final String FEATURE_ID = "minion_exp_overlay";
 
 
     public static void registerEvents() {
         ScreenEvents.AFTER_INIT.register((client, screen, width, height) -> {
-            if (screen instanceof HandledScreen<?> handledScreen && handledScreen.getTitle().getString().matches(MINION_EXP_SCREEN_REGEX) && SBTConfig.get().minionExp.enabled) {
+            if (screen instanceof HandledScreen<?> handledScreen && handledScreen.getTitle().getString().matches(MINION_EXP_SCREEN_REGEX) && SBTConfig.get().minionExp.enabled && !KillSwitch.shouldKill(FEATURE_ID)) {
                 ((SBTHandledScreen) handledScreen).sbt$setPopup(new MinionExpPopup(handledScreen));
             }
-
         });
     }
 

@@ -21,7 +21,6 @@ package wtf.cheeze.sbt;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import net.fabricmc.api.ModInitializer;
-import net.minecraft.block.ComposterBlock;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import wtf.cheeze.sbt.command.SBTCommand;
@@ -33,7 +32,6 @@ import wtf.cheeze.sbt.features.misc.MouseLock;
 import wtf.cheeze.sbt.hud.HudManager;
 import wtf.cheeze.sbt.utils.KillSwitch;
 import wtf.cheeze.sbt.utils.NotificationHandler;
-import wtf.cheeze.sbt.utils.enums.Location;
 import wtf.cheeze.sbt.utils.version.UpdateChecker;
 import wtf.cheeze.sbt.utils.version.Version;
 import wtf.cheeze.sbt.utils.actionbar.ActionBarTransformer;
@@ -50,9 +48,6 @@ public class SkyblockTweaks implements ModInitializer {
 
 	//public static final Version VERSION = new Version(VersionType.ALPHA, 0, 1, 0, 12);
 	public static final Version VERSION = new Version(VersionType.UNSTABLE);
-	Location r = Location.RIFT;
-
-
 
 	@Override
 	public void onInitialize() {
