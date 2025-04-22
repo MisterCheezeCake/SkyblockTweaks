@@ -35,6 +35,7 @@ import wtf.cheeze.sbt.hud.components.SingleHudLine;
 import wtf.cheeze.sbt.utils.TextUtils;
 import wtf.cheeze.sbt.hud.utils.HudInformation;
 import wtf.cheeze.sbt.hud.bases.TextHud;
+import wtf.cheeze.sbt.utils.enums.Location;
 import wtf.cheeze.sbt.utils.render.Colors;
 import wtf.cheeze.sbt.utils.skyblock.SkyblockData;
 
@@ -65,7 +66,7 @@ public class HealthHud extends TextHud {
     @Override
     public boolean shouldRender(boolean fromHudScreen) {
         if (!super.shouldRender(fromHudScreen)) return false;
-        return (SkyblockData.inSB && SBTConfig.huds().health.enabled) || fromHudScreen;
+        return (SkyblockData.inSB && SBTConfig.huds().health.enabled && (SkyblockData.location != Location.RIFT || !SBTConfig.huds().health.hideInRift)) || fromHudScreen;
     }
 
     @Override
@@ -105,6 +106,9 @@ public class HealthHud extends TextHud {
 
         @SerialEntry
         public AnchorPoint anchor = AnchorPoint.LEFT;
+
+        @SerialEntry
+        public boolean hideInRift = true;
 
         public static OptionGroup getGroup(ConfigImpl defaults, ConfigImpl config) {
             var enabled = Option.<Boolean>createBuilder()
@@ -184,6 +188,16 @@ public class HealthHud extends TextHud {
                             value -> config.huds.health.separator = value
                     )
                     .build();
+            var rift = Option.<Boolean>createBuilder()
+                    .name(key("health.hideInRift"))
+                    .description(keyD("health.hideInRift"))
+                    .controller(SBTConfig::generateBooleanController)
+                    .binding(
+                            defaults.huds.healthBar.hideInRift,
+                            () -> config.huds.healthBar.hideInRift,
+                            value -> config.huds.healthBar.hideInRift = (boolean) value
+                    )
+                    .build();
             var scale = Option.<Float>createBuilder()
                     .name(key("health.scale"))
                     .description(keyD("health.scale"))
@@ -202,6 +216,7 @@ public class HealthHud extends TextHud {
                     .option(color)
                     .option(colorAbsorption)
                     .option(outline)
+                    .option(rift)
                     .option(icon)
                     .option(separator)
                     .option(scale)

@@ -22,15 +22,14 @@ import dev.isxander.yacl3.api.Option;
 import dev.isxander.yacl3.api.OptionGroup;
 import dev.isxander.yacl3.api.controller.ColorControllerBuilder;
 import dev.isxander.yacl3.config.v2.api.SerialEntry;
-import net.minecraft.text.Text;
 import org.jetbrains.annotations.NotNull;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SBTConfig;
 import wtf.cheeze.sbt.hud.utils.AnchorPoint;
 import wtf.cheeze.sbt.hud.utils.HudName;
-import wtf.cheeze.sbt.utils.TextUtils;
 import wtf.cheeze.sbt.hud.bases.BarHud;
 import wtf.cheeze.sbt.hud.utils.HudInformation;
+import wtf.cheeze.sbt.utils.enums.Location;
 import wtf.cheeze.sbt.utils.render.Colors;
 import wtf.cheeze.sbt.utils.skyblock.SkyblockData;
 
@@ -64,7 +63,7 @@ public class HealthBar extends BarHud {
     @Override
     public boolean shouldRender(boolean fromHudScreen) {
         if (!super.shouldRender(fromHudScreen)) return false;
-        return (SkyblockData.inSB && SBTConfig.huds().healthBar.enabled) || fromHudScreen;
+        return (SkyblockData.inSB && SBTConfig.huds().healthBar.enabled && (SkyblockData.location != Location.RIFT || !SBTConfig.huds().healthBar.hideInRift)) || fromHudScreen;
     }
 
     public static class Config {
@@ -88,6 +87,9 @@ public class HealthBar extends BarHud {
 
         @SerialEntry
         public AnchorPoint anchor = AnchorPoint.LEFT;
+
+        @SerialEntry
+        public boolean hideInRift = true;
 
         public static OptionGroup getGroup(ConfigImpl defaults, ConfigImpl config) {
             var enabled = Option.<Boolean>createBuilder()
@@ -122,6 +124,16 @@ public class HealthBar extends BarHud {
 
                     )
                     .build();
+            var rift = Option.<Boolean>createBuilder()
+                    .name(key("healthBar.hideInRift"))
+                    .description(keyD("healthBar.hideInRift"))
+                    .controller(SBTConfig::generateBooleanController)
+                    .binding(
+                            defaults.huds.healthBar.hideInRift,
+                            () -> config.huds.healthBar.hideInRift,
+                            value -> config.huds.healthBar.hideInRift = (boolean) value
+                    )
+                    .build();
             var scale = Option.<Float>createBuilder()
                     .name(key("healthBar.scale"))
                     .description(keyD("healthBar.scale"))
@@ -136,6 +148,7 @@ public class HealthBar extends BarHud {
                     .name(key("healthBar"))
                     .description(keyD("healthBar"))
                     .option(enabled)
+                    .option(rift)
                     .option(color)
                     .option(absorbColor)
                     .option(scale)
