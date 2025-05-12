@@ -23,11 +23,12 @@ import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.text.Text;
 
 public interface SBTDrawContext {
-    int sbt$drawTextWithBackgroundNoShadow(TextRenderer textRenderer, Text text, int x, int y, int width, int color);
+    default int sbt$drawTextWithBackgroundNoShadow(TextRenderer textRenderer, Text text, int x, int y, int width, int color) {throw new AssertionError("This should never be called, this method should have been replaced with a mixin");}
 
     /**
      * You may ask yourself, "Why is this not an accessor?" The answer is that I really did not want to deal with mixins only existing on one version, and this works fine
      */
     //? if >=1.21.3
-    VertexConsumerProvider.Immediate sbt$getVertexConsumers();
+    default VertexConsumerProvider.Immediate sbt$getVertexConsumers() {throw new AssertionError("This should never be called, this method should have been replaced with a mixin");}
 }
+
