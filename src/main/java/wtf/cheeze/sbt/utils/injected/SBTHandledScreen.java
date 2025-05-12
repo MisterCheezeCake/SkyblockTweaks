@@ -22,6 +22,6 @@ import org.jetbrains.annotations.Nullable;
 import wtf.cheeze.sbt.utils.render.Popup;
 
 public interface SBTHandledScreen {
-    default @Nullable Popup sbt$getPopup() {throw new AssertionError("This should never be called, this method should have been replaced with a mixin");};
-    default void sbt$setPopup(@Nullable Popup popup) {throw new AssertionError("This should never be called, this method should have been replaced with a mixin");};
+    @Nullable Popup sbt$getPopup();
+    void sbt$setPopup(@Nullable Popup popup);
 }
