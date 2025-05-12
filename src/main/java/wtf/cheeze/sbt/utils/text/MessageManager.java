@@ -5,7 +5,6 @@ import net.minecraft.text.Text;
 import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.utils.render.Colors;
 
-
 public class MessageManager {
 
     private static final MinecraftClient client = MinecraftClient.getInstance();
