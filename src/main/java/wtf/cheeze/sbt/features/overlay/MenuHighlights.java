@@ -177,7 +177,7 @@ public class MenuHighlights {
                     .binding(
                                     defaults.hubSelectorHighlight.enabledRegular,
                                     () -> config.hubSelectorHighlight.enabledRegular,
-                                    value -> config.hubSelectorHighlight.enabledRegular = (boolean) value
+                                    value -> config.hubSelectorHighlight.enabledRegular = value
                     )
                     .build();
             var enabledDungeon = Option.<Boolean>createBuilder()
@@ -187,7 +187,7 @@ public class MenuHighlights {
                     .binding(
                                     defaults.hubSelectorHighlight.enabledDungeon,
                                     () -> config.hubSelectorHighlight.enabledDungeon,
-                                    value -> config.hubSelectorHighlight.enabledDungeon = (boolean) value
+                                    value -> config.hubSelectorHighlight.enabledDungeon = value
                     )
                     .build();
             var hotmHighlight = Option.<Boolean>createBuilder()
@@ -197,7 +197,7 @@ public class MenuHighlights {
                     .binding(
                                     defaults.hubSelectorHighlight.hotmHighlight,
                                     () -> config.hubSelectorHighlight.hotmHighlight,
-                                    value -> config.hubSelectorHighlight.hotmHighlight = (boolean) value
+                                    value -> config.hubSelectorHighlight.hotmHighlight = value
                     )
                     .build();
 
@@ -208,7 +208,7 @@ public class MenuHighlights {
                     .binding(
                                     defaults.hubSelectorHighlight.widgetHighlight,
                                     () -> config.hubSelectorHighlight.widgetHighlight,
-                                    value -> config.hubSelectorHighlight.widgetHighlight = (boolean) value
+                                    value -> config.hubSelectorHighlight.widgetHighlight = value
                     )
                     .build();
             var sblevelHighlight = Option.<Boolean>createBuilder()
@@ -218,7 +218,7 @@ public class MenuHighlights {
                     .binding(
                                     defaults.hubSelectorHighlight.sblevelHighlight,
                                     () -> config.hubSelectorHighlight.sblevelHighlight,
-                                    value -> config.hubSelectorHighlight.sblevelHighlight = (boolean) value
+                                    value -> config.hubSelectorHighlight.sblevelHighlight = value
                     )
                     .build();
 

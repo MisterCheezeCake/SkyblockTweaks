@@ -52,6 +52,7 @@ public class HudManager {
         HUDS.add(MiningHud.INSTANCE);
         HUDS.add(EventTimerHud.INSTANCE);
         HUDS.add(RainmakerHud.INSTANCE);
+        HUDS.add(SecretsHud.INSTANCE);
 
         RainmakerHud.INSTANCE.registerEvents();
 

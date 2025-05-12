@@ -104,9 +104,9 @@ object RepoDownloader {
 				"repo": "$user/$repo#$branch",
 				"commit": "$sha"
 			}
-			""".trimIndent());
+			""".trimIndent())
 
-	}
+    }
 
 	fun getLatestSha(): String {
 		val url = "https://api.github.com/repos/$user/$repo/branches/$branch"

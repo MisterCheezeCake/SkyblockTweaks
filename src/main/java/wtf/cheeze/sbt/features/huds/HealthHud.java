@@ -117,7 +117,7 @@ public class HealthHud extends TextHud {
                     .binding(
                             defaults.huds.health.enabled,
                             () -> config.huds.health.enabled,
-                            value -> config.huds.health.enabled = (boolean) value
+                            value -> config.huds.health.enabled = value
                     )
                     .build();
             var color = Option.<Color>createBuilder()
@@ -174,7 +174,7 @@ public class HealthHud extends TextHud {
                     .binding(
                             defaults.huds.health.icon,
                             () -> config.huds.health.icon,
-                            value -> config.huds.health.icon = (boolean) value
+                            value -> config.huds.health.icon = value
                     )
                     .build();
             var separator = Option.<String>createBuilder()
@@ -194,7 +194,7 @@ public class HealthHud extends TextHud {
                     .binding(
                             defaults.huds.healthBar.hideInRift,
                             () -> config.huds.healthBar.hideInRift,
-                            value -> config.huds.healthBar.hideInRift = (boolean) value
+                            value -> config.huds.healthBar.hideInRift = value
                     )
                     .build();
             var scale = Option.<Float>createBuilder()

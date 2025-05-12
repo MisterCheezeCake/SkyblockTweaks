@@ -114,7 +114,7 @@ public class DefenseHud extends TextHud {
                     .binding(
                             defaults.huds.defense.enabled,
                             () -> config.huds.defense.enabled,
-                            value -> config.huds.defense.enabled = (boolean) value
+                            value -> config.huds.defense.enabled = value
                     )
                     .build();
             var color = Option.<Color>createBuilder()
@@ -160,7 +160,7 @@ public class DefenseHud extends TextHud {
                     .binding(
                             defaults.huds.defense.icon,
                             () -> config.huds.defense.icon,
-                            value -> config.huds.defense.icon = (boolean) value
+                            value -> config.huds.defense.icon = value
                     )
                     .build();
             var separator = Option.<String>createBuilder()

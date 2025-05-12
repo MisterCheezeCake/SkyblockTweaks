@@ -109,7 +109,7 @@ public class DamageReductionHud extends TextHud {
                     .binding(
                             defaults.huds.dr.enabled,
                             () -> config.huds.dr.enabled,
-                            value -> config.huds.dr.enabled = (boolean) value
+                            value -> config.huds.dr.enabled = value
                     )
                     .build();
             var color = Option.<Color>createBuilder()

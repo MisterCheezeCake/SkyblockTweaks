@@ -120,7 +120,7 @@ public class OverflowManaHud extends TextHud {
                     .binding(
                             defaults.huds.overflowMana.enabled,
                             () -> config.huds.overflowMana.enabled,
-                            value -> config.huds.overflowMana.enabled = (boolean) value
+                            value -> config.huds.overflowMana.enabled = value
                     )
                     .build();
             var hideWhenZero = Option.<Boolean>createBuilder()
@@ -130,7 +130,7 @@ public class OverflowManaHud extends TextHud {
                     .binding(
                             defaults.huds.overflowMana.hideWhenZero,
                             () -> config.huds.overflowMana.hideWhenZero,
-                            value -> config.huds.overflowMana.hideWhenZero = (boolean) value
+                            value -> config.huds.overflowMana.hideWhenZero = value
                     )
                     .build();
             var color = Option.<Color>createBuilder()
@@ -176,7 +176,7 @@ public class OverflowManaHud extends TextHud {
                     .binding(
                             defaults.huds.overflowMana.icon,
                             () -> config.huds.overflowMana.icon,
-                            value -> config.huds.overflowMana.icon = (boolean) value
+                            value -> config.huds.overflowMana.icon = value
                     )
                     .build();
             var separator = Option.<String>createBuilder()

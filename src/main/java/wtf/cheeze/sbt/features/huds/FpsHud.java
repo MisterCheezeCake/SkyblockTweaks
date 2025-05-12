@@ -111,7 +111,7 @@ public class FpsHud extends TextHud {
                     .binding(
                             defaults.huds.fps.enabled,
                             () -> config.huds.fps.enabled,
-                            value -> config.huds.fps.enabled = (boolean) value
+                            value -> config.huds.fps.enabled = value
                     )
                     .build();
 
@@ -122,7 +122,7 @@ public class FpsHud extends TextHud {
                     .binding(
                             defaults.huds.fps.showOutside,
                             () -> config.huds.fps.showOutside,
-                            value -> config.huds.fps.showOutside = (boolean) value
+                            value -> config.huds.fps.showOutside = value
                     )
                     .build();
 
@@ -133,7 +133,7 @@ public class FpsHud extends TextHud {
                     .binding(
                             defaults.huds.fps.reverse,
                             () -> config.huds.fps.reverse,
-                            value -> config.huds.fps.reverse = (boolean) value
+                            value -> config.huds.fps.reverse = value
                     )
                     .build();
             var color = Option.<Color>createBuilder()

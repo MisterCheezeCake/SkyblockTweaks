@@ -48,7 +48,6 @@ public class IconTestHud extends MultilineTextHud {
     private float scale = 1.0f;
 
     public IconTestHud() {
-        super();
         lines = getLines().toArray(new SingleHudLine[0]);
         INFO = new HudInformation(
                 () -> x,

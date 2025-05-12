@@ -66,7 +66,7 @@ public class MinionExp {
     public static void registerEvents() {
         ScreenEvents.AFTER_INIT.register((client, screen, width, height) -> {
             if (screen instanceof HandledScreen<?> handledScreen && handledScreen.getTitle().getString().matches(MINION_EXP_SCREEN_REGEX) && SBTConfig.get().minionExp.enabled && !KillSwitch.shouldKill(FEATURE_ID)) {
-                ((SBTHandledScreen) handledScreen).sbt$setPopup(new MinionExpPopup(handledScreen));
+                handledScreen.sbt$setPopup(new MinionExpPopup(handledScreen));
             }
         });
     }
@@ -198,7 +198,7 @@ public class MinionExp {
                     .binding(
                             defaults.minionExp.enabled,
                             () -> config.minionExp.enabled,
-                            value -> config.minionExp.enabled = (boolean) value
+                            value -> config.minionExp.enabled = value
                     )
                     .build();
 

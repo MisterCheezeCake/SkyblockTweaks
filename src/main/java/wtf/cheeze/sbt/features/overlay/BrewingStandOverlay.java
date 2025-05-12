@@ -90,7 +90,7 @@ public class BrewingStandOverlay {
                     .binding(
                             defaults.brewingStandOverlay.enabled,
                             () -> config.brewingStandOverlay.enabled,
-                            value -> config.brewingStandOverlay.enabled = (boolean) value
+                            value -> config.brewingStandOverlay.enabled = value
                     )
                     .build();
 

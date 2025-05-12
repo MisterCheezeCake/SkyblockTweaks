@@ -90,6 +90,9 @@ public class Huds {
     @SerialEntry
     public RainmakerHud.Config rainmaker = new RainmakerHud.Config();
 
+    @SerialEntry
+    public SecretsHud.Config secrets = new SecretsHud.Config();
+
 
 
     public static ConfigCategory getCategory(ConfigImpl defaults, ConfigImpl config) {
@@ -117,6 +120,7 @@ public class Huds {
                 .group(ArmorStackHud.Config.getGroup(defaults, config))
                 .group(RiftTimeHud.Config.getGroup(defaults, config))
                 .group(RainmakerHud.Config.getGroup(defaults, config))
+                .group(SecretsHud.Config.getGroup(defaults, config))
                 .build();
     }
 }

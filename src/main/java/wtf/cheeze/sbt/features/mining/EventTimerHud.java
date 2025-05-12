@@ -129,7 +129,7 @@ public class EventTimerHud extends TextHud {
                     .binding(
                             defaults.mining.eventTimer.enabled,
                             () -> config.mining.eventTimer.enabled,
-                            value -> config.mining.eventTimer.enabled = (boolean) value
+                            value -> config.mining.eventTimer.enabled = value
                     )
                     .build();
             var icons = Option.<Boolean>createBuilder()
@@ -139,7 +139,7 @@ public class EventTimerHud extends TextHud {
                     .binding(
                             defaults.mining.eventTimer.icons,
                             () -> config.mining.eventTimer.icons,
-                            value -> config.mining.eventTimer.icons = (boolean) value
+                            value -> config.mining.eventTimer.icons = value
                     )
                     .build();
             var colorPrimary = Option.<Color>createBuilder()
@@ -184,7 +184,7 @@ public class EventTimerHud extends TextHud {
                             defaults.mining.eventTimer.mode,
                             () -> config.mining.eventTimer.mode,
                             value -> {
-                                config.mining.eventTimer.mode = (DrawMode) value;
+                                config.mining.eventTimer.mode = value;
                                 outlineColor.setAvailable(value == DrawMode.OUTLINE);
                             }
                     )
@@ -196,7 +196,7 @@ public class EventTimerHud extends TextHud {
                     .binding(
                             defaults.mining.eventTimer.scale,
                             () -> config.mining.eventTimer.scale,
-                            value -> config.mining.eventTimer.scale = (float) value
+                            value -> config.mining.eventTimer.scale = value
                     )
                     .build();
 

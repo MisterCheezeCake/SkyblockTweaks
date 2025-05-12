@@ -95,7 +95,7 @@ public class DrillFuelBar extends BarHud {
                     .binding(
                             defaults.huds.drillFuelBar.enabled,
                             () -> config.huds.drillFuelBar.enabled,
-                            value -> config.huds.drillFuelBar.enabled = (boolean) value
+                            value -> config.huds.drillFuelBar.enabled = value
                     )
                     .build();
 

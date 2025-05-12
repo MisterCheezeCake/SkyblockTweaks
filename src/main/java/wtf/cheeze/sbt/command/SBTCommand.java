@@ -92,7 +92,7 @@ public class SBTCommand {
                     })
             )
             .then(literal("slayer")
-                    .then(argument("type", StringArgumentType.string()).suggests(CommandUtils.getArrayAsSuggestions(new String[]{"zombie", "spider", "wolf", "enderman", "blaze", "vampire"}))
+                    .then(argument("type", StringArgumentType.string()).suggests(CommandUtils.getArrayAsSuggestions("zombie", "spider", "wolf", "enderman", "blaze", "vampire"))
                             .then(argument("level-start", IntegerArgumentType.integer())
                                     .then(argument("level-end", IntegerArgumentType.integer())
                                             .executes(context -> {

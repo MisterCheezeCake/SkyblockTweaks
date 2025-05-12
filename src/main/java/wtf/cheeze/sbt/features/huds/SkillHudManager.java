@@ -266,7 +266,7 @@ public class SkillHudManager {
                         .binding(
                                 defaults.huds.skills.enabled,
                                 () -> config.huds.skills.enabled,
-                                value -> config.huds.skills.enabled = (boolean) value
+                                value -> config.huds.skills.enabled = value
                         )
                         .build();
 
@@ -288,7 +288,7 @@ public class SkillHudManager {
                         .binding(
                                 defaults.huds.skills.actionsLeft,
                                 () -> config.huds.skills.actionsLeft,
-                                value -> config.huds.skills.actionsLeft = (boolean) value
+                                value -> config.huds.skills.actionsLeft = value
                         )
                         .build();
                 var abridgeDenominator = Option.<Boolean>createBuilder()
@@ -298,7 +298,7 @@ public class SkillHudManager {
                         .binding(
                                 defaults.huds.skills.abridgeDenominator,
                                 () -> config.huds.skills.abridgeDenominator,
-                                value -> config.huds.skills.abridgeDenominator = (boolean) value
+                                value -> config.huds.skills.abridgeDenominator = value
                         )
                         .build();
 
@@ -431,7 +431,7 @@ public class SkillHudManager {
                         .binding(
                                 defaults.huds.skillBar.enabled,
                                 () -> config.huds.skillBar.enabled,
-                                value -> config.huds.skillBar.enabled = (boolean) value
+                                value -> config.huds.skillBar.enabled = value
                         )
                         .build();
 

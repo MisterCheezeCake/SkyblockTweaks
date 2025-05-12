@@ -62,7 +62,6 @@ public class MiningHud extends MultilineTextHud {
     public static final MiningHud INSTANCE = new MiningHud();
 
     private MiningHud() {
-        super();
         refreshComposition();
         INFO = new HudInformation(
                 () -> SBTConfig.mining().hud.x,
@@ -252,7 +251,7 @@ public class MiningHud extends MultilineTextHud {
                     .binding(
                             defaults.mining.hud.enabled,
                             () -> config.mining.hud.enabled,
-                            value -> config.mining.hud.enabled = (boolean) value
+                            value -> config.mining.hud.enabled = value
                     )
                     .build();
 
@@ -263,7 +262,7 @@ public class MiningHud extends MultilineTextHud {
                     .binding(
                             defaults.mining.hud.useNumbers,
                             () -> config.mining.hud.useNumbers,
-                            value -> config.mining.hud.useNumbers = (boolean) value
+                            value -> config.mining.hud.useNumbers = value
                     )
                     .build();
 
@@ -275,7 +274,7 @@ public class MiningHud extends MultilineTextHud {
                     .binding(
                             defaults.mining.hud.abbreviatePowder,
                             () -> config.mining.hud.abbreviatePowder,
-                            value -> config.mining.hud.abbreviatePowder = (boolean) value
+                            value -> config.mining.hud.abbreviatePowder = value
                     )
                     .build();
 
@@ -286,7 +285,7 @@ public class MiningHud extends MultilineTextHud {
                     .binding(
                             defaults.mining.hud.icons,
                             () -> config.mining.hud.icons,
-                            value -> config.mining.hud.icons = (boolean) value
+                            value -> config.mining.hud.icons = value
                     )
                     .build();
             var color = Option.<Color>createBuilder()
@@ -319,7 +318,7 @@ public class MiningHud extends MultilineTextHud {
                             defaults.mining.hud.mode,
                             () -> config.mining.hud.mode,
                             value -> {
-                                config.mining.hud.mode = (DrawMode) value;
+                                config.mining.hud.mode = value;
                                 outlineColor.setAvailable(value == DrawMode.OUTLINE);
                             }
                     )
@@ -331,7 +330,7 @@ public class MiningHud extends MultilineTextHud {
                     .binding(
                             defaults.mining.hud.scale,
                             () -> config.mining.hud.scale,
-                            value -> config.mining.hud.scale = (float) value
+                            value -> config.mining.hud.scale = value
                     )
                     .build();
 
@@ -360,7 +359,7 @@ public class MiningHud extends MultilineTextHud {
                     .binding(
                             defaults.mining.hud.composition,
                             () -> config.mining.hud.composition,
-                            value -> config.mining.hud.composition = (List<Entry>) value
+                            value -> config.mining.hud.composition = value
                     )
                     .build();
         }

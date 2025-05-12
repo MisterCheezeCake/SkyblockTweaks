@@ -106,7 +106,7 @@ public enum WidgetType {
     static {
         BY_PREFIX = new HashMap<>();
         for (WidgetType type : values()) {
-            BY_PREFIX.put(type.getPrefix(), type);
+            BY_PREFIX.put(type.prefix, type);
         }
 
     }

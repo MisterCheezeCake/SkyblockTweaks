@@ -182,7 +182,7 @@ public class PartyFeatures {
                     .binding(
                             defaults.partyCommands.enabled,
                             () -> config.partyCommands.enabled,
-                            value -> config.partyCommands.enabled = (boolean) value
+                            value -> config.partyCommands.enabled = value
                     )
                     .build();
             var cooldown = Option.<Integer>createBuilder()
@@ -203,7 +203,7 @@ public class PartyFeatures {
                     .binding(
                             defaults.partyCommands.boopInvites,
                             () -> config.partyCommands.boopInvites,
-                            value -> config.partyCommands.boopInvites = (boolean) value
+                            value -> config.partyCommands.boopInvites = value
                     )
                     .build();
 

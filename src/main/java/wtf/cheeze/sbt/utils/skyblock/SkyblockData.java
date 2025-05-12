@@ -79,6 +79,9 @@ public class SkyblockData {
         public static int armorStack = 0;
         public static String stackString = null;
 
+        public static int secretsTotal = 0;
+        public static int secretsFound = 0;
+
         public static float effectiveHealth() {
             return Math.round( Stats.health * (1 + (Stats.defense / 100f)));
         }
@@ -133,9 +136,15 @@ public class SkyblockData {
         } else {
             Stats.riftSeconds = 0;
             Stats.riftTicking = false;
-
         }
 
+        if (data.secretsFound != null && data.secretsTotal != null) {
+            Stats.secretsFound = data.secretsFound;
+            Stats.secretsTotal = data.secretsTotal;
+        } else {
+            Stats.secretsFound = 0;
+            Stats.secretsTotal = 0;
+        }
     }
 
     public static void update(TabListData data) {

@@ -100,7 +100,7 @@ public class TickerHud extends AbstractTickerHud {
                     .binding(
                             defaults.huds.ticker.enabled,
                             () -> config.huds.ticker.enabled,
-                            value -> config.huds.ticker.enabled = (boolean) value
+                            value -> config.huds.ticker.enabled = value
                     )
                     .build();
             var scale = Option.<Float>createBuilder()

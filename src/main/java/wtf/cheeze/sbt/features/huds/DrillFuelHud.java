@@ -117,7 +117,7 @@ public class DrillFuelHud extends TextHud {
                     .binding(
                             defaults.huds.drillFuel.enabled,
                             () -> config.huds.drillFuel.enabled,
-                            value -> config.huds.drillFuel.enabled = (boolean) value
+                            value -> config.huds.drillFuel.enabled = value
                     )
                     .build();
             var secondNo = Option.<Boolean>createBuilder()
@@ -127,7 +127,7 @@ public class DrillFuelHud extends TextHud {
                     .binding(
                             defaults.huds.drillFuel.abridgeSecondNumber,
                             () -> config.huds.drillFuel.abridgeSecondNumber,
-                            value -> config.huds.drillFuel.abridgeSecondNumber = (boolean) value
+                            value -> config.huds.drillFuel.abridgeSecondNumber = value
                     )
                     .build();
             var color = Option.<Color>createBuilder()

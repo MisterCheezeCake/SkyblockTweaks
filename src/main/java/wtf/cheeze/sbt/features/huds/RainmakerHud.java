@@ -145,7 +145,7 @@ public class RainmakerHud extends TextHud {
                     .binding(
                             defaults.huds.rainmaker.enabled,
                             () -> config.huds.rainmaker.enabled,
-                            value -> config.huds.rainmaker.enabled = (boolean) value
+                            value -> config.huds.rainmaker.enabled = value
                     )
                     .build();
             var icon = Option.<Boolean>createBuilder()
@@ -155,7 +155,7 @@ public class RainmakerHud extends TextHud {
                     .binding(
                             defaults.huds.rainmaker.icon,
                             () -> config.huds.rainmaker.icon,
-                            value -> config.huds.rainmaker.icon = (boolean) value
+                            value -> config.huds.rainmaker.icon = value
                     )
                     .build();
 

@@ -107,7 +107,7 @@ public class SpeedHud extends TextHud {
                     .binding(
                             defaults.huds.speed.enabled,
                             () -> config.huds.speed.enabled,
-                            value -> config.huds.speed.enabled = (boolean) value
+                            value -> config.huds.speed.enabled = value
                     )
                     .build();
 

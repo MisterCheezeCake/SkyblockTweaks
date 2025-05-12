@@ -111,7 +111,7 @@ public class CoordinatesHud extends TextHud {
                     .binding(
                             defaults.huds.coordinates.enabled,
                             () -> config.huds.coordinates.enabled,
-                            value -> config.huds.coordinates.enabled = (boolean) value
+                            value -> config.huds.coordinates.enabled = value
                     )
                     .build();
 
@@ -122,7 +122,7 @@ public class CoordinatesHud extends TextHud {
                     .binding(
                             defaults.huds.coordinates.showOutside,
                             () -> config.huds.coordinates.showOutside,
-                            value -> config.huds.coordinates.showOutside = (boolean) value
+                            value -> config.huds.coordinates.showOutside = value
                     )
                     .build();
             var decimalPlaces = Option.<Integer>createBuilder()

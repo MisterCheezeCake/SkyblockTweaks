@@ -93,7 +93,7 @@ public class ManaBar extends BarHud {
                     .binding(
                             defaults.huds.manaBar.enabled,
                             () -> config.huds.manaBar.enabled,
-                            value -> config.huds.manaBar.enabled = (boolean) value
+                            value -> config.huds.manaBar.enabled = value
                     )
                     .build();
 

@@ -115,7 +115,7 @@ public class ManaHud extends TextHud {
                     .binding(
                             defaults.huds.mana.enabled,
                             () -> config.huds.mana.enabled,
-                            value -> config.huds.mana.enabled = (boolean) value
+                            value -> config.huds.mana.enabled = value
                     )
                     .build();
             var color = Option.<Color>createBuilder()
@@ -161,7 +161,7 @@ public class ManaHud extends TextHud {
                     .binding(
                             defaults.huds.mana.icon,
                             () -> config.huds.mana.icon,
-                            value -> config.huds.mana.icon = (boolean) value
+                            value -> config.huds.mana.icon = value
                     )
                     .build();
             var separator = Option.<String>createBuilder()

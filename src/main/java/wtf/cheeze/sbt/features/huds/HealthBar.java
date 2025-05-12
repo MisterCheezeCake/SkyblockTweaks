@@ -99,7 +99,7 @@ public class HealthBar extends BarHud {
                     .binding(
                             defaults.huds.healthBar.enabled,
                             () -> config.huds.healthBar.enabled,
-                            value -> config.huds.healthBar.enabled = (boolean) value
+                            value -> config.huds.healthBar.enabled = value
                     )
                     .build();
             var color = Option.<Color>createBuilder()
@@ -131,7 +131,7 @@ public class HealthBar extends BarHud {
                     .binding(
                             defaults.huds.healthBar.hideInRift,
                             () -> config.huds.healthBar.hideInRift,
-                            value -> config.huds.healthBar.hideInRift = (boolean) value
+                            value -> config.huds.healthBar.hideInRift = value
                     )
                     .build();
             var scale = Option.<Float>createBuilder()

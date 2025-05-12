@@ -55,7 +55,7 @@ public class ModAPI {
                 .binding(
                         defaults.chatModApiErrors,
                         () -> config.chatModApiErrors,
-                        value -> config.chatModApiErrors = (boolean) value
+                        value -> config.chatModApiErrors = value
                 )
                 .build();
 

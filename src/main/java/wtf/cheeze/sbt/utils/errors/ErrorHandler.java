@@ -105,7 +105,7 @@ public class ErrorHandler {
                 .binding(
                         defaults.chatAllErrors,
                         () -> config.chatAllErrors,
-                        value -> config.chatAllErrors = (boolean) value
+                        value -> config.chatAllErrors = value
                 )
                 .build();
     }

@@ -28,7 +28,7 @@ public class DecimalSlider extends SliderWidget {
     private final double min;
     private final double max;
     private final double step;
-    private Consumer<Double> valueConsumer;
+    private final Consumer<Double> valueConsumer;
 
     public double actualValue() {
         return Math.round((min + (max - min) * this.value) / step) * step;
