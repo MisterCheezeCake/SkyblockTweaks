@@ -437,5 +437,5 @@
   "sbt.config.huds.rainmaker.icon": "Rainmaker Timer HUD Icon",
   "sbt.config.huds.rainmaker.icon.desc": "Enables the water bucket icon in the Rainmaker Timer HUD",
   "sbt.config.general.errors.modApi": "Chat Mod API Errors",
-  "sbt.config.general.errors.modApi.desc": "Whether or not to send Hypixel Mod API error messages in chat.\\n§cPlease note that SBT may not be the cause of these errors, as it recieves any errors the mod API gives, even if they were caused by another mod"
+  "sbt.config.general.errors.modApi.desc": "Whether or not to send Hypixel Mod API error messages in chat.\n§cPlease note that SBT may not be the cause of these errors, as it recieves any errors the mod API gives, even if they were caused by another mod"
 }

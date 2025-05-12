@@ -37,6 +37,7 @@ import wtf.cheeze.sbt.mixin.accessors.YACLScreenAccessor;
 import wtf.cheeze.sbt.utils.actionbar.ActionBarTransformer;
 import wtf.cheeze.sbt.utils.constants.loader.ConstantLoader;
 import wtf.cheeze.sbt.utils.errors.ErrorHandler;
+import wtf.cheeze.sbt.utils.skyblock.ModAPI;
 import wtf.cheeze.sbt.utils.version.UpdateChecker;
 
 
@@ -48,6 +49,7 @@ public class GlobalSearchCategory {
                 .tooltip(Text.translatable("sbt.config.globalSearch.desc"))
                 .option(UpdateChecker.getStreamOption(defaults, config))
                 .option(ErrorHandler.getChatAll(defaults, config))
+                .option(ModAPI.getShowErrors(defaults, config))
                 .group(General.InventoryTweaks.getGroup(defaults, config))
                 .group(MenuHighlights.Config.getGroup(defaults, config))
                 .group(BrewingStandOverlay.Config.getGroup(defaults, config))
