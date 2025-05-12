@@ -18,7 +18,7 @@
  */
 package wtf.cheeze.sbt.utils.enums;
 
-import wtf.cheeze.sbt.utils.TextUtils;
+import wtf.cheeze.sbt.utils.text.TextUtils;
 
 /**
  * Skill

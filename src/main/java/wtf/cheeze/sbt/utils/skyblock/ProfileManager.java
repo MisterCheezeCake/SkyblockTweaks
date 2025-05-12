@@ -18,19 +18,14 @@
  */
 package wtf.cheeze.sbt.utils.skyblock;
 
-import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents;
-import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
-import net.minecraft.client.gui.screen.ingame.GenericContainerScreen;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.LoreComponent;
-import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.config.persistent.PersistentData;
 import wtf.cheeze.sbt.config.persistent.ProfileData;
+import wtf.cheeze.sbt.events.ChatEvents;
 import wtf.cheeze.sbt.events.DrawSlotEvents;
-import wtf.cheeze.sbt.utils.TextUtils;
+import wtf.cheeze.sbt.utils.text.TextUtils;
 import wtf.cheeze.sbt.utils.enums.Skill;
-import wtf.cheeze.sbt.utils.errors.ErrorHandler;
-import wtf.cheeze.sbt.utils.errors.ErrorLevel;
 
 import java.util.regex.Pattern;
 
@@ -43,8 +38,7 @@ public class ProfileManager {
 
     public static void registerEvents() {
         // TODO: If this is ever added to the Mod API, switch to that method
-        ClientReceiveMessageEvents.GAME.register((message, overlay) -> {
-            if (overlay) return;
+        ChatEvents.ON_GAME.register(message -> {
             var messageString = message.getString();
             var matcher = ID_MESSAGE_PATTERN.matcher(messageString);
             if (matcher.find()) {

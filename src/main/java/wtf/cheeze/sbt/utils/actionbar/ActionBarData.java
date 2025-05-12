@@ -28,8 +28,6 @@ import wtf.cheeze.sbt.SkyblockTweaks;
  *      - Location Alert Fields
  */
 public class ActionBarData {
-    public String transformedText;
-
     @Nullable
     public Float maxHealth;
     @Nullable

@@ -25,7 +25,7 @@ import net.fabricmc.fabric.api.client.message.v1.ClientSendMessageEvents;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SBTConfig;
 import wtf.cheeze.sbt.utils.KillSwitch;
-import wtf.cheeze.sbt.utils.MessageManager;
+import wtf.cheeze.sbt.utils.text.MessageManager;
 import wtf.cheeze.sbt.utils.timing.TimedValue;
 import wtf.cheeze.sbt.utils.render.Colors;
 

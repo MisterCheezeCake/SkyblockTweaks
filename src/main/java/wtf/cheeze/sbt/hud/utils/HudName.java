@@ -1,7 +1,7 @@
 package wtf.cheeze.sbt.hud.utils;
 
 import net.minecraft.text.Text;
-import wtf.cheeze.sbt.utils.TextUtils;
+import wtf.cheeze.sbt.utils.text.TextUtils;
 import wtf.cheeze.sbt.utils.render.RenderUtils;
 
 public record HudName(String pName, String sName, int color) {

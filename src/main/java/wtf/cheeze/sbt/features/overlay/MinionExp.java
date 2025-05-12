@@ -38,8 +38,8 @@ import wtf.cheeze.sbt.config.categories.General;
 import wtf.cheeze.sbt.config.persistent.PersistentData;
 import wtf.cheeze.sbt.utils.KillSwitch;
 import wtf.cheeze.sbt.utils.NumberUtils;
-import wtf.cheeze.sbt.utils.Predicates;
-import wtf.cheeze.sbt.utils.TextUtils;
+import wtf.cheeze.sbt.utils.text.Predicates;
+import wtf.cheeze.sbt.utils.text.TextUtils;
 import wtf.cheeze.sbt.utils.constants.loader.Constants;
 import wtf.cheeze.sbt.utils.enums.Skill;
 import wtf.cheeze.sbt.utils.errors.ErrorHandler;
@@ -49,7 +49,6 @@ import wtf.cheeze.sbt.utils.render.Colors;
 import wtf.cheeze.sbt.utils.render.Popup;
 import wtf.cheeze.sbt.utils.render.RenderUtils;
 import wtf.cheeze.sbt.utils.skyblock.ItemStackUtils;
-import wtf.cheeze.sbt.utils.skyblock.SkyblockData;
 
 import java.util.*;
 

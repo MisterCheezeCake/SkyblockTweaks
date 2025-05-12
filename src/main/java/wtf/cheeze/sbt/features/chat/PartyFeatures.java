@@ -24,15 +24,15 @@ import dev.isxander.yacl3.api.OptionGroup;
 import dev.isxander.yacl3.api.controller.IntegerFieldControllerBuilder;
 import dev.isxander.yacl3.api.controller.StringControllerBuilder;
 import dev.isxander.yacl3.config.v2.api.SerialEntry;
-import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.text.Text;
 import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SBTConfig;
+import wtf.cheeze.sbt.events.ChatEvents;
 import wtf.cheeze.sbt.utils.KillSwitch;
-import wtf.cheeze.sbt.utils.MessageManager;
-import wtf.cheeze.sbt.utils.TextUtils;
+import wtf.cheeze.sbt.utils.text.MessageManager;
+import wtf.cheeze.sbt.utils.text.TextUtils;
 import wtf.cheeze.sbt.utils.render.Colors;
 import wtf.cheeze.sbt.utils.skyblock.ModAPI;
 import wtf.cheeze.sbt.utils.skyblock.SkyblockData;
@@ -57,9 +57,7 @@ public class PartyFeatures {
     private static final MinecraftClient client = MinecraftClient.getInstance();
 
     public static void registerEvents() {
-        ClientReceiveMessageEvents.GAME.register((message, overlay) -> {
-
-            if (overlay) return;
+        ChatEvents.ON_GAME.register(message -> {
             if (!SBTConfig.get().partyCommands.enabled) return;
             var s = TextUtils.removeFormatting(message.getString());
             if (s.startsWith("Party >")) {

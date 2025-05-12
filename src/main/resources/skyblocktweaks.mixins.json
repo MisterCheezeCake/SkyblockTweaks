@@ -3,11 +3,6 @@
   "package": "wtf.cheeze.sbt.mixin",
   "compatibilityLevel": "JAVA_21",
   "client": [
-    "features.RecipeBookRedirectorMixin",
-    "hooks.MinecraftClientMixin",
-    "hooks.DrawContextMixin",
-    "hooks.HandledScreenMixin",
-    "hooks.InGameHudMixin",
     "accessors.BossBarHudAccessor",
     "accessors.PlayerListHudAccessor",
     "accessors.YACLScreenAccessor",
@@ -15,7 +10,13 @@
     "features.HudElementHiderMixin",
     "features.MouseLockMixin",
     "features.NoShadowActionBarMixin",
-    "features.StatusEffectHiderMixin"
+    "features.RecipeBookRedirectorMixin",
+    "features.StatusEffectHiderMixin",
+    "hooks.DrawContextMixin",
+    "hooks.HandledScreenMixin",
+    "hooks.InGameHudMixin",
+    "hooks.MessageHandlerMixin",
+    "hooks.MinecraftClientMixin"
   ],
   "injectors": {
     "defaultRequire": 1

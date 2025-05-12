@@ -20,7 +20,7 @@ package wtf.cheeze.sbt.hud.utils;
 
 import dev.isxander.yacl3.api.NameableEnum;
 import net.minecraft.text.Text;
-import wtf.cheeze.sbt.utils.TextUtils;
+import wtf.cheeze.sbt.utils.text.TextUtils;
 
 public enum DrawMode implements NameableEnum {
     PURE,

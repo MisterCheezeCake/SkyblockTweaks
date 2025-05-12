@@ -1,4 +1,4 @@
-package wtf.cheeze.sbt.utils;
+package wtf.cheeze.sbt.utils.text;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.text.Text;

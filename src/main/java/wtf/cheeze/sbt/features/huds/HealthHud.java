@@ -32,7 +32,6 @@ import wtf.cheeze.sbt.hud.utils.HudName;
 import wtf.cheeze.sbt.utils.NumberUtils;
 import wtf.cheeze.sbt.hud.utils.DrawMode;
 import wtf.cheeze.sbt.hud.components.SingleHudLine;
-import wtf.cheeze.sbt.utils.TextUtils;
 import wtf.cheeze.sbt.hud.utils.HudInformation;
 import wtf.cheeze.sbt.hud.bases.TextHud;
 import wtf.cheeze.sbt.utils.enums.Location;

@@ -36,7 +36,7 @@ import wtf.cheeze.sbt.hud.HUD;
 import wtf.cheeze.sbt.hud.bounds.Bounds;
 import wtf.cheeze.sbt.hud.utils.AnchorPoint;
 import wtf.cheeze.sbt.utils.CheezePair;
-import wtf.cheeze.sbt.utils.Predicates;
+import wtf.cheeze.sbt.utils.text.Predicates;
 import wtf.cheeze.sbt.utils.render.Colors;
 import wtf.cheeze.sbt.utils.render.RenderUtils;
 

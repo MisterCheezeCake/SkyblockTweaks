@@ -25,9 +25,11 @@ import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents;
 import net.minecraft.text.Text;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SBTConfig;
+import wtf.cheeze.sbt.events.ChatEvents;
 import wtf.cheeze.sbt.features.huds.SkillHudManager;
 import wtf.cheeze.sbt.utils.NumberUtils;
-import wtf.cheeze.sbt.utils.TextUtils;
+import wtf.cheeze.sbt.utils.text.Symbols;
+import wtf.cheeze.sbt.utils.text.TextUtils;
 import wtf.cheeze.sbt.utils.errors.ErrorHandler;
 import wtf.cheeze.sbt.utils.errors.ErrorLevel;
 import wtf.cheeze.sbt.utils.skyblock.SkyblockData;
@@ -57,10 +59,10 @@ import java.util.regex.Pattern;
 
 
 public class ActionBarTransformer {
-    public static final String SEPERATOR3 = "   ";
-    public static final String SEPERATOR4 = "     ";
-    public static final String SEPERATOR5 = "     ";
-    public static final String SEPERATOR12 = "            ";
+    private static final String SEPERATOR3 = "   ";
+    private static final String SEPERATOR4 = "     ";
+    private static final String SEPERATOR5 = "     ";
+    private static final String SEPERATOR12 = "            ";
 
 
     private static final Pattern manaAbilityPattern = Pattern.compile("-(\\d+) Mana \\((.+)\\)");
@@ -69,178 +71,205 @@ public class ActionBarTransformer {
     private static final Pattern healthPattern = Pattern.compile("(?<current>[\\d,]+)/(?<max>[\\d,]+)❤(?:\\+[\\d,]+.)?(?: {2})?(?<stacks>\\d+)?(?<symbol>.)?");
     private static final Pattern riftTimePattern = Pattern.compile("(?<time>.+)ф Left(?: \\+\\d+[ms]!)?");
 
-    public static ActionBarData run(String actionBarText) {
-      try {
-          ActionBarData data = new ActionBarData();
-          String[] unmodifiedParts = actionBarText.split(SEPERATOR3);
-          StringBuilder newText = new StringBuilder();
-          for (String unmodifiedPart : unmodifiedParts) {
-              String trimmed = unmodifiedPart.trim();
-              String unformatted = TextUtils.removeFormatting(trimmed);
-              if (unformatted.toLowerCase().contains("race")) {
-                  // Races, we do these first because the timer updates an obscene amount
-                  newText.append(trimmed).append(SEPERATOR12);
-              } else if (unformatted.contains("❤")) {
-                  var matcher = healthPattern.matcher(unformatted);
-                    if (matcher.find()) {
-                      data.currentHealth = Float.parseFloat(matcher.group("current").replace(",", ""));
-                      data.maxHealth = Float.parseFloat(matcher.group("max").replace(",", ""));
-                      if (matcher.group("stacks") != null) {
-                          data.stackAmount = Integer.parseInt(matcher.group("stacks"));
-                      }
-                      if (matcher.group("symbol") != null) {
-                          data.stackSymbol = matcher.group("symbol");
-                      }
-                  }
-                  if (!SBTConfig.get().actionBarFilters.hideHealth) {
-                      newText.append(SEPERATOR5).append(trimmed);
-                  }
 
-              } else if (unformatted.contains("✎")) {
-                  //TODO: Still uses string manipulation
 
-                  // Mana
-                  // 411/1,221✎ 2ʬ
-                  // 289/1,221✎ Mana
-                  String[] manaParts = unformatted.split(" ");
-                  manaParts[0] = manaParts[0].replace("✎", "");
-                  String[] mana = manaParts[0].split("/");
-                  data.currentMana = Float.parseFloat(mana[0].replace(",", ""));
-                  data.maxMana = Float.parseFloat(mana[1].replace(",", ""));
-                  if (manaParts[1].contains("ʬ")) {
-                      data.overflowMana = Float.parseFloat(manaParts[1].replace("ʬ", "").replace(",", ""));
-                  } else {
-                      data.overflowMana = 0f;
-                  }
-                  if (!SBTConfig.get().actionBarFilters.hideMana) {
-                      newText.append(SEPERATOR5).append(trimmed);
-                  }
-              } else if (unformatted.contains("NOT ENOUGH MANA")) {
-                  newText.append(SEPERATOR5).append(trimmed);
-              } else if (unformatted.contains("❈")) {
-                  //TODO: Still uses string manipulation
-                  // Defense
-                  String defense = unformatted.split("❈")[0].trim();
-                  data.defense = Integer.parseInt(defense.replace(",", ""));
-                  if (!SBTConfig.get().actionBarFilters.hideDefense) {
-                      newText.append(SEPERATOR5).append(trimmed);
-                  }
+    public static ActionBarData extractData(String actionBarText) {
+            try {
+                ActionBarData data = new ActionBarData();
+                String[] unmodifiedParts = actionBarText.split(SEPERATOR3);
+                for (String unmodifiedPart : unmodifiedParts) {
+                    try {
+                        String trimmed = unmodifiedPart.trim();
+                        String unformatted = TextUtils.removeFormatting(trimmed);
+                        if (unformatted.contains(Symbols.HEALTH)) {
+                            var matcher = healthPattern.matcher(unformatted);
+                            if (matcher.find()) {
+                                data.currentHealth = Float.parseFloat(matcher.group("current").replace(",", ""));
+                                data.maxHealth = Float.parseFloat(matcher.group("max").replace(",", ""));
+                                if (matcher.group("stacks") != null) {
+                                    data.stackAmount = Integer.parseInt(matcher.group("stacks"));
+                                }
+                                if (matcher.group("symbol") != null) {
+                                    data.stackSymbol = matcher.group("symbol");
+                                }
+                            }
+                        } else if (unformatted.contains(Symbols.MANA)) {
+                            //TODO: Still uses string manipulation
 
-              } else if (unformatted.contains("Mana")) {
-                  Matcher matcher = manaAbilityPattern.matcher(unformatted);
-                  if (matcher.find()) {
-                      data.abilityManaCost = Integer.parseInt(matcher.group(1));
-                      data.abilityName = matcher.group(2);
-                      if (!SBTConfig.get().actionBarFilters.hideAbilityUse) {
-                          newText.append(SEPERATOR5).append(trimmed);
-                      }
-                      continue;
-                  }
-                  newText.append(SEPERATOR5).append(trimmed);
+                            // Mana
+                            // 411/1,221✎ 2ʬ
+                            // 289/1,221✎ Mana
+                            String[] manaParts = unformatted.split(" ");
+                            manaParts[0] = manaParts[0].replace(Symbols.MANA, "");
+                            String[] mana = manaParts[0].split("/");
+                            data.currentMana = Float.parseFloat(mana[0].replace(",", ""));
+                            data.maxMana = Float.parseFloat(mana[1].replace(",", ""));
+                            if (manaParts[1].contains(Symbols.OVERFLOW_MANA)) {
+                                data.overflowMana = Float.parseFloat(manaParts[1].replace(Symbols.OVERFLOW_MANA, "").replace(",", ""));
+                            } else {
+                                data.overflowMana = 0f;
+                            }
 
-              } else if (skillLevelPatern.matcher(unformatted).matches()) {
-                  Matcher matcher = skillLevelPatern.matcher(unformatted);
-                  if (matcher.find() && !matcher.group(2).contains("SkyBlock XP")) {
-                      data.gainedXP = NumberUtils.parseFloatWithKorM(matcher.group(1));
-                      data.skillType = matcher.group(2);
-                      if (matcher.group(3).contains("/")) {
-                          String[] xp = matcher.group(3).split("/");
-                          data.totalXP = NumberUtils.parseFloatWithKorM(xp[1]);
-                          data.nextLevelXP = NumberUtils.parseFloatWithKorM(xp[0]);
-                          // TODO: Transition uses of this to an event which SkillHud can subscribe to
-                          SkillHudManager.INSTANCE.update(data.skillType, data.gainedXP, data.totalXP, data.nextLevelXP);
-                      } else {
-                          data.skillPercentage = Float.parseFloat(matcher.group(3).replace("%", ""));
-                          SkillHudManager.INSTANCE.update(data.skillType, data.gainedXP, data.skillPercentage);
-                      }
-                      if (!SBTConfig.get().actionBarFilters.hideSkill) {
-                          newText.append(SEPERATOR5).append(trimmed);
-                      }
-                  } else {
-                      newText.append(SEPERATOR5).append(trimmed);
-                  }
-              } else if (unformatted.contains("Secrets")) {
-                  Matcher matcher = secretsPattern.matcher(unformatted);
-                  if (matcher.find()) {
-                      data.secretsFound = Integer.parseInt(matcher.group(1));
-                      data.secretsTotal = Integer.parseInt(matcher.group(2));
-                  }
-                  if (!SBTConfig.get().actionBarFilters.hideSecrets) {
-                      newText.append(SEPERATOR5).append(trimmed);
-                  }
-              } else if (unformatted.contains("Drill Fuel")) {
-                  // Drill Fuel
-                  String[] drillFuel = unformatted.split(" ")[0].split("/");
-                  data.drillFuel = Integer.parseInt(drillFuel[0].replace(",", ""));
-                  data.maxDrillFuel = NumberUtils.parseIntWithKorM(drillFuel[1]);
-                  if (!SBTConfig.get().actionBarFilters.hideDrill) {
-                      newText.append(SEPERATOR5).append(trimmed);
-                  }
-              } else if (unformatted.contains("ф Left")) {
-                  // Rift Timer
-                  Matcher matcher = riftTimePattern.matcher(unformatted);
-                  if (matcher.matches()) {
-                      data.riftTime = matcher.group("time");
-                      data.riftTicking = trimmed.contains("§a");
-                  }
-                  if (!SBTConfig.get().actionBarFilters.hideRiftTime) newText.append(SEPERATOR5).append(trimmed);
-              } else if (unformatted.contains("second") || unformatted.contains("DPS")) {
-                  // Trial of Fire
-                  newText.append(SEPERATOR3).append(trimmed);
-              } else if (unformatted.contains("ⓩ") || unformatted.contains("Ⓞ")) {
-                  //TODO: Still uses string manipulation
+                        } else if (unformatted.contains(Symbols.DEFENSE)) {
+                            //TODO: Still uses string manipulation
 
-                  // Ornate/Florid: §e§lⓩⓩⓩ§6§lⓄⓄ
-                  // Regular: §a§lⓩ§2§lⓄⓄⓄ
-                  // Foil: §e§lⓄⓄ§7§lⓄⓄ
-                  data.maxTickers = unformatted.length();
-                  if (trimmed.contains("§6§l")) {
-                      var split = trimmed.split("§6§l");
-                      data.currentTickers = TextUtils.removeFormatting(split[0]).length();
-                  } else if (trimmed.contains("§2§l")) {
-                      var split = trimmed.split("§2§l");
-                      data.currentTickers = TextUtils.removeFormatting(split[0]).length();
-                  } else if (trimmed.contains("§7§l")) {
-                      var split = trimmed.split("§7§l");
-                      data.currentTickers = TextUtils.removeFormatting(split[0]).length();
-                  }
+                            // Defense
+                            String defense = unformatted.split(Symbols.DEFENSE)[0].trim();
+                            data.defense = Integer.parseInt(defense.replace(",", ""));
 
-                  if (!SBTConfig.get().actionBarFilters.hideTickers) {
-                      newText.append(SEPERATOR4).append(trimmed);
-                  }
-              } else if (unformatted.contains("⏣")) {
-                    // Location
-                    if (!SBTConfig.get().actionBarFilters.hideLocation) {
+                        } else if (unformatted.contains("Mana")) {
+                            Matcher matcher = manaAbilityPattern.matcher(unformatted);
+                            if (matcher.find()) {
+                                data.abilityManaCost = Integer.parseInt(matcher.group(1));
+                                data.abilityName = matcher.group(2);
+                            }
+                        } else if (skillLevelPatern.matcher(unformatted).matches()) {
+                            Matcher matcher = skillLevelPatern.matcher(unformatted);
+                            if (matcher.find() && !matcher.group(2).contains("SkyBlock XP")) {
+                                data.gainedXP = NumberUtils.parseFloatWithKorM(matcher.group(1));
+                                data.skillType = matcher.group(2);
+                                if (matcher.group(3).contains("/")) {
+                                    String[] xp = matcher.group(3).split("/");
+                                    data.totalXP = NumberUtils.parseFloatWithKorM(xp[1]);
+                                    data.nextLevelXP = NumberUtils.parseFloatWithKorM(xp[0]);
+                                    // TODO: Transition uses of this to an event which SkillHud can subscribe to
+                                    SkillHudManager.INSTANCE.update(data.skillType, data.gainedXP, data.totalXP, data.nextLevelXP);
+                                } else {
+                                    data.skillPercentage = Float.parseFloat(matcher.group(3).replace("%", ""));
+                                    SkillHudManager.INSTANCE.update(data.skillType, data.gainedXP, data.skillPercentage);
+                                }
+                            }
+                        } else if (unformatted.contains("Secrets")) {
+                            Matcher matcher = secretsPattern.matcher(unformatted);
+                            if (matcher.find()) {
+                                data.secretsFound = Integer.parseInt(matcher.group(1));
+                                data.secretsTotal = Integer.parseInt(matcher.group(2));
+                            }
+                        } else if (unformatted.contains("Drill Fuel")) {
+                            // Drill Fuel
+                            String[] drillFuel = unformatted.split(" ")[0].split("/");
+                            data.drillFuel = Integer.parseInt(drillFuel[0].replace(",", ""));
+                            data.maxDrillFuel = NumberUtils.parseIntWithKorM(drillFuel[1]);
+                        } else if (unformatted.contains("ф Left")) {
+                            // Rift Timer
+                            Matcher matcher = riftTimePattern.matcher(unformatted);
+                            if (matcher.matches()) {
+                                data.riftTime = matcher.group("time");
+                                data.riftTicking = trimmed.contains("§a");
+                            }
+                        } else if (unformatted.contains(Symbols.TICKER_Z) || unformatted.contains(Symbols.TICKER_O)) {
+                            //TODO: Still uses string manipulation
+
+                            // Ornate/Florid: §e§lⓩⓩⓩ§6§lⓄⓄ
+                            // Regular: §a§lⓩ§2§lⓄⓄⓄ
+                            // Foil: §e§lⓄⓄ§7§lⓄⓄ
+                            data.maxTickers = unformatted.length();
+                            if (trimmed.contains("§6§l")) {
+                                var split = trimmed.split("§6§l");
+                                data.currentTickers = TextUtils.removeFormatting(split[0]).length();
+                            } else if (trimmed.contains("§2§l")) {
+                                var split = trimmed.split("§2§l");
+                                data.currentTickers = TextUtils.removeFormatting(split[0]).length();
+                            } else if (trimmed.contains("§7§l")) {
+                                var split = trimmed.split("§7§l");
+                                data.currentTickers = TextUtils.removeFormatting(split[0]).length();
+                            }
+                        }
+                    } catch (Exception e) {
+                        ErrorHandler.handleError(e, "Error Parsing action bar segment/*LOGONLY: {}*/", ErrorLevel.WARNING, false, unmodifiedPart);
+                    }
+                }
+                return data;
+            } catch (Exception e) {
+                ErrorHandler.handleError(e, "Error Parsing action bar text/*LOGONLY: {}*/", ErrorLevel.WARNING, false, actionBarText);
+                return new ActionBarData();
+            }
+
+
+    }
+
+    public static Text runTransformations(Text actionBarText) {
+        try {
+            String[] unmodifiedParts = actionBarText.getString().split(SEPERATOR3);
+            StringBuilder newText = new StringBuilder();
+            for (String unmodifiedPart : unmodifiedParts) {
+                try {
+                    String trimmed = unmodifiedPart.trim();
+                    String unformatted = TextUtils.removeFormatting(trimmed);
+                    if (unformatted.toLowerCase().contains("race")) {
+                        // Races, we do these first because the timer updates an obscene amount
+                        newText.append(trimmed).append(SEPERATOR12);
+                    } else if (unformatted.contains(Symbols.HEALTH)) {
+                        if (!SBTConfig.get().actionBarFilters.hideHealth) {
+                            newText.append(SEPERATOR5).append(trimmed);
+                        }
+                    } else if (unformatted.contains(Symbols.MANA)) {
+                        if (!SBTConfig.get().actionBarFilters.hideMana) {
+                            newText.append(SEPERATOR5).append(trimmed);
+                        }
+                    } else if (unformatted.contains("NOT ENOUGH MANA")) {
+                        newText.append(SEPERATOR5).append(trimmed);
+                    } else if (unformatted.contains(Symbols.DEFENSE)) {
+                        if (!SBTConfig.get().actionBarFilters.hideDefense) {
+                            newText.append(SEPERATOR5).append(trimmed);
+                        }
+
+                    } else if (unformatted.contains("Mana")) {
+                        newText.append(SEPERATOR5).append(trimmed);
+                    } else if (skillLevelPatern.matcher(unformatted).matches() && !unformatted.contains("SkyBlock XP")) {
+                        if (!SBTConfig.get().actionBarFilters.hideSkill) {
+                            newText.append(SEPERATOR5).append(trimmed);
+                        }
+                    } else if (unformatted.contains("Secrets")) {
+                        if (!SBTConfig.get().actionBarFilters.hideSecrets) {
+                            newText.append(SEPERATOR5).append(trimmed);
+                        }
+                    } else if (unformatted.contains("Drill Fuel")) {
+                        if (!SBTConfig.get().actionBarFilters.hideDrill) {
+                            newText.append(SEPERATOR5).append(trimmed);
+                        }
+                    } else if (unformatted.contains("ф Left")) {
+                        if (!SBTConfig.get().actionBarFilters.hideRiftTime) {
+                            newText.append(SEPERATOR5).append(trimmed);
+                        }
+                    } else if (unformatted.contains("second") || unformatted.contains("DPS")) {
+                        // Trial of Fire
+                        newText.append(SEPERATOR3).append(trimmed);
+                    } else if (unformatted.contains("ⓩ") || unformatted.contains("Ⓞ")) {
+                        if (!SBTConfig.get().actionBarFilters.hideTickers) {
+                            newText.append(SEPERATOR4).append(trimmed);
+                        }
+                    } else if (unformatted.contains("⏣")) {
+                        if (!SBTConfig.get().actionBarFilters.hideLocation) {
+                            newText.append(SEPERATOR5).append(trimmed);
+                        }
+                    } else {
                         newText.append(SEPERATOR5).append(trimmed);
                     }
-              } else {
-                  newText.append(SEPERATOR5).append(trimmed);
-              }
-          }
+                } catch (Exception e) {
+                    ErrorHandler.handleError(e, "Error Parsing action bar segment/*LOGONLY: {}*/", ErrorLevel.WARNING, false, unmodifiedPart);
+                    newText.append(SEPERATOR5).append(unmodifiedPart.trim());
 
-          data.transformedText = newText.toString().trim();
-          return data;
-      } catch (Exception e) {
-         // SkyblockTweaks.LOGGER.error("Error parsing action bar text: {}", actionBarText, e);
-          ErrorHandler.handleError(e, "Error Parsing action bar text/*LOGONLY: {}*/", ErrorLevel.WARNING, false, actionBarText);
-          //SkyblockTweaks.LOGGER.warn("Some features may not work correctly. Please report this to MisterCheezeCake immediately.");
-          var data = new ActionBarData();
-          // data.transformedText = actionBarText;
-          return data;
-      }
+                }
+            }
+            return Text.of(newText.toString());
+        } catch (Exception e) {
+            ErrorHandler.handleError(e, "Error Parsing transforming bar text/*LOGONLY: {}*/", ErrorLevel.WARNING, false, actionBarText.getString());
+            return actionBarText;
+        }
     }
 
     public static void registerEvents() {
+        ChatEvents.ON_ACTION_BAR.register(message -> {
+            SkyblockData.update(ActionBarTransformer.extractData(message.getString()));
+        });
         ClientReceiveMessageEvents.MODIFY_GAME.register((message, overlay) -> {
             if (!overlay) return message;
-           // SkyblockTweaks.LOGGER.info("Old: " + message.getString());
-            var data = ActionBarTransformer.run(message.getString());
-            //SkyblockTweaks.LOGGER.info("New: " + data.transformedText);
-            SkyblockData.update(data);
-            return Text.of(data.transformedText);
-
+            return ActionBarTransformer.runTransformations(message);
         });
     }
+
+
 
 
     public static class Config {

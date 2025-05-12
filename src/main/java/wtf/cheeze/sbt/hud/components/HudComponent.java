@@ -20,7 +20,7 @@ package wtf.cheeze.sbt.hud.components;
 
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.text.Text;
-import wtf.cheeze.sbt.utils.TextUtils;
+import wtf.cheeze.sbt.utils.text.TextUtils;
 import wtf.cheeze.sbt.utils.render.Colors;
 
 public interface HudComponent {

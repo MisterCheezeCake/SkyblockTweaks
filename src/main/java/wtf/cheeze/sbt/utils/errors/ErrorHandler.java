@@ -26,12 +26,11 @@ import net.minecraft.text.Text;
 import org.apache.commons.lang3.tuple.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SBTConfig;
-import wtf.cheeze.sbt.utils.MessageManager;
-import wtf.cheeze.sbt.utils.NotificationHandler;
-import wtf.cheeze.sbt.utils.TextUtils;
+import wtf.cheeze.sbt.utils.text.MessageManager;
+import wtf.cheeze.sbt.utils.text.NotificationHandler;
+import wtf.cheeze.sbt.utils.text.TextUtils;
 import wtf.cheeze.sbt.utils.timing.TimedSet;
 import wtf.cheeze.sbt.utils.render.Colors;
 

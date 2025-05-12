@@ -31,7 +31,7 @@ import wtf.cheeze.sbt.features.overlay.MinionExp;
 import wtf.cheeze.sbt.features.misc.MouseLock;
 import wtf.cheeze.sbt.hud.HudManager;
 import wtf.cheeze.sbt.utils.KillSwitch;
-import wtf.cheeze.sbt.utils.NotificationHandler;
+import wtf.cheeze.sbt.utils.text.NotificationHandler;
 import wtf.cheeze.sbt.utils.version.UpdateChecker;
 import wtf.cheeze.sbt.utils.version.Version;
 import wtf.cheeze.sbt.utils.actionbar.ActionBarTransformer;

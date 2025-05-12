@@ -32,7 +32,6 @@ import wtf.cheeze.sbt.hud.components.SingleHudLine;
 import wtf.cheeze.sbt.hud.utils.HudInformation;
 import wtf.cheeze.sbt.hud.bases.TextHud;
 import wtf.cheeze.sbt.hud.utils.HudName;
-import wtf.cheeze.sbt.utils.TextUtils;
 import wtf.cheeze.sbt.utils.render.Colors;
 import wtf.cheeze.sbt.utils.skyblock.SkyblockData;
 

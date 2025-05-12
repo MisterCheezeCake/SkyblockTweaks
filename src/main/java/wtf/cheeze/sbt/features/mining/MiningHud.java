@@ -43,7 +43,7 @@ import wtf.cheeze.sbt.hud.utils.HudName;
 import wtf.cheeze.sbt.utils.CheezePair;
 import wtf.cheeze.sbt.utils.DataUtils;
 import wtf.cheeze.sbt.utils.NumberUtils;
-import wtf.cheeze.sbt.utils.TextUtils;
+import wtf.cheeze.sbt.utils.text.TextUtils;
 import wtf.cheeze.sbt.utils.render.Colors;
 import wtf.cheeze.sbt.hud.icon.Icons;
 import wtf.cheeze.sbt.utils.skyblock.MiningData;

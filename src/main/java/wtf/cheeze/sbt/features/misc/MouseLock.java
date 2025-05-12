@@ -19,8 +19,8 @@
 package wtf.cheeze.sbt.features.misc;
 
 import wtf.cheeze.sbt.utils.KillSwitch;
-import wtf.cheeze.sbt.utils.MessageManager;
-import wtf.cheeze.sbt.utils.TextUtils;
+import wtf.cheeze.sbt.utils.text.MessageManager;
+import wtf.cheeze.sbt.utils.text.TextUtils;
 import wtf.cheeze.sbt.events.WorldLoadEvents;
 import wtf.cheeze.sbt.utils.render.Colors;
 
