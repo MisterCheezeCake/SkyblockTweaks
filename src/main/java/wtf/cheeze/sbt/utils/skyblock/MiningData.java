@@ -53,6 +53,7 @@ public class MiningData {
 
 
     public static int getComMax(String com) {
+        // TODO: Switch to repo
         return switch (com) {
             case "Mithril Miner" -> 350;
             case "Lava Springs Mithril", "Royal Mines Mithril", "Cliffside Veins Mithril", "Rampart's Quarry Mithril",
@@ -70,7 +71,8 @@ public class MiningData {
             case "2x Mithril Powder Collector" -> 500;
             case "Hard Stone Miner", "Jade Gemstone Collector", "Amber Gemstone Collector", "Topaz Gemstone Collector",
                  "Sapphire Gemstone Collector", "Amethyst Gemstone Collector", "Ruby Gemstone Collector" -> 1000;
-            case "Chest Looter", "Corpse Looter" -> 3;
+            case "Chest Looter" -> 3;
+            case "Corpse Looter" -> 2;
             case "Team Treasurite Member Slayer", "Yog Slayer", "Automaton Slayer" -> 13;
             case "Sludge Slayer" -> 25;
             case "Thyst Slayer" -> 5;
