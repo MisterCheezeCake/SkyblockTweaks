@@ -19,6 +19,7 @@
 package wtf.cheeze.sbt.utils.skyblock;
 
 import net.minecraft.client.MinecraftClient;
+import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.hud.icon.HudIcon;
 import wtf.cheeze.sbt.hud.icon.Icons;
 import wtf.cheeze.sbt.mixin.accessors.BossBarHudAccessor;
@@ -50,6 +51,10 @@ public class MiningData {
     public boolean event = false;
     public String eventName = "";
     public int eventTimeLeft = 0;
+
+    private static long lastDataDumpTime = 0;
+    private static final long INTERVAL_BETWEEN_DUMPS_MS = 90000;
+
 
 
     public static int getComMax(String com) {
@@ -203,7 +208,10 @@ public class MiningData {
             return new MiningData(data);
         } catch (Exception e) {
             ErrorHandler.handleError(e, "Failed to parse mining data", ErrorLevel.WARNING);
-            //SkyblockTweaks.LOGGER.info(SkyblockTweaks.DATA.tabData.serialize());
+            if (System.currentTimeMillis() - lastDataDumpTime > INTERVAL_BETWEEN_DUMPS_MS) {
+                lastDataDumpTime = System.currentTimeMillis();
+                SkyblockTweaks.LOGGER.info("Dumping tab list data: {}", data.serialize());
+            }
             return EMPTY;
         }
     }

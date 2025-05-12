@@ -14,6 +14,7 @@ import wtf.cheeze.sbt.features.overlay.MinionExp;
 import wtf.cheeze.sbt.utils.actionbar.ActionBarTransformer;
 import wtf.cheeze.sbt.utils.constants.loader.ConstantLoader;
 import wtf.cheeze.sbt.utils.errors.ErrorHandler;
+import wtf.cheeze.sbt.utils.skyblock.ModAPI;
 import wtf.cheeze.sbt.utils.version.UpdateChecker;
 
 public class General {
@@ -24,6 +25,7 @@ public class General {
                 .option(GlobalSearchCategory.getOpenGlobalSearchButton(defaults, config))
                 .option(UpdateChecker.getStreamOption(defaults, config))
                 .option(ErrorHandler.getChatAll(defaults, config))
+                .option(ModAPI.getShowErrors(defaults, config))
                 .group(InventoryTweaks.getGroup(defaults, config))
                 .group(MenuHighlights.Config.getGroup(defaults, config))
                 .group(BrewingStandOverlay.Config.getGroup(defaults, config))

@@ -19,11 +19,16 @@
 
 package wtf.cheeze.sbt.utils.skyblock;
 
+import dev.isxander.yacl3.api.Option;
+import dev.isxander.yacl3.api.OptionDescription;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.azureaaron.hmapi.events.HypixelPacketEvents;
 import net.azureaaron.hmapi.network.HypixelNetworking;
 import net.azureaaron.hmapi.network.packet.v1.s2c.LocationUpdateS2CPacket;
+import net.minecraft.text.Text;
 import net.minecraft.util.Util;
+import wtf.cheeze.sbt.config.ConfigImpl;
+import wtf.cheeze.sbt.config.SBTConfig;
 
 public class ModAPI {
 
@@ -40,6 +45,20 @@ public class ModAPI {
 
     public static void requestPartyInfo() {
         HypixelNetworking.sendPartyInfoC2SPacket(2);
+    }
+
+    public static Option<Boolean> getShowErrors(ConfigImpl defaults, ConfigImpl config) {
+        return Option.<Boolean>createBuilder()
+                .name(Text.translatable("sbt.config.general.errors.modApi"))
+                .description(OptionDescription.of(Text.translatable("sbt.config.general.errors.modApi.desc")))
+                .controller(SBTConfig::generateBooleanController)
+                .binding(
+                        defaults.chatModApiErrors,
+                        () -> config.chatModApiErrors,
+                        value -> config.chatModApiErrors = (boolean) value
+                )
+                .build();
+
     }
 
 

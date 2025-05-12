@@ -42,6 +42,9 @@ public class ConfigImpl extends VersionedObject {
     public boolean chatAllErrors = true;
 
     @SerialEntry
+    public boolean chatModApiErrors = true;
+
+    @SerialEntry
     public ConstantLoader.Config constantLoader = new ConstantLoader.Config();
 
     @SerialEntry
