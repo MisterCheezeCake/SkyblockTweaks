@@ -23,6 +23,7 @@ import dev.isxander.yacl3.api.OptionGroup;
 import dev.isxander.yacl3.config.v2.api.SerialEntry;
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents;
 import net.minecraft.text.Text;
+import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SBTConfig;
 import wtf.cheeze.sbt.events.ChatEvents;
@@ -69,7 +70,7 @@ public class ActionBarTransformer {
     private static final Pattern skillLevelPatern = Pattern.compile("\\+([\\d,]+\\.?\\d*) (.+) \\((.+)\\)");
     private static final Pattern secretsPattern = Pattern.compile("(\\d+)/(\\d+) Secrets");
     private static final Pattern healthPattern = Pattern.compile("(?<current>[\\d,]+)/(?<max>[\\d,]+)❤(?:\\+[\\d,]+.)?(?: {2})?(?<stacks>\\d+)?(?<symbol>.)?");
-    private static final Pattern riftTimePattern = Pattern.compile("(?<time>.+)ф Left(?: \\+\\d+[ms]!)?");
+    private static final Pattern riftTimePattern = Pattern.compile("(?<time>.+)ф Left(?: [+-]\\d+[ms]!)?");
 
 
 
@@ -152,6 +153,7 @@ public class ActionBarTransformer {
                             data.maxDrillFuel = NumberUtils.parseIntWithKorM(drillFuel[1]);
                         } else if (unformatted.contains("ф Left")) {
                             // Rift Timer
+                            SkyblockTweaks.LOGGER.info("Rift Timer: {}", unformatted);
                             Matcher matcher = riftTimePattern.matcher(unformatted);
                             if (matcher.matches()) {
                                 data.riftTime = matcher.group("time");
