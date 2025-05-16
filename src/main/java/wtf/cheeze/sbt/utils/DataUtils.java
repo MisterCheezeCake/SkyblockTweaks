@@ -18,9 +18,10 @@
  */
 package wtf.cheeze.sbt.utils;
 
-import net.minecraft.client.util.math.MatrixStack;
 import wtf.cheeze.sbt.hud.utils.AnchorPoint;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -35,4 +36,11 @@ public class DataUtils {
     public static final Supplier<Integer> alwaysZero = () -> 0;
     public static final Supplier<AnchorPoint> alwaysLeft = () -> AnchorPoint.LEFT;
     @SuppressWarnings("rawtypes") public static final Consumer doNothing = (o) -> {};
+
+    @SafeVarargs
+    public static<T> ArrayList<T> arrayListOf(T... items) {
+        ArrayList<T> list = new ArrayList<>();
+        Collections.addAll(list, items);
+        return list;
+    }
 }

@@ -18,13 +18,11 @@
  */
 package wtf.cheeze.sbt.features.mining;
 
-import dev.isxander.yacl3.api.ListOption;
-import dev.isxander.yacl3.api.NameableEnum;
-import dev.isxander.yacl3.api.Option;
-import dev.isxander.yacl3.api.OptionGroup;
+import dev.isxander.yacl3.api.*;
 import dev.isxander.yacl3.api.controller.ColorControllerBuilder;
 import dev.isxander.yacl3.api.controller.EnumControllerBuilder;
 import dev.isxander.yacl3.config.v2.api.SerialEntry;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.text.Text;
 import org.jetbrains.annotations.NotNull;
 import wtf.cheeze.sbt.config.ConfigImpl;
@@ -37,6 +35,8 @@ import wtf.cheeze.sbt.hud.cache.UpdateTiming;
 import wtf.cheeze.sbt.hud.components.FlexibleHudLine;
 import wtf.cheeze.sbt.hud.components.HudComponent;
 import wtf.cheeze.sbt.hud.components.SingleHudLine;
+import wtf.cheeze.sbt.hud.screen.CompositionPopupScreen;
+import wtf.cheeze.sbt.hud.utils.CompositionEntry;
 import wtf.cheeze.sbt.hud.utils.DrawMode;
 import wtf.cheeze.sbt.hud.utils.HudInformation;
 import wtf.cheeze.sbt.hud.utils.HudName;
@@ -187,25 +187,38 @@ public class MiningHud extends MultilineTextHud {
     }
 
 
-    public enum Entry implements NameableEnum {
-        COMMISSIONS(TextUtils.withColor("Commissions", Colors.CYAN)),
-        MITHRIL_POWDER(TextUtils.withColor("Mithril Powder", Colors.GREEN)),
-        GEMSTONE_POWDER(TextUtils.withColor("Gemstone Powder", Colors.PINK)),
-        GLACITE_POWER(TextUtils.withColor("Glacite Power", Colors.LIGHT_BLUE)),
-        COOLDOWN(TextUtils.withColor("Pickaxe Cooldown", Colors.LIME)),
-        // FORGES(TextUtils.withColor("Forges", Colors.WHITE)),
+    public enum Entry implements NameableEnum, CompositionEntry {
+        COMMISSIONS(TextUtils.withColor("Commissions", Colors.CYAN), TextUtils.join(TextUtils.withColor("Mithril Miner: ", Colors.CYAN), TextUtils.withColor("0/350", Colors.RED)), false),
+        MITHRIL_POWDER(TextUtils.withColor("Mithril Powder", Colors.GREEN), TextUtils.join(TextUtils.withColor("Mithril Powder: ", Colors.CYAN), TextUtils.withColor("2M", Colors.GREEN)), false),
+        GEMSTONE_POWDER(TextUtils.withColor("Gemstone Powder", Colors.PINK), TextUtils.join(TextUtils.withColor("Gemstone Powder: ", Colors.CYAN), TextUtils.withColor("850K", Colors.PINK)), false),
+        GLACITE_POWER(TextUtils.withColor("Glacite Power", Colors.LIGHT_BLUE), TextUtils.join(TextUtils.withColor("Glacite Powder: ", Colors.CYAN), TextUtils.withColor("50K", Colors.LIME)), false),
+        COOLDOWN(TextUtils.withColor("Pickaxe Cooldown", Colors.LIME), Text.empty(),false);
 
-        ;
+
 
         private final Text name;
+        private final Text preview;
+        private final boolean repeatable;
 
-        Entry(Text name) {
+        Entry(Text name, Text preview, boolean repeatable) {
             this.name = name;
+            this.preview = preview;
+            this.repeatable = repeatable;
         }
 
         @Override
         public Text getDisplayName() {
             return name;
+        }
+
+        @Override
+        public boolean isRepeatable() {
+            return repeatable;
+        }
+
+        @Override
+        public Text getPreviewText() {
+            return preview;
         }
     }
 
@@ -223,7 +236,7 @@ public class MiningHud extends MultilineTextHud {
         public boolean icons = true;
 
         @SerialEntry
-        public List<Entry> composition = List.of(Entry.COMMISSIONS, Entry.MITHRIL_POWDER, Entry.GEMSTONE_POWDER, Entry.GLACITE_POWER);
+        public List<Entry> composition = DataUtils.arrayListOf(Entry.COMMISSIONS, Entry.MITHRIL_POWDER, Entry.GEMSTONE_POWDER, Entry.GLACITE_POWER);
 
         @SerialEntry
         public float x = 0.25f;
@@ -244,6 +257,23 @@ public class MiningHud extends MultilineTextHud {
         public float scale = 1.0f;
 
         public static OptionGroup getGroup(ConfigImpl defaults, ConfigImpl config) {
+            var composition = ButtonOption.createBuilder()
+                    .name(Mining.key("hud.composition"))
+                    .description(Mining.keyD("hud.composition"))
+                    .text(Text.translatable("sbt.gui.config.composition.open"))
+                    .action((yaclScreen, buttonOption) -> {
+                        var screen = new CompositionPopupScreen<>(
+                                TextUtils.join(TextUtils.withColor(Text.translatable("sbt.gui.config.composition"), Colors.CYAN), TextUtils.SPACE, INSTANCE.getName().primaryName()),
+                                yaclScreen,
+                                Binding.generic(
+                                        defaults.mining.hud.composition,
+                                        () -> config.mining.hud.composition,
+                                        it -> config.mining.hud.composition = it
+                                ),
+                                Entry.values());
+                        MinecraftClient.getInstance().setScreen(screen);
+                    })
+                    .build();
             var enabled = Option.<Boolean>createBuilder()
                     .name(Mining.key("hud.enabled"))
                     .description(Mining.keyD("hud.enabled"))
@@ -337,6 +367,7 @@ public class MiningHud extends MultilineTextHud {
             return OptionGroup.createBuilder()
                     .name(Mining.key("hud"))
                     .description(Mining.keyD("hud"))
+                    .option(composition)
                     .option(enabled)
                     .option(useNumbers)
                     .option(abbreviatePowder)
@@ -346,21 +377,6 @@ public class MiningHud extends MultilineTextHud {
                     .option(outlineColor)
                     .option(scale)
                     .collapsed(true)
-                    .build();
-        }
-
-        public static ListOption<Entry> getCompositionOption(ConfigImpl defaults, ConfigImpl config) {
-            return ListOption.<Entry>createBuilder()
-                    .name(Mining.key("hud.composition"))
-                    .description(Mining.keyD("hud.composition"))
-                    .insertEntriesAtEnd(true)
-                    .controller(entryOption -> EnumControllerBuilder.create(entryOption).enumClass(Entry.class))
-                    .initial(Arrays.stream(Entry.values()).filter(entry -> !config.mining.hud.composition.contains(entry)).findFirst().orElseGet(() -> Entry.MITHRIL_POWDER))
-                    .binding(
-                            defaults.mining.hud.composition,
-                            () -> config.mining.hud.composition,
-                            value -> config.mining.hud.composition = value
-                    )
                     .build();
         }
     }

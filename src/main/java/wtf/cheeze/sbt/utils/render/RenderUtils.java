@@ -95,6 +95,23 @@ public class RenderUtils {
         return client.textRenderer.getWidth(text) / MinecraftClient.getInstance().getWindow().getScaledWidth();
     }
 
+    public static void drawBorder(DrawContext context, int borderWidth, int color, int x, int y, int rectWidth, int rectHeight) {
+        // Top border
+        context.fill(x - borderWidth, y - borderWidth, x + rectWidth + borderWidth, y, color);
+
+        // Bottom border
+        context.fill(x - borderWidth, y + rectHeight, x + rectWidth + borderWidth, y + rectHeight + borderWidth, color);
+
+        // Left border
+        context.fill(x - borderWidth, y, x, y + rectHeight, color);
+
+        // Right border
+        context.fill(x + rectWidth, y, x + rectWidth + borderWidth, y + rectHeight, color);
+    }
+
+
+
+
     public static BreachResult isOffscreen(ScreenRect rect) {
         var screenBounds = getScreenBounds();
         return new BreachResult(
@@ -104,9 +121,11 @@ public class RenderUtils {
                 rect.position().y() + rect.height() > screenBounds.height);
     }
 
+
+
     public record BreachResult(boolean left, boolean top, boolean right, boolean bottom) {
 
-        public boolean fullyOnscreen() {
+        public boolean breachesAll() {
             return !left && !top && !right && !bottom;
         }
 
@@ -126,6 +145,8 @@ public class RenderUtils {
         return ((SBTDrawContext) context).sbt$getVertexConsumers();
     }
     //?}
+
+
 
     public static Color3f getColor3f(int color) {
         return new Color3f(color);

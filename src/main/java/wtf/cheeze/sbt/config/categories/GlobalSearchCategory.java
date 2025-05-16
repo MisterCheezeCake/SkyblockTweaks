@@ -83,7 +83,6 @@ public class GlobalSearchCategory {
                 .group(RainmakerHud.Config.getGroup(defaults, config))
                 .group(SecretsHud.Config.getGroup(defaults, config))
                 .group(MiningHud.Config.getGroup(defaults, config))
-                .group(MiningHud.Config.getCompositionOption(defaults, config))
                 .group(EventTimerHud.Config.getGroup(defaults, config))
                 .build();
     }

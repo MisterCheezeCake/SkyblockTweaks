@@ -43,7 +43,7 @@ public class  SBTConfig {
 
     public static final Path PATH = FabricLoader.getInstance().getConfigDir().resolve("skyblocktweaks-config.json");
 
-    public static final ConfigClassHandler<ConfigImpl> HANDLER = ConfigClassHandler.createBuilder(ConfigImpl.class)
+    private static final ConfigClassHandler<ConfigImpl> HANDLER = ConfigClassHandler.createBuilder(ConfigImpl.class)
             .id(Identifier.of("skyblocktweaks", "config"))
             .serializer(config -> GsonConfigSerializerBuilder.create(config).appendGsonBuilder(builder -> builder.setFieldNamingPolicy(FieldNamingPolicy.IDENTITY))
                     .setPath(PATH)
@@ -70,6 +70,13 @@ public class  SBTConfig {
         HANDLER.load();
     }
 
+    public static void save() {
+
+        HANDLER.save();
+        CONFIG_SAVE.invoker().run();
+
+    }
+
 
     public static Screen getGlobalSearchScreen(Screen parent) {
         return baseBuilder().category(GlobalSearchCategory.getCategory(HANDLER.defaults(), HANDLER.instance())).build().generateScreen(parent);
@@ -90,10 +97,7 @@ public class  SBTConfig {
 
     private static YetAnotherConfigLib.Builder baseBuilder() {
         return YetAnotherConfigLib.createBuilder().title(Text.literal("SkyblockTweaks")).save(
-                () -> {
-                    HANDLER.save();
-                    CONFIG_SAVE.invoker().run();
-                }
+                SBTConfig::save
         );
     }
 

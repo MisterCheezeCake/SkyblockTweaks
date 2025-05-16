@@ -157,7 +157,7 @@ public class HudScreen extends Screen {
     @Override
     public void close() {
         MinecraftClient.getInstance().setScreen(parent);
-        SBTConfig.HANDLER.save();
+        SBTConfig.save();
     }
 
     @Override
@@ -416,7 +416,7 @@ public class HudScreen extends Screen {
         while (i < 1E6) { // prevent infinite loops if something goes wrong
             bounds = new ScreenRect(desiredX, desiredY, EditorPopup.WIDTH, EditorPopup.HEIGHT);
             RenderUtils.BreachResult breachResult = RenderUtils.isOffscreen(bounds);
-            if (breachResult.fullyOnscreen()) {
+            if (breachResult.breachesAll()) {
                 break;
             }
             if (breachResult.left()) {

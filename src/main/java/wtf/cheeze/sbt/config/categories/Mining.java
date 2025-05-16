@@ -40,7 +40,6 @@ public class Mining {
                 .name(Text.translatable("sbt.config.mining"))
                 .tooltip(Text.translatable("sbt.config.mining.desc"))
                 .group(MiningHud.Config.getGroup(defaults, configThing))
-                .group(MiningHud.Config.getCompositionOption(defaults, configThing))
                 .group(EventTimerHud.Config.getGroup(defaults, configThing))
                 .build();
     }

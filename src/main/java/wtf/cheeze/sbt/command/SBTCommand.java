@@ -35,6 +35,7 @@ import wtf.cheeze.sbt.config.SkyblockTweaksScreenMain;
 import wtf.cheeze.sbt.features.misc.MouseLock;
 import wtf.cheeze.sbt.features.chat.PartyFeatures;
 import wtf.cheeze.sbt.hud.HudManager;
+import wtf.cheeze.sbt.hud.screen.CompositionPopupScreen;
 import wtf.cheeze.sbt.hud.screen.HudScreen;
 import wtf.cheeze.sbt.mixin.accessors.BossBarHudAccessor;
 import wtf.cheeze.sbt.utils.text.MessageManager;

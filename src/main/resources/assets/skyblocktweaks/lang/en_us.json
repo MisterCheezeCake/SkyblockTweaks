@@ -379,8 +379,8 @@
   "sbt.config.mining.hud.abbreviatePowder.desc": "Abbreviate the powder displays",
   "sbt.config.mining.hud.icons": "Show Icons",
   "sbt.config.mining.hud.icons.desc": "Show icons in the Mining HUD",
-  "sbt.config.mining.hud.composition": "Mining HUD Composition",
-  "sbt.config.mining.hud.composition.desc": "Controls what appears on the Mining HUD.\nClick on the options to cycle through the available lines and use the up/down arrows to change the order.",
+  "sbt.config.mining.hud.composition": "Mining HUD Composition Editor",
+  "sbt.config.mining.hud.composition.desc": "Controls what appears on the Mining HUD. Click to open the editor.",
   "sbt.config.mining.hud": "Mining HUD",
   "sbt.config.mining.hud.desc": "Settings for the Mining HUD",
   "sbt.config.globalSearch": "All Options",
@@ -455,6 +455,17 @@
     "sbt.config.huds.secrets.icon": "Secrets HUD Icon",
     "sbt.config.huds.secrets.icon.desc": "Whether or not to show the icon in the Secrets HUD",
   "sbt.config.huds.secrets.label": "Secrets HUD Label",
-    "sbt.config.huds.secrets.label.desc": "Whether or not to show the label (Secrets: ) in the Secrets HUD"
+    "sbt.config.huds.secrets.label.desc": "Whether or not to show the label (Secrets: ) in the Secrets HUD",
+  "sbt.gui.config.composition.add_items": "Add Items",
+  "sbt.gui.config.composition.add_item": "Add Item",
+  "sbt.gui.config.composition.modify_items": "Modify Items",
+  "sbt.gui.config.composition.delete_item": "Remove Item",
+  "sbt.gui.config.move_up": "Move Up",
+  "sbt.gui.config.move_down": "Move Down",
+  "sbt.gui.config.composition.reset": "Reset",
+  "sbt.gui.config.composition.preview": "Preview",
+  "sbt.gui.config.composition.preview.disabled": "Hold shift and hover to see a preview of the HUD",
+  "sbt.gui.config.composition.open": "Open",
+  "sbt.gui.config.composition": "Composition Editor:"
 
 }
