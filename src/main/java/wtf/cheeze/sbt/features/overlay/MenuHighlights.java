@@ -29,6 +29,7 @@ import net.minecraft.text.Text;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SBTConfig;
 import wtf.cheeze.sbt.events.DrawSlotEvents;
+import wtf.cheeze.sbt.hud.icon.Icons;
 
 import java.util.regex.Pattern;
 import static wtf.cheeze.sbt.config.categories.General.key;
@@ -61,6 +62,7 @@ public class MenuHighlights {
             case "SkyBlock Hub Selector" -> tryDrawHighlight(context, slot);
             case "Dungeon Hub Selector" -> tryDrawHighlightDH(context, slot);
             case "Heart of the Mountain" -> tryDrawHighlightHOTM(context, slot);
+            case "Commissions" -> tryDrawHighlightComs(context, slot);
         }
         if (title.contains("Widget") || title.contains("Setting")) {
           tryDrawHighlightWidget(context, slot);
@@ -149,6 +151,16 @@ public class MenuHighlights {
         }
     }
 
+    private static void tryDrawHighlightComs(DrawContext context, Slot slot) {
+        if (!SBTConfig.get().hubSelectorHighlight.unclaimedCommissionHighlight) return;
+        if (slot.getStack().isEmpty()) return;
+        var lines = slot.getStack().getOrDefault(DataComponentTypes.LORE, LoreComponent.DEFAULT).lines();
+        if (lines.isEmpty()) return;
+        if (lines.getLast().getString().equals("Click to claim rewards!")) {
+            highlight(context, slot, HIGHLIGHT_GREEN);
+        }
+    }
+
     private static void highlight(DrawContext context, Slot slot, int color) {
         context.fill(slot.x, slot.y, slot.x + SLOT_DIMENSION, slot.y + SLOT_DIMENSION, color);
     }
@@ -168,6 +180,9 @@ public class MenuHighlights {
 
         @SerialEntry
         public boolean sblevelHighlight = true;
+
+        @SerialEntry
+        public boolean unclaimedCommissionHighlight = true;
 
         public static OptionGroup getGroup(ConfigImpl defaults, ConfigImpl config) {
             var enabled = Option.<Boolean>createBuilder()
@@ -222,6 +237,17 @@ public class MenuHighlights {
                     )
                     .build();
 
+            var unclaimedCommissionHighlight = Option.<Boolean>createBuilder()
+                    .name(key("menuHighlights.unclaimedCommissionHighlight"))
+                    .description(keyD("menuHighlights.unclaimedCommissionHighlight"))
+                    .controller(SBTConfig::generateBooleanController)
+                    .binding(
+                                    defaults.hubSelectorHighlight.unclaimedCommissionHighlight,
+                                    () -> config.hubSelectorHighlight.unclaimedCommissionHighlight,
+                                    value -> config.hubSelectorHighlight.unclaimedCommissionHighlight = value
+                    )
+                    .build();
+
             return OptionGroup.createBuilder()
                     .name(key("menuHighlights"))
                     .description(keyD("menuHighlights"))
@@ -230,6 +256,7 @@ public class MenuHighlights {
                     .option(hotmHighlight)
                     .option(widgetHighlight)
                     .option(sblevelHighlight)
+                    .option(unclaimedCommissionHighlight)
                     .build();
         }
     }

@@ -79,6 +79,8 @@
   "sbt.config.general.menuHighlights.sblevelHighlight.desc": "Whether or not to highlight items in the /sblevel menu based on their completion status",
   "sbt.config.general.menuHighlights.widgetHighlight": "Widget Highlights",
   "sbt.config.general.menuHighlights.widgetHighlight.desc": "Whether or not to highlight items in the /widgets menu based on their status (enabled/disabled)",
+  "sbt.config.general.menuHighlights.unclaimedCommissionHighlight": "Unclaimed Commission Highlights",
+    "sbt.config.general.menuHighlights.unclaimedCommissionHighlight.desc": "Whether or not to highlight unclaimed commissions in the commissions menu",
   "sbt.config.general.notificationStream": "Update Notification Type",
   "sbt.config.general.notificationStream.desc": "What updates you want to be notified about. Alpha will notify you about all updates, Beta will notify you about beta and release updates, Release will only notify you about release updates, and None will disable notifications.",
   "sbt.config.huds": "HUDs",
