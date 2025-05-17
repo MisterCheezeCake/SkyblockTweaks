@@ -24,18 +24,21 @@ loom {
 repositories {
 	maven("https://maven.isxander.dev/releases")
 	maven("https://maven.terraformersmc.com/")
-	exclusiveContent {
-		forRepository {
-			maven {
-				url = uri("https://maven.azureaaron.net/releases")
+	repositories {
+		exclusiveContent {
+			forRepository {
+				maven {
+					name = "Modrinth"
+					url = uri("https://api.modrinth.com/maven")
+				}
 			}
-
-		}
-		filter {
-			includeGroup("net.azureaaron")
+			filter {
+				includeGroup("maven.modrinth")
+			}
 		}
 	}
 	maven("https://pkgs.dev.azure.com/djtheredstoner/DevAuth/_packaging/public/maven/v1")
+	maven("https://repo.hypixel.net/repository/Hypixel/")
 }
 
 dependencies {
@@ -45,7 +48,9 @@ dependencies {
 	modImplementation ("net.fabricmc.fabric-api:fabric-api:${property("fabric_version")}")
 	modImplementation ("dev.isxander:yet-another-config-lib:${property("yacl_version")}")
 	modImplementation ("com.terraformersmc:modmenu:${property("modmenu_version")}")
-	include(modImplementation("net.azureaaron:hm-api:${property("hmapi_version")}") as Any)
+	//include(modImplementation("net.azureaaron:hm-api:${property("hmapi_version")}") as Any)
+	implementation("net.hypixel:mod-api:${property("modapi_version")}")
+	include(modImplementation("maven.modrinth:hypixel-mod-api:${property("modapi_fabric_version")}") as Any)
 	modRuntimeOnly("me.djtheredstoner:DevAuth-fabric:1.2.1") 
 
 

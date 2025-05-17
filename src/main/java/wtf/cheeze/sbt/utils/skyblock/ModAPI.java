@@ -22,9 +22,11 @@ package wtf.cheeze.sbt.utils.skyblock;
 import dev.isxander.yacl3.api.Option;
 import dev.isxander.yacl3.api.OptionDescription;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
-import net.azureaaron.hmapi.events.HypixelPacketEvents;
-import net.azureaaron.hmapi.network.HypixelNetworking;
-import net.azureaaron.hmapi.network.packet.v1.s2c.LocationUpdateS2CPacket;
+import net.hypixel.modapi.HypixelModAPI;
+import net.hypixel.modapi.fabric.event.HypixelModAPICallback;
+import net.hypixel.modapi.fabric.event.HypixelModAPIErrorCallback;
+import net.hypixel.modapi.packet.impl.clientbound.event.ClientboundLocationPacket;
+import net.hypixel.modapi.packet.impl.serverbound.ServerboundPartyInfoPacket;
 import net.minecraft.text.Text;
 import net.minecraft.util.Util;
 import wtf.cheeze.sbt.config.ConfigImpl;
@@ -33,18 +35,16 @@ import wtf.cheeze.sbt.config.SBTConfig;
 public class ModAPI {
 
 
-    private static final int LOCATION_PACKET_VERSION = 1;
     public static void registerEvents() {
-        HypixelNetworking.registerToEvents(Util.make(new Object2IntOpenHashMap<>(), map -> {
-            map.put(LocationUpdateS2CPacket.ID, LOCATION_PACKET_VERSION);
-        }));
-        HypixelPacketEvents.PARTY_INFO.register(SkyblockData::handlePacket);
-        HypixelPacketEvents.HELLO.register(SkyblockData::handlePacket);
-        HypixelPacketEvents.LOCATION_UPDATE.register(SkyblockData::handlePacket);
+        HypixelModAPI.getInstance().subscribeToEventPacket(ClientboundLocationPacket.class);
+        HypixelModAPICallback.EVENT.register(SkyblockData::handlePacket);
+        HypixelModAPIErrorCallback.EVENT.register(SkyblockData::handleModApiError);
+
     }
 
     public static void requestPartyInfo() {
-        HypixelNetworking.sendPartyInfoC2SPacket(2);
+
+        HypixelModAPI.getInstance().sendPacket(new ServerboundPartyInfoPacket());
     }
 
     public static Option<Boolean> getShowErrors(ConfigImpl defaults, ConfigImpl config) {

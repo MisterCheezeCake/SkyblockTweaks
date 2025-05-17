@@ -18,13 +18,12 @@
  */
 package wtf.cheeze.sbt.utils.skyblock;
 
-import net.azureaaron.hmapi.data.party.PartyRole;
-import net.azureaaron.hmapi.data.server.Environment;
-import net.azureaaron.hmapi.network.packet.s2c.ErrorS2CPacket;
-import net.azureaaron.hmapi.network.packet.s2c.HelloS2CPacket;
-import net.azureaaron.hmapi.network.packet.s2c.HypixelS2CPacket;
-import net.azureaaron.hmapi.network.packet.v1.s2c.LocationUpdateS2CPacket;
-import net.azureaaron.hmapi.network.packet.v2.s2c.PartyInfoS2CPacket;
+import net.hypixel.data.region.Environment;
+import net.hypixel.modapi.error.ErrorReason;
+import net.hypixel.modapi.packet.ClientboundHypixelPacket;
+import net.hypixel.modapi.packet.impl.clientbound.ClientboundHelloPacket;
+import net.hypixel.modapi.packet.impl.clientbound.ClientboundPartyInfoPacket;
+import net.hypixel.modapi.packet.impl.clientbound.event.ClientboundLocationPacket;
 import net.minecraft.client.MinecraftClient;
 import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.config.SBTConfig;
@@ -35,10 +34,8 @@ import wtf.cheeze.sbt.utils.enums.Location;
 import wtf.cheeze.sbt.utils.render.Colors;
 import wtf.cheeze.sbt.utils.tablist.TabListData;
 
-import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
-import java.util.UUID;
+
 
 public class SkyblockData {
 
@@ -52,6 +49,9 @@ public class SkyblockData {
     public static String mode = null;
     public static Location location = Location.UNKNOWN;
     public static String currentServer = "Unknown Server";
+
+
+
     public static class Party {
         public static boolean inParty = false;
         public static boolean leader = false;
@@ -153,40 +153,37 @@ public class SkyblockData {
 
     }
 
-    public static void handlePacket(HypixelS2CPacket packet) {
-        //SkyBlockTweaks.LOGGER.info("Handling packet");
+    public static void handlePacket(ClientboundHypixelPacket packet) {
         switch (packet) {
-            case PartyInfoS2CPacket(boolean parInParty, Map<UUID, PartyRole> members) -> {
-                Party.inParty = parInParty;
+            case ClientboundHelloPacket hello -> {
+                SkyblockTweaks.LOGGER.info("Connected to Hypixel Mod API. Environment: {}", hello.getEnvironment());
+                // Beta is alpha
+                alphaNetwork = hello.getEnvironment() == Environment.BETA;
+            }
+            case ClientboundPartyInfoPacket partyPacket -> {
+                Party.inParty = partyPacket.isInParty();
                 var myUUID = client.player.getUuid();
-                if (myUUID == null || members == null)  {
+                if (myUUID == null || partyPacket.getMemberMap() == null || partyPacket.getMemberMap().get(myUUID) == null) {
                     Party.leader = false;
                     return;
                 }
-                Party.leader = members.get(myUUID) == PartyRole.LEADER;
+                Party.leader = partyPacket.getMemberMap().get(myUUID).getRole() == ClientboundPartyInfoPacket.PartyRole.LEADER;
             }
-            case HelloS2CPacket(Environment environment) -> {
-                // Beta is alpha
-                SkyblockTweaks.LOGGER.info("Connected to Hypixel Mod API. Environment: {}", environment);
-                alphaNetwork = environment == Environment.BETA;
-            }
-            case LocationUpdateS2CPacket(String serverName, Optional<String> serverType, Optional<String> lobbyName, Optional<String> mode, Optional<String> map) -> {
-                currentServer = serverName;
-                SkyblockTweaks.LOGGER.info("Location update packet received. Server: {}, Type: {}, Mode: {}", serverName, serverType.orElse("unknown"), mode.orElse("unknown"));
-                inSB = serverType.orElse("").equals("SKYBLOCK");
+            case ClientboundLocationPacket locationPacket -> {
+                currentServer = locationPacket.getServerName();
+                inSB = locationPacket.getServerType().isPresent() && locationPacket.getServerType().get().getName().equals("SkyBlock");
                 if (inSB) {
-                    location = SkyblockUtils.getLocationFromMode(mode.orElse("unknown"));
+                    location = SkyblockUtils.getLocationFromMode(locationPacket.getMode().orElse("unknown"));
                 } else {
                     location = Location.UNKNOWN;
                 }
             }
-            case ErrorS2CPacket(var id, var errorReason) -> {
-                if (SBTConfig.get().chatModApiErrors) MessageManager.send("The Hypixel Mod API experienced an error. ID: " + id + " Reason: " + errorReason, Colors.RED);
-                SkyblockTweaks.LOGGER.error("The Hypixel Mod API experienced an error. ID: {} Reason: {}", id, errorReason);
-            }
             default -> {}
         }
-
     }
 
+    public static void handleModApiError(String id, ErrorReason reason) {
+        if (SBTConfig.get().chatModApiErrors) MessageManager.send("The Hypixel Mod API experienced an error. ID: " + id + " Reason: " + reason, Colors.RED);
+        SkyblockTweaks.LOGGER.error("The Hypixel Mod API experienced an error. ID: {} Reason: {}", id, reason);
+    }
 }

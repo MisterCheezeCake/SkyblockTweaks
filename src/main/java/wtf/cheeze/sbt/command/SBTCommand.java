@@ -38,6 +38,7 @@ import wtf.cheeze.sbt.hud.HudManager;
 import wtf.cheeze.sbt.hud.screen.CompositionPopupScreen;
 import wtf.cheeze.sbt.hud.screen.HudScreen;
 import wtf.cheeze.sbt.mixin.accessors.BossBarHudAccessor;
+import wtf.cheeze.sbt.utils.skyblock.ModAPI;
 import wtf.cheeze.sbt.utils.text.MessageManager;
 import wtf.cheeze.sbt.utils.NumberUtils;
 import wtf.cheeze.sbt.utils.text.TextUtils;
@@ -523,6 +524,7 @@ public class SBTCommand {
 
                                         ).executes(context -> {
                                             var source = context.getSource();
+//                                            ModAPI.requestPartyInfo();
                                             send(context, TextUtils.withColor("Debug Information", Colors.CYAN));
                                             source.sendFeedback(CommandUtils.getDebugText("Version", SkyblockTweaks.VERSION.getVersionString()));
                                             source.sendFeedback(CommandUtils.getDebugText("In Skyblock", SkyblockData.inSB));
