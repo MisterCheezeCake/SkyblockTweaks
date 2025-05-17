@@ -25,6 +25,7 @@ import net.minecraft.text.Text;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.features.mining.EventTimerHud;
 import wtf.cheeze.sbt.features.mining.MiningHud;
+import wtf.cheeze.sbt.features.mining.MiningTitles;
 
 public class Mining {
 
@@ -34,6 +35,9 @@ public class Mining {
     @SerialEntry
     public EventTimerHud.Config eventTimer = new EventTimerHud.Config();
 
+    @SerialEntry
+    public MiningTitles.Config titles = new MiningTitles.Config();
+
 
     public static ConfigCategory getCategory(ConfigImpl defaults, ConfigImpl configThing) {
         return ConfigCategory.createBuilder()
@@ -41,6 +45,7 @@ public class Mining {
                 .tooltip(Text.translatable("sbt.config.mining.desc"))
                 .group(MiningHud.Config.getGroup(defaults, configThing))
                 .group(EventTimerHud.Config.getGroup(defaults, configThing))
+                .group(MiningTitles.Config.getGroup(defaults, configThing))
                 .build();
     }
 
