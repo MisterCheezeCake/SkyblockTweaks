@@ -88,13 +88,13 @@ public class General {
 
     public static class HudTweaks {
         @SerialEntry
-        public boolean noShadowActionBar = true;
+        public boolean noShadowActionBar = false;
 
         @SerialEntry
         public boolean noRenderBossBar = false;
 
         @SerialEntry
-        public boolean noRenderHearts = true;
+        public boolean noRenderHearts = false;
 
         @SerialEntry
         public boolean showHearsInRift = true;
