@@ -39,20 +39,30 @@ public class DrillFuelBar extends BarHud {
 
     public static final DrillFuelBar INSTANCE = new DrillFuelBar();
 
+
+
     private DrillFuelBar() {
         INFO = new HudInformation(
                 () -> SBTConfig.huds().drillFuelBar.x,
                 () -> SBTConfig.huds().drillFuelBar.y,
                 () -> SBTConfig.huds().drillFuelBar.scale,
                 () -> SBTConfig.huds().drillFuelBar.anchor,
-                () -> SBTConfig.huds().drillFuelBar.color,
-                () -> SkyblockData.Stats.drillFuel / SkyblockData.Stats.maxDrillFuel,
                 x -> SBTConfig.huds().drillFuelBar.x = x,
                 y -> SBTConfig.huds().drillFuelBar.y = y,
                 scale -> SBTConfig.huds().drillFuelBar.scale = scale,
                 anchor -> SBTConfig.huds().drillFuelBar.anchor = anchor
 
         );
+    }
+
+    @Override
+    public int getColor() {
+        return SBTConfig.huds().drillFuelBar.color;
+    }
+
+    @Override
+    public float getFill() {
+        return SkyblockData.Stats.drillFuel / SkyblockData.Stats.maxDrillFuel;
     }
 
     @Override
@@ -67,6 +77,7 @@ public class DrillFuelBar extends BarHud {
         if (!super.shouldRender(fromHudScreen)) return false;
         return (SkyblockData.inSB && SBTConfig.huds().drillFuelBar.enabled) && SkyblockUtils.isThePlayerHoldingADrill() || fromHudScreen;
     }
+
 
     public static class Config {
         @SerialEntry

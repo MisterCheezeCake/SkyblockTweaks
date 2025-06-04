@@ -24,6 +24,7 @@ import dev.isxander.yacl3.config.v2.api.SerialEntry;
 import net.minecraft.text.Text;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.features.mining.EventTimerHud;
+import wtf.cheeze.sbt.features.mining.FetchurFeatures;
 import wtf.cheeze.sbt.features.mining.MiningHud;
 import wtf.cheeze.sbt.features.mining.MiningTitles;
 
@@ -38,6 +39,9 @@ public class Mining {
     @SerialEntry
     public MiningTitles.Config titles = new MiningTitles.Config();
 
+    @SerialEntry
+    public FetchurFeatures.Config fetchur = new FetchurFeatures.Config();
+
 
     public static ConfigCategory getCategory(ConfigImpl defaults, ConfigImpl configThing) {
         return ConfigCategory.createBuilder()
@@ -46,6 +50,7 @@ public class Mining {
                 .group(MiningHud.Config.getGroup(defaults, configThing))
                 .group(EventTimerHud.Config.getGroup(defaults, configThing))
                 .group(MiningTitles.Config.getGroup(defaults, configThing))
+                .group(FetchurFeatures.Config.getGroup(defaults, configThing))
                 .build();
     }
 

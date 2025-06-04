@@ -18,15 +18,23 @@
  */
 package wtf.cheeze.sbt.utils.timing;
 
+import java.time.Instant;
+import java.time.ZoneId;
+import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class TimeUtils {
 
     private static final Pattern TIME_PATTERN = Pattern.compile("(?:(?<hours>\\d+)h)?(?:(?<minutes>\\d+)m)?(?:(?<seconds>\\d+)s)?");
-    private static final int SECONDS_PER_HOUR = 3600;
-    private static final int SECONDS_PER_MINUTE = 60;
-    private static final int MINUTES_PER_HOUR = SECONDS_PER_MINUTE;
+    public static final int HOURS_PER_DAY = 24;
+    public static final int SECONDS_PER_MINUTE = 60;
+    public static final int MINUTES_PER_HOUR = SECONDS_PER_MINUTE;
+    public static final int SECONDS_PER_HOUR = SECONDS_PER_MINUTE * MINUTES_PER_HOUR;
+    public static final int SECONDS_PER_DAY = SECONDS_PER_HOUR * HOURS_PER_DAY;
+    public static final int MILISECONDS_PER_SECOND_DAY = 1000 * SECONDS_PER_DAY;
+
+    public static final ZoneId US_EAST = ZoneId.of("America/New_York");
 
 
     public static int parseDuration(String string) {
@@ -76,4 +84,16 @@ public class TimeUtils {
     public static String epochToDate(long epoch) {
         return new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new java.util.Date(epoch));
     }
+
+    public static int dayOfMonthET(long epoch) {
+       return Instant.ofEpochMilli(epoch).atZone(US_EAST).getDayOfMonth();
+    }
+
+    public static boolean isInSameDayET(long epoch1, long epoch2) {
+        return Instant.ofEpochMilli(epoch1).atZone(US_EAST).getYear() == Instant.ofEpochMilli(epoch2).atZone(US_EAST).getYear() &&
+                Instant.ofEpochMilli(epoch1).atZone(US_EAST).getDayOfYear() == Instant.ofEpochMilli(epoch2).atZone(US_EAST).getDayOfYear();
+
+    }
+
+
 }

@@ -25,6 +25,8 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.text.Text;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SBTConfig;
+import wtf.cheeze.sbt.features.mining.FetchurFeatures;
+import wtf.cheeze.sbt.features.mining.MiningTitles;
 import wtf.cheeze.sbt.features.overlay.BrewingStandOverlay;
 import wtf.cheeze.sbt.features.overlay.MenuHighlights;
 import wtf.cheeze.sbt.features.chat.ChatProtections;
@@ -84,6 +86,8 @@ public class GlobalSearchCategory {
                 .group(SecretsHud.Config.getGroup(defaults, config))
                 .group(MiningHud.Config.getGroup(defaults, config))
                 .group(EventTimerHud.Config.getGroup(defaults, config))
+                .group(MiningTitles.Config.getGroup(defaults, config))
+                .group(FetchurFeatures.Config.getGroup(defaults, config))
                 .build();
     }
 

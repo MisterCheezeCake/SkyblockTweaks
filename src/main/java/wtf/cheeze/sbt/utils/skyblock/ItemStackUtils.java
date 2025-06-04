@@ -20,7 +20,6 @@ package wtf.cheeze.sbt.utils.skyblock;
 
 import com.mojang.authlib.properties.Property;
 import com.mojang.authlib.properties.PropertyMap;
-import net.minecraft.client.render.RenderLayer;
 import net.minecraft.component.ComponentChanges;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.NbtComponent;
@@ -57,19 +56,37 @@ public class ItemStackUtils {
     }
 
 
-    public static ItemStack getVanillaItem(String minecraftID) {
-        return new ItemStack(getRegistryEntry(minecraftID), 1);
+   public static ItemStack getVanilla(String minecraftID) {
+        return getVanilla(minecraftID, 1);
+   }
+    public static ItemStack getVanilla(String minecraftID, int count) {
+        return new ItemStack(getRegistryEntry(minecraftID), count);
     }
 
-    public static ItemStack getSkyblockItem(String minecraftID, String skyblockID) {
-        return getSkyblockItem(minecraftID, skyblockID, false);
+    public static ItemStack getVanilla(Item item, int count) {
+        return new ItemStack(item, count);
     }
 
+    public static ItemStack getVanilla(Item item) {
+        return new ItemStack(item, 1);
+    }
 
-    public static ItemStack getSkyblockItem(String minecraftID, String skyblockID, boolean enchanted) {
+    public static ItemStack getSkyblock(String minecraftID, String skyblockID) {
+        return getSkyblock(minecraftID, skyblockID, false);
+    }
+
+    public static ItemStack getSkyblock(String minecraftID, String skyblockID, int count) {
+        return getSkyblock(minecraftID, skyblockID, false, count);
+    }
+
+    public static ItemStack getSkyblock(String minecraftID, String skyblockID, boolean enchanted) {
+        return getSkyblock(minecraftID, skyblockID, enchanted, 1);
+    }
+
+    public static ItemStack getSkyblock(String minecraftID, String skyblockID, boolean enchanted, int count) {
         return new ItemStack(
                 getRegistryEntry(minecraftID),
-                1,
+                count,
                 ComponentChanges.builder()
                         .add(DataComponentTypes.CUSTOM_DATA, getSkyblockItemNBT(skyblockID))
                         .add(DataComponentTypes.ENCHANTMENT_GLINT_OVERRIDE, enchanted)
@@ -83,7 +100,7 @@ public class ItemStackUtils {
      * @param enchanted Whether the item should have an enchantment glint
      * @param skullName The name of the skull texture, must be present in the {@code skullmap.json} file
      */
-    public static ItemStack getHeadItem(String skyblockID, boolean enchanted, String skullName) {
+    public static ItemStack getHead(String skyblockID, boolean enchanted, String skullName) {
         return new ItemStack(
                 getRegistryEntry("player_head"),
                 1,
@@ -94,12 +111,12 @@ public class ItemStackUtils {
                         .build()
         );
     }
-    public static ItemStack getHeadItem(String skyblockID, String skullName) {
-        return getHeadItem(skyblockID, false, skullName);
+    public static ItemStack getHead(String skyblockID, String skullName) {
+        return getHead(skyblockID, false, skullName);
     }
 
-    public static ItemStack getHeadItem(String both) {
-        return getHeadItem(both, false, both);
+    public static ItemStack getHead(String both) {
+        return getHead(both, false, both);
     }
 
     public static ItemStack justHead(String skullName) {

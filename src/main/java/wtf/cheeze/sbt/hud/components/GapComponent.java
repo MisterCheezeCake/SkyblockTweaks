@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 MisterCheezeCake
+ * Copyright (C) 2025 MisterCheezeCake
  *
  * This file is part of SkyblockTweaks.
  *
@@ -19,16 +19,37 @@
 package wtf.cheeze.sbt.hud.components;
 
 import net.minecraft.client.gui.DrawContext;
-import net.minecraft.text.Text;
-import wtf.cheeze.sbt.utils.text.TextUtils;
-import wtf.cheeze.sbt.utils.render.Colors;
 
-public interface HudComponent {
+public class GapComponent implements HudComponent{
 
-    Text ERROR = TextUtils.withColor("ERROR", Colors.RED);
 
-    int render(DrawContext context, int x, int y, float scale);
-    int getWidth();
-    int getHeight();
-    int getlines();
+    public static final GapComponent TWO = new GapComponent(2);
+
+    private final int width;
+
+    public GapComponent(int width) {
+        this.width = width;
+    }
+
+
+    @Override
+    public int render(DrawContext context, int x, int y, float scale) {
+        // This component is used to create a gap in the HUD, so it doesn't need to render anything.
+        return 1;
+    }
+
+    @Override
+    public int getWidth() {
+        return width;
+    }
+
+    @Override
+    public int getHeight() {
+        return 0;
+    }
+
+    @Override
+    public int getlines() {
+        return 1;
+    }
 }

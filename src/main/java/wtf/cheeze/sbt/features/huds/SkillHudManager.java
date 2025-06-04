@@ -373,20 +373,26 @@ public class SkillHudManager {
                     () -> SBTConfig.huds().skillBar.y,
                     () -> SBTConfig.huds().skillBar.scale,
                     () -> SBTConfig.huds().skillBar.anchor,
-                    () -> SBTConfig.huds().skillBar.color,
-                    () -> {
-                        if (percent != 0) {
-                            return percent/ 100f;
-                        } else {
-                            return progress / total;
-                        }
-                    },
                     x -> SBTConfig.huds().skillBar.x = x,
                     y -> SBTConfig.huds().skillBar.y = y,
                     scale -> SBTConfig.huds().skillBar.scale = scale,
                     anchor -> SBTConfig.huds().skillBar.anchor = anchor
 
             );
+        }
+
+        @Override
+        public int getColor() {
+           return SBTConfig.huds().skillBar.color;
+        }
+
+        @Override
+        public float getFill() {
+            if (percent != 0) {
+                return percent/ 100f;
+            } else {
+                return progress / total;
+            }
         }
 
         @Override

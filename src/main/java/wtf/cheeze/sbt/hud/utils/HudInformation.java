@@ -31,11 +31,6 @@ public class HudInformation {
     public Supplier<Float> getScale;
     public Supplier<AnchorPoint> getAnchorPoint;
 
-    @Nullable
-    public Supplier<Float> getFill;
-
-    @Nullable
-    public Supplier<Integer> getColor;
 
     public Consumer<Float> setX;
     public Consumer<Float> setY;
@@ -57,23 +52,6 @@ public class HudInformation {
         this.setAnchorPoint = anchorPointConsumer;
     }
 
-    /**
-     * This constructor is used for Bar HUDs
-     */
-    public HudInformation(Supplier<Float> xSupplier, Supplier<Float> ySupplier, Supplier<Float> scaleSupplier, Supplier<AnchorPoint> anchorPointSupplier, Supplier<Integer> colorSupplier, Supplier<Float> fillSupplier, Consumer<Float> xConsumer, Consumer<Float> yConsumer, Consumer<Float> scaleConsumer, Consumer<AnchorPoint> anchorPointConsumer) {
-        this.getX = xSupplier;
-        this.getY = ySupplier;
-        this.getScale = scaleSupplier;
-        this.getAnchorPoint = anchorPointSupplier;
-
-        this.getFill = fillSupplier;
-        this.getColor = colorSupplier;
-
-        this.setX = xConsumer;
-        this.setY = yConsumer;
-        this.setScale = scaleConsumer;
-        this.setAnchorPoint = anchorPointConsumer;
-    }
 
     /**
      * This constructor is used for Multi Line Text HUDs

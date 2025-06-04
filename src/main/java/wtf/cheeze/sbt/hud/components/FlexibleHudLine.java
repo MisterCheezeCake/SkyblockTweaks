@@ -43,6 +43,8 @@ public class FlexibleHudLine implements HudComponent {
     private int width = 1;
     private int lines = 1;
 
+    private static final int LINE_HEIGHT = 9;
+
     public FlexibleHudLine(Supplier<Part[]> parts, UpdateTiming timing) {
         this.parts = parts;
         Part[] ERROR_PARTS = {new Part(() -> ERROR, () -> DrawMode.PURE, DataUtils.alwaysZero, DataUtils.alwaysZero, new Cache<>(UpdateTiming.MEMOIZED, () -> ERROR, ERROR))};
@@ -56,7 +58,7 @@ public class FlexibleHudLine implements HudComponent {
 
     @Override
     public int render(DrawContext context, int x, int y, float scale) {
-        if (timing == UpdateTiming.FRAME ||partCache.isDueForUpdate()) {
+        if (timing == UpdateTiming.FRAME || partCache.isDueForUpdate()) {
             partCache.update();
         }
         var pts = parts.get();
@@ -158,5 +160,8 @@ public class FlexibleHudLine implements HudComponent {
 
     }
 
-
+    @Override
+    public int getHeight() {
+        return lines * LINE_HEIGHT;
+    }
 }

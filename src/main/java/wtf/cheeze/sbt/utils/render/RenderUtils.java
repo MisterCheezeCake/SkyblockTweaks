@@ -91,6 +91,7 @@ public class RenderUtils {
     public static int getRelativeStringWidth(String text) {
         return client.textRenderer.getWidth(text) / MinecraftClient.getInstance().getWindow().getScaledWidth();
     }
+    //TODO: Is this correct?
     public static int getRelativeStringWidth(Text text) {
         return client.textRenderer.getWidth(text) / MinecraftClient.getInstance().getWindow().getScaledWidth();
     }
@@ -121,6 +122,9 @@ public class RenderUtils {
                 rect.position().y() + rect.height() > screenBounds.height);
     }
 
+    public static float getRelativeWidth(int width) {
+        return width / MinecraftClient.getInstance().getWindow().getScaledWidth();
+    }
 
 
     public record BreachResult(boolean left, boolean top, boolean right, boolean bottom) {

@@ -33,6 +33,10 @@ import wtf.cheeze.sbt.utils.render.RenderUtils;
 public abstract class BarHud extends HUD {
     public static final Identifier UNFILLED = Identifier.of("skyblocktweaks", "bars/unfilled.png");
     public static final Identifier FILLED = Identifier.of("skyblocktweaks", "bars/filled.png");
+
+    public abstract int getColor();
+    public abstract float getFill();
+
     public static final int BAR_WIDTH = 71;
     public static final int BAR_HEIGHT = 5;
 
@@ -62,14 +66,14 @@ public abstract class BarHud extends HUD {
          *///?} else {
 
         if (bounds.scale == 1.0f) {
-            var color = INFO.getColor.get();
+            var color = getColor();
             context.drawTexture(RenderLayer::getGuiTextured, UNFILLED, bounds.x, bounds.y, 0, 0, BAR_WIDTH, BAR_HEIGHT, BAR_WIDTH, BAR_HEIGHT, color);
-            context.drawTexture(RenderLayer::getGuiTextured, FILLED, bounds.x, bounds.y, 0, 0, calculateFill(INFO.getFill.get()), BAR_HEIGHT, BAR_WIDTH, BAR_HEIGHT, color);
+            context.drawTexture(RenderLayer::getGuiTextured, FILLED, bounds.x, bounds.y, 0, 0, calculateFill(getFill()), BAR_HEIGHT, BAR_WIDTH, BAR_HEIGHT, color);
         } else {
-            var color = INFO.getColor.get();
+            var color = getColor();
             RenderUtils.beginScale(context, bounds.scale);
             context.drawTexture(RenderLayer::getGuiTextured, UNFILLED, (int)(bounds.x/bounds.scale), (int)(bounds.y/bounds.scale), 0, 0, BAR_WIDTH, BAR_HEIGHT, BAR_WIDTH, BAR_HEIGHT, color);
-            context.drawTexture(RenderLayer::getGuiTextured, FILLED, (int)(bounds.x/bounds.scale), (int)(bounds.y/bounds.scale), 0, 0, calculateFill(INFO.getFill.get()), BAR_HEIGHT, BAR_WIDTH, BAR_HEIGHT, color);
+            context.drawTexture(RenderLayer::getGuiTextured, FILLED, (int)(bounds.x/bounds.scale), (int)(bounds.y/bounds.scale), 0, 0, calculateFill(getFill()), BAR_HEIGHT, BAR_WIDTH, BAR_HEIGHT, color);
             RenderUtils.endScale(context);
         }
             //?}

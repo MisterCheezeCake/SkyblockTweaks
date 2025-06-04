@@ -21,6 +21,7 @@ package wtf.cheeze.sbt.hud;
 import wtf.cheeze.sbt.events.HudRenderEvents;
 import wtf.cheeze.sbt.features.huds.*;
 import wtf.cheeze.sbt.features.mining.EventTimerHud;
+import wtf.cheeze.sbt.features.mining.FetchurFeatures;
 import wtf.cheeze.sbt.features.mining.MiningHud;
 
 import java.util.ArrayList;
@@ -53,6 +54,7 @@ public class HudManager {
         HUDS.add(EventTimerHud.INSTANCE);
         HUDS.add(RainmakerHud.INSTANCE);
         HUDS.add(SecretsHud.INSTANCE);
+        HUDS.add(FetchurFeatures.FetchurHud.INSTANCE);
 
         RainmakerHud.INSTANCE.registerEvents();
 

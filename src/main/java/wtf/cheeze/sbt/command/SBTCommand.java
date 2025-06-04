@@ -32,6 +32,7 @@ import net.minecraft.text.Text;
 import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.config.SBTConfig;
 import wtf.cheeze.sbt.config.SkyblockTweaksScreenMain;
+import wtf.cheeze.sbt.features.mining.FetchurFeatures;
 import wtf.cheeze.sbt.features.misc.MouseLock;
 import wtf.cheeze.sbt.features.chat.PartyFeatures;
 import wtf.cheeze.sbt.hud.HudManager;
@@ -514,6 +515,11 @@ public class SBTCommand {
                                                     return 0;
                                                 })
                                         )
+
+                                        .then(literal("fetchur").executes(context -> {
+                                            MessageManager.send(TextUtils.join(TextUtils.withColor("Today Fetchur wants: ", Colors.CYAN), FetchurFeatures.FetchurItem.forToday().display));
+                                            return 1;
+                                        }))
 //
                                         .then(literal("dumpTablist").executes(context -> {
                                                     SkyblockTweaks.LOGGER.info(TabListParser.parseTabList().serialize());

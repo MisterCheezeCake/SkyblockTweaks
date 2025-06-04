@@ -118,15 +118,15 @@ public class Icons {
     }
 
     private static HudIcon itemStack(String name) {
-        return HudIcon.of(ItemStackUtils.getVanillaItem(name));
+        return HudIcon.of(ItemStackUtils.getVanilla(name));
     }
 
     private static HudIcon sb(String minecraftID, String skyblockID) {
-        return HudIcon.of(ItemStackUtils.getSkyblockItem(minecraftID, skyblockID));
+        return HudIcon.of(ItemStackUtils.getSkyblock(minecraftID, skyblockID));
     }
 
     private static HudIcon sbHead(String skyblockID, String skullName) {
-        return HudIcon.of(ItemStackUtils.getHeadItem(skullName, skyblockID));
+        return HudIcon.of(ItemStackUtils.getHead(skullName, skyblockID));
     }
     private static HudIcon sbHead(String both) {
         return sbHead(both, both);

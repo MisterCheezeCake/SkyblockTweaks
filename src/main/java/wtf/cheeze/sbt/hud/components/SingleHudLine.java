@@ -43,7 +43,8 @@ public class SingleHudLine implements HudComponent {
     private final Cache<Text> cache;
 
 
-    public int lineCount = 1;
+    private static final int LINE_COUNT = 1;
+    private static final int LINE_HEIGHT = 9;
 
     @Nullable
     // Make sure not to create a new instance of HudIcon every time you call this
@@ -76,7 +77,7 @@ public class SingleHudLine implements HudComponent {
 
     @Override
     public int render(DrawContext context, int x, int y, float scale) {
-        if (timing == UpdateTiming.FRAME ||cache.isDueForUpdate()) {
+        if (timing == UpdateTiming.FRAME || cache.isDueForUpdate()) {
             cache.update();
         }
 
@@ -114,7 +115,12 @@ public class SingleHudLine implements HudComponent {
     }
 
     @Override
-    public int getlines() { return 1;}
+    public int getlines() { return
+            LINE_COUNT;
+    }
 
-
+    @Override
+    public int getHeight() {
+        return LINE_HEIGHT;
+    }
 }

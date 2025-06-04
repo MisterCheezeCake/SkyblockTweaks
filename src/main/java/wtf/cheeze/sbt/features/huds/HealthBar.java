@@ -45,13 +45,22 @@ public class HealthBar extends BarHud {
                 () -> SBTConfig.huds().healthBar.y,
                 () -> SBTConfig.huds().healthBar.scale,
                 () -> SBTConfig.huds().healthBar.anchor,
-                () -> SkyblockData.Stats.health > SkyblockData.Stats.maxHealth ? SBTConfig.huds().healthBar.colorAbsorption : SBTConfig.huds().healthBar.color,
-                () -> SkyblockData.Stats.health / SkyblockData.Stats.maxHealth,
                 x -> SBTConfig.huds().healthBar.x = x,
                 y -> SBTConfig.huds().healthBar.y = y,
                 scale -> SBTConfig.huds().healthBar.scale = scale,
                 anchor ->SBTConfig.huds().healthBar.anchor= anchor
         );
+    }
+
+
+    @Override
+    public int getColor() {
+        return SkyblockData.Stats.health > SkyblockData.Stats.maxHealth ? SBTConfig.huds().healthBar.colorAbsorption : SBTConfig.huds().healthBar.color;
+    }
+
+    @Override
+    public float getFill() {
+        return SkyblockData.Stats.health / SkyblockData.Stats.maxHealth;
     }
 
     @Override
@@ -65,6 +74,7 @@ public class HealthBar extends BarHud {
         if (!super.shouldRender(fromHudScreen)) return false;
         return (SkyblockData.inSB && SBTConfig.huds().healthBar.enabled && (SkyblockData.location != Location.RIFT || !SBTConfig.huds().healthBar.hideInRift)) || fromHudScreen;
     }
+
 
     public static class Config {
         @SerialEntry

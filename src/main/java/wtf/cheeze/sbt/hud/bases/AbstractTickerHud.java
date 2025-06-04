@@ -35,6 +35,9 @@ public abstract class AbstractTickerHud extends HUD {
     private static final Identifier BLANK = Identifier.of("skyblocktweaks", "tickers/blank.png");
     private static final int DIMENSION = 9;
 
+    /**
+     * FromHudScreen
+     */
     protected boolean fhs = false;
 
     public abstract int getMax(boolean fromHudScreen);

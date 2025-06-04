@@ -44,13 +44,21 @@ public class ManaBar extends BarHud {
                 () -> SBTConfig.huds().manaBar.y,
                 () -> SBTConfig.huds().manaBar.scale,
                 () -> SBTConfig.huds().manaBar.anchor,
-                () -> SBTConfig.huds().manaBar.color,
-                () -> SkyblockData.Stats.mana / SkyblockData.Stats.maxMana,
                 x -> SBTConfig.huds().manaBar.x = x,
                 y -> SBTConfig.huds().manaBar.y = y,
                 scale -> SBTConfig.huds().manaBar.scale = scale,
                 anchor -> SBTConfig.huds().manaBar.anchor = anchor
         );
+    }
+
+    @Override
+    public int getColor() {
+        return SBTConfig.huds().manaBar.color;
+    }
+
+    @Override
+    public float getFill() {
+        return SkyblockData.Stats.mana / SkyblockData.Stats.maxMana;
     }
 
     @Override
