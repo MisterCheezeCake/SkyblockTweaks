@@ -63,6 +63,7 @@ public class MenuHighlights {
             case "Dungeon Hub Selector" -> tryDrawHighlightDH(context, slot);
             case "Heart of the Mountain" -> tryDrawHighlightHOTM(context, slot);
             case "Commissions" -> tryDrawHighlightComs(context, slot);
+            case "Your Contests" -> tryDrawHighlightContests(context, slot);
         }
         if (title.contains("Widget") || title.contains("Setting")) {
           tryDrawHighlightWidget(context, slot);
@@ -71,6 +72,8 @@ public class MenuHighlights {
         }
 
     }
+
+
 
     private static void tryDrawHighlight(DrawContext context, Slot slot) {
         if (!SBTConfig.get().hubSelectorHighlight.enabledRegular) return;
@@ -161,6 +164,16 @@ public class MenuHighlights {
         }
     }
 
+    private static void tryDrawHighlightContests(DrawContext context, Slot slot) {
+        if (!SBTConfig.get().hubSelectorHighlight.unclaimedContestHighlight) return;
+        if (slot.getStack().isEmpty()) return;
+        var lines = slot.getStack().getOrDefault(DataComponentTypes.LORE, LoreComponent.DEFAULT).lines();
+        if (lines.isEmpty()) return;
+        if (lines.getLast().getString().equals("Click to claim reward!")) {
+            highlight(context, slot, HIGHLIGHT_GREEN);
+        }
+    }
+
     private static void highlight(DrawContext context, Slot slot, int color) {
         context.fill(slot.x, slot.y, slot.x + SLOT_DIMENSION, slot.y + SLOT_DIMENSION, color);
     }
@@ -183,6 +196,9 @@ public class MenuHighlights {
 
         @SerialEntry
         public boolean unclaimedCommissionHighlight = true;
+
+        @SerialEntry
+        public boolean unclaimedContestHighlight = true;
 
         public static OptionGroup getGroup(ConfigImpl defaults, ConfigImpl config) {
             var enabled = Option.<Boolean>createBuilder()
@@ -247,6 +263,18 @@ public class MenuHighlights {
                                     value -> config.hubSelectorHighlight.unclaimedCommissionHighlight = value
                     )
                     .build();
+            var unclaimedContestHighlight = Option.<Boolean>createBuilder()
+                    .name(key("menuHighlights.unclaimedContestHighlight"))
+                    .description(keyD("menuHighlights.unclaimedContestHighlight"))
+                    .controller(SBTConfig::generateBooleanController)
+                    .binding(
+                                    defaults.hubSelectorHighlight.unclaimedContestHighlight,
+                                    () -> config.hubSelectorHighlight.unclaimedContestHighlight,
+                                    value -> config.hubSelectorHighlight.unclaimedContestHighlight = value
+                    )
+                    .build();
+
+
 
             return OptionGroup.createBuilder()
                     .name(key("menuHighlights"))
@@ -257,6 +285,7 @@ public class MenuHighlights {
                     .option(widgetHighlight)
                     .option(sblevelHighlight)
                     .option(unclaimedCommissionHighlight)
+                    .option(unclaimedContestHighlight)
                     .build();
         }
     }
