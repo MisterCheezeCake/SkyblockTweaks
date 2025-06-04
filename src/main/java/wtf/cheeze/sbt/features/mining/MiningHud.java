@@ -74,6 +74,8 @@ public class MiningHud extends MultilineTextHud {
         SBTConfig.CONFIG_SAVE.register(this::refreshComposition);
     }
 
+
+    private static final String COOLDOWN_FORMAT = "%ds";
     @Override
     public @NotNull HudName getName() {
 
@@ -134,7 +136,27 @@ public class MiningHud extends MultilineTextHud {
                         ),
                         () -> Icons.MINING_ICONS.get("GLACITE_POWDER"),
                         useIconSupplier
-
+                ));
+                case COOLDOWN -> lines.add(new SingleHudLine(
+                        DataUtils.alwaysZero,
+                        () -> SBTConfig.mining().hud.outlineColor,
+                        () -> SBTConfig.mining().hud.mode,
+                        () -> {
+                            var cooldown = SkyblockData.calculateCurrentPickAbilityCooldown();
+                            if (cooldown == 0) {
+                                return TextUtils.join(
+                                        TextUtils.withColor("Pickaxe CD: ", SBTConfig.mining().hud.color),
+                                        TextUtils.withColor("Ready", Colors.LIME)
+                                );
+                            } else {
+                                return TextUtils.join(
+                                        TextUtils.withColor("Pickaxe CD: ", SBTConfig.mining().hud.color),
+                                        TextUtils.withColor(COOLDOWN_FORMAT.formatted(cooldown), Colors.LIME)
+                                );
+                            }
+                        },
+                        () -> Icons.DIAMOND_PICKAXE,
+                        useIconSupplier
                 ));
 
             }
@@ -191,8 +213,8 @@ public class MiningHud extends MultilineTextHud {
         COMMISSIONS(TextUtils.withColor("Commissions", Colors.CYAN), TextUtils.join(TextUtils.withColor("Mithril Miner: ", Colors.CYAN), TextUtils.withColor("0/350", Colors.RED)), false),
         MITHRIL_POWDER(TextUtils.withColor("Mithril Powder", Colors.GREEN), TextUtils.join(TextUtils.withColor("Mithril Powder: ", Colors.CYAN), TextUtils.withColor("2M", Colors.GREEN)), false),
         GEMSTONE_POWDER(TextUtils.withColor("Gemstone Powder", Colors.PINK), TextUtils.join(TextUtils.withColor("Gemstone Powder: ", Colors.CYAN), TextUtils.withColor("850K", Colors.PINK)), false),
-        GLACITE_POWER(TextUtils.withColor("Glacite Power", Colors.LIGHT_BLUE), TextUtils.join(TextUtils.withColor("Glacite Powder: ", Colors.CYAN), TextUtils.withColor("50K", Colors.LIME)), false),
-        COOLDOWN(TextUtils.withColor("Pickaxe Cooldown", Colors.LIME), Text.empty(),false);
+        GLACITE_POWER(TextUtils.withColor("Glacite Power", Colors.LIGHT_BLUE), TextUtils.join(TextUtils.withColor("Glacite Powder: ", Colors.CYAN), TextUtils.withColor("50K", Colors.LIGHT_BLUE)), false),
+        COOLDOWN(TextUtils.withColor("Pickaxe Cooldown", Colors.LIME), TextUtils.join(TextUtils.withColor("Pickaxe CD: ", Colors.CYAN), TextUtils.withColor("Ready", Colors.LIME)),false);
 
 
 
@@ -236,7 +258,7 @@ public class MiningHud extends MultilineTextHud {
         public boolean icons = true;
 
         @SerialEntry
-        public List<Entry> composition = DataUtils.arrayListOf(Entry.COMMISSIONS, Entry.MITHRIL_POWDER, Entry.GEMSTONE_POWDER, Entry.GLACITE_POWER);
+        public List<Entry> composition = DataUtils.arrayListOf(Entry.COMMISSIONS, Entry.MITHRIL_POWDER, Entry.GEMSTONE_POWDER, Entry.GLACITE_POWER, Entry.COOLDOWN);
 
         @SerialEntry
         public float x = 0.25f;

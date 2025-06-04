@@ -26,6 +26,7 @@ import net.minecraft.component.type.NbtComponent;
 import net.minecraft.component.type.ProfileComponent;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.entry.RegistryEntry;
@@ -41,6 +42,15 @@ import java.util.Map;
 import java.util.Optional;
 
 public class ItemStackUtils {
+
+    public static boolean isPickaxe(Item item) {
+        return item.equals(Items.WOODEN_PICKAXE) ||
+                item.equals(Items.STONE_PICKAXE) ||
+                item.equals(Items.IRON_PICKAXE) ||
+                item.equals(Items.GOLDEN_PICKAXE) ||
+                item.equals(Items.DIAMOND_PICKAXE) ||
+                item.equals(Items.NETHERITE_PICKAXE);
+    }
 
     public static String getSkyblockId(ItemStack stack) {
         var data = stack.get(DataComponentTypes.CUSTOM_DATA);
@@ -82,6 +92,8 @@ public class ItemStackUtils {
     public static ItemStack getSkyblock(String minecraftID, String skyblockID, boolean enchanted) {
         return getSkyblock(minecraftID, skyblockID, enchanted, 1);
     }
+
+
 
     public static ItemStack getSkyblock(String minecraftID, String skyblockID, boolean enchanted, int count) {
         return new ItemStack(
@@ -142,6 +154,7 @@ public class ItemStackUtils {
             return new PropertyMap();
         }
     }
+
 
     private static NbtComponent getSkyblockItemNBT(String skyblockID) {
         var tag = new NbtCompound();

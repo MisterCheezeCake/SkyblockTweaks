@@ -18,6 +18,7 @@
  */
 package wtf.cheeze.sbt.utils.skyblock;
 
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.hypixel.data.region.Environment;
 import net.hypixel.modapi.error.ErrorReason;
 import net.hypixel.modapi.packet.ClientboundHypixelPacket;
@@ -25,8 +26,14 @@ import net.hypixel.modapi.packet.impl.clientbound.ClientboundHelloPacket;
 import net.hypixel.modapi.packet.impl.clientbound.ClientboundPartyInfoPacket;
 import net.hypixel.modapi.packet.impl.clientbound.event.ClientboundLocationPacket;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.LoreComponent;
+import net.minecraft.text.Text;
 import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.config.SBTConfig;
+import wtf.cheeze.sbt.events.ChatEvents;
+import wtf.cheeze.sbt.utils.errors.ErrorHandler;
+import wtf.cheeze.sbt.utils.errors.ErrorLevel;
 import wtf.cheeze.sbt.utils.text.MessageManager;
 import wtf.cheeze.sbt.utils.timing.TimeUtils;
 import wtf.cheeze.sbt.utils.actionbar.ActionBarData;
@@ -35,11 +42,51 @@ import wtf.cheeze.sbt.utils.render.Colors;
 import wtf.cheeze.sbt.utils.tablist.TabListData;
 
 import java.util.Objects;
+import java.util.regex.Pattern;
 
 
 public class SkyblockData {
 
     private static final MinecraftClient client = MinecraftClient.getInstance();
+
+    private static final Pattern COOLDOWN_PATTERN = Pattern.compile("Cooldown: (\\d+)s");
+    private static final Pattern PICK_USED_PATTERN = Pattern.compile("You used your .* Pickaxe Ability!");
+
+
+    public static void registerEvents() {
+        ClientTickEvents.END_CLIENT_TICK.register(client -> {
+            if (!inSB) return;
+            if (client.player == null) return;
+            for (int i = 0; i < 36; i++) {
+                var stack = client.player.getInventory().getStack(i);
+                if (stack.isEmpty()) continue;
+                if (ItemStackUtils.isPickaxe(stack.getItem()) || stack.getName().getString().contains("Drill")) {
+                    var lines = stack.getOrDefault(DataComponentTypes.LORE, LoreComponent.DEFAULT).lines();
+                    if (lines.isEmpty()) continue;
+                    boolean shouldBreak = false;
+                    for (Text line: lines) {
+                        var matcher = COOLDOWN_PATTERN.matcher(line.getString());
+                        if (!matcher.matches()) continue;
+                        try {
+                            int cooldown = Integer.parseInt(matcher.group(1));
+                            pickAbilityCooldown = cooldown * 1000L; // Convert to milliseconds
+                            shouldBreak = true;
+                            break;
+                        } catch (NumberFormatException e) {
+                            ErrorHandler.handleError(e, "Error Parsing Pickaxe Cooldown", ErrorLevel.SILENT);
+                        }
+
+                    }
+                    if (shouldBreak) break;
+                }
+            }
+        });
+        ChatEvents.ON_GAME.register(message -> {
+            if (PICK_USED_PATTERN.matcher(message.getString()).matches()) {
+                lastUsedPickAbility = System.currentTimeMillis();
+            }
+        });
+    }
 
 
     public static boolean inSB = false;
@@ -92,9 +139,22 @@ public class SkyblockData {
 
     }
 
+
     public static TabListData tabData = TabListData.EMPTY;
 
     public static MiningData miningData = MiningData.EMPTY;
+
+    public static long lastUsedPickAbility = 0;
+    public static long pickAbilityCooldown = 0;
+
+    public static int calculateCurrentPickAbilityCooldown() {
+        if (lastUsedPickAbility == 0) return 0;
+        long timeSinceLastUse = System.currentTimeMillis() - lastUsedPickAbility;
+        if (timeSinceLastUse < pickAbilityCooldown) {
+            return (int) ((pickAbilityCooldown - timeSinceLastUse) / 1000) + 1; // I don't know why the +1 works, but it does.
+        }
+        return 0; // No cooldown
+    }
 
 
     /**

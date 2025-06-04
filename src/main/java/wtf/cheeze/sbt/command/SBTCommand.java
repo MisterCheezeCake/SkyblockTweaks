@@ -39,6 +39,7 @@ import wtf.cheeze.sbt.hud.HudManager;
 import wtf.cheeze.sbt.hud.screen.CompositionPopupScreen;
 import wtf.cheeze.sbt.hud.screen.HudScreen;
 import wtf.cheeze.sbt.mixin.accessors.BossBarHudAccessor;
+import wtf.cheeze.sbt.utils.skyblock.ItemStackUtils;
 import wtf.cheeze.sbt.utils.skyblock.ModAPI;
 import wtf.cheeze.sbt.utils.text.MessageManager;
 import wtf.cheeze.sbt.utils.NumberUtils;
@@ -454,6 +455,15 @@ public class SBTCommand {
                                                     return 1;
                                                 }))
                                         )
+                                        .then(literal("pickaxe").executes(context -> {
+                                            if (ItemStackUtils.isPickaxe(context.getSource().getClient().player.getMainHandStack().getItem())) {
+                                                send(context, TextUtils.withColor("You are holding a pickaxe", Colors.LIME));
+                                            } else {
+                                                send(context, TextUtils.withColor("You are not holding a pickaxe", Colors.RED));
+                                            }
+                                            return 1;
+                                        }))
+
                                         .then(literal("compareVersions").then(argument("a", StringArgumentType.string()).then(argument("b", StringArgumentType.string())
                                                 .executes(context -> {
                                                      Version a = new Version(StringArgumentType.getString(context, "a"));

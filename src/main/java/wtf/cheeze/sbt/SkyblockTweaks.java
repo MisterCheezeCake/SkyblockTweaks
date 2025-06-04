@@ -33,6 +33,7 @@ import wtf.cheeze.sbt.features.overlay.MinionExp;
 import wtf.cheeze.sbt.features.misc.MouseLock;
 import wtf.cheeze.sbt.hud.HudManager;
 import wtf.cheeze.sbt.utils.KillSwitch;
+import wtf.cheeze.sbt.utils.skyblock.SkyblockData;
 import wtf.cheeze.sbt.utils.text.NotificationHandler;
 import wtf.cheeze.sbt.utils.version.UpdateChecker;
 import wtf.cheeze.sbt.utils.version.Version;
@@ -63,6 +64,7 @@ public class SkyblockTweaks implements ModInitializer {
 		HudManager.registerEvents();
 		SBTCommand.registerEvents();
 		ActionBarTransformer.registerEvents();
+		SkyblockData.registerEvents();
 		NotificationHandler.registerEvents();
 		ModAPI.registerEvents();
 		PartyFeatures.registerEvents();
@@ -74,6 +76,7 @@ public class SkyblockTweaks implements ModInitializer {
 		MinionExp.registerEvents();
 		MiningTitles.registerEvents();
 		FetchurFeatures.registerEvents();
+
 
 		UpdateChecker.checkForUpdates();
 	}
