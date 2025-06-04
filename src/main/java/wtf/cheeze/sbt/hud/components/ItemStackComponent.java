@@ -20,6 +20,7 @@ package wtf.cheeze.sbt.hud.components;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import wtf.cheeze.sbt.hud.cache.Cache;
@@ -53,15 +54,16 @@ public class ItemStackComponent implements HudComponent {
         if (cache.timing == UpdateTiming.FRAME || cache.isDueForUpdate()) {
             cache.update();
         }
-        if (scale != 1.0f) {
 
             context.drawItem(cache.get(),  (int) (x / scale), (int) (y / scale));
-            //context.drawItem(cache.get(), x, y);
+            //? if =1.21.1 {
+            /*context.drawItemInSlot(MinecraftClient.getInstance().textRenderer, cache.get(), (int) (x / scale), (int) (y / scale));
+            *///?} else {
+            
             context.drawStackOverlay(MinecraftClient.getInstance().textRenderer, cache.get(), (int) (x / scale), (int) (y / scale));
-        } else {
-            context.drawItem(cache.get(), x, y);
-            context.drawStackOverlay(MinecraftClient.getInstance().textRenderer, cache.get(), x, y);
-        }
+            //?}
+
+
         return 1;
     }
 
