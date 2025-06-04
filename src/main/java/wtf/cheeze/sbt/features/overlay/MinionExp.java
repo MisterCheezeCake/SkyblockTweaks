@@ -79,7 +79,7 @@ public class MinionExp {
         private final HandledScreen<?> screen;
         private final boolean isChest;
         private final List<TextFieldWidget> children;
-        private static final Text SBT_FOOTER = TextUtils.withColor("SBT", Colors.SBT_GREEN);
+
 
 
         public MinionExpPopup(HandledScreen<?> screen) {
@@ -119,13 +119,15 @@ public class MinionExp {
         }
 
 
+        //TODO: Switch to text widgets
         @Override
         public void render(DrawContext context, int mouseX, int mouseY, float delta) {
+            boolean shadow = SBTConfig.get().minionExp.shadowText;
             try {
                 Popup.super.renderBackground(context);
-                RenderUtils.drawCenteredText(context, TextUtils.withBold("Skill EXP"), x + WIDTH / 2, y + 5, Colors.WHITE, false);
-                RenderUtils.drawCenteredText(context, Text.literal("☯ Wisdom"), x + WIDTH / 2, y + 85, Colors.CYAN, false);
-                RenderUtils.drawText(context, SBT_FOOTER, x + WIDTH - 3 - RenderUtils.getStringWidth(SBT_FOOTER.getString()), y + HEIGHT - 12, Colors.WHITE, false);
+                Popup.super.drawSBTFooter(context, shadow);
+                RenderUtils.drawCenteredText(context, TextUtils.withBold("Skill EXP"), x + WIDTH / 2, y + 5, Colors.WHITE, shadow);
+                RenderUtils.drawCenteredText(context, Text.literal("☯ Wisdom"), x + WIDTH / 2, y + 85, Colors.CYAN, shadow);
 
                 var renderY = y + 20;
                 var minionExp = getMinionExp();
@@ -134,9 +136,9 @@ public class MinionExp {
                     this.children.getFirst().setText(PersistentData.get().currentProfile().skillWisdom.getOrDefault(primarySkill, 0) + "");
                 }
                 for (var entry : minionExp.entrySet()) {
-                    RenderUtils.drawCenteredText(context, Text.literal(entry.getKey().getName() + ":"), x + WIDTH / 2, renderY, Colors.CYAN, false);
+                    RenderUtils.drawCenteredText(context, Text.literal(entry.getKey().getName() + ":"), x + WIDTH / 2, renderY, Colors.CYAN, shadow);
                     var exp = entry.getValue();
-                    RenderUtils.drawCenteredText(context, Text.literal(NumberUtils.addKOrM((int) (exp * getMult()), ",") + " XP"), x + WIDTH / 2, renderY + 10, Colors.WHITE, false);
+                    RenderUtils.drawCenteredText(context, Text.literal(NumberUtils.addKOrM((int) (exp * getMult()), ",") + " XP"), x + WIDTH / 2, renderY + 10, Colors.WHITE, shadow);
                     renderY += 30;
                 }
             } catch (Exception e) {
@@ -190,6 +192,9 @@ public class MinionExp {
         @SerialEntry
         public boolean enabled = true;
 
+        @SerialEntry
+        public boolean shadowText = false;
+
         public static OptionGroup getGroup(ConfigImpl defaults, ConfigImpl config) {
             var enabled = Option.<Boolean>createBuilder()
                     .name(General.key("minionExp.enabled"))
@@ -202,10 +207,22 @@ public class MinionExp {
                     )
                     .build();
 
+            var shadowText = Option.<Boolean>createBuilder()
+                    .name(General.key("minionExp.shadowText"))
+                    .description(General.keyD("minionExp.shadowText"))
+                    .controller(SBTConfig::generateBooleanController)
+                    .binding(
+                            defaults.minionExp.shadowText,
+                            () -> config.minionExp.shadowText,
+                            value -> config.minionExp.shadowText = value
+                    )
+                    .build();
+
             return OptionGroup.createBuilder()
                     .name(General.key("minionExp"))
                     .description(General.keyD("minionExp"))
                     .option(enabled)
+                    .option(shadowText)
                     .build();
 
 

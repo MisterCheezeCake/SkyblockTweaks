@@ -414,6 +414,8 @@
   "sbt.config.mining.eventHud.icons.desc": "Show icons in the Event Timer HUD",
   "sbt.config.general.minionExp.enabled": "Enable Minion EXP Overlay",
   "sbt.config.general.minionExp.enabled.desc": "Enables the Minion Skill EXP Overlay",
+  "sbt.config.general.minionExp.shadowText": "Shadow Text",
+    "sbt.config.general.minionExp.shadowText.desc": "Whether to render the text in the Minion EXP Overlay with a shadow",
   "sbt.config.general.minionExp.desc": "Settings for the Minion Skill EXP Overlay",
   "sbt.config.general.minionExp": "Minion Skill EXP Overlay",
   "sbt.config.general.constantLoader": "Data Repo",

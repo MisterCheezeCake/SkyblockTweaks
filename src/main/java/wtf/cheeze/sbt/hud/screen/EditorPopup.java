@@ -33,6 +33,8 @@ public record EditorPopup(Screen screen, int x, int y, Text title, List<CheezePa
 
     public static final int POPUP_Z = 300;
 
+
+
     @Override
     public List<? extends ClickableWidget> childrenList() {
         return children.stream().map(CheezePair::val).toList();
