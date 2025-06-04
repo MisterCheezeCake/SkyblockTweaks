@@ -49,17 +49,17 @@ public abstract class BarHud extends HUD {
         }
 
             //? if =1.21.1 {
-        /*var colors = RenderUtils.getColor3f((int) INFO.getColor.get());
+        /*var colors = RenderUtils.getColor3f(getColor());
              if (bounds.scale == 1.0f) {
             context.setShaderColor(colors.red, colors.green, colors.blue, 1.0f);
             context.drawTexture(UNFILLED, bounds.x, bounds.y, 0, 0, BAR_WIDTH, BAR_HEIGHT, BAR_WIDTH, BAR_HEIGHT);
-            context.drawTexture(FILLED, bounds.x, bounds.y, 0, 0, calculateFill((float) INFO.getFill.get()), BAR_HEIGHT, BAR_WIDTH, BAR_HEIGHT);
+            context.drawTexture(FILLED, bounds.x, bounds.y, 0, 0, calculateFill(getFill()), BAR_HEIGHT, BAR_WIDTH, BAR_HEIGHT);
             context.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
         } else {
             RenderUtils.beginScale(context, bounds.scale);
             context.setShaderColor(colors.red, colors.green, colors.blue, 1.0f);
             context.drawTexture(UNFILLED, (int)(bounds.x/bounds.scale), (int)(bounds.y/bounds.scale), 0, 0, BAR_WIDTH, BAR_HEIGHT, BAR_WIDTH, BAR_HEIGHT);
-            context.drawTexture(FILLED, (int)(bounds.x/bounds.scale), (int)(bounds.y/bounds.scale), 0, 0, calculateFill((float) INFO.getFill.get()), BAR_HEIGHT, BAR_WIDTH, BAR_HEIGHT);
+            context.drawTexture(FILLED, (int)(bounds.x/bounds.scale), (int)(bounds.y/bounds.scale), 0, 0, calculateFill(getFill()), BAR_HEIGHT, BAR_WIDTH, BAR_HEIGHT);
             context.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
             RenderUtils.endScale(context);
         }
