@@ -116,7 +116,7 @@ public class SkillHudManager {
                         if (timeLeft <= 0) return Text.literal("Skill HUD Placeholder Text");
                         if (percent == 0) {
                             if (total == 0) {
-                                return Text.literal("+" + gained + " (" + NumberUtils.formatNumber((int) progress, ",") + ")");
+                                return Text.literal("+" + gained + " (" + NumberUtils.formatNumber((long) progress, ",") + ")");
                             } else {
                                 if (SBTConfig.huds().skills.skillMode == Mode.PERCENT) {
                                     var base = "+" + gained + " (" + NumberUtils.formatPercent(progress, total) + ")";
