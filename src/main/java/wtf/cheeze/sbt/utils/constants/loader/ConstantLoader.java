@@ -66,7 +66,8 @@ public class ConstantLoader {
             "pets", Pets.class,
             "hotm", Hotm.class,
             "disabledFeatures", DisabledFeatures.class,
-            "minions", Minions.class
+            "minions", Minions.class,
+            "reforges", Reforges.class
     );
 
     static Garden garden = Garden.empty();
@@ -76,6 +77,7 @@ public class ConstantLoader {
     static Hotm hotm = Hotm.empty();
     static DisabledFeatures disabledFeatures = DisabledFeatures.empty();
     static Minions minions = Minions.empty();
+    static Reforges reforges = Reforges.empty();
 
     public static void registerEvents() {
       if (!REPO_FOLDER.toFile().exists()) {
@@ -238,16 +240,23 @@ public class ConstantLoader {
                 Path path = constantFolder.resolve(name + ".json");
                 if (!path.toFile().exists()) {
                     failureNotification("Failed to load " + name + " constants, file not found");
+                    SkyblockTweaks.LOGGER.error("Failed to load {} constants, file not found", name);
                 }
                 var contents = SkyblockTweaks.GSON.fromJson(Files.readString(path), clazz);
-                switch (name) {
-                    case "skills" -> skills = (Skills) contents;
-                    case "garden" -> garden = (Garden) contents;
-                    case "slayers" -> slayers = (Slayers) contents;
-                    case "pets" -> pets = (Pets) contents;
-                    case "hotm" -> hotm = (Hotm) contents;
-                    case "disabledFeatures" -> disabledFeatures = (DisabledFeatures) contents;
-                    case "minions" -> minions = (Minions) contents;
+                switch (contents) {
+                    case Skills _skills -> skills = _skills;
+                    case Garden _garden -> garden = _garden;
+                    case Slayers _slayers -> slayers = _slayers;
+                    case Pets _pets -> pets = _pets;
+                    case Hotm _hotm -> hotm = _hotm;
+                    case DisabledFeatures _disabledFeatures -> disabledFeatures = _disabledFeatures;
+                    case Minions _minions -> minions = _minions;
+                    case Reforges _reforges -> reforges = _reforges;
+                    default -> {
+                       failureNotification("Constants file " + name + ".json does not match expected type " + clazz.getSimpleName());
+                       SkyblockTweaks.LOGGER.error("Constants file {} does not match expected type {}", name + ".json", clazz.getSimpleName());
+
+                    }
                 }
             }
         }

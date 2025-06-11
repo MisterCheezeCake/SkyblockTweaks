@@ -508,5 +508,13 @@
   "sbt.config.mining.fetchur.mode": "HUD Mode",
   "sbt.config.mining.fetchur.mode.desc": "The draw mode of the  text in theFetchur HUD. Pure will render without shadow, Shadow will render with a shadow, and Outline will render with an outline.",
   "sbt.config.mining.fetchur.scale": "HUD Scale",
-  "sbt.config.mining.fetchur.scale.desc": "The scale of the Fetchur HUD"
+  "sbt.config.mining.fetchur.scale.desc": "The scale of the Fetchur HUD",
+  "sbt.config.general.reforgeOverlay": "Reforge Overlay",
+  "sbt.config.general.reforgeOverlay.desc": "Settings for the Reforge Overlay",
+  "sbt.config.general.reforgeOverlay.filterOverlay": "Enable Filter Overlay",
+  "sbt.config.general.reforgeOverlay.filterOverlay.desc": "Enables the Reforge Filter Overlay, which allows you to seek out certain reforges in the Blacksmith and stop yourself from accidentally reforging again when you already have the desired reforge",
+  "sbt.config.general.reforgeOverlay.nameTooltip": "Reforge Name Tooltip",
+  "sbt.config.general.reforgeOverlay.nameTooltip.desc": "Whether to show a tooltip with the reforge name in the Blacksmith Menu. If enabled, the tooltip will show even if the filter overlay is disabled.",
+  "sbt.config.general.reforgeOverlay.filterOverlayShadow": "Shadow Text",
+  "sbt.config.general.reforgeOverlay.filterOverlayShadow.desc": "Whether to render the text in the Reforge Filter Overlay with a shadow"
 }

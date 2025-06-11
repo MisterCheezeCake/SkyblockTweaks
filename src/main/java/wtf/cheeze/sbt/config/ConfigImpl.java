@@ -27,6 +27,7 @@ import wtf.cheeze.sbt.features.overlay.MenuHighlights;
 import wtf.cheeze.sbt.features.overlay.MinionExp;
 import wtf.cheeze.sbt.features.chat.ChatProtections;
 import wtf.cheeze.sbt.features.chat.PartyFeatures;
+import wtf.cheeze.sbt.features.overlay.ReforgeOverlay;
 import wtf.cheeze.sbt.utils.actionbar.ActionBarTransformer;
 import wtf.cheeze.sbt.utils.constants.loader.ConstantLoader;
 import wtf.cheeze.sbt.utils.version.UpdateChecker;
@@ -55,6 +56,9 @@ public class ConfigImpl extends VersionedObject {
 
     @SerialEntry
     public MinionExp.Config minionExp = new MinionExp.Config();
+
+    @SerialEntry
+    public ReforgeOverlay.Config reforgeOverlay = new ReforgeOverlay.Config();
 
     @SerialEntry
     public ActionBarTransformer.Config actionBarFilters = new ActionBarTransformer.Config();

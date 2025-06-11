@@ -31,6 +31,7 @@ import wtf.cheeze.sbt.features.mining.MiningTitles;
 import wtf.cheeze.sbt.features.overlay.MenuHighlights;
 import wtf.cheeze.sbt.features.overlay.MinionExp;
 import wtf.cheeze.sbt.features.misc.MouseLock;
+import wtf.cheeze.sbt.features.overlay.ReforgeOverlay;
 import wtf.cheeze.sbt.hud.HudManager;
 import wtf.cheeze.sbt.utils.KillSwitch;
 import wtf.cheeze.sbt.utils.skyblock.SkyblockData;
@@ -76,6 +77,7 @@ public class SkyblockTweaks implements ModInitializer {
 		MinionExp.registerEvents();
 		MiningTitles.registerEvents();
 		FetchurFeatures.registerEvents();
+		ReforgeOverlay.registerEvents();
 
 
 		UpdateChecker.checkForUpdates();

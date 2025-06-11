@@ -33,11 +33,15 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.events.DrawSlotEvents;
 import wtf.cheeze.sbt.features.overlay.BrewingStandOverlay;
 import wtf.cheeze.sbt.utils.KillSwitch;
 import wtf.cheeze.sbt.utils.injected.SBTHandledScreen;
 import wtf.cheeze.sbt.utils.render.Popup;
+
+import java.util.Optional;
 
 @Mixin(HandledScreen.class)
 public abstract class HandledScreenMixin<T extends ScreenHandler> extends Screen implements SBTHandledScreen {
@@ -58,7 +62,7 @@ public abstract class HandledScreenMixin<T extends ScreenHandler> extends Screen
     }
     @Unique @Override
     public void sbt$setPopup(@Nullable Popup popup) {
-        if (!KillSwitch.shouldKill(SBT$FEATURE_ID_POPUP)) {
+        if (KillSwitch.shouldKill(SBT$FEATURE_ID_POPUP)) {
             this.sbt$popup = null;
             return;
         }
@@ -79,7 +83,25 @@ public abstract class HandledScreenMixin<T extends ScreenHandler> extends Screen
         *///?}
     }
 
-    //? if >=1.21.3 {
+    @Inject(method = "mouseClicked", at = @At("HEAD"), cancellable = true)
+    public void sbt$onMouseClicked(double mouseX, double mouseY, int button, CallbackInfoReturnable<Boolean> cir) {
+        if (this.sbt$popup != null) {
+            if (this.sbt$popup.mouseClicked(mouseX, mouseY, button)) {
+                cir.setReturnValue(true);
+            }
+        }
+    }
+
+    @Inject(method = "keyPressed", at = @At("HEAD"), cancellable = true)
+    public void sbt$onKeyPressed(int keyCode, int scanCode, int modifiers, CallbackInfoReturnable<Boolean> cir) {
+        if (this.sbt$popup != null) {
+            if (this.sbt$popup.keyPressed(keyCode, scanCode, modifiers)) {
+                cir.setReturnValue(true);
+            }
+        }
+    }
+
+
     
     @Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/ingame/HandledScreen;drawSlots(Lnet/minecraft/client/gui/DrawContext;)V"))
     protected void sbtBeforeDrawSlots(DrawContext context, int mouseX, int mouseY, float delta, CallbackInfo ci) {

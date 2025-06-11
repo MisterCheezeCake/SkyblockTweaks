@@ -43,6 +43,7 @@ import java.util.List;
 /**
  * A popup screen for changing HUD composition
  * TODO: MoveUp and down buttons are still a little jank
+ * TODO: Reset only works the first time its used
  */
 public class CompositionPopupScreen<T extends CompositionEntry> extends Screen {
 

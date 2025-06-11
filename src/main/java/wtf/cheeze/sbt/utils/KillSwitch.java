@@ -38,7 +38,9 @@ import java.util.Map;
  *     <li>mouse_lock</li>
  *     <li>party_commands</li>
  *     <li>recipe_book_redirect</li>
- *
+ *     <li>minion_exp_overlay</li>
+ *     <li>handled_screen_popups</li>
+ *     <li>reforge_filters</li>
  * </ul>
  */
 public class KillSwitch {
@@ -57,8 +59,7 @@ public class KillSwitch {
     }
 
     public static boolean shouldKill(String feature) {
-        return disabledFeatures.containsKey(feature);
-
+       return disabledFeatures.containsKey(feature);
     }
 
     private static void sendWarning(String feature) {

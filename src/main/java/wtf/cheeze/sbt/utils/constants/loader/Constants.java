@@ -34,4 +34,5 @@ public class Constants {
     public static Hotm hotm() { return ConstantLoader.hotm;}
     public static DisabledFeatures disabledFeatures() { return ConstantLoader.disabledFeatures;}
     public static Minions minions() { return ConstantLoader.minions;}
+    public static Reforges reforges() { return ConstantLoader.reforges;}
 }

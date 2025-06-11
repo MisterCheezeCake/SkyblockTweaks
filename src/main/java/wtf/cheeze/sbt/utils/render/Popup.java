@@ -22,6 +22,7 @@ import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.Drawable;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ClickableWidget;
+import net.minecraft.screen.slot.Slot;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import wtf.cheeze.sbt.hud.bounds.Bounds;
@@ -63,6 +64,17 @@ public interface Popup extends Drawable {
     default Bounds getBounds() {
          return new Bounds(x(), y(), WIDTH, HEIGHT, 1.0f);
     }
+
+
+    default boolean mouseClicked(double mouseX, double mouseY, int button) {
+        return false;
+    }
+    default boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+        return false;
+    }
+
+
+
 
 
 }

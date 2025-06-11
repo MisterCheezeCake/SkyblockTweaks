@@ -65,6 +65,18 @@ public class ItemStackUtils {
         //?}
     }
 
+    public static String getReforge(ItemStack stack) {
+        var data = stack.get(DataComponentTypes.CUSTOM_DATA);
+        if (data == null) return "";
+        var reforge = data.nbt.get("modifier");
+        if (reforge == null) return "";
+        //? if <=1.21.4 {
+        /*return reforge.asString();
+         *///?} else {
+        return reforge.asString().orElse("");
+        //?}
+    }
+
 
    public static ItemStack getVanilla(String minecraftID) {
         return getVanilla(minecraftID, 1);

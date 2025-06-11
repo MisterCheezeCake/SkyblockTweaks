@@ -20,6 +20,8 @@ package wtf.cheeze.sbt.utils.text;
 
 import net.minecraft.text.*;
 
+import java.util.Arrays;
+
 public class TextUtils {
     public static final String SECTION  = "§";
 
@@ -101,6 +103,30 @@ public class TextUtils {
         }
         return result;
     }
+
+    public static MutableText join(String... strings) {
+        return join(Arrays.stream(strings).map(Text::literal).toArray(Text[]::new));
+    }
+
+    public static MutableText joinLines(Text... lines) {
+        var result = Text.empty();
+        boolean first = true;
+        for (var line : lines) {
+            if (!first) {
+                result = result.append(NEW_LINE);
+            } else {
+                first = false;
+            }
+            result = result.append(line);
+        }
+        return result;
+    }
+
+    public static MutableText joinLines(String... lines) {
+        return joinLines(Arrays.stream(lines).map(Text::literal).toArray(Text[]::new));
+    }
+
+
 
     public static ClickEvent copyEvent(String text) {
         //? if <=1.21.4 {
