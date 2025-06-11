@@ -35,6 +35,7 @@ import wtf.cheeze.sbt.config.migration.MigrationManager;
 import wtf.cheeze.sbt.hud.HUD;
 import wtf.cheeze.sbt.hud.utils.DrawMode;
 import wtf.cheeze.sbt.events.EventUtils;
+import wtf.cheeze.sbt.utils.enums.Side;
 
 import java.nio.file.Path;
 
@@ -112,6 +113,10 @@ public class  SBTConfig {
 
     public static EnumControllerBuilder<DrawMode> generateDrawModeController(Option<DrawMode> opt) {
         return EnumControllerBuilder.create(opt).enumClass(DrawMode.class);
+    }
+
+    public static EnumControllerBuilder<Side> generateSideController(Option<Side> opt) {
+        return EnumControllerBuilder.create(opt).enumClass(Side.class);
     }
 
 }

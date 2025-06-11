@@ -38,6 +38,7 @@ import wtf.cheeze.sbt.config.categories.General;
 import wtf.cheeze.sbt.config.persistent.PersistentData;
 import wtf.cheeze.sbt.utils.KillSwitch;
 import wtf.cheeze.sbt.utils.NumberUtils;
+import wtf.cheeze.sbt.utils.enums.Side;
 import wtf.cheeze.sbt.utils.text.Predicates;
 import wtf.cheeze.sbt.utils.text.TextUtils;
 import wtf.cheeze.sbt.utils.constants.loader.Constants;
@@ -83,7 +84,7 @@ public class MinionExp {
 
 
         public MinionExpPopup(HandledScreen<?> screen) {
-            this.x = screen.x + 256 - 64;
+            this.x = SBTConfig.get().minionExp.side.positionPopup(screen.x);
             this.y = screen.y;
             this.screen = screen;
             this.isChest = screen.getTitle().getString().equals("Minion Chest");
@@ -193,7 +194,11 @@ public class MinionExp {
         public boolean enabled = true;
 
         @SerialEntry
+        public Side side = Side.RIGHT;
+
+        @SerialEntry
         public boolean shadowText = false;
+
 
         public static OptionGroup getGroup(ConfigImpl defaults, ConfigImpl config) {
             var enabled = Option.<Boolean>createBuilder()
@@ -218,10 +223,22 @@ public class MinionExp {
                     )
                     .build();
 
+            var side = Option.<Side>createBuilder()
+                    .name(General.key("minionExp.side"))
+                    .description(General.keyD("minionExp.side"))
+                    .controller(SBTConfig::generateSideController)
+                    .binding(
+                            defaults.minionExp.side,
+                            () -> config.minionExp.side,
+                            value -> config.minionExp.side = value
+                    )
+                    .build();
+
             return OptionGroup.createBuilder()
                     .name(General.key("minionExp"))
                     .description(General.keyD("minionExp"))
                     .option(enabled)
+                    .option(side)
                     .option(shadowText)
                     .build();
 

@@ -13,12 +13,14 @@ import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import org.lwjgl.glfw.GLFW;
+import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SBTConfig;
 import wtf.cheeze.sbt.config.categories.General;
 import wtf.cheeze.sbt.events.DrawSlotEvents;
 import wtf.cheeze.sbt.utils.KillSwitch;
 import wtf.cheeze.sbt.utils.constants.loader.Constants;
+import wtf.cheeze.sbt.utils.enums.Side;
 import wtf.cheeze.sbt.utils.injected.SBTHandledScreen;
 import wtf.cheeze.sbt.utils.render.Colors;
 import wtf.cheeze.sbt.utils.render.Popup;
@@ -103,7 +105,7 @@ public class ReforgeOverlay {
         private final TextFieldWidget exclusionWidget;
 
         public FilterOverlayPopup(HandledScreen<?> screen) {
-            this.x = screen.x -WIDTH - 16;
+            this.x = SBTConfig.get().reforgeOverlay.filterOverlaySide.positionPopup(screen.x);
             this.y = screen.y;
             this.screen = screen;
 
@@ -273,10 +275,16 @@ public class ReforgeOverlay {
         public boolean filterOverlay = true;
 
         @SerialEntry
-        public boolean nameTooltip = true;
+        public Side filterOverlaySide = Side.LEFT;
 
         @SerialEntry
         public boolean filterOverlayShadow = false;
+
+        @SerialEntry
+        public boolean nameTooltip = true;
+
+
+
 
         public static OptionGroup getGroup(ConfigImpl defaults, ConfigImpl config) {
             var overlay = Option.<Boolean>createBuilder()
@@ -287,6 +295,29 @@ public class ReforgeOverlay {
                             defaults.reforgeOverlay.filterOverlay,
                             () -> config.reforgeOverlay.filterOverlay,
                             value -> config.reforgeOverlay.filterOverlay = value
+                    )
+                    .build();
+
+
+            var side = Option.<Side>createBuilder()
+                    .name(General.key("reforgeOverlay.filterOverlaySide"))
+                    .description(General.keyD("reforgeOverlay.filterOverlaySide"))
+                    .controller(SBTConfig::generateSideController)
+                    .binding(
+                            defaults.reforgeOverlay.filterOverlaySide,
+                            () -> config.reforgeOverlay.filterOverlaySide,
+                            value -> config.reforgeOverlay.filterOverlaySide = value
+                    )
+                    .build();
+
+            var shadow = Option.<Boolean>createBuilder()
+                    .name(General.key("reforgeOverlay.filterOverlayShadow"))
+                    .description(General.keyD("reforgeOverlay.filterOverlayShadow"))
+                    .controller(SBTConfig::generateBooleanController)
+                    .binding(
+                            defaults.reforgeOverlay.filterOverlayShadow,
+                            () -> config.reforgeOverlay.filterOverlayShadow,
+                            value -> config.reforgeOverlay.filterOverlayShadow = value
                     )
                     .build();
 
@@ -301,23 +332,14 @@ public class ReforgeOverlay {
                     )
                     .build();
 
-            var filter = Option.<Boolean>createBuilder()
-                    .name(General.key("reforgeOverlay.filterOverlayShadow"))
-                    .description(General.keyD("reforgeOverlay.filterOverlayShadow"))
-                    .controller(SBTConfig::generateBooleanController)
-                    .binding(
-                            defaults.reforgeOverlay.filterOverlayShadow,
-                            () -> config.reforgeOverlay.filterOverlayShadow,
-                            value -> config.reforgeOverlay.filterOverlayShadow = value
-                    )
-                    .build();
 
             return OptionGroup.createBuilder()
                     .name(General.key("reforgeOverlay"))
                     .description(General.keyD("reforgeOverlay"))
                     .option(overlay)
+                    .option(side)
+                    .option(shadow)
                     .option(toolTip)
-                    .option(filter)
                     .build();
 
 
