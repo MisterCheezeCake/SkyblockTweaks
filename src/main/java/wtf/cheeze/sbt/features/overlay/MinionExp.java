@@ -28,9 +28,11 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.gui.widget.ClickableWidget;
 import net.minecraft.client.gui.widget.TextFieldWidget;
+import net.minecraft.client.util.InputUtil;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.text.Text;
 import org.intellij.lang.annotations.Language;
+import org.lwjgl.glfw.GLFW;
 import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SBTConfig;
@@ -145,6 +147,29 @@ public class MinionExp {
             } catch (Exception e) {
                 ErrorHandler.handleError(e, "Error rendering Minion EXP popup", ErrorLevel.WARNING);
             }
+        }
+
+        @Override
+        public boolean mouseClicked(double mouseX, double mouseY, int button) {
+            if (this.children.getFirst().isFocused() && !this.children.getFirst().isMouseOver(mouseX, mouseY)) {
+                this.children.getFirst().setFocused(false);
+            }
+            return Popup.super.mouseClicked(mouseX, mouseY, button);
+        }
+
+
+        @Override
+        public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+            if (this.children.getFirst().isFocused()) {
+                if (keyCode == GLFW.GLFW_KEY_ESCAPE) {
+                    this.children.getFirst().setFocused(false);
+                    return true;
+                }
+                if (keyCode == MinecraftClient.getInstance().options.inventoryKey.boundKey.getCode()) {
+                    return true; // Prevents closing the popup when pressing the inventory key while typing in the text field
+                }
+            }
+            return Popup.super.keyPressed(keyCode, scanCode, modifiers);
         }
 
         private List<Slot> getRelevantSlots() {

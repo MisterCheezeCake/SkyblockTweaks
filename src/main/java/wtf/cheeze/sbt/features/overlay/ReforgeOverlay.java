@@ -173,7 +173,6 @@ public class ReforgeOverlay {
         public boolean mouseClicked(double mouseX, double mouseY, int button) {
             if (matchWidget.isFocused() && !matchWidget.isMouseOver(mouseX, mouseY)) {
                 matchWidget.setFocused(false);
-            } else {
             }
             if (exclusionWidget.isFocused() && !exclusionWidget.isMouseOver(mouseX, mouseY)) {
                 exclusionWidget.setFocused(false);
@@ -190,39 +189,11 @@ public class ReforgeOverlay {
             return false;
         }
 
-
-
-
-
-
-
-
-        private boolean shouldStopReforge() {
-            boolean tentativeBlock = false;
-            for (var unformatted: matchWidget.getText().split(",")) {
-                var formatted = unformatted.trim().toLowerCase();
-                if (formatted.isEmpty()) continue;
-                if (ItemStackUtils.getReforge(screen.getScreenHandler().slots.get(REFORGE_ITEM_SLOT).getStack()).toLowerCase().contains(formatted)) {
-                    tentativeBlock = true;
-                    break;
-                }
-            }
-            if (!tentativeBlock) return false;
-            for (var unformatted: exclusionWidget.getText().split(",")) {
-                var formatted = unformatted.trim().toLowerCase();
-                if (formatted.isEmpty()) continue;
-                if (ItemStackUtils.getReforge(screen.getScreenHandler().slots.get(REFORGE_ITEM_SLOT).getStack()).toLowerCase().contains(formatted)) {
-                    return false; // if it matches an exclusion, we can reforge
-                }
-            }
-            return true; // if it matches a match, but not an exclusion, we should stop the reforge
-        }
-
         @Override
         public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
             boolean escape = keyCode == GLFW.GLFW_KEY_ESCAPE;
             boolean inv = keyCode == MinecraftClient.getInstance().options.inventoryKey.boundKey.getCode();
-            if (matchWidget.isFocused())  {
+            if (matchWidget.isFocused()) {
                 if (escape) {
                     matchWidget.setFocused(false);
                     return true;
@@ -245,6 +216,27 @@ public class ReforgeOverlay {
                 }
             }
             return Popup.super.keyPressed(keyCode, scanCode, modifiers);
+        }
+
+        private boolean shouldStopReforge() {
+            boolean tentativeBlock = false;
+            for (var unformatted: matchWidget.getText().split(",")) {
+                var formatted = unformatted.trim().toLowerCase();
+                if (formatted.isEmpty()) continue;
+                if (ItemStackUtils.getReforge(screen.getScreenHandler().slots.get(REFORGE_ITEM_SLOT).getStack()).toLowerCase().contains(formatted)) {
+                    tentativeBlock = true;
+                    break;
+                }
+            }
+            if (!tentativeBlock) return false;
+            for (var unformatted: exclusionWidget.getText().split(",")) {
+                var formatted = unformatted.trim().toLowerCase();
+                if (formatted.isEmpty()) continue;
+                if (ItemStackUtils.getReforge(screen.getScreenHandler().slots.get(REFORGE_ITEM_SLOT).getStack()).toLowerCase().contains(formatted)) {
+                    return false; // if it matches an exclusion, we can reforge
+                }
+            }
+            return true; // if it matches a match, but not an exclusion, we should stop the reforge
         }
 
         @Override
