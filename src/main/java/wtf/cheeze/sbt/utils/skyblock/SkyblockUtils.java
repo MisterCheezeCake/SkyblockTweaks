@@ -83,6 +83,7 @@ public class SkyblockUtils {
             case "carpentry" -> Skill.CARPENTRY;
             case "runecrafting" -> Skill.RUNECRAFTING;
             case "social" -> Skill.SOCIAL;
+            case "hunting" -> Skill.HUNTING;
             default -> Skill.UNKNOWN;
         };
     }

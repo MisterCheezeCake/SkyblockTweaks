@@ -43,6 +43,7 @@ public enum Location {
     DUNGEON("dungeon", "Dungeons"),
     KUUDRA("kuudra", "Kuudra"),
     BACKWATER_BAYOU("fishing_1", "Backwater Bayou"),
+    GALATEA("foraging_2", "Galatea"),
     UNKNOWN("unknown", "Unknown Location");
 
     Location(String mode, String name) {
