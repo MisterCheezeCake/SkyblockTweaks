@@ -24,6 +24,7 @@ loom {
 repositories {
 	maven("https://maven.isxander.dev/releases")
 	maven("https://maven.terraformersmc.com/")
+	maven ("https://maven.shedaniel.me")
 	repositories {
 		exclusiveContent {
 			forRepository {
@@ -48,7 +49,8 @@ dependencies {
 	modImplementation ("net.fabricmc.fabric-api:fabric-api:${property("fabric_version")}")
 	modImplementation ("dev.isxander:yet-another-config-lib:${property("yacl_version")}")
 	modImplementation ("com.terraformersmc:modmenu:${property("modmenu_version")}")
-	//include(modImplementation("net.azureaaron:hm-api:${property("hmapi_version")}") as Any)
+	modCompileOnly("me.shedaniel:RoughlyEnoughItems-api-fabric:${property("rei_version")}")
+	//modRuntimeOnly("me.shedaniel:RoughlyEnoughItems-fabric:${property("rei_version")}")
 	implementation("net.hypixel:mod-api:${property("modapi_version")}")
 	include(modImplementation("maven.modrinth:hypixel-mod-api:${property("modapi_fabric_version")}") as Any)
 	modRuntimeOnly("me.djtheredstoner:DevAuth-fabric:1.2.1") 

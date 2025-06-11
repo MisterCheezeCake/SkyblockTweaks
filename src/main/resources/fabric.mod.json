@@ -29,6 +29,9 @@
 		],
 		"modmenu": [
 			"wtf.cheeze.sbt.compat.modmenu.ModMenu"
+		],
+		"rei_client": [
+			"wtf.cheeze.sbt.compat.rei.ReiPlugin"
 		]
 	},
 	"depends": {
