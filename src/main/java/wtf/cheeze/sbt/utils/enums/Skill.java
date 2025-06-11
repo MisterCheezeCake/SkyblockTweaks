@@ -36,6 +36,7 @@ public enum Skill {
     CARPENTRY,
     RUNECRAFTING,
     SOCIAL,
+    HUNTING,
     UNKNOWN;
 
     public String getName() {

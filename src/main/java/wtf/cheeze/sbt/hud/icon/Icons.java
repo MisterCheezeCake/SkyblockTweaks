@@ -52,7 +52,8 @@ public class Icons {
             entry(Skill.ALCHEMY, itemID("brewing_stand")),
             entry(Skill.CARPENTRY, itemStack("crafting_table")),
             entry(Skill.RUNECRAFTING, itemID("magma_cream")),
-            entry(Skill.SOCIAL , itemID("emerald"))
+            entry(Skill.SOCIAL , itemID("emerald")),
+            entry(Skill.HUNTING, itemID("lead"))
     );
 
     public static final Map<String, HudIcon> MINING_ICONS = Map.ofEntries(

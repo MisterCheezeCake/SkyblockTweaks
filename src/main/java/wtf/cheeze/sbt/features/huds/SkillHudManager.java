@@ -185,7 +185,7 @@ public class SkillHudManager {
 
         private static int[] getSkillTable(Skill skill) {
             return switch (skill) {
-                case FARMING, FISHING, FORAGING, MINING, COMBAT, ENCHANTING, ALCHEMY, TAMING, CARPENTRY, UNKNOWN ->
+                case FARMING, FISHING, FORAGING, MINING, COMBAT, ENCHANTING, ALCHEMY, TAMING, CARPENTRY, HUNTING, UNKNOWN ->
                         Constants.skills().mainSkillLevels();
                 case RUNECRAFTING ->   Constants.skills().runeLevels();
                 case SOCIAL -> Constants.skills().socialLevels();
