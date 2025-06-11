@@ -92,6 +92,7 @@ public abstract class HandledScreenMixin<T extends ScreenHandler> extends Screen
         }
     }
 
+
     @Inject(method = "keyPressed", at = @At("HEAD"), cancellable = true)
     public void sbt$onKeyPressed(int keyCode, int scanCode, int modifiers, CallbackInfoReturnable<Boolean> cir) {
         if (this.sbt$popup != null) {
@@ -102,7 +103,7 @@ public abstract class HandledScreenMixin<T extends ScreenHandler> extends Screen
     }
 
 
-    
+    //? if >=1.21.3 {
     @Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/ingame/HandledScreen;drawSlots(Lnet/minecraft/client/gui/DrawContext;)V"))
     protected void sbtBeforeDrawSlots(DrawContext context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
         if (getTitle().getString().equals("Brewing Stand")) {
