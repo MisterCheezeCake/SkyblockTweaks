@@ -84,8 +84,16 @@ public class UpdateChecker {
         }
     }
 
+    public static String mcVersionName() {
+        //? if <=1.21.5 {
+        /*return MinecraftVersion.CURRENT.getName();
+        *///?} else {
+        return MinecraftVersion.CURRENT.name();
+        //?}
+    }
+
     private static void internalRun(Map<String, RemoteVersion> map) {
-        var remoteVersion = map.get(MinecraftVersion.CURRENT.getName());
+        var remoteVersion = map.get(mcVersionName());
         if (remoteVersion == null) {
             SkyblockTweaks.LOGGER.warn("Null RemoteVersion");
             return;

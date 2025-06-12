@@ -32,23 +32,11 @@ import wtf.cheeze.sbt.config.SBTConfig;
 import wtf.cheeze.sbt.utils.KillSwitch;
 import wtf.cheeze.sbt.utils.skyblock.SkyblockData;
 
-
-//? if =1.21.1 {
-/*@Mixin(InventoryScreen.class)
- *///?} else {
 @Mixin(RecipeBookScreen.class)
-//?}
-
 public abstract class RecipeBookRedirectorMixin {
 
     @Unique private static final String FEATURE_ID = "recipe_book_redirect";
-    // This injects into the head of the synthetic method that is triggered when you click the recipe book button
-    //? if =1.21.1 {
-    /*@Inject(method = "method_19891", at = @At("HEAD"), cancellable = true)
-     *///?} else {
-
     @Inject(method = "method_64513", at = @At("HEAD"), cancellable = true)
-    //?}
     private void sbt$onPressRBook(ButtonWidget button, CallbackInfo ci) {
         if (SBTConfig.get().inventory.redirectRecipeBook && SkyblockData.inSB) {
             if (KillSwitch.shouldKill(FEATURE_ID)) {

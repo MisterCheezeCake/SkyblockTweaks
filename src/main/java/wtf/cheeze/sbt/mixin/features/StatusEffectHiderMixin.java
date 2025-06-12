@@ -20,35 +20,26 @@ package wtf.cheeze.sbt.mixin.features;
 
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import net.minecraft.client.gui.DrawContext;
-//? if =1.21.1
-/*import net.minecraft.client.gui.screen.ingame.AbstractInventoryScreen;*/
-//? if >=1.21.3 {
 import net.minecraft.client.gui.screen.ingame.InventoryScreen;
 import net.minecraft.client.gui.screen.ingame.StatusEffectsDisplay;
-//?}
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-//? if =1.21.1 {
-/*import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-*///?}
 import wtf.cheeze.sbt.config.SBTConfig;
 import wtf.cheeze.sbt.utils.skyblock.SkyblockData;
 
-@Mixin(/*? if >=1.21.3 {*/InventoryScreen.class /*?} else {*/ /*AbstractInventoryScreen.class *//*?}*/)
+@Mixin(InventoryScreen.class)
 public abstract class StatusEffectHiderMixin {
-    //? if >=1.21.3 {
-    @WrapWithCondition(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/ingame/StatusEffectsDisplay;drawStatusEffects(Lnet/minecraft/client/gui/DrawContext;IIF)V"))
-    private boolean sbt$onDrawStatusEffects(StatusEffectsDisplay instance, DrawContext context, int mouseX, int mouseY, float tickDelta){
+    @WrapWithCondition(method = "render", at = @At(value = "INVOKE", target =
+            //? if <=1.21.5 {
+            /*"Lnet/minecraft/client/gui/screen/ingame/StatusEffectsDisplay;drawStatusEffects(Lnet/minecraft/client/gui/DrawContext;IIF)V"
+            *///?} else {
+            "Lnet/minecraft/client/gui/screen/ingame/StatusEffectsDisplay;drawStatusEffects(Lnet/minecraft/client/gui/DrawContext;II)V"
+            //?}
+    ))
+    private boolean sbt$onDrawStatusEffects(StatusEffectsDisplay instance, DrawContext context, int mouseX, int mouseY
+            //? if <=1.21.5
+            /*, float tickDelta*/
+    ) {
         return !SBTConfig.get().inventory.noRenderPotionHud || !SkyblockData.inSB;
     }
-    //?} else {
-    /*@Inject(method = "drawStatusEffects", at = @At("HEAD"), cancellable = true)
-    private void sbt$onDrawStatusEffects(DrawContext context, int mouseX, int mouseY, CallbackInfo ci){
-        if (SBTConfig.get().inventory.noRenderPotionHud && SkyblockData.inSB) {
-            ci.cancel();
-        }
-    }
-    *///?}
-
 }

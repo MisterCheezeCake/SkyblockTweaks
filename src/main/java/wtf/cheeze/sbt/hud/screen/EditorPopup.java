@@ -42,28 +42,29 @@ public record EditorPopup(Screen screen, int x, int y, Text title, List<CheezePa
 
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
-        context.getMatrices().push();
-        context.getMatrices().translate(0, 0, POPUP_Z);
-        Popup.super.renderBackground(context);
-        RenderUtils.drawCenteredText(context, title, x + 40, y + 5, 0xFFFFFF, false);
-        var renderY = y + 15;
-        for (var entry : children) {
-            RenderUtils.drawCenteredText(context, Text.literal(entry.key()), centerX(), renderY, 0xFFFFFF, false);
-            renderY+= 10;
-            var widget = entry.val();
-            widget.setX(centerX() - 35);
-            widget.setY(renderY);
-            widget.setWidth(70);
-            widget.setHeight(15);
-            renderY += 18;
-        }
-        context.getMatrices().pop();
+        RenderUtils.drawTranslated(context, 10, 1, () -> {
+            Popup.super.renderBackground(context);
+            RenderUtils.drawCenteredText(context, title, x + 40, y + 5, 0xFFFFFF, false);
+            var renderY = y + 15;
+            for (var entry : children) {
+                entry.val().render(context, mouseX, mouseY, delta);
+                RenderUtils.drawCenteredText(context, Text.literal(entry.key()), centerX(), renderY, 0xFFFFFF, false);
+                renderY+= 10;
+                var widget = entry.val();
+                widget.setX(centerX() - 35);
+                widget.setY(renderY);
+                widget.setWidth(70);
+                widget.setHeight(15);
+                renderY += 18;
+            }
+        });
     }
 
      public EditorPopup {
-        screen.drawables.add(this);
+        //screen.drawables.add(this);
         for (var entry : children) {
-            screen.addDrawableChild(entry.val());
+           // screen.addDrawableChild(entry.val());
+            screen.addSelectableChild(entry.val());
         }
     }
 

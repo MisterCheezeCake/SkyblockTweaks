@@ -24,7 +24,6 @@ import wtf.cheeze.sbt.hud.HUD;
 import wtf.cheeze.sbt.hud.bounds.Bounds;
 import wtf.cheeze.sbt.hud.bounds.BoundsRelative;
 import wtf.cheeze.sbt.hud.components.HudComponent;
-import wtf.cheeze.sbt.hud.utils.DrawMode;
 import wtf.cheeze.sbt.utils.CheezePair;
 import wtf.cheeze.sbt.utils.render.RenderUtils;
 
@@ -53,7 +52,7 @@ public abstract class SingleLineHybridHud extends HUD {
                 tallest = component.getHeight();
             }
         }
-        RenderUtils.endScale(context);
+        RenderUtils.popMatrix(context);
         this.height = (int) (tallest * bounds.scale);
         this.width = renderX - bounds.x;
     }

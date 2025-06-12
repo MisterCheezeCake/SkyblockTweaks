@@ -107,23 +107,23 @@ public class HudScreen extends Screen {
         MinecraftClient mc = MinecraftClient.getInstance();
         var centerX = (mc.getWindow().getScaledWidth() / 2) - 50;
 
-        cancelButton = new MatrixConsumingButton(Text.literal("Exit"), button -> {
+        cancelButton = new ConstructableButton(Text.literal("Exit"), button -> {
             this.selectedElement = null;
             setMode(Mode.DRAG);
-        }, centerX - 25, 95, 150, 20, (matrixStack -> matrixStack.translate(0, 0, BUTTON_Z)));
+        }, centerX - 25, 95, 150, 20);
 
-        resetButton = new MatrixConsumingButton(Text.literal("Reset"), button -> {
+        resetButton = new ConstructableButton(Text.literal("Reset"), button -> {
             this.huds.get(this.resetModeIndex).updatePosition(0.1f, 0.f);
 
-        }, centerX - 25, 65, 150, 20, (matrixStack -> matrixStack.translate(0, 0, BUTTON_Z)));
-        resetModeButton = new MatrixConsumingButton(this.huds.getFirst().getName().primaryName(), button -> {
+        }, centerX - 25, 65, 150, 20);
+        resetModeButton = new ConstructableButton(this.huds.getFirst().getName().primaryName(), button -> {
             this.resetModeIndex++;
             if (this.resetModeIndex >= this.huds.size()) {
                 this.resetModeIndex = 0;
             }
             resetModeButton.setMessage(this.huds.get(this.resetModeIndex).getName().primaryName());
 
-        }, centerX - 25, 35, 150, 20, (matrixStack -> matrixStack.translate(0, 0, BUTTON_Z)));
+        }, centerX - 25, 35, 150, 20);
 
         setMode(Mode.DRAG);
         this.addDrawableChild(cancelButton);
@@ -135,22 +135,30 @@ public class HudScreen extends Screen {
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
         super.render(context, mouseX, mouseY, delta);
-        drawInstructions(context);
 
         HUD hovered = null;
+        boolean drawnTooltip = false;
         for (HUD hud : huds) {
             boolean inBounds = clickInBounds(hud, mouseX, mouseY);
             hud.render(context, true, inBounds);
             if (inBounds) {
                 hovered = hud;
                 if (hasShiftDown()) {
-                    this.setTooltip(Tooltip.of(hud.getName().primaryName()), HoveredTooltipPositioner.INSTANCE, false);
+//                    context.drawTooltip(hud.getName().primaryName(),);
+                    if (!drawnTooltip) context.drawTooltip(MinecraftClient.getInstance().textRenderer, hud.getName().primaryName(), mouseX, mouseY );
+                    drawnTooltip = true;
+                    //this.setTooltip(Tooltip.of(hud.getName().primaryName()), HoveredTooltipPositioner.INSTANCE.getPosition(), false);
                 }
             }
         }
         hoveredElement = hovered;
-        if (hovered == null) {
-            this.clearTooltip();
+//        if (hovered == null) {
+//            this.clearTooltip();
+//        }
+
+        drawInstructions(context);
+        if (this.popup != null) {
+            this.popup.render(context, mouseX, mouseY, delta);
         }
     }
 
@@ -306,8 +314,8 @@ public class HudScreen extends Screen {
 
     private void drawInstructions(DrawContext context) {
         var centerX = client.getWindow().getScaledWidth() / 2;
-        context.getMatrices().push();
-        context.getMatrices().translate(0, 0, 100);
+//        context.getMatrices().push();
+//        context.getMatrices().translate(0, 0, 100);
         if (shouldShowText() && this.mode == Mode.DRAG) {
             context.drawCenteredTextWithShadow(client.textRenderer, "Drag or use the arrow keys to move items", centerX, 5, Colors.WHITE);
             context.drawCenteredTextWithShadow(client.textRenderer, "Scroll or use the + and - keys to scale items", centerX, 15, Colors.WHITE);
@@ -326,7 +334,7 @@ public class HudScreen extends Screen {
             context.drawCenteredTextWithShadow(client.textRenderer, "Press the reset button to reset the selected item to the default position", centerX, 15, Colors.WHITE);
             context.drawCenteredTextWithShadow(client.textRenderer, "Press the first button to cycle between elements", centerX, 25, Colors.WHITE);
         }
-        context.getMatrices().pop();
+//        context.getMatrices().pop();
     }
 
     private void updateOffset(HUD hud, double mouseX, double mouseY) {
@@ -343,24 +351,8 @@ public class HudScreen extends Screen {
     }
 
     private List<CheezePair<String, ? extends ClickableWidget>> getPopupWidgets(HUD hud) {
-        var x = new TextFieldWidget(MinecraftClient.getInstance().textRenderer, 0, 0, 70, 15, Text.literal("")) {
-            @Override
-            public void renderWidget(DrawContext context, int mouseX, int mouseY, float delta) {
-                context.getMatrices().push();
-                context.getMatrices().translate(0, 0, POPUP_Z);
-                super.renderWidget(context, mouseX, mouseY, delta);
-                context.getMatrices().pop();
-            }
-        };
-        var y = new TextFieldWidget(MinecraftClient.getInstance().textRenderer, 0, 0, 70, 15, Text.literal("")) {
-            @Override
-            public void renderWidget(DrawContext context, int mouseX, int mouseY, float delta) {
-                context.getMatrices().push();
-                context.getMatrices().translate(0, 0, POPUP_Z);
-                super.renderWidget(context, mouseX, mouseY, delta);
-                context.getMatrices().pop();
-            }
-        };
+        var x = new TextFieldWidget(MinecraftClient.getInstance().textRenderer, 0, 0, 70, 15, Text.literal(""));
+        var y = new TextFieldWidget(MinecraftClient.getInstance().textRenderer, 0, 0, 70, 15, Text.literal(""));
         x.setTextPredicate(Predicates.ZERO_TO_ONE);
         y.setTextPredicate(Predicates.ZERO_TO_ONE);
         x.setChangedListener(s -> {
@@ -378,17 +370,8 @@ public class HudScreen extends Screen {
         SkyblockTweaks.LOGGER.info("X text: " + x.getText() + " Y text: " + y.getText());
 
 
-        var scale = new DecimalSlider(0, 0, 0, 0, Text.literal(hud.INFO.getScale.get().toString().formatted("%.1f")), hud.INFO.getScale.get() / 3.0, 0.1, 3.0, 0.1, (val) -> hud.INFO.setScale.accept((float) (double) val)) {
-            @Override
-            public void renderWidget(DrawContext context, int mouseX, int mouseY, float delta) {
-                context.getMatrices().push();
-                context.getMatrices().translate(0, 0, POPUP_Z);
-                super.renderWidget(context, mouseX, mouseY, delta);
-                context.getMatrices().pop();
-            }
-        };
-
-        var anchor = new MatrixConsumingButton(Text.literal(hud.INFO.getAnchorPoint.get().name()), button -> {
+        var scale = new DecimalSlider(0, 0, 0, 0, Text.literal(hud.INFO.getScale.get().toString().formatted("%.1f")), hud.INFO.getScale.get() / 3.0, 0.1, 3.0, 0.1, (val) -> hud.INFO.setScale.accept((float) (double) val));
+        var anchor = new ConstructableButton(Text.literal(hud.INFO.getAnchorPoint.get().name()), button -> {
             var anchorPoint = hud.INFO.getAnchorPoint.get();
             if (anchorPoint == AnchorPoint.LEFT) {
                 hud.INFO.setAnchorPoint.accept(AnchorPoint.CENTER);
@@ -398,7 +381,7 @@ public class HudScreen extends Screen {
                 hud.INFO.setAnchorPoint.accept(AnchorPoint.LEFT);
             }
             button.setMessage(Text.literal(hud.INFO.getAnchorPoint.get().name()));
-        }, (matrixStack -> matrixStack.translate(0, 0, POPUP_Z)));
+        });
 
         if (!hud.supportsNonLeftAnchors) anchor.active = false;
 

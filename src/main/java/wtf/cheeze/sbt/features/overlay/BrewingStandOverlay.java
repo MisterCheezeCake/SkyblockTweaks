@@ -22,6 +22,7 @@ import dev.isxander.yacl3.api.Option;
 import dev.isxander.yacl3.api.OptionGroup;
 import dev.isxander.yacl3.config.v2.api.SerialEntry;
 import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.util.collection.DefaultedList;
 import wtf.cheeze.sbt.config.ConfigImpl;
@@ -43,26 +44,23 @@ public class BrewingStandOverlay {
 
     public static void render(DefaultedList<Slot> slots, DrawContext context) {
         if (!SBTConfig.get().brewingStandOverlay.enabled) return;
-
         var input = slots.get(INPUT_SLOT);
         var timer = slots.get(TIMER_SLOT);
         var output = slots.get(RIGHT_OUTPUT_SLOT);
-
-        context.getMatrices().push();
-        context.getMatrices().translate(0.0f, 0.0f, Z_OFFSET);
-
-        if (input.hasStack()) {
-            drawName(input, context);
-        }
-        if (!timer.getStack().getName().getString().startsWith("Place Water Bottles")) {
-            drawName(timer, context);
-        }
-        if (output.hasStack()) {
-            drawName(output, context);
-        }
-        context.getMatrices().pop();
+        RenderUtils.drawTranslated(context, Z_OFFSET, 3, () -> {
+            if (input.hasStack()) {
+                drawName(input, context);
+            }
+            if (!timer.getStack().getName().getString().startsWith("Place Water Bottles")) {
+                drawName(timer, context);
+            }
+            if (output.hasStack()) {
+                drawName(output, context);
+            }
+        });
 
     }
+
 
     private static void drawName(Slot slot, DrawContext context) {
         var name = slot.getStack().getName();

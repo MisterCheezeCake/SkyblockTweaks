@@ -59,7 +59,7 @@ public abstract class AbstractTickerHud extends HUD {
         var x2 = drawTickers(context, getUsable(fromHudScreen), bounds.x, bounds.y, bounds.scale, true);
         drawTickers(context, getMax(fromHudScreen) - getUsable(fromHudScreen), x2, bounds.y, bounds.scale, false);
         if (bounds.scale != 1.0f) {
-            RenderUtils.endScale(context);
+            RenderUtils.popMatrix(context);
         }
 
     }

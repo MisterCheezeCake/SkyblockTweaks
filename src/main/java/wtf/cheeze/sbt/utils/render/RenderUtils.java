@@ -19,31 +19,72 @@
 package wtf.cheeze.sbt.utils.render;
 
 import net.minecraft.client.MinecraftClient;
+
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.ScreenRect;
-import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
+import wtf.cheeze.sbt.hud.bases.BarHud;
 import wtf.cheeze.sbt.utils.injected.SBTDrawContext;
+
+//? if <=1.21.5
+/*import net.minecraft.client.render.RenderLayer;*/
+
+//? if >1.21.5
+import net.minecraft.client.gl.RenderPipelines;
 
 public class RenderUtils {
 
     private static final MinecraftClient client = MinecraftClient.getInstance();
     private static final int OUTLINE_LIGHT = 15728880;
 
+    public static void pushMatrix(DrawContext context) {
+        //? if <=1.21.5 {
+        /*context.getMatrices().push();
+        *///?} else {
+        context.getMatrices().pushMatrix();
+        //?}
+    }
+
     public static void beginScale(DrawContext context, float scale) {
-        context.getMatrices().push();
-        context.getMatrices().scale(scale, scale, 1.0f);
+        pushMatrix(context);
+        //? if <=1.21.5 {
+        /*context.getMatrices().scale(scale, scale, 1.0f);
+        *///?} else {
+        context.getMatrices().scale(scale, scale);
+        //?}
     }
-    public static void endScale(DrawContext context) {
-        context.getMatrices().pop();
+    public static void popMatrix(DrawContext context) {
+        //? if <=1.21.5 {
+        /*context.getMatrices().pop();
+        *///?} else {
+        context.getMatrices().popMatrix();
+        //?}
     }
+
+    public static void drawTranslated(DrawContext context, float z, int layers, Runnable runnable) {
+        pushMatrix(context);
+        //? if <=1.21.5 {
+        /*context.getMatrices().translate(0, 0, z);
+        runnable.run();
+        *///?} else {
+        for (int i = 0; i < layers; i++) {
+            context.state.goUpLayer();
+        }
+        runnable.run();
+        for (int i = 0; i < layers; i++) {
+            context.state.goDownLayer();
+        }
+        //?}
+        popMatrix(context);
+    }
+
 
     public static void drawText(DrawContext context, Text text, int x, int y, int color, boolean shadow, float scale) {
         beginScale(context, scale);
         drawText(context, text, (int) (x/scale), (int) (y/scale), color, shadow);
-        endScale(context);
+        popMatrix(context);
     }
     public static void drawText(DrawContext context, Text text, int x, int y, int color, boolean shadow, float scale, boolean imHandlingTheScaleMyself) {
         drawText(context, text, (int) (x/scale), (int) (y/scale), color, shadow);
@@ -52,21 +93,33 @@ public class RenderUtils {
         context.drawText(client.textRenderer, text, x, y, color, shadow);
     }
     public static void drawTextWithOutline(DrawContext context, Text text, int x, int y, int color, int outlineColor) {
-        client.textRenderer.drawWithOutline(
+        //? if <=1.21.5 {
+        /*client.textRenderer.drawWithOutline(
                 text.asOrderedText(),
                 x, y, color, outlineColor,
                 context.getMatrices().peek().getPositionMatrix(),
-                //? if =1.21.1 {
-                /*context.getVertexConsumers(),
-                 *///?} else {
                 getVertexConsumers(context),
-                //?}
-                OUTLINE_LIGHT);
+                OUTLINE_LIGHT
+        );
+        *///?} else {
+        // We reimplement it ourselves post 1.21.6 because it's more annoying to make the vanilla method work with rendering changes
+        //TODO: Check if this works well and explore replacing it if possible
+        context.drawText(client.textRenderer, text, x -1, y -1, outlineColor, false);
+        context.drawText(client.textRenderer, text, x, y -1, outlineColor, false);
+        context.drawText(client.textRenderer, text, x + 1, y -1, outlineColor, false);
+        context.drawText(client.textRenderer, text, x + 1, y, outlineColor, false);
+        context.drawText(client.textRenderer, text, x + 1, y + 1, outlineColor, false);
+        context.drawText(client.textRenderer, text, x, y + 1, outlineColor, false);
+        context.drawText(client.textRenderer, text, x - 1, y + 1, outlineColor, false);
+        context.drawText(client.textRenderer, text, x - 1, y, outlineColor, false);
+
+        context.drawText(client.textRenderer, text, x, y, color, false);
+        //?}
     }
     public static void drawTextWithOutline(DrawContext context, Text text, int x, int y, int color, int outlineColor, float scale) {
         beginScale(context, scale);
         drawTextWithOutline(context, text, (int) (x/scale), (int) (y/scale), color, outlineColor);
-        endScale(context);
+        popMatrix(context);
     }
     public static void drawTextWithOutline(DrawContext context, Text text, int x, int y, int color, int outlineColor, float scale, boolean imHandlingTheScaleMyself) {
         drawTextWithOutline(context, text, (int) (x/scale), (int) (y/scale), color, outlineColor);
@@ -137,19 +190,38 @@ public class RenderUtils {
 
 
     public static void drawTexture(DrawContext context, Identifier texture, int x, int y, int width, int height, int textureWidth, int textureHeight) {
-        //? if =1.21.1 {
-        /*context.drawTexture(texture, x, y, 0, 0, width, height, textureWidth, textureHeight);
-         *///?} else {
-        context.drawTexture(RenderLayer::getGuiTextured, texture, x, y, 0, 0, width, height, textureWidth, textureHeight);
+        //? if <=1.21.5 {
+        /*context.drawTexture(RenderLayer::getGuiTextured, texture, x, y, 0, 0, width, height, textureWidth, textureHeight);
+        *///?} else {
+        context.drawTexture(RenderPipelines.GUI_TEXTURED, texture, x, y, 0, 0, width, height, textureWidth, textureHeight);
         //?}
     }
 
-    //? if >=1.21.3 {
-    public static VertexConsumerProvider.Immediate getVertexConsumers(DrawContext context) {
+    public static void drawBar(DrawContext context, Identifier texture, int x, int y, int width, int color) {
+        context.drawTexture(
+                //? if <=1.21.5 {
+                /*RenderLayer::getGuiTextured,
+                 *///?} else {
+                RenderPipelines.GUI_TEXTURED,
+                //?}
+                texture,
+                x,
+                y,
+                0,
+                0,
+                width,
+                BarHud.BAR_HEIGHT,
+                BarHud.BAR_WIDTH,
+                BarHud.BAR_HEIGHT,
+                color
+        );
+    }
+
+    //? if <=1.21.5 {
+    /*public static VertexConsumerProvider.Immediate getVertexConsumers(DrawContext context) {
         return ((SBTDrawContext) context).sbt$getVertexConsumers();
     }
-    //?}
-
+    *///?}
 
 
     public static Color3f getColor3f(int color) {

@@ -84,6 +84,7 @@ public class SkyblockTweaksScreenMain extends Screen {
         this.addDrawableChild(closeButton);
         if (MinecraftClient.getInstance().world == null) {
             hudButton.active = false;
+            hudButton.setTooltip(Tooltip.of(Text.literal("Join a world/server to edit HUD Positions")));
         }
 
 
@@ -102,8 +103,5 @@ public class SkyblockTweaksScreenMain extends Screen {
         RenderUtils.drawCenteredText(context, Text.literal("SkyblockTweaks"), centerX, 3, Colors.SBT_GREEN, true, 2.5f);
         RenderUtils.drawCenteredText(context, Text.literal("v" + SkyblockTweaks.VERSION.getVersionString()), centerX, 25, Colors.WHITE, true);
         RenderUtils.drawCenteredText(context, Text.literal("By MisterCheezeCake"), centerX, 36, Colors.RED, true);
-        if (!hudButton.active && hudButton.isHovered()) {
-            this.setTooltip(Tooltip.of(Text.literal("Join a world to edit HUD Positions")), HoveredTooltipPositioner.INSTANCE, false);
-        }
     }
 }

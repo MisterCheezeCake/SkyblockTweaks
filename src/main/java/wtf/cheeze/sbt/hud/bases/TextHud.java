@@ -43,7 +43,7 @@ public abstract class TextHud extends HUD {
         }
         RenderUtils.beginScale(context, bounds.scale);
         line.render(context, bounds.x, bounds.y, bounds.scale);
-        RenderUtils.endScale(context);
+        RenderUtils.popMatrix(context);
     }
 
     public @NotNull Bounds getCurrentBounds() {

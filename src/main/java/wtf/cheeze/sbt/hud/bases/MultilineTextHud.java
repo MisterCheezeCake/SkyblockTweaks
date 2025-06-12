@@ -74,7 +74,7 @@ public abstract class MultilineTextHud extends HUD {
             i+=line.render(context, bounds.x, y, bounds.scale);
            //i+=line.render(context, bounds.x, y, bounds.scale);
         }
-        RenderUtils.endScale(context);
+        RenderUtils.popMatrix(context);
     }
 
 

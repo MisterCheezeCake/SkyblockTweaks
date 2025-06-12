@@ -43,8 +43,6 @@ public abstract class DrawContextMixin implements SBTDrawContext {
     @Shadow
     public abstract int drawText(TextRenderer textRenderer, Text text, int x, int y, int color, boolean shadow);
 
-    @Shadow @Final private VertexConsumerProvider.Immediate vertexConsumers;
-
     @Override
     public int sbt$drawTextWithBackgroundNoShadow(TextRenderer textRenderer, Text text, int x, int y, int width, int color) {
         int i = this.client.options.getTextBackgroundColor(0.0F);
@@ -58,10 +56,13 @@ public abstract class DrawContextMixin implements SBTDrawContext {
     /**
      * You may ask yourself, "Why is this not an accessor?" The answer is that I really did not want to deal with mixins only existing on one version, and this works fine
      */
-    //? if >=1.21.3 {
+    //? if <=1.21.5 {
+
+    /*@Shadow @Final private VertexConsumerProvider.Immediate vertexConsumers;
+
     @Override
     public VertexConsumerProvider.Immediate sbt$getVertexConsumers() {
         return this.vertexConsumers;
     }
-    //?}
+    *///?}
 }

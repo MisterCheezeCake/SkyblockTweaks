@@ -18,6 +18,7 @@
  */
 package wtf.cheeze.sbt.hud.bases;
 
+import net.minecraft.client.gl.RenderPipelines;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.util.Identifier;
@@ -48,39 +49,18 @@ public abstract class BarHud extends HUD {
             drawBackground(context, hovered ? BACKGROUND_HOVERED : BACKGROUND_NOT_HOVERED);
         }
 
-            //? if =1.21.1 {
-        /*var colors = RenderUtils.getColor3f(getColor());
-             if (bounds.scale == 1.0f) {
-            context.setShaderColor(colors.red, colors.green, colors.blue, 1.0f);
-            context.drawTexture(UNFILLED, bounds.x, bounds.y, 0, 0, BAR_WIDTH, BAR_HEIGHT, BAR_WIDTH, BAR_HEIGHT);
-            context.drawTexture(FILLED, bounds.x, bounds.y, 0, 0, calculateFill(getFill()), BAR_HEIGHT, BAR_WIDTH, BAR_HEIGHT);
-            context.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
-        } else {
-            RenderUtils.beginScale(context, bounds.scale);
-            context.setShaderColor(colors.red, colors.green, colors.blue, 1.0f);
-            context.drawTexture(UNFILLED, (int)(bounds.x/bounds.scale), (int)(bounds.y/bounds.scale), 0, 0, BAR_WIDTH, BAR_HEIGHT, BAR_WIDTH, BAR_HEIGHT);
-            context.drawTexture(FILLED, (int)(bounds.x/bounds.scale), (int)(bounds.y/bounds.scale), 0, 0, calculateFill(getFill()), BAR_HEIGHT, BAR_WIDTH, BAR_HEIGHT);
-            context.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
-            RenderUtils.endScale(context);
-        }
-         *///?} else {
-
+        var color = getColor();
         if (bounds.scale == 1.0f) {
-            var color = getColor();
-            context.drawTexture(RenderLayer::getGuiTextured, UNFILLED, bounds.x, bounds.y, 0, 0, BAR_WIDTH, BAR_HEIGHT, BAR_WIDTH, BAR_HEIGHT, color);
-            context.drawTexture(RenderLayer::getGuiTextured, FILLED, bounds.x, bounds.y, 0, 0, calculateFill(getFill()), BAR_HEIGHT, BAR_WIDTH, BAR_HEIGHT, color);
+            RenderUtils.drawBar(context, UNFILLED, bounds.x, bounds.y, BAR_WIDTH, color);
+            RenderUtils.drawBar(context, FILLED, bounds.x, bounds.y, calculateFill(getFill()), color);
         } else {
-            var color = getColor();
             RenderUtils.beginScale(context, bounds.scale);
-            context.drawTexture(RenderLayer::getGuiTextured, UNFILLED, (int)(bounds.x/bounds.scale), (int)(bounds.y/bounds.scale), 0, 0, BAR_WIDTH, BAR_HEIGHT, BAR_WIDTH, BAR_HEIGHT, color);
-            context.drawTexture(RenderLayer::getGuiTextured, FILLED, (int)(bounds.x/bounds.scale), (int)(bounds.y/bounds.scale), 0, 0, calculateFill(getFill()), BAR_HEIGHT, BAR_WIDTH, BAR_HEIGHT, color);
-            RenderUtils.endScale(context);
+            RenderUtils.drawBar(context, UNFILLED, (int) (bounds.x / bounds.scale), (int) (bounds.y / bounds.scale), BAR_WIDTH, color);
+            RenderUtils.drawBar(context, FILLED, (int) (bounds.x / bounds.scale), (int) (bounds.y / bounds.scale), calculateFill(getFill()), color);
+            RenderUtils.popMatrix(context);
         }
-            //?}
-
-
-
     }
+
     @Override
     public @NotNull Bounds getCurrentBounds() {
         var scale = (float) INFO.getScale.get();

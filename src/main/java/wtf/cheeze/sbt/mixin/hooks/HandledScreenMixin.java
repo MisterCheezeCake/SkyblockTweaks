@@ -21,6 +21,7 @@ package wtf.cheeze.sbt.mixin.hooks;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
+import net.minecraft.client.gui.screen.ingame.InventoryScreen;
 import net.minecraft.screen.BrewingStandScreenHandler;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.slot.Slot;
@@ -75,12 +76,6 @@ public abstract class HandledScreenMixin<T extends ScreenHandler> extends Screen
     @Inject(method = "drawSlot", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawItem(Lnet/minecraft/item/ItemStack;III)V"))
     protected void sbt$beforeDrawItem(DrawContext context, Slot slot, CallbackInfo ci) {
         DrawSlotEvents.BEFORE_ITEM.invoker().onDrawSlot(getTitle(), context, slot);
-        //? if =1.21.1 {
-        /*if (getTitle().getString().equals("Brewing Stand") && slot.id == 1) {
-            if (this.handler instanceof BrewingStandScreenHandler) return;
-            BrewingStandOverlay.render(handler.slots, context);
-        }
-        *///?}
     }
 
     @Inject(method = "mouseClicked", at = @At("HEAD"), cancellable = true)
@@ -102,18 +97,16 @@ public abstract class HandledScreenMixin<T extends ScreenHandler> extends Screen
         }
     }
 
-
-    //? if >=1.21.3 {
-    @Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/ingame/HandledScreen;drawSlots(Lnet/minecraft/client/gui/DrawContext;)V"))
+    @Inject(
+            method = /*? if <=1.21.5 {*//*"render"*//*?} else {*/ "renderMain"/*?}*/,
+            at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/ingame/HandledScreen;drawSlots(Lnet/minecraft/client/gui/DrawContext;)V")
+    )
     protected void sbtBeforeDrawSlots(DrawContext context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
         if (getTitle().getString().equals("Brewing Stand")) {
             if (this.handler instanceof BrewingStandScreenHandler) return;
             BrewingStandOverlay.render(handler.slots, context);
         }
     }
-    //?}
-
-
 
 
     private HandledScreenMixin(Text t) {

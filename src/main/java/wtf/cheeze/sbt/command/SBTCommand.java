@@ -56,6 +56,7 @@ import wtf.cheeze.sbt.utils.skyblock.SkyblockData;
 import wtf.cheeze.sbt.utils.skyblock.SkyblockData.Stats;
 import wtf.cheeze.sbt.utils.skyblock.SkyblockUtils;
 import wtf.cheeze.sbt.utils.tablist.TabListParser;
+import wtf.cheeze.sbt.utils.version.UpdateChecker;
 import wtf.cheeze.sbt.utils.version.Version;
 import wtf.cheeze.sbt.utils.version.VersionComparison;
 
@@ -395,7 +396,7 @@ public class SBTCommand {
                                         .then(literal("sysInfo").executes(context -> {
                                             var source = context.getSource();
                                             send(context, TextUtils.withColor("System Information", Colors.CYAN));
-                                            source.sendFeedback(CommandUtils.getDebugText("Minecraft Version", MinecraftVersion.CURRENT.getName()));
+                                            source.sendFeedback(CommandUtils.getDebugText("Minecraft Version", UpdateChecker.mcVersionName()));
                                             source.sendFeedback(CommandUtils.getDebugText("Operating System", System.getProperty("os.name")));
                                             source.sendFeedback(CommandUtils.getDebugText("OS Version", System.getProperty("os.version")));
                                             source.sendFeedback(CommandUtils.getDebugText("Architecture", System.getProperty("os.arch")));

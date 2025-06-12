@@ -53,16 +53,8 @@ public class ItemStackComponent implements HudComponent {
         if (cache.timing == UpdateTiming.FRAME || cache.isDueForUpdate()) {
             cache.update();
         }
-
             context.drawItem(cache.get(),  (int) (x / scale), (int) (y / scale));
-            //? if =1.21.1 {
-            /*context.drawItemInSlot(MinecraftClient.getInstance().textRenderer, cache.get(), (int) (x / scale), (int) (y / scale));
-            *///?} else {
-            
             context.drawStackOverlay(MinecraftClient.getInstance().textRenderer, cache.get(), (int) (x / scale), (int) (y / scale));
-            //?}
-
-
         return 1;
     }
 

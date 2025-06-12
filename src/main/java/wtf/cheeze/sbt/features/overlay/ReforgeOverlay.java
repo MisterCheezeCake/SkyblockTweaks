@@ -73,10 +73,7 @@ public class ReforgeOverlay {
             if (reforge.isEmpty()) return;
             var text = TextUtils.withColor(Constants.reforges().specialModifiers().getOrDefault(reforge, TextUtils.firstLetterUppercase(reforge.toLowerCase())), Colors.YELLOW);
             var x = slot.x - X_LABEL_OFFSET - RenderUtils.getStringWidth(text);
-            context.getMatrices().push();
-            context.getMatrices().translate(0, 0, Z_TRANSLATE);
-            context.drawTooltip(MinecraftClient.getInstance().textRenderer, text, x, slot.y + 16 );
-            context.getMatrices().pop();
+            RenderUtils.drawTranslated(context, Z_TRANSLATE, 3, () -> context.drawTooltip(MinecraftClient.getInstance().textRenderer, text, x, slot.y + 16));
         });
 
         ScreenEvents.AFTER_INIT.register((client, screen, width, height) -> {
@@ -251,12 +248,6 @@ public class ReforgeOverlay {
                 case 1 -> context.drawTooltip(MinecraftClient.getInstance().textRenderer, MATCH_HELP_LINES, mouseX, mouseY);
                 case 2 -> context.drawTooltip(MinecraftClient.getInstance().textRenderer, EXLCUSION_HELP_LINES, mouseX, mouseY);
             }
-
-            var slot = screen.getScreenHandler().slots.get(REFORGE_BUTTON_SLOT);
-            context.getMatrices().push();
-            context.getMatrices().translate(0, 0, Z_TRANSLATE);
-            context.fill(slot.x, slot.y, slot.x + 16, slot.y + 16, Colors.SBT_GREEN);
-            context.getMatrices().pop();
         }
     }
 

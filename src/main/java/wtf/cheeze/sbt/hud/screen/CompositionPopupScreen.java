@@ -174,16 +174,12 @@ public class CompositionPopupScreen<T extends CompositionEntry> extends Screen {
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
         parent.render(context, -1, -1, delta);
 
-
-        context.getMatrices().push();
-        context.getMatrices().translate(0, 0, 10);
-        RenderUtils.drawTexture(context, BACKGROUND, popupX, popupY, WIDTH, HEIGHT, WIDTH, HEIGHT);
-        for (Drawable drawable : this.drawables) {
-            drawable.render(context, mouseX, mouseY, delta);
-        }
-
-        context.getMatrices().pop();
-
+        RenderUtils.drawTranslated(context, 10, 1, () -> {
+            RenderUtils.drawTexture(context, BACKGROUND, popupX, popupY, WIDTH, HEIGHT, WIDTH, HEIGHT);
+            for (Drawable drawable : this.drawables) {
+                drawable.render(context, mouseX, mouseY, delta);
+            }
+        });
         if (hasShiftDown()) {
 
             var base = Text.empty();
@@ -408,28 +404,24 @@ public class CompositionPopupScreen<T extends CompositionEntry> extends Screen {
         public static final int SCROLLBAR_WIDTH = 6;
         protected int x;
 
+        /**
+         * This existed for multiversion support, and is retained
+         * in case it changes again in the future.
+         */
         protected boolean sbtCheckOverflow() {
-            //? if =1.21.1 {
-            /*return isScrollbarVisible();
-             *///?} else {
             return overflows();
-            //?}
         }
 
+        /**
+         * This existed for multiversion support, and is retained
+         * in case it changes again in the future.
+         */
         protected void sbtSetScroll(double scroll) {
-            //? if =1.21.1 {
-            /*setScrollAmount(0);
-            *///?} else {
             setScrollY(scroll);
-            //?}
         }
-
-
 
         public AbstractList(MinecraftClient minecraftClient, int width, int height, int x, int y, int entryHeight) {
-            // We don't use the header height constructor and instead set it to zero after for 1.21.1 compatibility
-            super(minecraftClient, width, height, y, entryHeight);
-            this.headerHeight = 0;
+            super(minecraftClient, width, height, y, entryHeight, 0);
             this.x = x;
         }
 
