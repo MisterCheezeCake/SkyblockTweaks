@@ -70,6 +70,8 @@ public class MenuHighlights {
           tryDrawHighlightWidget(context, slot);
         } else if (title.equals("Ways to Level Up") || title.equals("Skill Related Tasks") ||title.contains(" ➜ ")) {
           tryDrawHighlightTasks(context, slot);
+        } else if (title.startsWith("Toggle Potion Effects")) {
+            tryDrawHighlightEffects(context, slot);
         }
 
     }
@@ -184,7 +186,7 @@ public class MenuHighlights {
         var lines = slot.getStack().getOrDefault(DataComponentTypes.LORE, LoreComponent.DEFAULT).lines();
         if (lines.isEmpty()) return;
         if (lines.getLast().getString().equals("Click to claim rewards!")) {
-            highlight(context, slot, HIGHLIGHT_GREEN);
+            highlight(context, slot, HIGHLIGHT_GREEN2);
         }
     }
 
@@ -194,8 +196,22 @@ public class MenuHighlights {
         var lines = slot.getStack().getOrDefault(DataComponentTypes.LORE, LoreComponent.DEFAULT).lines();
         if (lines.isEmpty()) return;
         if (lines.getLast().getString().equals("Click to claim reward!")) {
-            highlight(context, slot, HIGHLIGHT_GREEN);
+            highlight(context, slot, HIGHLIGHT_GREEN2);
         }
+    }
+
+    private static void tryDrawHighlightEffects(DrawContext context, Slot slot) {
+        if (!SBTConfig.get().hubSelectorHighlight.toggleEffectHighlight) return;
+        if (slot.getStack().isEmpty()) return;
+        var lines = slot.getStack().getOrDefault(DataComponentTypes.LORE, LoreComponent.DEFAULT).lines();
+        if (lines.isEmpty()) return;
+        var lastStr = lines.getLast().getString();
+        if (lastStr.equals("Click to disable!")) {
+            highlight(context, slot, HIGHLIGHT_GREEN2);
+        } else if (lastStr.equals("Click to enable!")) {
+            highlight(context, slot, HIGHLIGHT_RED2);
+        }
+
     }
 
     private static void highlight(DrawContext context, Slot slot, int color) {
@@ -226,6 +242,9 @@ public class MenuHighlights {
 
         @SerialEntry
         public boolean unclaimedContestHighlight = true;
+
+        @SerialEntry
+        public boolean toggleEffectHighlight = true;
 
 
 
@@ -313,6 +332,16 @@ public class MenuHighlights {
                                     value -> config.hubSelectorHighlight.unclaimedContestHighlight = value
                     )
                     .build();
+            var toggleEffectHighlight = Option.<Boolean>createBuilder()
+                    .name(key("menuHighlights.toggleEffectHighlight"))
+                    .description(keyD("menuHighlights.toggleEffectHighlight"))
+                    .controller(SBTConfig::generateBooleanController)
+                    .binding(
+                                    defaults.hubSelectorHighlight.toggleEffectHighlight,
+                                    () -> config.hubSelectorHighlight.toggleEffectHighlight,
+                                    value -> config.hubSelectorHighlight.toggleEffectHighlight = value
+                    )
+                    .build();
 
 
 
@@ -327,6 +356,7 @@ public class MenuHighlights {
                     .option(sblevelHighlight)
                     .option(unclaimedCommissionHighlight)
                     .option(unclaimedContestHighlight)
+                    .option(toggleEffectHighlight)
                     .build();
         }
     }
