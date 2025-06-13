@@ -86,6 +86,7 @@ public class GlobalSearchCategory {
                 .group(RiftTimeHud.Config.getGroup(defaults, config))
                 .group(RainmakerHud.Config.getGroup(defaults, config))
                 .group(SecretsHud.Config.getGroup(defaults, config))
+                .group(PressureHud.Config.getGroup(defaults, config))
                 .group(MiningHud.Config.getGroup(defaults, config))
                 .group(EventTimerHud.Config.getGroup(defaults, config))
                 .group(MiningTitles.Config.getGroup(defaults, config))

@@ -129,6 +129,9 @@ public class SkyblockData {
         public static int secretsTotal = 0;
         public static int secretsFound = 0;
 
+        public static int pressure = 0;
+        public static boolean pressureActive = false;
+
         public static float effectiveHealth() {
             return Math.round( Stats.health * (1 + (Stats.defense / 100f)));
         }
@@ -204,6 +207,16 @@ public class SkyblockData {
         } else {
             Stats.secretsFound = 0;
             Stats.secretsTotal = 0;
+        }
+
+        if (data.pressure != null) {
+            Stats.pressure = data.pressure;
+            Stats.pressureActive = true;
+        } else {
+            if (!client.player.isInFluid()) { // This stops pressure from disappearing if an ability is used
+                Stats.pressure = 0;
+                Stats.pressureActive = false;
+            }
         }
     }
 

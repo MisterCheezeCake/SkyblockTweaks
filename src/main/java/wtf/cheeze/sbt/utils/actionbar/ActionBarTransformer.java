@@ -71,6 +71,7 @@ public class ActionBarTransformer {
     private static final Pattern secretsPattern = Pattern.compile("(\\d+)/(\\d+) Secrets");
     private static final Pattern healthPattern = Pattern.compile("(?<current>[\\d,]+)/(?<max>[\\d,]+)❤(?:\\+[\\d,]+.)?(?: {2})?(?<stacks>\\d+)?(?<symbol>.)?");
     private static final Pattern riftTimePattern = Pattern.compile("(?<time>.+)ф Left(?: [+-]\\d+[ms]!)?");
+    private static final Pattern pressurePattern = Pattern.compile("Pressure: ❍(?<pressure>\\d+)%");
 
 
 
@@ -176,6 +177,13 @@ public class ActionBarTransformer {
                                 var split = trimmed.split("§7§l");
                                 data.currentTickers = TextUtils.removeFormatting(split[0]).length();
                             }
+                        } else if (unformatted.contains(Symbols.PRESSURE)) {
+                            Matcher matcher = pressurePattern.matcher(unformatted);
+                            if (matcher.matches()) {
+                                data.pressure = Integer.parseInt(matcher.group("pressure"));
+                            }
+
+
                         }
                     } catch (Exception e) {
                         ErrorHandler.handleError(e, "Error Parsing action bar segment/*LOGONLY: {}*/", ErrorLevel.WARNING, false, unmodifiedPart);
@@ -245,6 +253,10 @@ public class ActionBarTransformer {
                         if (!SBTConfig.get().actionBarFilters.hideLocation) {
                             newText.append(SEPERATOR5).append(trimmed);
                         }
+                    } else if (unformatted.contains(Symbols.PRESSURE)) {
+                        if (!SBTConfig.get().actionBarFilters.hidePressure) {
+                            newText.append(SEPERATOR5).append(trimmed);
+                        }
                     } else {
                         newText.append(SEPERATOR5).append(trimmed);
                     }
@@ -263,6 +275,7 @@ public class ActionBarTransformer {
 
     public static void registerEvents() {
         ChatEvents.ON_ACTION_BAR.register(message -> {
+            SkyblockTweaks.LOGGER.info(message.getString());
             SkyblockData.update(ActionBarTransformer.extractData(message.getString()));
         });
         ClientReceiveMessageEvents.MODIFY_GAME.register((message, overlay) -> {
@@ -304,6 +317,9 @@ public class ActionBarTransformer {
 
         @SerialEntry
         public boolean hideLocation = false;
+
+        @SerialEntry
+        public boolean hidePressure = false;
 
 
         public static OptionGroup getGroup(ConfigImpl defaults, ConfigImpl config) {
@@ -409,6 +425,16 @@ public class ActionBarTransformer {
                             value -> config.actionBarFilters.hideLocation = value
                     )
                     .build();
+            var pressure = Option.<Boolean>createBuilder()
+                    .name(key("actionBarFilters.hidePressure"))
+                    .description(keyD("actionBarFilters.hidePressure"))
+                    .controller(SBTConfig::generateBooleanController)
+                    .binding(
+                            defaults.actionBarFilters.hidePressure,
+                            () -> config.actionBarFilters.hidePressure,
+                            value -> config.actionBarFilters.hidePressure = value
+                    )
+                    .build();
 
 
             return OptionGroup.createBuilder()
@@ -424,6 +450,7 @@ public class ActionBarTransformer {
                     .option(tickers)
                     .option(riftTime)
                     .option(location)
+                    .option(pressure)
                     .build();
         }
     }

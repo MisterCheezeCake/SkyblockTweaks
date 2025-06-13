@@ -55,6 +55,7 @@ public class HudManager {
         HUDS.add(RainmakerHud.INSTANCE);
         HUDS.add(SecretsHud.INSTANCE);
         HUDS.add(FetchurFeatures.FetchurHud.INSTANCE);
+        HUDS.add(PressureHud.INSTANCE);
 
         RainmakerHud.INSTANCE.registerEvents();
 

@@ -70,12 +70,12 @@ public class ActionBarData {
     public String stackSymbol;
     @Nullable
     public Integer stackAmount;
-
     @Nullable
     public String riftTime;
     @Nullable
     public Boolean riftTicking;
-
+    @Nullable
+    public Integer pressure;
 
     public String toJson() {
         return SkyblockTweaks.GSON.toJson(this);

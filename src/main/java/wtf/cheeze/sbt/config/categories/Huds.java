@@ -93,6 +93,9 @@ public class Huds {
     @SerialEntry
     public SecretsHud.Config secrets = new SecretsHud.Config();
 
+    @SerialEntry
+    public PressureHud.Config pressure = new PressureHud.Config();
+
 
 
     public static ConfigCategory getCategory(ConfigImpl defaults, ConfigImpl config) {
@@ -121,6 +124,7 @@ public class Huds {
                 .group(RiftTimeHud.Config.getGroup(defaults, config))
                 .group(RainmakerHud.Config.getGroup(defaults, config))
                 .group(SecretsHud.Config.getGroup(defaults, config))
+                .group(PressureHud.Config.getGroup(defaults, config))
                 .build();
     }
 }

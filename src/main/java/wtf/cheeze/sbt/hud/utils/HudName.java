@@ -11,7 +11,6 @@ public record HudName(String pName, String sName, int color) {
 
     public Text primaryName() {
         return TextUtils.withColor(pName, color);
-
     }
 
     public Text shortName() {
@@ -25,7 +24,4 @@ public record HudName(String pName, String sName, int color) {
             return primaryName();
         }
     }
-
-
-
 }
