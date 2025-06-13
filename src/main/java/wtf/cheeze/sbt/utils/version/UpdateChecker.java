@@ -86,10 +86,10 @@ public class UpdateChecker {
 
     public static String mcVersionName() {
         //? if <=1.21.5 {
-        /*return MinecraftVersion.CURRENT.getName();
-        *///?} else {
-        return MinecraftVersion.CURRENT.name();
-        //?}
+        return MinecraftVersion.CURRENT.getName();
+        //?} else {
+        /*return MinecraftVersion.CURRENT.name();
+        *///?}
     }
 
     private static void internalRun(Map<String, RemoteVersion> map) {

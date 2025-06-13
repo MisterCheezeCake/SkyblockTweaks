@@ -19,9 +19,9 @@
 package wtf.cheeze.sbt.events;
 
 //? if > 1.21.5 {
-import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElementRegistry;
+/*import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElementRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.hud.VanillaHudElements;
-//?}
+*///?}
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
 import net.minecraft.client.gui.DrawContext;
@@ -61,10 +61,10 @@ public class HudRenderEvents {
 
     public static void registerEvents() {
         //? if >1.21.5 {
-        HudElementRegistry.attachElementAfter(VanillaHudElements.EXPERIENCE_LEVEL, Identifier.of("skyblocktweaks", "after_main_hud"), AFTER_MAIN_HUD.invoker()::onRender);
+        /*HudElementRegistry.attachElementAfter(VanillaHudElements.EXPERIENCE_LEVEL, Identifier.of("skyblocktweaks", "after_main_hud"), AFTER_MAIN_HUD.invoker()::onRender);
         HudElementRegistry.attachElementBefore(VanillaHudElements.CHAT, Identifier.of("skyblocktweaks", "before_chat"), BEFORE_CHAT.invoker()::onRender);
         HudElementRegistry.addLast(Identifier.of("skyblocktweaks", "last"), LAST.invoker()::onRender);
-        //?}
+        *///?}
     }
 
     /**

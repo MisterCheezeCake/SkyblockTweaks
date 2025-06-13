@@ -233,7 +233,7 @@ public class SkyblockData {
                 currentServer = locationPacket.getServerName();
                 inSB = locationPacket.getServerType().isPresent() && locationPacket.getServerType().get().getName().equals("SkyBlock");
                 if (inSB) {
-                    location = SkyblockUtils.getLocationFromMode(locationPacket.getMode().orElse("unknown"));
+                    location = Location.fromMode(locationPacket.getMode().orElse("unknown"));
                 } else {
                     location = Location.UNKNOWN;
                 }

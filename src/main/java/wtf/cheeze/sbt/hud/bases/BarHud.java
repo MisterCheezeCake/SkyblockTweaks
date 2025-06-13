@@ -18,8 +18,8 @@
  */
 package wtf.cheeze.sbt.hud.bases;
 
-//?if > 1.21.5
-import net.minecraft.client.gl.RenderPipelines;
+//? if > 1.21.5
+/*import net.minecraft.client.gl.RenderPipelines;*/
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.util.Identifier;

@@ -58,11 +58,11 @@ public abstract class DrawContextMixin implements SBTDrawContext {
      */
     //? if <=1.21.5 {
 
-    /*@Shadow @Final private VertexConsumerProvider.Immediate vertexConsumers;
+    @Shadow @Final private VertexConsumerProvider.Immediate vertexConsumers;
 
     @Override
     public VertexConsumerProvider.Immediate sbt$getVertexConsumers() {
         return this.vertexConsumers;
     }
-    *///?}
+    //?}
 }

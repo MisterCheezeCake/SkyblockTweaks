@@ -88,31 +88,6 @@ public class SkyblockUtils {
         };
     }
 
-    public static Location getLocationFromMode(String mode) {
-        return switch (mode) {
-            case "dynamic" -> Location.PRIVATE_ISLAND;
-            case "garden" -> Location.GARDEN;
-            case "hub" -> Location.HUB;
-            case "farming_1" -> Location.FARMING;
-            case "foraging_1" -> Location.PARK;
-            case "combat_1" -> Location.SPIDERS_DEN;
-            case "combat_3" -> Location.END;
-            case "crimson_isle" -> Location.CRIMSON_ISLE;
-            case "mining_1" -> Location.GOLD_MINE;
-            case "mining_2" -> Location.DEEP_CAVERNS;
-            case "mining_3" -> Location.DWARVEN_MINES;
-            case "crystal_hollows" -> Location.CRYSTAL_HOLLOWS;
-            case "mineshaft" -> Location.GLACITE_MINESHAFT;
-            case "dungeon_hub" -> Location.DUNGEON_HUB;
-            case "winter" -> Location.JERRYS_WORKSHOP;
-            case "rift" -> Location.RIFT;
-            case "dark_auction" -> Location.DARK_AUCTION;
-            case "dungeon" -> Location.DUNGEON;
-            case "kuudra" -> Location.KUUDRA;
-            default -> Location.UNKNOWN;
-        };
-    }
-
     public static boolean isThePlayerHoldingADrill() {
         return MinecraftClient.getInstance().player.getMainHandStack().getName().getString().contains("Drill");
     }

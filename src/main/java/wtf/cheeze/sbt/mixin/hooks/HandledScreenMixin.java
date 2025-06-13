@@ -98,7 +98,7 @@ public abstract class HandledScreenMixin<T extends ScreenHandler> extends Screen
     }
 
     @Inject(
-            method = /*? if <=1.21.5 {*//*"render"*//*?} else {*/ "renderMain"/*?}*/,
+            method = /*? if <=1.21.5 {*/"render"/*?} else {*/ /*"renderMain"*//*?}*/,
             at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/ingame/HandledScreen;drawSlots(Lnet/minecraft/client/gui/DrawContext;)V")
     )
     protected void sbtBeforeDrawSlots(DrawContext context, int mouseX, int mouseY, float delta, CallbackInfo ci) {

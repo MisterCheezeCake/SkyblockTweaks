@@ -19,7 +19,13 @@
 package wtf.cheeze.sbt.utils.enums;
 
 
+import com.google.common.collect.ImmutableMap;
+import com.ibm.icu.impl.locale.XCldrStub;
 import net.minecraft.item.Items;
+
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 // Inspired by Skyblocker's Location enum
 public enum Location {
@@ -60,5 +66,18 @@ public enum Location {
 
     public String getName() {
         return name;
+    }
+
+    private static final Map<String, Location> BY_MODE;
+
+    static {
+        BY_MODE = new HashMap<>();
+        for (Location location : values()) {
+            BY_MODE.put(location.mode.toLowerCase(), location);
+        }
+    }
+
+    public static Location fromMode(String mode) {
+        return BY_MODE.getOrDefault(mode.toLowerCase(), UNKNOWN);
     }
 }

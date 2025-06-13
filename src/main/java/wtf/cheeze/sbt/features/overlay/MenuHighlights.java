@@ -62,6 +62,7 @@ public class MenuHighlights {
             case "SkyBlock Hub Selector" -> tryDrawHighlight(context, slot);
             case "Dungeon Hub Selector" -> tryDrawHighlightDH(context, slot);
             case "Heart of the Mountain" -> tryDrawHighlightHOTM(context, slot);
+            case "Heart of the Forest" -> tryDrawHighlightHOTF(context, slot);
             case "Commissions" -> tryDrawHighlightComs(context, slot);
             case "Your Contests" -> tryDrawHighlightContests(context, slot);
         }
@@ -123,6 +124,29 @@ public class MenuHighlights {
             }
         }
     }
+
+    private static void tryDrawHighlightHOTF(DrawContext context, Slot slot) {
+        if (!SBTConfig.get().hubSelectorHighlight.hotfHighlight) return;
+        var lines = slot.getStack().getOrDefault(DataComponentTypes.LORE, LoreComponent.DEFAULT).lines();
+        for (var line: lines) {
+            switch (line.getString()) {
+                case "ENABLED", "SELECTED" -> {
+                    highlight(context, slot, HIGHLIGHT_GREEN2);
+                    return;
+                }
+                case "DISABLED", "Click to select!" ->   {
+                    highlight(context, slot, HIGHLIGHT_RED2);
+                    return;
+                }
+                case "1 Token of the Forest" -> {
+                    highlight(context, slot, HIGHLIGHT_GREY);
+                    return;
+                }
+            }
+        }
+    }
+
+
 
     private static void tryDrawHighlightWidget(DrawContext context, Slot slot) {
         if (!SBTConfig.get().hubSelectorHighlight.widgetHighlight) return;
@@ -189,6 +213,9 @@ public class MenuHighlights {
         public boolean hotmHighlight = true;
 
         @SerialEntry
+        public boolean hotfHighlight = true;
+
+        @SerialEntry
         public boolean widgetHighlight = true;
 
         @SerialEntry
@@ -199,6 +226,8 @@ public class MenuHighlights {
 
         @SerialEntry
         public boolean unclaimedContestHighlight = true;
+
+
 
         public static OptionGroup getGroup(ConfigImpl defaults, ConfigImpl config) {
             var enabled = Option.<Boolean>createBuilder()
@@ -229,6 +258,17 @@ public class MenuHighlights {
                                     defaults.hubSelectorHighlight.hotmHighlight,
                                     () -> config.hubSelectorHighlight.hotmHighlight,
                                     value -> config.hubSelectorHighlight.hotmHighlight = value
+                    )
+                    .build();
+
+            var hotfHighlight = Option.<Boolean>createBuilder()
+                    .name(key("menuHighlights.hotfHighlight"))
+                    .description(keyD("menuHighlights.hotfHighlight"))
+                    .controller(SBTConfig::generateBooleanController)
+                    .binding(
+                                    defaults.hubSelectorHighlight.hotfHighlight,
+                                    () -> config.hubSelectorHighlight.hotfHighlight,
+                                    value -> config.hubSelectorHighlight.hotfHighlight = value
                     )
                     .build();
 
@@ -282,6 +322,7 @@ public class MenuHighlights {
                     .option(enabled)
                     .option(enabledDungeon)
                     .option(hotmHighlight)
+                    .option(hotfHighlight)
                     .option(widgetHighlight)
                     .option(sblevelHighlight)
                     .option(unclaimedCommissionHighlight)

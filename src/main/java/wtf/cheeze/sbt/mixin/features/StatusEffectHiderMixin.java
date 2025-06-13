@@ -31,14 +31,14 @@ import wtf.cheeze.sbt.utils.skyblock.SkyblockData;
 public abstract class StatusEffectHiderMixin {
     @WrapWithCondition(method = "render", at = @At(value = "INVOKE", target =
             //? if <=1.21.5 {
-            /*"Lnet/minecraft/client/gui/screen/ingame/StatusEffectsDisplay;drawStatusEffects(Lnet/minecraft/client/gui/DrawContext;IIF)V"
-            *///?} else {
-            "Lnet/minecraft/client/gui/screen/ingame/StatusEffectsDisplay;drawStatusEffects(Lnet/minecraft/client/gui/DrawContext;II)V"
-            //?}
+            "Lnet/minecraft/client/gui/screen/ingame/StatusEffectsDisplay;drawStatusEffects(Lnet/minecraft/client/gui/DrawContext;IIF)V"
+            //?} else {
+            /*"Lnet/minecraft/client/gui/screen/ingame/StatusEffectsDisplay;drawStatusEffects(Lnet/minecraft/client/gui/DrawContext;II)V"
+            *///?}
     ))
     private boolean sbt$onDrawStatusEffects(StatusEffectsDisplay instance, DrawContext context, int mouseX, int mouseY
             //? if <=1.21.5
-            /*, float tickDelta*/
+            , float tickDelta
     ) {
         return !SBTConfig.get().inventory.noRenderPotionHud || !SkyblockData.inSB;
     }

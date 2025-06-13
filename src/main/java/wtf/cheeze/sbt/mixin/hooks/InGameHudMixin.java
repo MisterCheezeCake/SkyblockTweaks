@@ -22,7 +22,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import net.minecraft.client.gui.hud.InGameHud;
 
 //? if <=1.21.5 {
-/*import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
@@ -40,12 +40,12 @@ import wtf.cheeze.sbt.events.HudRenderEvents;
 import wtf.cheeze.sbt.utils.enums.Location;
 import wtf.cheeze.sbt.utils.injected.SBTDrawContext;
 import wtf.cheeze.sbt.utils.skyblock.SkyblockData;
-*///?}
+//?}
 
 @Mixin(InGameHud.class)
 public abstract class InGameHudMixin {
     //? if <=1.21.5 {
-    /*@Final @Shadow
+    @Final @Shadow
     private LayeredDrawer layeredDrawer;
 
     // The following injectors power HudRenderEvents and were likewise taken from Skyblocker
@@ -69,7 +69,7 @@ public abstract class InGameHudMixin {
     private void sbt$afterDrawersInitialized(CallbackInfo ci) {
         this.layeredDrawer.addLayer(HudRenderEvents.LAST.invoker()::onRender);
     }
-    *///?}
+    //?}
 
 
 }
