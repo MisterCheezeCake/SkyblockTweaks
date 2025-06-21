@@ -275,7 +275,7 @@ public class ActionBarTransformer {
 
     public static void registerEvents() {
         ChatEvents.ON_ACTION_BAR.register(message -> {
-            SkyblockTweaks.LOGGER.info(message.getString());
+           // SkyblockTweaks.LOGGER.info(message.getString());
             SkyblockData.update(ActionBarTransformer.extractData(message.getString()));
         });
         ClientReceiveMessageEvents.MODIFY_GAME.register((message, overlay) -> {

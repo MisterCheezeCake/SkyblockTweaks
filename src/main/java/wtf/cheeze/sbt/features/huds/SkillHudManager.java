@@ -27,6 +27,7 @@ import dev.isxander.yacl3.config.v2.api.SerialEntry;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.minecraft.text.Text;
 import org.jetbrains.annotations.NotNull;
+import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SBTConfig;
 import wtf.cheeze.sbt.config.persistent.PersistentData;
@@ -113,54 +114,62 @@ public class SkillHudManager {
                     () -> SBTConfig.huds().skills.outlineColor,
                     () -> SBTConfig.huds().skills.mode,
                     () -> {
-                        if (timeLeft <= 0) return Text.literal("Skill HUD Placeholder Text");
-                        if (percent == 0) {
-                            if (total == 0) {
-                                return Text.literal("+" + gained + " (" + NumberUtils.formatNumber((long) progress, ",") + ")");
-                            } else {
-                                if (SBTConfig.huds().skills.skillMode == Mode.PERCENT) {
-                                    var base = "+" + gained + " (" + NumberUtils.formatPercent(progress, total) + ")";
-                                    if (SBTConfig.huds().skills.actionsLeft) {
-                                        return Text.literal(base + " - " + actionsLeft(gained, progress, total) + " Left");
-                                    } else {
-                                        return Text.literal(base);
-                                    }
+                        try {
+                            if (timeLeft <= 0) return Text.literal("Skill HUD Placeholder Text");
+                            if (percent == 0) {
+                                if (total == 0) {
+                                    return Text.literal("+" + gained + " (" + NumberUtils.formatNumber((long) progress, ",") + ")");
                                 } else {
-                                    var base = "+" + gained + " (" + NumberUtils.formatNumber((int) progress, ",") + "/" + (SBTConfig.huds().skills.abridgeDenominator ? NumberUtils.addKOrM((int) total, ",") : NumberUtils.formatNumber((int) total, ",")) + ")";
-                                    if (SBTConfig.huds().skills.actionsLeft) {
-                                        return Text.literal(base + " - " + actionsLeft(gained, progress, total) + " Left");
+                                    if (SBTConfig.huds().skills.skillMode == Mode.PERCENT) {
+                                        var base = "+" + gained + " (" + NumberUtils.formatPercent(progress, total) + ")";
+                                        if (SBTConfig.huds().skills.actionsLeft) {
+                                            return Text.literal(base + " - " + actionsLeft(gained, progress, total) + " Left");
+                                        } else {
+                                            return Text.literal(base);
+                                        }
                                     } else {
-                                        return Text.literal(base);
+                                        var base = "+" + gained + " (" + NumberUtils.formatNumber((int) progress, ",") + "/" + (SBTConfig.huds().skills.abridgeDenominator ? NumberUtils.addKOrM((int) total, ",") : NumberUtils.formatNumber((int) total, ",")) + ")";
+                                        if (SBTConfig.huds().skills.actionsLeft) {
+                                            return Text.literal(base + " - " + actionsLeft(gained, progress, total) + " Left");
+                                        } else {
+                                            return Text.literal(base);
+                                        }
                                     }
                                 }
-                            }
-                        } else {
-                            if (SBTConfig.huds().skills.skillMode == Mode.NUMBER) {
-                                var level = tryAndGetSkillLevel(currentSkill);
-                                if (level == -1) return Text.literal("+" + gained + " (" + percent + "%)");
-                                var table = getSkillTable(currentSkill);
-                                var nextLevel = table[level];
-                                var progressLevel = (percent / 100) * nextLevel;
-                                var base = "+" + gained + " (" + NumberUtils.formatNumber((int) progressLevel, ",") + "/" + (SBTConfig.huds().skills.abridgeDenominator ? NumberUtils.addKOrM(nextLevel, ",") : NumberUtils.formatNumber(nextLevel, ",")) + ")";
-                                if (SBTConfig.huds().skills.actionsLeft) {
-                                    return Text.literal(base + " - " + actionsLeft(gained, progressLevel, nextLevel) + " Left");
-                                } else {
-                                    return Text.literal(base);
-                                }
-
                             } else {
-                                var base = "+" + gained + " (" + percent + "%)";
-                                if (SBTConfig.huds().skills.actionsLeft) {
+                                if (SBTConfig.huds().skills.skillMode == Mode.NUMBER) {
                                     var level = tryAndGetSkillLevel(currentSkill);
-                                    if (level == -1) return Text.literal(base);
+                                    int highestLevel = getSkillTable(currentSkill).length - 1;
+                                    if (level == -1 || level > highestLevel)
+                                        return Text.literal("+" + gained + " (" + percent + "%)");
                                     var table = getSkillTable(currentSkill);
                                     var nextLevel = table[level];
                                     var progressLevel = (percent / 100) * nextLevel;
-                                    return Text.literal(base + " - " + actionsLeft(gained, progressLevel, nextLevel) + " Left");
+                                    var base = "+" + gained + " (" + NumberUtils.formatNumber((int) progressLevel, ",") + "/" + (SBTConfig.huds().skills.abridgeDenominator ? NumberUtils.addKOrM(nextLevel, ",") : NumberUtils.formatNumber(nextLevel, ",")) + ")";
+                                    if (SBTConfig.huds().skills.actionsLeft) {
+                                        return Text.literal(base + " - " + actionsLeft(gained, progressLevel, nextLevel) + " Left");
+                                    } else {
+                                        return Text.literal(base);
+                                    }
+
                                 } else {
-                                    return Text.literal(base);
+                                    var base = "+" + gained + " (" + percent + "%)";
+                                    if (SBTConfig.huds().skills.actionsLeft) {
+                                        var level = tryAndGetSkillLevel(currentSkill);
+                                        int highestLevel = getSkillTable(currentSkill).length - 1;
+                                        if (level == -1 || level > highestLevel) return Text.literal(base);
+                                        var table = getSkillTable(currentSkill);
+                                        var nextLevel = table[level];
+                                        var progressLevel = (percent / 100) * nextLevel;
+                                        return Text.literal(base + " - " + actionsLeft(gained, progressLevel, nextLevel) + " Left");
+                                    } else {
+                                        return Text.literal(base);
+                                    }
                                 }
                             }
+                        } catch (Exception e) {
+                            ErrorHandler.handleError(e, "Error Creating Skill HUD Text", ErrorLevel.WARNING);
+                            return Text.literal("+" + gained + " (" + percent + "%)");
                         }
                     },
                     () -> {
