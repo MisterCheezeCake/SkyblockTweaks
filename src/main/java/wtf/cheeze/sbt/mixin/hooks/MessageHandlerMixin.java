@@ -27,7 +27,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import wtf.cheeze.sbt.events.ChatEvents;
 
-@Mixin(MessageHandler.class)
+@Mixin(value = MessageHandler.class, priority = 100)
 public abstract class MessageHandlerMixin {
     /**
      * Powers {@link ChatEvents}
