@@ -73,12 +73,20 @@ public class ActionBarTransformer {
     private static final Pattern riftTimePattern = Pattern.compile("(?<time>.+)ф Left(?: [+-]\\d+[ms]!)?");
     private static final Pattern pressurePattern = Pattern.compile("Pressure: ❍(?<pressure>\\d+)%");
 
-
+    private static String[] getUnmodifiedParts(String actionBarText) {
+        String[] separateTicker = actionBarText.split("(?=§e§l)", 2);
+        String[] unmodifiedParts = separateTicker[0].split(SEPERATOR3);
+        if (separateTicker.length > 1) {
+            unmodifiedParts = java.util.Arrays.copyOf(unmodifiedParts, unmodifiedParts.length + 1);
+            unmodifiedParts[unmodifiedParts.length - 1] = separateTicker[1];
+        }
+        return unmodifiedParts;
+    }
 
     public static ActionBarData extractData(String actionBarText) {
             try {
                 ActionBarData data = new ActionBarData();
-                String[] unmodifiedParts = actionBarText.split(SEPERATOR3);
+                String[] unmodifiedParts = getUnmodifiedParts(actionBarText);
                 for (String unmodifiedPart : unmodifiedParts) {
                     try {
                         String trimmed = unmodifiedPart.trim();
@@ -200,7 +208,7 @@ public class ActionBarTransformer {
 
     public static Text runTransformations(Text actionBarText) {
         try {
-            String[] unmodifiedParts = actionBarText.getString().split(SEPERATOR3);
+            String[] unmodifiedParts = getUnmodifiedParts(actionBarText.getString());
             StringBuilder newText = new StringBuilder();
             for (String unmodifiedPart : unmodifiedParts) {
                 try {
