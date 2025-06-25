@@ -30,19 +30,19 @@ public class HudManager {
     public static final ArrayList<HUD> HUDS = new ArrayList<>();
 
     public static void registerEvents() {
-        HUDS.add(SkillHudManager.INSTANCE.SKILL_HUD);
         HUDS.add(SkillHudManager.INSTANCE.SKILL_BAR);
+        HUDS.add(SkillHudManager.INSTANCE.SKILL_HUD);
         HUDS.add(SpeedHud.INSTANCE);
         HUDS.add(DefenseHud.INSTANCE);
         HUDS.add(EhpHud.INSTANCE);
         HUDS.add(DamageReductionHud.INSTANCE);
+        HUDS.add(DrillFuelBar.INSTANCE);
+        HUDS.add(HealthBar.INSTANCE);
+        HUDS.add(ManaBar.INSTANCE);
         HUDS.add(HealthHud.INSTANCE);
         HUDS.add(ManaHud.INSTANCE);
         HUDS.add(OverflowManaHud.INSTANCE);
         HUDS.add(DrillFuelHud.INSTANCE);
-        HUDS.add(DrillFuelBar.INSTANCE);
-        HUDS.add(HealthBar.INSTANCE);
-        HUDS.add(ManaBar.INSTANCE);
         HUDS.add(CoordinatesHud.INSTANCE);
         HUDS.add(RealTimeHud.INSTANCE);
         HUDS.add(FpsHud.INSTANCE);

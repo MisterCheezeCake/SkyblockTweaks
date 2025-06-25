@@ -40,17 +40,34 @@ public abstract class DrawContextMixin implements SBTDrawContext {
     @Shadow
     public abstract void fill(int x1, int y1, int x2, int y2, int color);
 
+    //? if <=1.21.5 {
     @Shadow
     public abstract int drawText(TextRenderer textRenderer, Text text, int x, int y, int color, boolean shadow);
+    //?} else {
+    /*@Shadow
+    public abstract void drawText(TextRenderer textRenderer, Text text, int x, int y, int color, boolean shadow);
+    *///?}
+
 
     @Override
-    public int sbt$drawTextWithBackgroundNoShadow(TextRenderer textRenderer, Text text, int x, int y, int width, int color) {
+    public
+    //? if <=1.21.5 {
+    int
+    //?} else {
+    /*void
+    *///?}
+
+
+    sbt$drawTextWithBackgroundNoShadow(TextRenderer textRenderer, Text text, int x, int y, int width, int color) {
         int i = this.client.options.getTextBackgroundColor(0.0F);
         if (i != 0) {
             Objects.requireNonNull(textRenderer);
             this.fill(x -2, y-2 , x + width + 2, y + 9 + 2, ColorHelper./*? if >=1.21.3 {*/mix/*?} else {*//*Argb.mixColor*//*?}*/(i, color));
         }
-        return this.drawText(textRenderer, text, x, y, color, false);
+        //? if <=1.21.5 {
+        return
+        //?}
+                this.drawText(textRenderer, text, x, y, color, false);
     }
 
     /**

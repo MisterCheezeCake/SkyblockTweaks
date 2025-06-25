@@ -174,7 +174,7 @@ public class CompositionPopupScreen<T extends CompositionEntry> extends Screen {
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
         parent.render(context, -1, -1, delta);
 
-        RenderUtils.drawTranslated(context, 10, 1, () -> {
+        RenderUtils.drawWithZ(context, 10,  () -> {
             RenderUtils.drawTexture(context, BACKGROUND, popupX, popupY, WIDTH, HEIGHT, WIDTH, HEIGHT);
             for (Drawable drawable : this.drawables) {
                 drawable.render(context, mouseX, mouseY, delta);

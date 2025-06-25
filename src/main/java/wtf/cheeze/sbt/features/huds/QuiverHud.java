@@ -31,6 +31,7 @@ import wtf.cheeze.sbt.hud.utils.AnchorPoint;
 import wtf.cheeze.sbt.hud.utils.DrawMode;
 import wtf.cheeze.sbt.hud.utils.HudInformation;
 import wtf.cheeze.sbt.hud.utils.HudName;
+import wtf.cheeze.sbt.utils.DataUtils;
 import wtf.cheeze.sbt.utils.text.TextUtils;
 import wtf.cheeze.sbt.utils.render.Colors;
 import wtf.cheeze.sbt.hud.icon.Icons;
@@ -55,7 +56,7 @@ public class QuiverHud extends TextHud {
                 anchor -> SBTConfig.huds().quiver.anchor = anchor
         );
         line = new SingleHudLine(
-                () -> Colors.WHITE,
+                DataUtils.ALWAYS_WHITE,
                 () -> SBTConfig.huds().quiver.outlineColor,
                 () -> SBTConfig.huds().quiver.mode,
                 () -> {

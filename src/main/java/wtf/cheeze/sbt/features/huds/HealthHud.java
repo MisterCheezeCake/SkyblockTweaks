@@ -89,13 +89,13 @@ public class HealthHud extends TextHud {
         public float scale = 1.0f;
 
         @SerialEntry
-        public int color = 16733525;
+        public int color = Colors.RED;
 
         @SerialEntry
-        public int colorAbsorption = 16755200;
+        public int colorAbsorption = Colors.ORANGE;
 
         @SerialEntry
-        public int outlineColor = 0x000000;
+        public int outlineColor = Colors.BLACK;
 
         @SerialEntry
         public boolean icon = true;

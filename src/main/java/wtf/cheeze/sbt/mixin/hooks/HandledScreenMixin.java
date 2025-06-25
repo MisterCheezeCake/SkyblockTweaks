@@ -97,16 +97,34 @@ public abstract class HandledScreenMixin<T extends ScreenHandler> extends Screen
         }
     }
 
-    @Inject(
-            method = /*? if <=1.21.5 {*/"render"/*?} else {*/ /*"renderMain"*//*?}*/,
-            at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/ingame/HandledScreen;drawSlots(Lnet/minecraft/client/gui/DrawContext;)V")
-    )
+//    @Inject(
+//            method = /*? if <=1.21.5 {*//*"render"*//*?} else {*/ "renderMain"/*?}*/,
+//            at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/ingame/HandledScreen;drawSlots(Lnet/minecraft/client/gui/DrawContext;)V")
+//    )
+//    protected void sbtBeforeDrawSlots(DrawContext context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
+//        if (getTitle().getString().equals("Brewing Stand")) {
+//            if (this.handler instanceof BrewingStandScreenHandler) return;
+//            BrewingStandOverlay.render(handler.slots, context);
+//        }
+//    }
+
+    //? if <=1.21.5 {
+    @Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/ingame/HandledScreen;drawSlots(Lnet/minecraft/client/gui/DrawContext;)V"))
     protected void sbtBeforeDrawSlots(DrawContext context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
         if (getTitle().getString().equals("Brewing Stand")) {
             if (this.handler instanceof BrewingStandScreenHandler) return;
             BrewingStandOverlay.render(handler.slots, context);
         }
     }
+    //?} else {
+    /*@Inject(method = "renderMain", at = @At(value = "INVOKE", target = "Lorg/joml/Matrix3x2fStack;popMatrix()Lorg/joml/Matrix3x2fStack;"))
+    protected void sbt$endRenderMain(DrawContext context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
+        if (getTitle().getString().equals("Brewing Stand")) {
+            if (this.handler instanceof BrewingStandScreenHandler) return;
+            BrewingStandOverlay.render(handler.slots, context);
+        }
+    }
+    *///?}
 
 
     private HandledScreenMixin(Text t) {

@@ -18,25 +18,19 @@
  */
 package wtf.cheeze.sbt.config;
 
-import dev.isxander.yacl3.api.Binding;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ConfirmLinkScreen;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.tooltip.HoveredTooltipPositioner;
 import net.minecraft.client.gui.tooltip.Tooltip;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import wtf.cheeze.sbt.SkyblockTweaks;
-import wtf.cheeze.sbt.features.mining.MiningHud;
 import wtf.cheeze.sbt.hud.HudManager;
-import wtf.cheeze.sbt.hud.screen.CompositionPopupScreen;
 import wtf.cheeze.sbt.utils.render.Colors;
 import wtf.cheeze.sbt.utils.render.RenderUtils;
 import wtf.cheeze.sbt.hud.screen.HudScreen;
-
-import java.util.List;
 
 public class SkyblockTweaksScreenMain extends Screen {
     public static final Identifier ICON = Identifier.of("skyblocktweaks", "icon.png");

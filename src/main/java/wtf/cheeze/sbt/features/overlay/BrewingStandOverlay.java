@@ -47,7 +47,7 @@ public class BrewingStandOverlay {
         var input = slots.get(INPUT_SLOT);
         var timer = slots.get(TIMER_SLOT);
         var output = slots.get(RIGHT_OUTPUT_SLOT);
-        RenderUtils.drawTranslated(context, Z_OFFSET, 3, () -> {
+        RenderUtils.drawWithZ(context, Z_OFFSET, () -> {
             if (input.hasStack()) {
                 drawName(input, context);
             }

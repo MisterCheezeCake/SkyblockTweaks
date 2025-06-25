@@ -19,6 +19,7 @@
 package wtf.cheeze.sbt.utils;
 
 import wtf.cheeze.sbt.hud.utils.AnchorPoint;
+import wtf.cheeze.sbt.utils.render.Colors;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -28,14 +29,14 @@ import java.util.function.Supplier;
 
 /**
  * Contains some commonly used data methods and allows us to more easily track where things like
- * the {@link #alwaysFalse} and {@link #alwaysTrue} methods are used.
+ * the {@link #ALWAYS_FALSE} and {@link #ALWAYS_TRUE} methods are used.
  */
 public class DataUtils {
-    public static final Supplier<Boolean> alwaysFalse = () -> false;
-    public static final Supplier<Boolean> alwaysTrue = () -> true;
-    public static final Supplier<Integer> alwaysZero = () -> 0;
-    public static final Supplier<AnchorPoint> alwaysLeft = () -> AnchorPoint.LEFT;
-    @SuppressWarnings("rawtypes") public static final Consumer doNothing = (o) -> {};
+    public static final Supplier<Boolean> ALWAYS_FALSE = () -> false;
+    public static final Supplier<Boolean> ALWAYS_TRUE = () -> true;
+    public static final Supplier<Integer> ALWAYS_WHITE = () -> Colors.WHITE;
+    public static final Supplier<AnchorPoint> ALWAYS_LEFT = () -> AnchorPoint.LEFT;
+    @SuppressWarnings("rawtypes") public static final Consumer DO_NOTHING = (o) -> {};
 
     @SafeVarargs
     public static<T> ArrayList<T> arrayListOf(T... items) {

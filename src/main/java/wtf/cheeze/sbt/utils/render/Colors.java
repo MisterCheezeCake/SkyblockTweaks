@@ -37,7 +37,7 @@ public class Colors {
     public static final int LIGHT_BLUE = 0xFF55FFFF;
 
 
-    public static final int SBT_GREEN = 3658595;
+    public static final int SBT_GREEN = 0xFF37D363;
 
 
     private static final float[] THRESHOLDS = {.25f, .5f, .75f};

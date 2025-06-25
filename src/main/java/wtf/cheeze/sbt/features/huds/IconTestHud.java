@@ -82,11 +82,11 @@ public class IconTestHud extends MultilineTextHud {
     private SingleHudLine genLine(HudIcon icon) {
         return new SingleHudLine(
                 () -> Colors.WHITE,
-                DataUtils.alwaysZero,
+                DataUtils.ALWAYS_WHITE,
                 () -> DrawMode.PURE,
                 () -> Text.literal("Test"),
                 () -> icon,
-                DataUtils.alwaysTrue
+                DataUtils.ALWAYS_TRUE
         );
     }
 }

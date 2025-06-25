@@ -31,6 +31,7 @@ import wtf.cheeze.sbt.utils.injected.SBTDrawContext;
 
 @Mixin(InGameHud.class)
 public abstract class NoShadowActionBarMixin {
+    //? if <=1.21.5 {
     @WrapOperation(method = "renderOverlayMessage", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawTextWithBackground(Lnet/minecraft/client/font/TextRenderer;Lnet/minecraft/text/Text;IIII)I"))
     private int sbt$drawTextWithBackgroundNoShadowWrap(DrawContext instance, TextRenderer textRenderer, Text text, int x, int y, int width, int color, Operation<Integer> original) {
         if (SBTConfig.get().hudTweaks.noShadowActionBar) {
@@ -39,4 +40,20 @@ public abstract class NoShadowActionBarMixin {
             return original.call(instance, textRenderer, text, x, y, width, color);
         }
     }
+
+
+    //?} else {
+    /*@WrapOperation(method = "renderOverlayMessage", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawTextWithBackground(Lnet/minecraft/client/font/TextRenderer;Lnet/minecraft/text/Text;IIII)V"))
+    private void sbt$drawTextWithBackgroundNoShadowWrap(DrawContext instance, TextRenderer textRenderer, Text text, int x, int y, int width, int color, Operation<Void> original) {
+        if (SBTConfig.get().hudTweaks.noShadowActionBar) {
+            ((SBTDrawContext) instance).sbt$drawTextWithBackgroundNoShadow(textRenderer, text, x, y, width, color);
+        } else {
+           original.call(instance, textRenderer, text, x, y, width, color);
+        }
+    }
+    
+    *///?}
+
 }
+
+

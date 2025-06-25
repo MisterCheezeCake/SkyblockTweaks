@@ -51,10 +51,10 @@ public class SingleHudLine implements HudComponent {
     public Supplier<HudIcon> icon;
 
     public SingleHudLine(Supplier<Integer> getColor, Supplier<Integer> getOutlineColor, Supplier<DrawMode> getMode, Supplier<Text> getText) {
-        this(UpdateTiming.FRAME, getColor, getOutlineColor, getMode, getText, null, DataUtils.alwaysFalse);
+        this(UpdateTiming.FRAME, getColor, getOutlineColor, getMode, getText, null, DataUtils.ALWAYS_FALSE);
     }
     public SingleHudLine(UpdateTiming timing, Supplier<Integer> getColor, Supplier<Integer> getOutlineColor, Supplier<DrawMode> getMode, Supplier<Text> getText) {
-        this(timing, getColor, getOutlineColor, getMode, getText, null, DataUtils.alwaysFalse);
+        this(timing, getColor, getOutlineColor, getMode, getText, null, DataUtils.ALWAYS_FALSE);
     }
 
     public SingleHudLine(Supplier<Integer> getColor, Supplier<Integer> getOutlineColor, Supplier<DrawMode> getMode, Supplier<Text> getText, Supplier<HudIcon> icon, Supplier<Boolean> useIcon) {

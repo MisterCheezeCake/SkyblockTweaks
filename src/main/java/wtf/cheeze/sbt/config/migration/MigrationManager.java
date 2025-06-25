@@ -60,20 +60,21 @@ public class MigrationManager {
      * This MUST be called AFTER the config is loaded
      */
     @SuppressWarnings("unchecked")
-    public static <T extends ConfigImpl> void runTransformation(ConfigTransformation<T> transformation) {
+    public static <T extends ConfigImpl> boolean runTransformation(ConfigTransformation<T> transformation) {
         //SkyblockTweaks.LOGGER.info("Checking config transformation: " + transformation.getClass().getSimpleName());
         T currentConfig = (T) SBTConfig.get();
         //SkyblockTweaks.LOGGER.info("Current config version: " + currentConfig.configVersion);
         if (!transformation.isApplicable(currentConfig.configVersion))  {
             //SkyblockTweaks.LOGGER.info("Transformation not applicable for version");
-            return;
+            return false;
         }
         if (!transformation.isApplicable(currentConfig)) {
             //SkyblockTweaks.LOGGER.info("Transformation not applicable for config");
-            return;
+            return false;
         }
         SkyblockTweaks.LOGGER.info("Running config transformation: " + transformation.getClass().getSimpleName());
         transformation.tranform(currentConfig);
+        return true;
     }
 }
 

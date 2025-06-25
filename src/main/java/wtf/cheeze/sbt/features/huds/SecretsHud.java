@@ -39,7 +39,7 @@ public class SecretsHud extends TextHud {
                 anchor -> SBTConfig.huds().secrets.anchor = anchor
         );
         line = new SingleHudLine(
-                DataUtils.alwaysZero,
+                DataUtils.ALWAYS_WHITE,
                 () -> SBTConfig.huds().time.outlineColor,
                 () -> SBTConfig.huds().time.mode,
                 () ->  {

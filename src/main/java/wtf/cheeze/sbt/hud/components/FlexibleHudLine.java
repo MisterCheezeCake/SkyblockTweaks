@@ -26,6 +26,7 @@ import wtf.cheeze.sbt.hud.cache.Cache;
 import wtf.cheeze.sbt.hud.utils.DrawMode;
 import wtf.cheeze.sbt.hud.cache.UpdateTiming;
 import wtf.cheeze.sbt.utils.DataUtils;
+import wtf.cheeze.sbt.utils.render.Colors;
 import wtf.cheeze.sbt.utils.render.RenderUtils;
 
 import java.util.function.Supplier;
@@ -47,7 +48,7 @@ public class FlexibleHudLine implements HudComponent {
 
     public FlexibleHudLine(Supplier<Part[]> parts, UpdateTiming timing) {
         this.parts = parts;
-        Part[] ERROR_PARTS = {new Part(() -> ERROR, () -> DrawMode.PURE, DataUtils.alwaysZero, DataUtils.alwaysZero, new Cache<>(UpdateTiming.MEMOIZED, () -> ERROR, ERROR))};
+        Part[] ERROR_PARTS = {new Part(() -> ERROR, () -> DrawMode.PURE, DataUtils.ALWAYS_WHITE, () -> Colors.BLACK, new Cache<>(UpdateTiming.MEMOIZED, () -> ERROR, ERROR))};
         this.partCache = new Cache<>(timing, parts, ERROR_PARTS);
         this.timing = timing;
     }
@@ -136,7 +137,7 @@ public class FlexibleHudLine implements HudComponent {
 
 
         public Part (Supplier<Text> text, Supplier<DrawMode> mode, Supplier<Integer> color, Supplier<Integer> outlineColor) {
-            this(text, mode, color, outlineColor, null, DataUtils.alwaysFalse, new Cache<>(UpdateTiming.FRAME, text, ERROR));
+            this(text, mode, color, outlineColor, null, DataUtils.ALWAYS_FALSE, new Cache<>(UpdateTiming.FRAME, text, ERROR));
         }
 
         public Part(Supplier<Text> text, Supplier<DrawMode> mode, Supplier<Integer> color, Supplier<Integer> outlineColor, Supplier<HudIcon> icon, Supplier<Boolean> useIcon) {
@@ -144,7 +145,7 @@ public class FlexibleHudLine implements HudComponent {
         }
 
         public Part(Supplier<Text> text, Supplier<DrawMode> mode, Supplier<Integer> color, Supplier<Integer> outlineColor, Cache<Text> cache) {
-           this(text, mode, color, outlineColor, null, DataUtils.alwaysFalse, cache);
+           this(text, mode, color, outlineColor, null, DataUtils.ALWAYS_FALSE, cache);
 
         }
 

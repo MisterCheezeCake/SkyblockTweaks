@@ -26,6 +26,7 @@ import org.slf4j.LoggerFactory;
 import wtf.cheeze.sbt.command.SBTCommand;
 import wtf.cheeze.sbt.config.SBTConfig;
 import wtf.cheeze.sbt.config.persistent.PersistentData;
+import wtf.cheeze.sbt.events.HudRenderEvents;
 import wtf.cheeze.sbt.features.mining.FetchurFeatures;
 import wtf.cheeze.sbt.features.mining.MiningTitles;
 import wtf.cheeze.sbt.features.overlay.MenuHighlights;
@@ -78,6 +79,9 @@ public class SkyblockTweaks implements ModInitializer {
 		MiningTitles.registerEvents();
 		FetchurFeatures.registerEvents();
 		ReforgeOverlay.registerEvents();
+
+		//? if >=1.21.6
+		/*HudRenderEvents.registerEvents();*/
 
 
 		UpdateChecker.checkForUpdates();

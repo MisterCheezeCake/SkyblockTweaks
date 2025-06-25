@@ -18,7 +18,6 @@
  */
 package wtf.cheeze.sbt.hud.utils;
 
-import org.jetbrains.annotations.Nullable;
 import wtf.cheeze.sbt.utils.DataUtils;
 
 import java.util.function.Consumer;
@@ -60,11 +59,11 @@ public class HudInformation {
         this.getX = xSupplier;
         this.getY = ySupplier;
         this.getScale = scaleSupplier;
-        this.getAnchorPoint = DataUtils.alwaysLeft;
+        this.getAnchorPoint = DataUtils.ALWAYS_LEFT;
 
         this.setX = xConsumer;
         this.setY = yConsumer;
         this.setScale = scaleConsumer;
-        this.setAnchorPoint = DataUtils.doNothing;
+        this.setAnchorPoint = DataUtils.DO_NOTHING;
     }
 }

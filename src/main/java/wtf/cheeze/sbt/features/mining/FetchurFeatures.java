@@ -58,7 +58,6 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 import java.util.regex.Pattern;
 
 public class FetchurFeatures {
@@ -152,7 +151,7 @@ public class FetchurFeatures {
             var list = new ArrayList<CheezePair<HudComponent, Integer>>();
             var offsetToUse = SBTConfig.mining().fetchur.showIcon ? TEXT_DOWNWARD_OFFSET : 0;
             if (SBTConfig.mining().fetchur.showPrefix) {
-                list.add(CheezePair.of(new SingleHudLine(UpdateTiming.MEMOIZED, DataUtils.alwaysZero, () -> SBTConfig.mining().fetchur.outlineColor, () -> SBTConfig.mining().fetchur.mode, () -> TextUtils.withColor("Fetchur:" + (SBTConfig.mining().fetchur.showIcon ? "" : " "), SBTConfig.mining().fetchur.color), null, DataUtils.alwaysFalse), offsetToUse));
+                list.add(CheezePair.of(new SingleHudLine(UpdateTiming.MEMOIZED, DataUtils.ALWAYS_WHITE, () -> SBTConfig.mining().fetchur.outlineColor, () -> SBTConfig.mining().fetchur.mode, () -> TextUtils.withColor("Fetchur:" + (SBTConfig.mining().fetchur.showIcon ? "" : " "), SBTConfig.mining().fetchur.color), null, DataUtils.ALWAYS_FALSE), offsetToUse));
             }
             if (SBTConfig.mining().fetchur.showIcon) {
                 list.add(CheezePair.of(new ItemStackComponent(UpdateTiming.SECOND, () -> FetchurItem.forToday().stack), 0));
@@ -161,7 +160,7 @@ public class FetchurFeatures {
                 }
             }
             if (SBTConfig.mining().fetchur.showName) {
-                list.add(CheezePair.of(new SingleHudLine(UpdateTiming.SECOND, DataUtils.alwaysZero, () -> SBTConfig.mining().fetchur.outlineColor, () -> SBTConfig.mining().fetchur.mode, () -> FetchurItem.forToday().display), offsetToUse));
+                list.add(CheezePair.of(new SingleHudLine(UpdateTiming.SECOND, DataUtils.ALWAYS_WHITE, () -> SBTConfig.mining().fetchur.outlineColor, () -> SBTConfig.mining().fetchur.mode, () -> FetchurItem.forToday().display), offsetToUse));
             }
 
             return list.toArray(CheezePair[]::new);

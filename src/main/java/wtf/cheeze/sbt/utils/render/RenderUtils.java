@@ -69,15 +69,27 @@ public class RenderUtils {
         context.getMatrices().translate(0, 0, z);
         runnable.run();
         //?} else {
-        /*for (int i = 0; i < layers; i++) {
-            context.state.goUpLayer();
-        }
+/*//        for (int i = 0; i < layers; i++) {
+//            context.state.goUpLayer();
+//        }
         runnable.run();
-        for (int i = 0; i < layers; i++) {
-            context.state.goDownLayer();
-        }
+//        for (int i = 0; i < layers; i++) {
+//            context.state.goDownLayer();
+//        }
         *///?}
         popMatrix(context);
+    }
+    
+    public static void drawWithZ(DrawContext context, float z, Runnable runnable) {
+        //? if <=1.21.5 {
+        
+        pushMatrix(context);
+        context.getMatrices().translate(0, 0, z);
+        runnable.run();
+        popMatrix(context);
+        //?} else {
+        /*runnable.run();
+        *///?}
     }
 
 

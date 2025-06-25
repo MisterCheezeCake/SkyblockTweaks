@@ -24,6 +24,7 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ClickableWidget;
 import net.minecraft.text.Text;
 import wtf.cheeze.sbt.utils.CheezePair;
+import wtf.cheeze.sbt.utils.render.Colors;
 import wtf.cheeze.sbt.utils.render.Popup;
 import wtf.cheeze.sbt.utils.render.RenderUtils;
 
@@ -42,13 +43,13 @@ public record EditorPopup(Screen screen, int x, int y, Text title, List<CheezePa
 
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
-        RenderUtils.drawTranslated(context, 10, 1, () -> {
+        RenderUtils.drawWithZ(context, 10 , () -> {
             Popup.super.renderBackground(context);
-            RenderUtils.drawCenteredText(context, title, x + 40, y + 5, 0xFFFFFF, false);
+            RenderUtils.drawCenteredText(context, title, x + 40, y + 5, Colors.WHITE, false);
             var renderY = y + 15;
             for (var entry : children) {
                 entry.val().render(context, mouseX, mouseY, delta);
-                RenderUtils.drawCenteredText(context, Text.literal(entry.key()), centerX(), renderY, 0xFFFFFF, false);
+                RenderUtils.drawCenteredText(context, Text.literal(entry.key()), centerX(), renderY, Colors.WHITE, false);
                 renderY+= 10;
                 var widget = entry.val();
                 widget.setX(centerX() - 35);

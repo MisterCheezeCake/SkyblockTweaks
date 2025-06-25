@@ -90,7 +90,7 @@ public class ReforgeOverlay {
             if (reforge.isEmpty()) return;
             var text = TextUtils.withColor(Constants.reforges().specialModifiers().getOrDefault(reforge, TextUtils.firstLetterUppercase(reforge.toLowerCase())), Colors.YELLOW);
             var x = slot.x - X_LABEL_OFFSET - RenderUtils.getStringWidth(text);
-            RenderUtils.drawTranslated(context, Z_TRANSLATE, 3, () -> context.drawTooltip(MinecraftClient.getInstance().textRenderer, text, x, slot.y + 16));
+            RenderUtils.drawWithZ(context, Z_TRANSLATE,  () -> context.drawTooltip(MinecraftClient.getInstance().textRenderer, text, x, slot.y + 16));
         });
 
         ScreenEvents.AFTER_INIT.register((client, screen, width, height) -> {
@@ -259,8 +259,8 @@ public class ReforgeOverlay {
             Popup.super.renderBackground(context);
             Popup.super.drawSBTFooter(context, shadow);
             RenderUtils.drawCenteredText(context, TextUtils.withBold("Filters"), x + WIDTH / 2, y + 5, Colors.WHITE, shadow);
-            RenderUtils.drawCenteredText(context, matchLabel, x + WIDTH / 2, y + 20, 0, shadow);
-            RenderUtils.drawCenteredText(context, exclusionLabel, x + WIDTH / 2, y + 50, 0, shadow);
+            RenderUtils.drawCenteredText(context, matchLabel, x + WIDTH / 2, y + 20, Colors.WHITE, shadow);
+            RenderUtils.drawCenteredText(context, exclusionLabel, x + WIDTH / 2, y + 50, Colors.WHITE, shadow);
             switch (whichHovering(mouseX, mouseY)) {
                 case 1 -> context.drawTooltip(MinecraftClient.getInstance().textRenderer, MATCH_HELP_LINES, mouseX, mouseY);
                 case 2 -> context.drawTooltip(MinecraftClient.getInstance().textRenderer, EXLCUSION_HELP_LINES, mouseX, mouseY);

@@ -20,7 +20,6 @@ package wtf.cheeze.sbt.features.mining;
 
 import dev.isxander.yacl3.api.*;
 import dev.isxander.yacl3.api.controller.ColorControllerBuilder;
-import dev.isxander.yacl3.api.controller.EnumControllerBuilder;
 import dev.isxander.yacl3.config.v2.api.SerialEntry;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.text.Text;
@@ -52,7 +51,6 @@ import wtf.cheeze.sbt.utils.skyblock.SkyblockUtils;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -95,6 +93,7 @@ public class MiningHud extends MultilineTextHud {
     }
 
 
+
     private HudComponent[] genLines() {
         List<HudComponent> lines = new ArrayList<>();
         for (Entry entry : SBTConfig.mining().hud.composition) {
@@ -102,7 +101,7 @@ public class MiningHud extends MultilineTextHud {
                 // For the commissions widget, we cache the parts for a second, since there's no need to update it more frequently
                 case COMMISSIONS -> lines.add(new FlexibleHudLine(getComParts(), UpdateTiming.SECOND));
                 case MITHRIL_POWDER -> lines.add(new SingleHudLine(
-                        DataUtils.alwaysZero,
+                        DataUtils.ALWAYS_WHITE,
                         () -> SBTConfig.mining().hud.outlineColor,
                         () -> SBTConfig.mining().hud.mode,
                         () -> TextUtils.join(
@@ -114,7 +113,7 @@ public class MiningHud extends MultilineTextHud {
                         useIconSupplier
                 ));
                 case GEMSTONE_POWDER -> lines.add(new SingleHudLine(
-                        DataUtils.alwaysZero,
+                        DataUtils.ALWAYS_WHITE,
                         () -> SBTConfig.mining().hud.outlineColor,
                         () -> SBTConfig.mining().hud.mode,
                         () -> TextUtils.join(
@@ -126,7 +125,7 @@ public class MiningHud extends MultilineTextHud {
                         useIconSupplier
                 ));
                 case GLACITE_POWER -> lines.add(new SingleHudLine(
-                        DataUtils.alwaysZero,
+                        DataUtils.ALWAYS_WHITE,
                         () -> SBTConfig.mining().hud.outlineColor,
                         () -> SBTConfig.mining().hud.mode,
                         () -> TextUtils.join(
@@ -138,7 +137,7 @@ public class MiningHud extends MultilineTextHud {
                         useIconSupplier
                 ));
                 case COOLDOWN -> lines.add(new SingleHudLine(
-                        DataUtils.alwaysZero,
+                        DataUtils.ALWAYS_WHITE,
                         () -> SBTConfig.mining().hud.outlineColor,
                         () -> SBTConfig.mining().hud.mode,
                         () -> {
@@ -180,7 +179,7 @@ public class MiningHud extends MultilineTextHud {
                 arr[i] = new FlexibleHudLine.Part(
                         suppliers.key(),
                         () -> SBTConfig.mining().hud.mode,
-                        DataUtils.alwaysZero,
+                        DataUtils.ALWAYS_WHITE,
                         () -> SBTConfig.mining().hud.outlineColor,
                         suppliers.val(),
                         () -> suppliers.val().get() != null && useIconSupplier.get(),
