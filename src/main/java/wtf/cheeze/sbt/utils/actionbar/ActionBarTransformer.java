@@ -74,11 +74,12 @@ public class ActionBarTransformer {
     private static final Pattern pressurePattern = Pattern.compile("Pressure: ❍(?<pressure>\\d+)%");
 
     private static String[] getUnmodifiedParts(String actionBarText) {
-        String[] separateTicker = actionBarText.split("(?=§e§l)", 2);
-        String[] unmodifiedParts = separateTicker[0].split(SEPERATOR3);
-        if (separateTicker.length > 1) {
-            unmodifiedParts = java.util.Arrays.copyOf(unmodifiedParts, unmodifiedParts.length + 1);
-            unmodifiedParts[unmodifiedParts.length - 1] = separateTicker[1];
+        String[] unmodifiedParts = actionBarText.split(SEPERATOR3 + "|(?=§e§l)");
+        for (int i = 0; i < unmodifiedParts.length; i++) {
+            if (unmodifiedParts[i].contains(Symbols.TICKER_Z) || unmodifiedParts[i].contains(Symbols.TICKER_O)) {
+                unmodifiedParts[i] = "§e§l" + unmodifiedParts[i];
+                break;
+            }
         }
         return unmodifiedParts;
     }
