@@ -94,7 +94,7 @@ public class ErrorHandler {
      * @return a Pair of Strings, with the log message being left and the chat message being right
      */
     private static Pair<String, String> getMessages(String message) {
-        return Pair.of(message.replaceAll("/\\*LOGONLY (.*)\\*/", ""), message.replaceAll("/\\*LOGONLY (.*)\\*/", "$1"));
+        return Pair.of(message.replaceAll("/\\*LOGONLY(.*)\\*/", ""), message.replaceAll("/\\*LOGONLY(.*)\\*/", "$1"));
     }
 
     public static Option<Boolean> getChatAll(ConfigImpl defaults, ConfigImpl config) {

@@ -406,7 +406,6 @@ public class SBTCommand {
 
                                         }))
 
-
                                         .then(literal("dumpComponents")
                                                 .then(literal("hand")
                                                         .executes(context -> {

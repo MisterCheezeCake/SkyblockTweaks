@@ -23,6 +23,7 @@ import dev.isxander.yacl3.api.OptionGroup;
 import dev.isxander.yacl3.config.v2.api.SerialEntry;
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents;
 import net.minecraft.text.Text;
+import org.intellij.lang.annotations.Language;
 import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SBTConfig;
@@ -74,6 +75,9 @@ public class ActionBarTransformer {
     private static final Pattern pressurePattern = Pattern.compile("Pressure: ❍(?<pressure>\\d+)%");
 
 
+    @Language("RegExp")
+    private static final String overflowManaReplacementRegex = "[ʬⓩⓄ,]";
+
 
     public static ActionBarData extractData(String actionBarText) {
             try {
@@ -96,7 +100,7 @@ public class ActionBarTransformer {
                                 }
                             }
                         } else if (unformatted.contains(Symbols.MANA)) {
-                            //TODO: Still uses string manipulation
+
 
                             // Mana
                             // 411/1,221✎ 2ʬ
@@ -107,11 +111,50 @@ public class ActionBarTransformer {
                             data.currentMana = Float.parseFloat(mana[0].replace(",", ""));
                             data.maxMana = Float.parseFloat(mana[1].replace(",", ""));
                             if (manaParts[1].contains(Symbols.OVERFLOW_MANA)) {
-                                data.overflowMana = Float.parseFloat(manaParts[1].replace(Symbols.OVERFLOW_MANA, "").replace(",", ""));
+                                data.overflowMana = Float.parseFloat(manaParts[1].replaceAll(overflowManaReplacementRegex, ""));
                             } else {
                                 data.overflowMana = 0f;
                             }
+                            if (manaParts[1].contains(Symbols.TICKER_Z) || manaParts[1].contains(Symbols.TICKER_O)) {
+                                String segment = trimmed.split(" ")[1];
+                                String tickers = "";
+                                if (segment.contains(Symbols.OVERFLOW_MANA)) {
+                                    tickers = segment.split(Symbols.OVERFLOW_MANA)[1];
+                                } else if (segment.contains("Mana")) {
+                                    tickers = segment.split("Mana")[1];
+                                }
+                                if (!tickers.isEmpty()) {
+                                    data.maxTickers = TextUtils.removeFormatting(tickers).length();
+                                    if (tickers.contains("§6§l")) {
+                                        var split = tickers.split("§6§l");
+                                        data.currentTickers = TextUtils.removeFormatting(split[0]).length();
+                                    } else if (tickers.contains("§2§l")) {
+                                        var split = tickers.split("§2§l");
+                                        data.currentTickers = TextUtils.removeFormatting(split[0]).length();
+                                    } else if (tickers.contains("§7§l")) {
+                                        var split = tickers.split("§7§l");
+                                        data.currentTickers = TextUtils.removeFormatting(split[0]).length();
+                                    }
+                                }
 
+
+                            }
+
+                        } else if (unformatted.contains("NOT ENOUGH MANA") && (unformatted.contains(Symbols.TICKER_Z) || unformatted.contains(Symbols.TICKER_O))) {
+                            String tickers = trimmed.replace("NOT ENOUGH MANA", "");
+                            if (!tickers.isBlank()) {
+                                data.maxTickers = TextUtils.removeFormatting(tickers).length();
+                                if (tickers.contains("§6§l")) {
+                                    var split = tickers.split("§6§l");
+                                    data.currentTickers = TextUtils.removeFormatting(split[0]).length();
+                                } else if (tickers.contains("§2§l")) {
+                                    var split = tickers.split("§2§l");
+                                    data.currentTickers = TextUtils.removeFormatting(split[0]).length();
+                                } else if (tickers.contains("§7§l")) {
+                                    var split = tickers.split("§7§l");
+                                    data.currentTickers = TextUtils.removeFormatting(split[0]).length();
+                                }
+                            }
                         } else if (unformatted.contains(Symbols.DEFENSE)) {
                             //TODO: Still uses string manipulation
 
@@ -160,23 +203,23 @@ public class ActionBarTransformer {
                                 data.riftTime = matcher.group("time");
                                 data.riftTicking = trimmed.contains("§a");
                             }
-                        } else if (unformatted.contains(Symbols.TICKER_Z) || unformatted.contains(Symbols.TICKER_O)) {
-                            //TODO: Still uses string manipulation
-
-                            // Ornate/Florid: §e§lⓩⓩⓩ§6§lⓄⓄ
-                            // Regular: §a§lⓩ§2§lⓄⓄⓄ
-                            // Foil: §e§lⓄⓄ§7§lⓄⓄ
-                            data.maxTickers = unformatted.length();
-                            if (trimmed.contains("§6§l")) {
-                                var split = trimmed.split("§6§l");
-                                data.currentTickers = TextUtils.removeFormatting(split[0]).length();
-                            } else if (trimmed.contains("§2§l")) {
-                                var split = trimmed.split("§2§l");
-                                data.currentTickers = TextUtils.removeFormatting(split[0]).length();
-                            } else if (trimmed.contains("§7§l")) {
-                                var split = trimmed.split("§7§l");
-                                data.currentTickers = TextUtils.removeFormatting(split[0]).length();
-                            }
+//                        } else if (unformatted.contains(Symbols.TICKER_Z) || unformatted.contains(Symbols.TICKER_O)) {
+//                            //TODO: Still uses string manipulation
+//
+//                            // Ornate/Florid: §e§lⓩⓩⓩ§6§lⓄⓄ
+//                            // Regular: §a§lⓩ§2§lⓄⓄⓄ
+//                            // Foil: §e§lⓄⓄ§7§lⓄⓄ
+//                            data.maxTickers = unformatted.length();
+//                            if (trimmed.contains("§6§l")) {
+//                                var split = trimmed.split("§6§l");
+//                                data.currentTickers = TextUtils.removeFormatting(split[0]).length();
+//                            } else if (trimmed.contains("§2§l")) {
+//                                var split = trimmed.split("§2§l");
+//                                data.currentTickers = TextUtils.removeFormatting(split[0]).length();
+//                            } else if (trimmed.contains("§7§l")) {
+//                                var split = trimmed.split("§7§l");
+//                                data.currentTickers = TextUtils.removeFormatting(split[0]).length();
+//                            }
                         } else if (unformatted.contains(Symbols.PRESSURE)) {
                             Matcher matcher = pressurePattern.matcher(unformatted);
                             if (matcher.matches()) {
@@ -186,12 +229,12 @@ public class ActionBarTransformer {
 
                         }
                     } catch (Exception e) {
-                        ErrorHandler.handleError(e, "Error Parsing action bar segment/*LOGONLY: {}*/", ErrorLevel.WARNING, false, unmodifiedPart);
+                        ErrorHandler.handleError(e, "Error Parsing action bar segment/*LOGONLY {}*/", ErrorLevel.WARNING, false, unmodifiedPart);
                     }
                 }
                 return data;
             } catch (Exception e) {
-                ErrorHandler.handleError(e, "Error Parsing action bar text/*LOGONLY: {}*/", ErrorLevel.WARNING, false, actionBarText);
+                ErrorHandler.handleError(e, "Error Parsing action bar text/*LOGONLY {}*/", ErrorLevel.WARNING, false, actionBarText);
                 return new ActionBarData();
             }
 
@@ -214,11 +257,51 @@ public class ActionBarTransformer {
                             newText.append(SEPERATOR5).append(trimmed);
                         }
                     } else if (unformatted.contains(Symbols.MANA)) {
-                        if (!SBTConfig.get().actionBarFilters.hideMana) {
+                        boolean hideMana = SBTConfig.get().actionBarFilters.hideMana;
+                        boolean hideTickers = SBTConfig.get().actionBarFilters.hideTickers;
+                        boolean hasTickers = unformatted.contains(Symbols.TICKER_Z) || unformatted.contains(Symbols.TICKER_O);
+                        /*
+                        Possible case:
+                          > TM-HTM (Tickers and Mana - Hide Tickers and Mana)
+                          > TM-HT  (Tickers and Mana - Hide Tickers)
+                          > TM-HM  (Tickers and Mana - Hide Mana)
+                          > TM-H0  (Tickers and Mana - Hide nothing)
+                          > M-HM  (Mana Only - Mana, tickers are irrelevant)
+                          > M-H0 (Mana Only - Don't hide mana, tickers are irrelevant)
+                        */
+                        if (!hideMana && (!hideTickers || !hasTickers)) {
+                            // TM-H0, M-H0
+                            newText.append(SEPERATOR5).append(trimmed);
+                        } else if (hideMana && !hideTickers && hasTickers) {
+                            // TM-HM
+                            String segment = trimmed.split(" ")[1];
+                            String tickers = "";
+                            if (segment.contains(Symbols.OVERFLOW_MANA)) {
+                                tickers = segment.split(Symbols.OVERFLOW_MANA)[1];
+                            } else if (segment.contains("Mana")) {
+                                tickers = segment.split("Mana")[1];
+                            }
+                            newText.append(SEPERATOR5).append(tickers);
+                        } else if (!hideMana && hideTickers && hasTickers) {
+                            // TM-HT
+                            String spliter = "";
+                            if (trimmed.contains(Symbols.OVERFLOW_MANA)) {
+                                spliter = Symbols.OVERFLOW_MANA;
+                            } else if (trimmed.contains("Mana")) {
+                                spliter = "Mana";
+                            }
+                            String[] manaParts = trimmed.split(spliter);
+                            newText.append(SEPERATOR5).append(manaParts[0]).append(spliter);
+                        }
+                        // For TM-HTM and M-HM, we don't append anything since everything in the mana segment is hidden
+
+                    } else if (unformatted.contains("NOT ENOUGH MANA")) {
+                        boolean hasTickers = unformatted.contains(Symbols.TICKER_Z) || unformatted.contains(Symbols.TICKER_O);
+                        if (hasTickers && SBTConfig.get().actionBarFilters.hideTickers) {
+                            newText.append(SEPERATOR5).append("§c§lNOT ENOUGH MANA");
+                        } else {
                             newText.append(SEPERATOR5).append(trimmed);
                         }
-                    } else if (unformatted.contains("NOT ENOUGH MANA")) {
-                        newText.append(SEPERATOR5).append(trimmed);
                     } else if (unformatted.contains(Symbols.DEFENSE)) {
                         if (!SBTConfig.get().actionBarFilters.hideDefense) {
                             newText.append(SEPERATOR5).append(trimmed);
@@ -245,10 +328,10 @@ public class ActionBarTransformer {
                     } else if (unformatted.contains("second") || unformatted.contains("DPS")) {
                         // Trial of Fire
                         newText.append(SEPERATOR3).append(trimmed);
-                    } else if (unformatted.contains("ⓩ") || unformatted.contains("Ⓞ")) {
-                        if (!SBTConfig.get().actionBarFilters.hideTickers) {
-                            newText.append(SEPERATOR4).append(trimmed);
-                        }
+//                    } else if (unformatted.contains("ⓩ") || unformatted.contains("Ⓞ")) {
+//                        if (!SBTConfig.get().actionBarFilters.hideTickers) {
+//                            newText.append(SEPERATOR4).append(trimmed);
+//                        }
                     } else if (unformatted.contains("⏣")) {
                         if (!SBTConfig.get().actionBarFilters.hideLocation) {
                             newText.append(SEPERATOR5).append(trimmed);
@@ -261,14 +344,14 @@ public class ActionBarTransformer {
                         newText.append(SEPERATOR5).append(trimmed);
                     }
                 } catch (Exception e) {
-                    ErrorHandler.handleError(e, "Error Parsing action bar segment/*LOGONLY: {}*/", ErrorLevel.WARNING, false, unmodifiedPart);
+                    ErrorHandler.handleError(e, "Error Parsing action bar segment/*LOGONLY {}*/", ErrorLevel.WARNING, false, unmodifiedPart);
                     newText.append(SEPERATOR5).append(unmodifiedPart.trim());
 
                 }
             }
             return Text.of(newText.toString());
         } catch (Exception e) {
-            ErrorHandler.handleError(e, "Error Parsing transforming bar text/*LOGONLY: {}*/", ErrorLevel.WARNING, false, actionBarText.getString());
+            ErrorHandler.handleError(e, "Error Parsing transforming bar text/*LOGONLY {}*/", ErrorLevel.WARNING, false, actionBarText.getString());
             return actionBarText;
         }
     }
@@ -288,6 +371,7 @@ public class ActionBarTransformer {
 
 
     public static class Config {
+
         @SerialEntry
         public boolean hideHealth = false;
 
