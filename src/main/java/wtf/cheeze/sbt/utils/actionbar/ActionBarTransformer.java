@@ -38,6 +38,7 @@ import wtf.cheeze.sbt.utils.skyblock.SkyblockData;
 import static wtf.cheeze.sbt.config.categories.General.key;
 import static wtf.cheeze.sbt.config.categories.General.keyD;
 
+import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -72,16 +73,15 @@ public class ActionBarTransformer {
     private static final Pattern healthPattern = Pattern.compile("(?<current>[\\d,]+)/(?<max>[\\d,]+)❤(?:\\+[\\d,]+.)?(?: {2})?(?<stacks>\\d+)?(?<symbol>.)?");
     private static final Pattern riftTimePattern = Pattern.compile("(?<time>.+)ф Left(?: [+-]\\d+[ms]!)?");
     private static final Pattern pressurePattern = Pattern.compile("Pressure: ❍(?<pressure>\\d+)%");
+    private static final Pattern partPattern = Pattern.compile(SEPERATOR3 + "|(?=§e§l)");
 
     private static String[] getUnmodifiedParts(String actionBarText) {
-        String[] unmodifiedParts = actionBarText.split(SEPERATOR3 + "|(?=§e§l)");
-        for (int i = 0; i < unmodifiedParts.length; i++) {
-            if (unmodifiedParts[i].contains(Symbols.TICKER_Z) || unmodifiedParts[i].contains(Symbols.TICKER_O)) {
-                unmodifiedParts[i] = "§e§l" + unmodifiedParts[i];
-                break;
-            }
-        }
-        return unmodifiedParts;
+        return Arrays.stream(partPattern.split(actionBarText))
+                .filter(s -> !s.isEmpty())
+                .map(s -> (s.contains(Symbols.TICKER_Z) || s.contains(Symbols.TICKER_O))
+                        ? "§e§l" + s
+                        : s)
+                .toArray(String[]::new);
     }
 
     public static ActionBarData extractData(String actionBarText) {
