@@ -57,4 +57,11 @@ public abstract class HudElementHiderMixin {
             ci.cancel();
         }
     }
+
+    @Inject(method = "renderMountHealth", at = @At("HEAD"), cancellable = true)
+    private void sbt$onRenderMountHealth(CallbackInfo ci) {
+        if (SBTConfig.get().hudTweaks.noRenderMountHealth && SkyblockData.inSB) {
+            ci.cancel();
+        }
+    }
 }

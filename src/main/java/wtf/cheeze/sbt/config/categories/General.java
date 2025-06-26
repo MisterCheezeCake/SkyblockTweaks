@@ -108,6 +108,9 @@ public class General {
         public boolean noRenderHunger = true;
 
         @SerialEntry
+        public boolean noRenderMountHealth = true;
+
+        @SerialEntry
         public boolean noRenderPotionOverlay = true;
 
         public static OptionGroup getGroup(ConfigImpl defaults, ConfigImpl config) {
@@ -181,6 +184,16 @@ public class General {
                             value -> config.hudTweaks.noRenderHunger = value
                     )
                     .build();
+            var noRenderMountHealth = Option.<Boolean>createBuilder()
+                    .name(key("hudTweaks.noRenderMountHealth"))
+                    .description(keyD("hudTweaks.noRenderMountHealth"))
+                    .controller(SBTConfig::generateBooleanController)
+                    .binding(
+                            defaults.hudTweaks.noRenderMountHealth,
+                            () -> config.hudTweaks.noRenderMountHealth,
+                            value -> config.hudTweaks.noRenderMountHealth = value
+                    )
+                    .build();
 
             var noRenderPotionOverlay = Option.<Boolean>createBuilder()
                     .name(key("hudTweaks.noRenderPotionOverlay"))
@@ -203,6 +216,7 @@ public class General {
                     .option(showHearsInRift)
                     .option(noRenderArmor)
                     .option(noRenderHunger)
+                    .option(noRenderMountHealth)
                     .option(noRenderPotionOverlay)
                     .build();
         }
