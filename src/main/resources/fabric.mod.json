@@ -37,13 +37,10 @@
 	},
 	"depends": {
 		"fabricloader": ">=0.15.11",
-		"minecraft": "~1.21",
+		"minecraft": "${support_range}",
 		"java": ">=21",
 		"fabric-api": "*",
 		"yet_another_config_lib_v3": "*"
-	},
-	"suggests": {
-		"modmenu": "*"
 	},
 	"custom": {
 		"loom:injected_interfaces": {
