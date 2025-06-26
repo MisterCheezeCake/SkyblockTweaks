@@ -59,10 +59,10 @@ public class ItemStackUtils {
         if (customId == null) return "";
 
         //? if <=1.21.4 {
-        return customId.asString();
-         //?} else {
-        /*return customId.asString().orElse("");
-        *///?}
+        /*return customId.asString();
+         *///?} else {
+        return customId.asString().orElse("");
+        //?}
     }
 
     public static String getReforge(ItemStack stack) {
@@ -71,10 +71,10 @@ public class ItemStackUtils {
         var reforge = data.nbt.get("modifier");
         if (reforge == null) return "";
         //? if <=1.21.4 {
-        return reforge.asString();
-         //?} else {
-        /*return reforge.asString().orElse("");
-        *///?}
+        /*return reforge.asString();
+         *///?} else {
+        return reforge.asString().orElse("");
+        //?}
     }
 
 

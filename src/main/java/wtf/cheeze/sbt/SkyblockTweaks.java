@@ -80,8 +80,9 @@ public class SkyblockTweaks implements ModInitializer {
 		FetchurFeatures.registerEvents();
 		ReforgeOverlay.registerEvents();
 
-		//? if >=1.21.6
+		//? if >1.21.5
 		/*HudRenderEvents.registerEvents();*/
+
 
 
 		UpdateChecker.checkForUpdates();
