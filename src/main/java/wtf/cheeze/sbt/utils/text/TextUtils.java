@@ -129,36 +129,18 @@ public class TextUtils {
 
 
     public static ClickEvent copyEvent(String text) {
-        //? if <=1.21.4 {
-        /*return new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, text);
-        *///?} else {
         return new ClickEvent.CopyToClipboard(text);
-        //?}
-
-
     }
 
     public static ClickEvent openURIEvent(String uri) {
-        //? if <=1.21.4 {
-        /*return new ClickEvent(ClickEvent.Action.OPEN_URL, uri);
-         *///?} else {
         return new ClickEvent.OpenUrl(java.net.URI.create(uri));
-        //?}
     }
 
     public static ClickEvent runCommandEvent(String command) {
-        //? if <=1.21.4 {
-        /*return new ClickEvent(ClickEvent.Action.RUN_COMMAND, command);
-         *///?} else {
         return new ClickEvent.RunCommand(command);
-        //?}
     }
 
     public static HoverEvent showTextEvent(Text text) {
-        //? if <=1.21.4 {
-        /*return new HoverEvent(HoverEvent.Action.SHOW_TEXT, text);
-         *///?} else {
         return new HoverEvent.ShowText(text);
-        //?}
     }
 }
