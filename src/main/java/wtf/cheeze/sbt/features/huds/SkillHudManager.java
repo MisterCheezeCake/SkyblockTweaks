@@ -75,7 +75,7 @@ public class SkillHudManager {
     private float gained = 0;
     private float total = 0;
     private float progress = 0;
-    private float percent = 0;
+    private float percent = -1;
 
     public void update(String skillP, float gainedP, float percentP) {
         commonUpdate(skillP, gainedP);
@@ -88,7 +88,7 @@ public class SkillHudManager {
         commonUpdate(skillP, gainedP);
         total = totalP;
         progress = progressP;
-        percent = 0;
+        percent = -1;
     }
 
     private void commonUpdate(String skillP, float gainedP) {
@@ -116,7 +116,7 @@ public class SkillHudManager {
                     () -> {
                         try {
                             if (timeLeft <= 0) return Text.literal("Skill HUD Placeholder Text");
-                            if (percent == 0) {
+                            if (percent == -1) {
                                 if (total == 0) {
                                     return Text.literal("+" + gained + " (" + NumberUtils.formatNumber((long) progress, ",") + ")");
                                 } else {
@@ -146,7 +146,7 @@ public class SkillHudManager {
                                     var nextLevel = table[level];
                                     var progressLevel = (percent / 100) * nextLevel;
                                     var base = "+" + gained + " (" + NumberUtils.formatNumber((int) progressLevel, ",") + "/" + (SBTConfig.huds().skills.abridgeDenominator ? NumberUtils.addKOrM(nextLevel, ",") : NumberUtils.formatNumber(nextLevel, ",")) + ")";
-                                    if (SBTConfig.huds().skills.actionsLeft) {
+                                    if (SBTConfig.huds().skills.actionsLeft && percent < 100) {
                                         return Text.literal(base + " - " + actionsLeft(gained, progressLevel, nextLevel) + " Left");
                                     } else {
                                         return Text.literal(base);
@@ -154,7 +154,7 @@ public class SkillHudManager {
 
                                 } else {
                                     var base = "+" + gained + " (" + percent + "%)";
-                                    if (SBTConfig.huds().skills.actionsLeft) {
+                                    if (SBTConfig.huds().skills.actionsLeft && percent < 100) {
                                         var level = tryAndGetSkillLevel(currentSkill);
                                         int highestLevel = getSkillTable(currentSkill).length - 1;
                                         if (level == -1 || level > highestLevel) return Text.literal(base);
@@ -397,7 +397,10 @@ public class SkillHudManager {
 
         @Override
         public float getFill() {
-            if (percent != 0) {
+            if (percent >= 100) {
+                return 1;
+            }
+            if (percent != -1) {
                 return percent/ 100f;
             } else {
                 return progress / total;
@@ -415,7 +418,7 @@ public class SkillHudManager {
             if (fromHudScreen) return true;
             if (timeLeft <= 0) return false;
             // Don't display at max level
-            if  (percent == 0 && total == 0 ) return false;
+            if  (percent == -1 && total == 0 ) return false;
             return (SkyblockData.inSB && SBTConfig.huds().skillBar.enabled);
         }
 

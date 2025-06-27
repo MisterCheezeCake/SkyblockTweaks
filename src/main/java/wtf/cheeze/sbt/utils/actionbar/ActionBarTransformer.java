@@ -90,8 +90,8 @@ public class ActionBarTransformer {
                         if (unformatted.contains(Symbols.HEALTH)) {
                             var matcher = healthPattern.matcher(unformatted);
                             if (matcher.find()) {
-                                data.currentHealth = Float.parseFloat(matcher.group("current").replace(",", ""));
-                                data.maxHealth = Float.parseFloat(matcher.group("max").replace(",", ""));
+                                data.currentHealth = Float.parseFloat(matcher.group("current").replaceAll(",", ""));
+                                data.maxHealth = Float.parseFloat(matcher.group("max").replaceAll(",", ""));
                                 if (matcher.group("stacks") != null) {
                                     data.stackAmount = Integer.parseInt(matcher.group("stacks"));
                                 }
@@ -108,8 +108,8 @@ public class ActionBarTransformer {
                             String[] manaParts = unformatted.split(" ");
                             manaParts[0] = manaParts[0].replace(Symbols.MANA, "");
                             String[] mana = manaParts[0].split("/");
-                            data.currentMana = Float.parseFloat(mana[0].replace(",", ""));
-                            data.maxMana = Float.parseFloat(mana[1].replace(",", ""));
+                            data.currentMana = Float.parseFloat(mana[0].replaceAll(",", ""));
+                            data.maxMana = Float.parseFloat(mana[1].replaceAll(",", ""));
                             if (manaParts[1].contains(Symbols.OVERFLOW_MANA)) {
                                 data.overflowMana = Float.parseFloat(manaParts[1].replaceAll(overflowManaReplacementRegex, ""));
                             } else {
@@ -160,7 +160,7 @@ public class ActionBarTransformer {
 
                             // Defense
                             String defense = unformatted.split(Symbols.DEFENSE)[0].trim();
-                            data.defense = Integer.parseInt(defense.replace(",", ""));
+                            data.defense = Integer.parseInt(defense.replaceAll(",", ""));
 
                         } else if (unformatted.contains("Mana")) {
                             Matcher matcher = manaAbilityPattern.matcher(unformatted);
@@ -180,7 +180,7 @@ public class ActionBarTransformer {
                                     // TODO: Transition uses of this to an event which SkillHud can subscribe to
                                     SkillHudManager.INSTANCE.update(data.skillType, data.gainedXP, data.totalXP, data.nextLevelXP);
                                 } else {
-                                    data.skillPercentage = Float.parseFloat(matcher.group(3).replace("%", ""));
+                                    data.skillPercentage = Float.parseFloat(matcher.group(3).replace("%", "").replaceAll(",", ""));
                                     SkillHudManager.INSTANCE.update(data.skillType, data.gainedXP, data.skillPercentage);
                                 }
                             }

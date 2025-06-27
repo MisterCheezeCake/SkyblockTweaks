@@ -45,6 +45,7 @@ public class NumberUtils {
 
     public static int parseIntWithKorM(String text) {
         text = text.toLowerCase();
+        text = text.replaceAll(",", "");
         var i = Integer.parseInt(text.substring(0, text.length() - 1));
         if (text.endsWith("k")) {
             return i * 1000;
@@ -76,7 +77,6 @@ public class NumberUtils {
         };
 
     }
-
     public static String formatNumber(int number, String separator) {
         String str = Integer.toString(number);
         return formatNumber(str, separator);
