@@ -35,6 +35,7 @@ import java.util.Map;
  * <ul>
  *     <li>chat_protections_coop</li>
  *     <li>chat_protections_ip</li>
+ *     <li>chat_protections_guild_leave</li>
  *     <li>mouse_lock</li>
  *     <li>party_commands</li>
  *     <li>recipe_book_redirect</li>

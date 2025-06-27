@@ -6,6 +6,8 @@
   "sbt.config.chat.chatProtections.desc": "Settings for chat related features",
   "sbt.config.chat.chatProtections.ip": "IP Protection",
   "sbt.config.chat.chatProtections.ip.desc": "Warns you before sending a message containing an ip address",
+  "sbt.config.chat.chatProtections.guildLeave": "Guild Leave Confirmation",
+  "sbt.config.chat.chatProtections.guildLeave.desc": "Requires confirmation before actually leaving your guild",
   "sbt.config.chat.desc": "Settings for chat related features",
   "sbt.config.chat.partyFeatures": "Party Features",
   "sbt.config.chat.partyFeatures.blockedUsers": "Party Commands Blocked Users",
