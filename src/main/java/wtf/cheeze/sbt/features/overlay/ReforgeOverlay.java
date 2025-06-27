@@ -90,7 +90,7 @@ public class ReforgeOverlay {
             if (reforge.isEmpty()) return;
             var text = TextUtils.withColor(Constants.reforges().specialModifiers().getOrDefault(reforge, TextUtils.firstLetterUppercase(reforge.toLowerCase())), Colors.YELLOW);
             var x = slot.x - X_LABEL_OFFSET - RenderUtils.getStringWidth(text);
-            RenderUtils.drawWithZ(context, Z_TRANSLATE,  () -> context.drawTooltip(MinecraftClient.getInstance().textRenderer, text, x, slot.y + 16));
+            RenderUtils.drawWithZ(context, Z_TRANSLATE,  () -> RenderUtils.drawNonBlockingTooltip(context, text, x, slot.y + 16));
         });
 
         ScreenEvents.AFTER_INIT.register((client, screen, width, height) -> {

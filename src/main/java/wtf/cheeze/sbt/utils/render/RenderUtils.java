@@ -22,6 +22,8 @@ import net.minecraft.client.MinecraftClient;
 
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.ScreenRect;
+import net.minecraft.client.gui.tooltip.HoveredTooltipPositioner;
+import net.minecraft.client.gui.tooltip.TooltipComponent;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
@@ -31,8 +33,13 @@ import wtf.cheeze.sbt.utils.injected.SBTDrawContext;
 //? if <=1.21.5
 import net.minecraft.client.render.RenderLayer;
 
-//? if >1.21.5
-/*import net.minecraft.client.gl.RenderPipelines;*/
+//? if >1.21.5 {
+/*import net.minecraft.client.gl.RenderPipelines;
+import net.minecraft.client.gui.tooltip.OrderedTextTooltipComponent;
+*///?}
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class RenderUtils {
 
@@ -91,6 +98,25 @@ public class RenderUtils {
         /*runnable.run();
         *///?}
     }
+
+    public static void drawNonBlockingTooltip(DrawContext context, Text text, int x, int y) {
+        drawNonBlockingTooltip(context, List.of(text), x, y);
+    }
+
+    /**
+     * Minecraft handles directly rendering tooltips differently pre and post 1.21.6. Post 1.21.6,
+     * a tooltip drawer, of which a context can have only one, is used. This method should be used
+     * where a tooltip needs to be rendered without interfering with other tooltips.
+     */
+    public static void drawNonBlockingTooltip(DrawContext context, List<Text> text, int x, int y) {
+        //? if <=1.21.5 {
+        context.drawTooltip(client.textRenderer, text, x, y);
+        //?} else {
+        /*context.drawTooltipImmediately(client.textRenderer, text.stream().map(it -> new OrderedTextTooltipComponent(it.asOrderedText()) ).collect(Collectors.toList()), x, y, HoveredTooltipPositioner.INSTANCE, null);
+        *///?}
+    }
+
+
 
 
     public static void drawText(DrawContext context, Text text, int x, int y, int color, boolean shadow, float scale) {
