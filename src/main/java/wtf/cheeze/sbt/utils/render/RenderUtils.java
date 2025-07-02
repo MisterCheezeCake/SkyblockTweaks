@@ -22,18 +22,24 @@ import net.minecraft.client.MinecraftClient;
 
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.ScreenRect;
-import net.minecraft.client.render.VertexConsumerProvider;
+
+
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import wtf.cheeze.sbt.hud.bases.BarHud;
-import wtf.cheeze.sbt.utils.injected.SBTDrawContext;
 
-//? if <=1.21.5
+//? if <=1.21.5 {
 import net.minecraft.client.render.RenderLayer;
+import wtf.cheeze.sbt.utils.injected.SBTDrawContext;
+import net.minecraft.client.render.VertexConsumerProvider;
+//?}
+
 
 //? if >1.21.5 {
 /*import net.minecraft.client.gl.RenderPipelines;
 import net.minecraft.client.gui.tooltip.OrderedTextTooltipComponent;
+import net.minecraft.client.gui.tooltip.HoveredTooltipPositioner;
+import java.util.stream.Collectors;
 *///?}
 
 import java.util.List;
