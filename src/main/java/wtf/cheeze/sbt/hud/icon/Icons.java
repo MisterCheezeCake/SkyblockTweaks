@@ -23,7 +23,7 @@ import net.minecraft.util.Identifier;
 import java.util.Map;
 
 import wtf.cheeze.sbt.utils.enums.Skill;
-import wtf.cheeze.sbt.utils.skyblock.ItemStackUtils;
+import wtf.cheeze.sbt.utils.skyblock.ItemUtils;
 
 import static java.util.Map.entry;
 
@@ -119,21 +119,21 @@ public class Icons {
     }
 
     private static HudIcon itemStack(String name) {
-        return HudIcon.of(ItemStackUtils.getVanilla(name));
+        return HudIcon.of(ItemUtils.getVanilla(name));
     }
 
     private static HudIcon sb(String minecraftID, String skyblockID) {
-        return HudIcon.of(ItemStackUtils.getSkyblock(minecraftID, skyblockID));
+        return HudIcon.of(ItemUtils.getSkyblock(minecraftID, skyblockID));
     }
 
     private static HudIcon sbHead(String skyblockID, String skullName) {
-        return HudIcon.of(ItemStackUtils.getHead(skullName, skyblockID));
+        return HudIcon.of(ItemUtils.getHead(skullName, skyblockID));
     }
     private static HudIcon sbHead(String both) {
         return sbHead(both, both);
     }
 
     private static HudIcon head(String skullName) {
-        return HudIcon.of(ItemStackUtils.justHead(skullName));
+        return HudIcon.of(ItemUtils.justHead(skullName));
     }
 }

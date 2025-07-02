@@ -27,7 +27,6 @@ import dev.isxander.yacl3.config.v2.api.SerialEntry;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.minecraft.text.Text;
 import org.jetbrains.annotations.NotNull;
-import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SBTConfig;
 import wtf.cheeze.sbt.config.persistent.PersistentData;
@@ -168,7 +167,7 @@ public class SkillHudManager {
                                 }
                             }
                         } catch (Exception e) {
-                            ErrorHandler.handleError(e, "Error Creating Skill HUD Text", ErrorLevel.WARNING);
+                            ErrorHandler.handle(e, "Error Creating Skill HUD Text", ErrorLevel.WARNING);
                             return Text.literal("+" + gained + " (" + percent + "%)");
                         }
                     },
@@ -178,7 +177,7 @@ public class SkillHudManager {
                             return Icons.SKILL_ICONS.getOrDefault(currentSkill, Icons.DEFAULT_ICON);
                         } catch (Exception e) {
                             //SkyblockTweaks.LOGGER.error("Error getting skill icon", e);
-                            ErrorHandler.handleError(e, "Error getting skill icon", ErrorLevel.SILENT);
+                            ErrorHandler.handle(e, "Error getting skill icon", ErrorLevel.SILENT);
                             return Icons.DEFAULT_ICON;
                         }
                     },

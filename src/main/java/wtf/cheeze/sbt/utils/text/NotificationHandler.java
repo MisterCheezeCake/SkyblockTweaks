@@ -37,7 +37,7 @@ public class NotificationHandler {
                     Thread.sleep(2500);
                 } catch (InterruptedException e) {
                     //SkyblockTweaks.LOGGER.error("Notification manager failed to sleep thread", e);
-                    ErrorHandler.handleError(e, "Notification manager failed to sleep thread", ErrorLevel.WARNING);
+                    ErrorHandler.handle(e, "Notification manager failed to sleep thread", ErrorLevel.WARNING);
                 }
                 client.execute(() -> {
                     for (Text message : NOTIFICATION_QUEUE) {

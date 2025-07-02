@@ -79,7 +79,7 @@ public class UpdateChecker {
                     }
                 }
             } catch (Exception e) {
-                ErrorHandler.handleError(e, "Failed to check for updates", ErrorLevel.WARNING);
+                ErrorHandler.handle(e, "Failed to check for updates", ErrorLevel.WARNING);
             }
         }
     }

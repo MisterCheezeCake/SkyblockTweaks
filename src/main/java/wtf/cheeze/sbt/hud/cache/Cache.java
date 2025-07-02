@@ -49,7 +49,7 @@ public class Cache<T>{
             value = supplier.get();
             dueForUpdate = false;
         } catch (Exception e) {
-            ErrorHandler.handleError(e, "Error while updating cached HUD value", ErrorLevel.WARNING);
+            ErrorHandler.handle(e, "Error while updating cached HUD value", ErrorLevel.WARNING);
             value = errorValue;
         }
     }

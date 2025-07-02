@@ -42,7 +42,7 @@ import wtf.cheeze.sbt.utils.injected.SBTHandledScreen;
 import wtf.cheeze.sbt.utils.render.Colors;
 import wtf.cheeze.sbt.utils.render.Popup;
 import wtf.cheeze.sbt.utils.render.RenderUtils;
-import wtf.cheeze.sbt.utils.skyblock.ItemStackUtils;
+import wtf.cheeze.sbt.utils.skyblock.ItemUtils;
 import wtf.cheeze.sbt.utils.text.TextUtils;
 
 import java.util.List;
@@ -86,7 +86,7 @@ public class ReforgeOverlay {
             if (!SBTConfig.get().reforgeOverlay.nameTooltip) return;
             if (!screenTitle.getString().equals(SCREEN_TITLE)) return;
             if (slot.id != REFORGE_ITEM_SLOT || slot.getStack().isEmpty()) return;
-            var reforge = ItemStackUtils.getReforge(slot.getStack());
+            var reforge = ItemUtils.getReforge(slot.getStack());
             if (reforge.isEmpty()) return;
             var text = TextUtils.withColor(Constants.reforges().specialModifiers().getOrDefault(reforge, TextUtils.firstLetterUppercase(reforge.toLowerCase())), Colors.YELLOW);
             var x = slot.x - X_LABEL_OFFSET - RenderUtils.getStringWidth(text);
@@ -237,7 +237,7 @@ public class ReforgeOverlay {
             for (var unformatted: matchWidget.getText().split(",")) {
                 var formatted = unformatted.trim().toLowerCase();
                 if (formatted.isEmpty()) continue;
-                if (ItemStackUtils.getReforge(screen.getScreenHandler().slots.get(REFORGE_ITEM_SLOT).getStack()).toLowerCase().contains(formatted)) {
+                if (ItemUtils.getReforge(screen.getScreenHandler().slots.get(REFORGE_ITEM_SLOT).getStack()).toLowerCase().contains(formatted)) {
                     tentativeBlock = true;
                     break;
                 }
@@ -246,7 +246,7 @@ public class ReforgeOverlay {
             for (var unformatted: exclusionWidget.getText().split(",")) {
                 var formatted = unformatted.trim().toLowerCase();
                 if (formatted.isEmpty()) continue;
-                if (ItemStackUtils.getReforge(screen.getScreenHandler().slots.get(REFORGE_ITEM_SLOT).getStack()).toLowerCase().contains(formatted)) {
+                if (ItemUtils.getReforge(screen.getScreenHandler().slots.get(REFORGE_ITEM_SLOT).getStack()).toLowerCase().contains(formatted)) {
                     return false; // if it matches an exclusion, we can reforge
                 }
             }

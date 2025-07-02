@@ -18,16 +18,14 @@
  */
 package wtf.cheeze.sbt.utils.errors;
 
-
-
 import dev.isxander.yacl3.api.Option;
 import dev.isxander.yacl3.api.OptionDescription;
 import net.minecraft.text.Text;
-import org.apache.commons.lang3.tuple.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SBTConfig;
+import wtf.cheeze.sbt.utils.CheezePair;
 import wtf.cheeze.sbt.utils.text.MessageManager;
 import wtf.cheeze.sbt.utils.text.NotificationHandler;
 import wtf.cheeze.sbt.utils.text.TextUtils;
@@ -45,10 +43,10 @@ public class ErrorHandler {
 
     private static final TimedSet<String> errorSet = new TimedSet<>(RETAIN_ERRORS_FOR_MS);
 
-    public static void handleError(Exception e, String message, ErrorLevel level, boolean sendDelayedIfNotInWorld , Object... params) {
-        Pair<String, String> messages = getMessages(message);
-        String logMessage = messages.getLeft();
-        String chatMessage = messages.getRight();
+    public static void handle(Exception e, String message, ErrorLevel level, boolean sendDelayedIfNotInWorld , Object... params) {
+        CheezePair<String, String> messages = getMessages(message);
+        String logMessage = messages.key();
+        String chatMessage = messages.val();
         if (params.length > 0) {
             LOGGER.error(logMessage, e, params);
         } else {
@@ -70,8 +68,8 @@ public class ErrorHandler {
         }
     }
 
-    public static void handleError(Exception e, String message, ErrorLevel level) {
-        handleError(e, message, level, true);
+    public static void handle(Exception e, String message, ErrorLevel level) {
+        handle(e, message, level, true);
     }
 
     private static boolean shouldChat (ErrorLevel level) {
@@ -93,8 +91,8 @@ public class ErrorHandler {
      * Parses a message to get the log message and the chat message
      * @return a Pair of Strings, with the log message being left and the chat message being right
      */
-    private static Pair<String, String> getMessages(String message) {
-        return Pair.of(message.replaceAll("/\\*LOGONLY(.*)\\*/", ""), message.replaceAll("/\\*LOGONLY(.*)\\*/", "$1"));
+    private static CheezePair<String, String> getMessages(String message) {
+        return CheezePair.of(message.replaceAll("/\\*LOGONLY(.*)\\*/", ""), message.replaceAll("/\\*LOGONLY(.*)\\*/", "$1"));
     }
 
     public static Option<Boolean> getChatAll(ConfigImpl defaults, ConfigImpl config) {

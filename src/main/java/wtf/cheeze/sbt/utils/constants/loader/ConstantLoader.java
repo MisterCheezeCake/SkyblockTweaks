@@ -107,13 +107,13 @@ public class ConstantLoader {
                         updateRepo(commitHash);
                         loadFromFiles();
                     } catch (IOException | URISyntaxException e) {
-                        ErrorHandler.handleError(e, "Failed to update constants", ErrorLevel.CRITICAL);
+                        ErrorHandler.handle(e, "Failed to update constants", ErrorLevel.CRITICAL);
                     }
                 }, "SBT-ConstantLoader").start();
 
             }
         } catch (Exception e) {
-            ErrorHandler.handleError(e, "Failed to load constants", ErrorLevel.CRITICAL);
+            ErrorHandler.handle(e, "Failed to load constants", ErrorLevel.CRITICAL);
             tryLoadAgain();
         }
     }
@@ -122,12 +122,12 @@ public class ConstantLoader {
         try {
             loadFromFiles();
         } catch (Exception e) {
-            ErrorHandler.handleError(e, "Failed to load constants on second attempt: reverting to fallback", ErrorLevel.CRITICAL);
+            ErrorHandler.handle(e, "Failed to load constants on second attempt: reverting to fallback", ErrorLevel.CRITICAL);
             try {
                 updateFromFallback();
                 loadFromFiles();
             } catch (Exception ex) {
-                ErrorHandler.handleError(ex, "Failed to load fallback contants. This should not be happening, please contact support in the discord.", ErrorLevel.CRITICAL);
+                ErrorHandler.handle(ex, "Failed to load fallback contants. This should not be happening, please contact support in the discord.", ErrorLevel.CRITICAL);
             }
         }
     }
@@ -270,7 +270,7 @@ public class ConstantLoader {
                     LocalManifest.class
             );
         } catch (IOException e) {
-            ErrorHandler.handleError(e, "Failed to load local manifest", ErrorLevel.SILENT, false);
+            ErrorHandler.handle(e, "Failed to load local manifest", ErrorLevel.SILENT, false);
             return null;
         }
     }

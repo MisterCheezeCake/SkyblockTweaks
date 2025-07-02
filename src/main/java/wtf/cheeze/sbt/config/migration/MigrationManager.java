@@ -50,7 +50,7 @@ public class MigrationManager {
            }
 
        } catch (Exception e) {
-           ErrorHandler.handleError(e, "Config Migration Error", ErrorLevel.CRITICAL);
+           ErrorHandler.handle(e, "Config Migration Error", ErrorLevel.CRITICAL);
        }
 
    }

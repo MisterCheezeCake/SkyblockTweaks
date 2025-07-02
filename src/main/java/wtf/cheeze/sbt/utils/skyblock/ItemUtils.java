@@ -41,7 +41,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-public class ItemStackUtils {
+public class ItemUtils {
 
     public static boolean isPickaxe(Item item) {
         return item.equals(Items.WOODEN_PICKAXE) ||
@@ -155,7 +155,7 @@ public class ItemStackUtils {
             props.put("textures", new Property("textures", texture));
             return props;
         } catch (Exception e) {
-            ErrorHandler.handleError(e, "Error while creating skull texture", ErrorLevel.WARNING);
+            ErrorHandler.handle(e, "Error while creating skull texture", ErrorLevel.WARNING);
             return new PropertyMap();
         }
     }
@@ -189,7 +189,7 @@ public class ItemStackUtils {
                              new BufferedReader(new InputStreamReader(SkyblockTweaks.class.getResourceAsStream("/skullmap.json")))
                             , SkullMap.class);
                 } catch (Exception e) {
-                    ErrorHandler.handleError(e, "Error while loading skull map", ErrorLevel.CRITICAL);
+                    ErrorHandler.handle(e, "Error while loading skull map", ErrorLevel.CRITICAL);
                     INSTANCE = new SkullMap();
                 }
             }

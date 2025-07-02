@@ -81,7 +81,7 @@ public class TabListParser {
             data.activeWidgets = data.widgetLines.keySet();
             return data;
         } catch (Exception e) {
-            ErrorHandler.handleError(e, "Failed to parse tab list", ErrorLevel.WARNING);
+            ErrorHandler.handle(e, "Failed to parse tab list", ErrorLevel.WARNING);
             return TabListData.EMPTY;
         }
     }

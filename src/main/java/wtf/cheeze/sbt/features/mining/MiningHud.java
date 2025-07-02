@@ -42,6 +42,7 @@ import wtf.cheeze.sbt.hud.utils.HudName;
 import wtf.cheeze.sbt.utils.CheezePair;
 import wtf.cheeze.sbt.utils.DataUtils;
 import wtf.cheeze.sbt.utils.NumberUtils;
+import wtf.cheeze.sbt.utils.render.ColorUtils;
 import wtf.cheeze.sbt.utils.text.TextUtils;
 import wtf.cheeze.sbt.utils.render.Colors;
 import wtf.cheeze.sbt.hud.icon.Icons;
@@ -99,7 +100,7 @@ public class MiningHud extends MultilineTextHud {
         for (Entry entry : SBTConfig.mining().hud.composition) {
             switch (entry) {
                 // For the commissions widget, we cache the parts for a second, since there's no need to update it more frequently
-                case COMMISSIONS -> lines.add(new FlexibleHudLine(getComParts(), UpdateTiming.SECOND));
+                case COMMISSIONS -> lines.add(new FlexibleHudLine(this::getComParts, UpdateTiming.SECOND));
                 case MITHRIL_POWDER -> lines.add(new SingleHudLine(
                         DataUtils.ALWAYS_WHITE,
                         () -> SBTConfig.mining().hud.outlineColor,
@@ -167,8 +168,7 @@ public class MiningHud extends MultilineTextHud {
 
     private final ArrayList<Cache<Text>> comCache = new ArrayList<>();
 
-    private Supplier<FlexibleHudLine.Part[]> getComParts() {
-        return () -> {
+    private FlexibleHudLine.Part[] getComParts() {
             var arr = new FlexibleHudLine.Part[SkyblockData.miningData.comNo];
             for (int i = 0; i < SkyblockData.miningData.comNo; i++) {
 
@@ -187,7 +187,6 @@ public class MiningHud extends MultilineTextHud {
                 );
             }
             return arr;
-        };
     }
 
     private CheezePair<Supplier<Text>, Supplier<HudIcon>> genComSuppliers(int i) {
@@ -200,7 +199,7 @@ public class MiningHud extends MultilineTextHud {
                     return TextUtils.join(
                             TextUtils.withColor(com.key() + ":", SBTConfig.mining().hud.color),
                             TextUtils.SPACE,
-                            num == 1 ? TextUtils.withColor("DONE", Colors.LIME) : TextUtils.withColor(((max == -1 || !SBTConfig.mining().hud.useNumbers) ? NumberUtils.formatPercent(num) : Math.round(num * max) + "/" + max), Colors.fromFloatValue(num))
+                            num == 1 ? TextUtils.withColor("DONE", Colors.LIME) : TextUtils.withColor(((max == -1 || !SBTConfig.mining().hud.useNumbers) ? NumberUtils.formatPercent(num) : Math.round(num * max) + "/" + max), ColorUtils.fromFloatProgress(num))
                     );
                 },
                 () -> MiningData.getComIcon(SkyblockData.miningData.coms[i].key()));

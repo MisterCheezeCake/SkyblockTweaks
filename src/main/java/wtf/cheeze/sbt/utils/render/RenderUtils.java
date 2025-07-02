@@ -22,8 +22,6 @@ import net.minecraft.client.MinecraftClient;
 
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.ScreenRect;
-import net.minecraft.client.gui.tooltip.HoveredTooltipPositioner;
-import net.minecraft.client.gui.tooltip.TooltipComponent;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
@@ -39,7 +37,6 @@ import net.minecraft.client.gui.tooltip.OrderedTextTooltipComponent;
 *///?}
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class RenderUtils {
 
@@ -262,9 +259,6 @@ public class RenderUtils {
     //?}
 
 
-    public static Color3f getColor3f(int color) {
-        return new Color3f(color);
-    }
     public static ScreenBounds getScreenBounds() {
         return new ScreenBounds();
     }

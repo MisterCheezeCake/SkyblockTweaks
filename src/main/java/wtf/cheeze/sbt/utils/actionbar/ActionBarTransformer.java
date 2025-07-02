@@ -229,12 +229,12 @@ public class ActionBarTransformer {
 
                         }
                     } catch (Exception e) {
-                        ErrorHandler.handleError(e, "Error Parsing action bar segment/*LOGONLY {}*/", ErrorLevel.WARNING, false, unmodifiedPart);
+                        ErrorHandler.handle(e, "Error Parsing action bar segment/*LOGONLY {}*/", ErrorLevel.WARNING, false, unmodifiedPart);
                     }
                 }
                 return data;
             } catch (Exception e) {
-                ErrorHandler.handleError(e, "Error Parsing action bar text/*LOGONLY {}*/", ErrorLevel.WARNING, false, actionBarText);
+                ErrorHandler.handle(e, "Error Parsing action bar text/*LOGONLY {}*/", ErrorLevel.WARNING, false, actionBarText);
                 return new ActionBarData();
             }
 
@@ -344,14 +344,14 @@ public class ActionBarTransformer {
                         newText.append(SEPERATOR5).append(trimmed);
                     }
                 } catch (Exception e) {
-                    ErrorHandler.handleError(e, "Error Parsing action bar segment/*LOGONLY {}*/", ErrorLevel.WARNING, false, unmodifiedPart);
+                    ErrorHandler.handle(e, "Error Parsing action bar segment/*LOGONLY {}*/", ErrorLevel.WARNING, false, unmodifiedPart);
                     newText.append(SEPERATOR5).append(unmodifiedPart.trim());
 
                 }
             }
             return Text.of(newText.toString());
         } catch (Exception e) {
-            ErrorHandler.handleError(e, "Error Parsing transforming bar text/*LOGONLY {}*/", ErrorLevel.WARNING, false, actionBarText.getString());
+            ErrorHandler.handle(e, "Error Parsing transforming bar text/*LOGONLY {}*/", ErrorLevel.WARNING, false, actionBarText.getString());
             return actionBarText;
         }
     }

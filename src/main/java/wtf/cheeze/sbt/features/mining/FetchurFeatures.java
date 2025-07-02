@@ -48,7 +48,7 @@ import wtf.cheeze.sbt.utils.CheezePair;
 import wtf.cheeze.sbt.utils.DataUtils;
 import wtf.cheeze.sbt.utils.enums.Location;
 import wtf.cheeze.sbt.utils.render.Colors;
-import wtf.cheeze.sbt.utils.skyblock.ItemStackUtils;
+import wtf.cheeze.sbt.utils.skyblock.ItemUtils;
 import wtf.cheeze.sbt.utils.skyblock.SkyblockData;
 import wtf.cheeze.sbt.utils.text.MessageManager;
 import wtf.cheeze.sbt.utils.text.TextUtils;
@@ -182,12 +182,12 @@ public class FetchurFeatures {
     public enum FetchurItem {
         YELLOW_STAINED_GLASS(Items.YELLOW_STAINED_GLASS, 20, TextUtils.withColor("20 Yellow Stained Glass", Colors.WHITE), "theyre yellow and see-through"),
         COMPASS(Items.COMPASS, TextUtils.withColor("Compass", Colors.WHITE), "its circular and sometimes moves"),
-        MITHRIL(ItemStackUtils.getSkyblock("prismarine_crystals", "MITHRIL_ORE", 20), TextUtils.withColor("20 Mithril", Colors.WHITE), "theyre expensive minerals"),
+        MITHRIL(ItemUtils.getSkyblock("prismarine_crystals", "MITHRIL_ORE", 20), TextUtils.withColor("20 Mithril", Colors.WHITE), "theyre expensive minerals"),
         FIREWORK(Items.FIREWORK_ROCKET, TextUtils.withColor("Firework Rocket", Colors.WHITE), "its useful during celebrations"),
-        COFFEE(ItemStackUtils.getHead("CHEAP_COFFEE", "COFFEE"), TextUtils.withColor("Coffee (any type)", Colors.WHITE),"its hot and gives energy"),
+        COFFEE(ItemUtils.getHead("CHEAP_COFFEE", "COFFEE"), TextUtils.withColor("Coffee (any type)", Colors.WHITE),"its hot and gives energy"),
         DOOR(Items.OAK_DOOR, TextUtils.withColor("Wooden Door (any type)", Colors.WHITE), "its tall and can be opened"),
         RABBIT_FOOT(Items.RABBIT_FOOT, 3,  TextUtils.withColor("3 Rabbits' Feet", Colors.WHITE), "theyre brown and fluffy"),
-        TNT(ItemStackUtils.getSkyblock("tnt", "SUPERBOOM_TNT"), TextUtils.withColor("Superboom TNT", Colors.BLUE), "its explosive, more than usual"),
+        TNT(ItemUtils.getSkyblock("tnt", "SUPERBOOM_TNT"), TextUtils.withColor("Superboom TNT", Colors.BLUE), "its explosive, more than usual"),
         PUMPKIN(Items.PUMPKIN, TextUtils.withColor("Pumpkin", Colors.WHITE), "its wearable and grows"),
         FLINT_AND_STEEL(Items.FLINT_AND_STEEL, TextUtils.withColor("Flint and Steel", Colors.WHITE), "its shiny and makes sparks"),
         EMERALD(Items.EMERALD, 50, TextUtils.withColor("50 Emeralds", Colors.WHITE), "theyre green and some dudes trade stuff for it"),

@@ -207,7 +207,7 @@ public class MiningData {
         try {
             return new MiningData(data);
         } catch (Exception e) {
-            ErrorHandler.handleError(e, "Failed to parse mining data", ErrorLevel.WARNING);
+            ErrorHandler.handle(e, "Failed to parse mining data", ErrorLevel.WARNING);
             if (System.currentTimeMillis() - lastDataDumpTime > INTERVAL_BETWEEN_DUMPS_MS) {
                 lastDataDumpTime = System.currentTimeMillis();
                 SkyblockTweaks.LOGGER.info("Dumping tab list data: {}", data.serialize());

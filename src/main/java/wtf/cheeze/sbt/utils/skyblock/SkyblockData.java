@@ -60,7 +60,7 @@ public class SkyblockData {
             for (int i = 0; i < 36; i++) {
                 var stack = client.player.getInventory().getStack(i);
                 if (stack.isEmpty()) continue;
-                if (ItemStackUtils.isPickaxe(stack.getItem()) || stack.getName().getString().contains("Drill")) {
+                if (ItemUtils.isPickaxe(stack.getItem()) || stack.getName().getString().contains("Drill")) {
                     var lines = stack.getOrDefault(DataComponentTypes.LORE, LoreComponent.DEFAULT).lines();
                     if (lines.isEmpty()) continue;
                     boolean shouldBreak = false;
@@ -73,7 +73,7 @@ public class SkyblockData {
                             shouldBreak = true;
                             break;
                         } catch (NumberFormatException e) {
-                            ErrorHandler.handleError(e, "Error Parsing Pickaxe Cooldown", ErrorLevel.SILENT);
+                            ErrorHandler.handle(e, "Error Parsing Pickaxe Cooldown", ErrorLevel.SILENT);
                         }
 
                     }

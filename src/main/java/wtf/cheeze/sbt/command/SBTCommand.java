@@ -24,7 +24,6 @@ import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
-import net.minecraft.MinecraftVersion;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.ingame.GenericContainerScreen;
@@ -36,11 +35,9 @@ import wtf.cheeze.sbt.features.mining.FetchurFeatures;
 import wtf.cheeze.sbt.features.misc.MouseLock;
 import wtf.cheeze.sbt.features.chat.PartyFeatures;
 import wtf.cheeze.sbt.hud.HudManager;
-import wtf.cheeze.sbt.hud.screen.CompositionPopupScreen;
 import wtf.cheeze.sbt.hud.screen.HudScreen;
 import wtf.cheeze.sbt.mixin.accessors.BossBarHudAccessor;
-import wtf.cheeze.sbt.utils.skyblock.ItemStackUtils;
-import wtf.cheeze.sbt.utils.skyblock.ModAPI;
+import wtf.cheeze.sbt.utils.skyblock.ItemUtils;
 import wtf.cheeze.sbt.utils.text.MessageManager;
 import wtf.cheeze.sbt.utils.NumberUtils;
 import wtf.cheeze.sbt.utils.text.TextUtils;
@@ -440,7 +437,7 @@ public class SBTCommand {
                                                                                 send(context, TextUtils.withColor(component.toString(), Colors.CYAN));
                                                                             });
                                                                         } catch (Exception e) {
-                                                                            ErrorHandler.handleError(e, "Thread Sleep Error in Dump Components", ErrorLevel.WARNING);
+                                                                            ErrorHandler.handle(e, "Thread Sleep Error in Dump Components", ErrorLevel.WARNING);
                                                                         }
 
                                                                     }).start();
@@ -451,12 +448,12 @@ public class SBTCommand {
                                         .then(literal("intentionalError").then(argument("warningOnly", BoolArgumentType.bool())
 
                                                 .executes(context -> {
-                                                    ErrorHandler.handleError(new RuntimeException("Intentional Error"), "This is an intentional error", BoolArgumentType.getBool(context, "warningOnly") ? ErrorLevel.WARNING : ErrorLevel.CRITICAL);
+                                                    ErrorHandler.handle(new RuntimeException("Intentional Error"), "This is an intentional error", BoolArgumentType.getBool(context, "warningOnly") ? ErrorLevel.WARNING : ErrorLevel.CRITICAL);
                                                     return 1;
                                                 }))
                                         )
                                         .then(literal("pickaxe").executes(context -> {
-                                            if (ItemStackUtils.isPickaxe(context.getSource().getClient().player.getMainHandStack().getItem())) {
+                                            if (ItemUtils.isPickaxe(context.getSource().getClient().player.getMainHandStack().getItem())) {
                                                 send(context, TextUtils.withColor("You are holding a pickaxe", Colors.LIME));
                                             } else {
                                                 send(context, TextUtils.withColor("You are not holding a pickaxe", Colors.RED));
@@ -502,7 +499,7 @@ public class SBTCommand {
                                                                 ConstantLoader.loadFromFiles();
                                                                 send(context, TextUtils.withColor("Reloaded Repo", Colors.LIME));
                                                             } catch (Exception e) {
-                                                                ErrorHandler.handleError(e, "Error reloading repo", ErrorLevel.CRITICAL);
+                                                                ErrorHandler.handle(e, "Error reloading repo", ErrorLevel.CRITICAL);
                                                             }
                                                             return 1;
                                                         }

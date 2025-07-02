@@ -28,7 +28,6 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.gui.widget.ClickableWidget;
 import net.minecraft.client.gui.widget.TextFieldWidget;
-import net.minecraft.client.util.InputUtil;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.text.Text;
 import org.intellij.lang.annotations.Language;
@@ -51,7 +50,7 @@ import wtf.cheeze.sbt.utils.injected.SBTHandledScreen;
 import wtf.cheeze.sbt.utils.render.Colors;
 import wtf.cheeze.sbt.utils.render.Popup;
 import wtf.cheeze.sbt.utils.render.RenderUtils;
-import wtf.cheeze.sbt.utils.skyblock.ItemStackUtils;
+import wtf.cheeze.sbt.utils.skyblock.ItemUtils;
 
 import java.util.*;
 
@@ -145,7 +144,7 @@ public class MinionExp {
                     renderY += 30;
                 }
             } catch (Exception e) {
-                ErrorHandler.handleError(e, "Error rendering Minion EXP popup", ErrorLevel.WARNING);
+                ErrorHandler.handle(e, "Error rendering Minion EXP popup", ErrorLevel.WARNING);
             }
         }
 
@@ -180,7 +179,7 @@ public class MinionExp {
             var exp = Constants.minions().minionExp();
             var map = new EnumMap<Skill, Double>(Skill.class);
             for (var slot: getRelevantSlots()) {
-                var id = ItemStackUtils.getSkyblockId(slot.getStack());
+                var id = ItemUtils.getSkyblockId(slot.getStack());
                 if (id.isEmpty()) continue;
                 var entry = exp.get(id);
                 if (entry == null) continue;

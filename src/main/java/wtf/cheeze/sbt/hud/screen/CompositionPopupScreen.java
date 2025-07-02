@@ -297,7 +297,7 @@ public class CompositionPopupScreen<T extends CompositionEntry> extends Screen {
                 binding.setValue(list);
                 return true;
             } catch (Exception e) {
-                ErrorHandler.handleError(e, "Failed to move item up", ErrorLevel.WARNING);
+                ErrorHandler.handle(e, "Failed to move item up", ErrorLevel.WARNING);
                 return false;
             }
         }
@@ -315,7 +315,7 @@ public class CompositionPopupScreen<T extends CompositionEntry> extends Screen {
                 binding.setValue(list);
                 return true;
             } catch (Exception e) {
-                    ErrorHandler.handleError(e, "Failed to move item up", ErrorLevel.WARNING);
+                    ErrorHandler.handle(e, "Failed to move item up", ErrorLevel.WARNING);
                     return false;
             }
         }
@@ -355,7 +355,7 @@ public class CompositionPopupScreen<T extends CompositionEntry> extends Screen {
                 }
                 context.disableScissor();
             } catch (Exception e) {
-                ErrorHandler.handleError(e, "Failed to render modify item list", ErrorLevel.WARNING);
+                ErrorHandler.handle(e, "Failed to render modify item list", ErrorLevel.WARNING);
                 context.disableScissor();
             }
         }
@@ -457,7 +457,7 @@ public class CompositionPopupScreen<T extends CompositionEntry> extends Screen {
                 this.setupEntries();
                 this.sbtSetScroll(0);
             } catch (Exception e) {
-                ErrorHandler.handleError(e, "Failed to reload entry list", ErrorLevel.WARNING);
+                ErrorHandler.handle(e, "Failed to reload entry list", ErrorLevel.WARNING);
             }
         }
 
