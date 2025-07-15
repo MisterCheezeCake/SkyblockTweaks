@@ -24,7 +24,6 @@ import dev.isxander.yacl3.config.v2.api.SerialEntry;
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents;
 import net.minecraft.text.Text;
 import org.intellij.lang.annotations.Language;
-import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SBTConfig;
 import wtf.cheeze.sbt.events.ChatEvents;
@@ -197,7 +196,6 @@ public class ActionBarTransformer {
                             data.maxDrillFuel = NumberUtils.parseIntWithKorM(drillFuel[1]);
                         } else if (unformatted.contains("ф Left")) {
                             // Rift Timer
-                            SkyblockTweaks.LOGGER.info("Rift Timer: {}", unformatted);
                             Matcher matcher = riftTimePattern.matcher(unformatted);
                             if (matcher.matches()) {
                                 data.riftTime = matcher.group("time");
@@ -282,7 +280,7 @@ public class ActionBarTransformer {
                                 tickers = segment.split("Mana")[1];
                             }
                             newText.append(SEPERATOR5).append(tickers);
-                        } else if (!hideMana && hideTickers && hasTickers) {
+                        } else if (!hideMana) { // hideTickers and hasTickers are always true here (because of the if-statement above)
                             // TM-HT
                             String spliter = "";
                             if (trimmed.contains(Symbols.OVERFLOW_MANA)) {
@@ -357,10 +355,7 @@ public class ActionBarTransformer {
     }
 
     public static void registerEvents() {
-        ChatEvents.ON_ACTION_BAR.register(message -> {
-           // SkyblockTweaks.LOGGER.info(message.getString());
-            SkyblockData.update(ActionBarTransformer.extractData(message.getString()));
-        });
+        ChatEvents.ON_ACTION_BAR.register(message -> SkyblockData.update(ActionBarTransformer.extractData(message.getString())));
         ClientReceiveMessageEvents.MODIFY_GAME.register((message, overlay) -> {
             if (!overlay) return message;
             return ActionBarTransformer.runTransformations(message);
@@ -542,5 +537,3 @@ public class ActionBarTransformer {
 
 
 }
-
-
