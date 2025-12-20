@@ -23,24 +23,23 @@ import dev.isxander.yacl3.api.OptionGroup;
 import dev.isxander.yacl3.api.controller.ColorControllerBuilder;
 import dev.isxander.yacl3.api.controller.StringControllerBuilder;
 import dev.isxander.yacl3.config.v2.api.SerialEntry;
-import net.minecraft.text.Text;
+import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SBTConfig;
+import wtf.cheeze.sbt.hud.bases.TextHud;
+import wtf.cheeze.sbt.hud.components.SingleHudLine;
 import wtf.cheeze.sbt.hud.utils.AnchorPoint;
+import wtf.cheeze.sbt.hud.utils.DrawMode;
+import wtf.cheeze.sbt.hud.utils.HudInformation;
 import wtf.cheeze.sbt.hud.utils.HudName;
 import wtf.cheeze.sbt.utils.NumberUtils;
-import wtf.cheeze.sbt.hud.utils.DrawMode;
-import wtf.cheeze.sbt.hud.components.SingleHudLine;
-import wtf.cheeze.sbt.hud.utils.HudInformation;
-import wtf.cheeze.sbt.hud.bases.TextHud;
 import wtf.cheeze.sbt.utils.render.Colors;
 import wtf.cheeze.sbt.utils.skyblock.SkyblockData;
 
-import java.awt.*;
+import java.awt.Color;
 
 public class OverflowManaHud extends TextHud {
-
     public static final OverflowManaHud INSTANCE = new OverflowManaHud();
 
     private OverflowManaHud() {
@@ -58,10 +57,11 @@ public class OverflowManaHud extends TextHud {
                 () -> SBTConfig.huds().overflowMana.color,
                 () -> SBTConfig.huds().overflowMana.outlineColor,
                 () -> SBTConfig.huds().overflowMana.mode,
-                () -> Text.literal(NumberUtils.formatNumber((int) SkyblockData.Stats.overflowMana, SBTConfig.huds().overflowMana.separator) + (SBTConfig.huds().overflowMana.icon ? "ʬ" : ""))
+                () -> Component.literal(NumberUtils.formatNumber((int) SkyblockData.Stats.overflowMana, SBTConfig.huds().overflowMana.separator) + (SBTConfig.huds().overflowMana.icon ? "ʬ" : ""))
         );
 
     }
+
     @Override
     public boolean shouldRender(boolean fromHudScreen) {
         if (!super.shouldRender(fromHudScreen)) return false;

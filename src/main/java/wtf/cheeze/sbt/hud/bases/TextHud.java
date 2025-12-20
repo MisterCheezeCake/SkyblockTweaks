@@ -18,7 +18,7 @@
  */
 package wtf.cheeze.sbt.hud.bases;
 
-import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.gui.GuiGraphics;
 import org.jetbrains.annotations.NotNull;
 import wtf.cheeze.sbt.hud.utils.DrawMode;
 import wtf.cheeze.sbt.hud.bounds.Bounds;
@@ -28,22 +28,18 @@ import wtf.cheeze.sbt.hud.components.SingleHudLine;
 import wtf.cheeze.sbt.utils.render.RenderUtils;
 
 public abstract class TextHud extends HUD {
-    //public abstract String getText();
-
-
     public SingleHudLine line;
-    
 
     @Override
-    public void render(DrawContext context, boolean fromHudScreen, boolean hovered) {
+    public void render(GuiGraphics guiGraphics, boolean fromHudScreen, boolean hovered) {
         if (!shouldRender(fromHudScreen)) return;
         var bounds = getCurrentBounds();
         if (fromHudScreen) {
-            drawBackground(context, hovered ? BACKGROUND_HOVERED : BACKGROUND_NOT_HOVERED, line.mode.get() == DrawMode.OUTLINE);
+            drawBackground(guiGraphics, hovered ? BACKGROUND_HOVERED : BACKGROUND_NOT_HOVERED, line.mode.get() == DrawMode.OUTLINE);
         }
-        RenderUtils.beginScale(context, bounds.scale);
-        line.render(context, bounds.x, bounds.y, bounds.scale);
-        RenderUtils.popMatrix(context);
+        RenderUtils.beginScale(guiGraphics, bounds.scale);
+        line.render(guiGraphics, bounds.x, bounds.y, bounds.scale);
+        RenderUtils.popMatrix(guiGraphics);
     }
 
     public @NotNull Bounds getCurrentBounds() {
@@ -54,7 +50,7 @@ public abstract class TextHud extends HUD {
                         getActualX(INFO.getX.get()),
                         getActualY(INFO.getY.get()),
                         (RenderUtils.getStringWidth(line.text.get()) + (line.useIcon.get() ? 10: 0)) * scale,
-                        client.textRenderer.fontHeight * scale,
+                        mc.font.lineHeight * scale,
                         scale);
             }
             case RIGHT -> {
@@ -62,7 +58,7 @@ public abstract class TextHud extends HUD {
                         (int) (getActualX(INFO.getX.get()) - (RenderUtils.getStringWidth(line.text.get()) + (line.useIcon.get() ? 10: 0)) * scale),
                         getActualY(INFO.getY.get()),
                         (RenderUtils.getStringWidth(line.text.get()) + (line.useIcon.get() ? 10: 0)) * scale,
-                        client.textRenderer.fontHeight * scale,
+                        mc.font.lineHeight * scale,
                         scale);
             }
             case CENTER -> {
@@ -70,7 +66,7 @@ public abstract class TextHud extends HUD {
                         (int) (getActualX(INFO.getX.get()) - (RenderUtils.getStringWidth(line.text.get()) + (line.useIcon.get() ? 10: 0)) * scale / 2),
                         getActualY(INFO.getY.get()),
                         (RenderUtils.getStringWidth(line.text.get()) + (line.useIcon.get() ? 10: 0)) * scale,
-                        client.textRenderer.fontHeight * scale,
+                        mc.font.lineHeight * scale,
                         scale);
             }
             default -> throw new IllegalStateException("Unexpected value: " + INFO.getAnchorPoint.get());
@@ -81,13 +77,13 @@ public abstract class TextHud extends HUD {
         var scale = (float) INFO.getScale.get();
         switch (INFO.getAnchorPoint.get()) {
             case LEFT -> {
-                return new BoundsRelative(INFO.getX.get(), INFO.getY.get(), RenderUtils.getStringWidth(line.text.get()) * scale, client.textRenderer.fontHeight * scale, scale);
+                return new BoundsRelative(INFO.getX.get(), INFO.getY.get(), RenderUtils.getStringWidth(line.text.get()) * scale, mc.font.lineHeight * scale, scale);
             }
             case RIGHT -> {
-                return new BoundsRelative(INFO.getX.get() - RenderUtils.getRelativeStringWidth(line.text.get()) * scale, INFO.getY.get(), RenderUtils.getStringWidth(line.text.get()) * scale, client.textRenderer.fontHeight * scale, scale);
+                return new BoundsRelative(INFO.getX.get() - RenderUtils.getRelativeStringWidth(line.text.get()) * scale, INFO.getY.get(), RenderUtils.getStringWidth(line.text.get()) * scale, mc.font.lineHeight * scale, scale);
             }
             case CENTER -> {
-                return new BoundsRelative(INFO.getX.get() - RenderUtils.getRelativeStringWidth(line.text.get()) * scale / 2, INFO.getY.get(), RenderUtils.getStringWidth(line.text.get()) * scale, client.textRenderer.fontHeight * scale, scale);
+                return new BoundsRelative(INFO.getX.get() - RenderUtils.getRelativeStringWidth(line.text.get()) * scale / 2, INFO.getY.get(), RenderUtils.getStringWidth(line.text.get()) * scale, mc.font.lineHeight * scale, scale);
             }
             default -> throw new IllegalStateException("Unexpected value: " + INFO.getAnchorPoint.get());
         }

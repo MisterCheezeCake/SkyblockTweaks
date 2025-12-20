@@ -23,7 +23,7 @@ import dev.isxander.yacl3.api.OptionGroup;
 import dev.isxander.yacl3.api.controller.ColorControllerBuilder;
 import dev.isxander.yacl3.api.controller.StringControllerBuilder;
 import dev.isxander.yacl3.config.v2.api.SerialEntry;
-import net.minecraft.text.Text;
+import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SBTConfig;
@@ -41,7 +41,6 @@ import wtf.cheeze.sbt.utils.skyblock.SkyblockUtils;
 import java.awt.Color;
 
 public class DrillFuelHud extends TextHud {
-
     public static final DrillFuelHud INSTANCE = new DrillFuelHud();
 
     private DrillFuelHud() {
@@ -60,11 +59,12 @@ public class DrillFuelHud extends TextHud {
                 () -> SBTConfig.huds().drillFuel.outlineColor,
                 () -> SBTConfig.huds().drillFuel.mode,
                 () ->
-                        Text.literal((NumberUtils.formatNumber((int) SkyblockData.Stats.drillFuel, SBTConfig.huds().drillFuel.separator))
+                        Component.literal((NumberUtils.formatNumber((int) SkyblockData.Stats.drillFuel, SBTConfig.huds().drillFuel.separator))
                         + "/"
                         + (SBTConfig.huds().drillFuel.abridgeSecondNumber ? NumberUtils.addKOrM((int) SkyblockData.Stats.maxDrillFuel, SBTConfig.huds().drillFuel.separator) : NumberUtils.formatNumber((int) SkyblockData.Stats.maxDrillFuel, SBTConfig.huds().drillFuel.separator)))
         );
     }
+
     @Override
     public boolean shouldRender(boolean fromHudScreen) {
         if (!super.shouldRender(fromHudScreen)) return false;

@@ -1,3 +1,5 @@
+// TODO(Ravel): Failed to fully resolve file: null
+// TODO(Ravel): Failed to fully resolve file: null
 /*
  * Copyright (C) 2024 MisterCheezeCake
  *
@@ -22,7 +24,8 @@ import dev.isxander.yacl3.api.Option;
 import dev.isxander.yacl3.api.OptionGroup;
 import dev.isxander.yacl3.config.v2.api.SerialEntry;
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents;
-import net.minecraft.text.Text;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.Component;
 import org.intellij.lang.annotations.Language;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SBTConfig;
@@ -57,14 +60,11 @@ import java.util.regex.Pattern;
  * TODO: Switch more things in here to regex
  * TODO: Split the main method into smaller methods
  */
-
-
 public class ActionBarTransformer {
     private static final String SEPERATOR3 = "   ";
     private static final String SEPERATOR4 = "     ";
     private static final String SEPERATOR5 = "     ";
     private static final String SEPERATOR12 = "            ";
-
 
     private static final Pattern manaAbilityPattern = Pattern.compile("-(\\d+) Mana \\((.+)\\)");
     private static final Pattern skillLevelPatern = Pattern.compile("\\+([\\d,]+\\.?\\d*) (.+) \\((.+)\\)");
@@ -73,10 +73,8 @@ public class ActionBarTransformer {
     private static final Pattern riftTimePattern = Pattern.compile("(?<time>.+)ф Left(?: [+-]\\d+[ms]!)?");
     private static final Pattern pressurePattern = Pattern.compile("Pressure: ❍(?<pressure>\\d+)%");
 
-
     @Language("RegExp")
     private static final String overflowManaReplacementRegex = "[ʬⓩⓄ,]";
-
 
     public static ActionBarData extractData(String actionBarText) {
             try {
@@ -99,8 +97,6 @@ public class ActionBarTransformer {
                                 }
                             }
                         } else if (unformatted.contains(Symbols.MANA)) {
-
-
                             // Mana
                             // 411/1,221✎ 2ʬ
                             // 289/1,221✎ Mana
@@ -235,11 +231,9 @@ public class ActionBarTransformer {
                 ErrorHandler.handle(e, "Error Parsing action bar text/*LOGONLY {}*/", ErrorLevel.WARNING, false, actionBarText);
                 return new ActionBarData();
             }
-
-
     }
 
-    public static Text runTransformations(Text actionBarText) {
+    public static Component runTransformations(Component actionBarText) {
         try {
             String[] unmodifiedParts = actionBarText.getString().split(SEPERATOR3);
             StringBuilder newText = new StringBuilder();
@@ -347,7 +341,7 @@ public class ActionBarTransformer {
 
                 }
             }
-            return Text.of(newText.toString());
+            return Component.nullToEmpty(newText.toString());
         } catch (Exception e) {
             ErrorHandler.handle(e, "Error Parsing transforming bar text/*LOGONLY {}*/", ErrorLevel.WARNING, false, actionBarText.getString());
             return actionBarText;
@@ -361,9 +355,6 @@ public class ActionBarTransformer {
             return ActionBarTransformer.runTransformations(message);
         });
     }
-
-
-
 
     public static class Config {
 
@@ -399,7 +390,6 @@ public class ActionBarTransformer {
 
         @SerialEntry
         public boolean hidePressure = false;
-
 
         public static OptionGroup getGroup(ConfigImpl defaults, ConfigImpl config) {
             var health = Option.<Boolean>createBuilder()
@@ -533,7 +523,4 @@ public class ActionBarTransformer {
                     .build();
         }
     }
-
-
-
 }

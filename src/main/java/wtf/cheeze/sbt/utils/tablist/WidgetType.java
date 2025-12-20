@@ -72,7 +72,6 @@ public enum WidgetType {
 
     }
 
-
     WidgetType(String name, String prefix) {
         this.name = name;
         this.prefix = prefix;
@@ -85,11 +84,9 @@ public enum WidgetType {
     private final Location[] locations;
     private final boolean everywhere;
 
-
     public String getPrefix() {
         return prefix;
     }
-
 
     public boolean isActive(Location location) {
         if (everywhere) return true;
@@ -110,9 +107,5 @@ public enum WidgetType {
         }
 
     }
-
-
-
-
 }
 

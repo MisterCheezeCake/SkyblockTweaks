@@ -42,7 +42,6 @@ import wtf.cheeze.sbt.utils.skyblock.SkyblockUtils;
 import java.awt.*;
 
 public class EventTimerHud extends TextHud {
-
     public static final EventTimerHud INSTANCE = new EventTimerHud();
 
     private EventTimerHud() {
@@ -74,7 +73,6 @@ public class EventTimerHud extends TextHud {
                 () -> MiningData.getEventIcon(SkyblockData.miningData.eventName),
                 () -> (SBTConfig.mining().eventTimer.icons && MiningData.getEventIcon(SkyblockData.miningData.eventName) != null)
         );
-
     }
 
     @Override
@@ -89,7 +87,6 @@ public class EventTimerHud extends TextHud {
     }
 
     public static class Config {
-
         @SerialEntry
         public boolean enabled = false;
 
@@ -213,7 +210,5 @@ public class EventTimerHud extends TextHud {
                     .collapsed(true)
                     .build();
         }
-
     }
-
 }

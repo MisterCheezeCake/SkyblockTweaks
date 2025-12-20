@@ -23,7 +23,7 @@ import dev.isxander.yacl3.api.OptionGroup;
 import dev.isxander.yacl3.api.controller.ColorControllerBuilder;
 import dev.isxander.yacl3.api.controller.StringControllerBuilder;
 import dev.isxander.yacl3.config.v2.api.SerialEntry;
-import net.minecraft.text.Text;
+import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SBTConfig;
@@ -41,7 +41,6 @@ import wtf.cheeze.sbt.utils.skyblock.SkyblockData;
 import java.awt.Color;
 
 public class HealthHud extends TextHud {
-
     public static final HealthHud INSTANCE = new HealthHud();
 
     private HealthHud() {
@@ -59,7 +58,7 @@ public class HealthHud extends TextHud {
                 () -> SkyblockData.Stats.health > SkyblockData.Stats.maxHealth ? SBTConfig.huds().health.colorAbsorption : SBTConfig.huds().health.color,
                 () -> SBTConfig.huds().health.outlineColor,
                 () -> SBTConfig.huds().health.mode,
-                () -> Text.literal(NumberUtils.formatNumber((int)SkyblockData.Stats.health, SBTConfig.huds().health.separator) + "/" + NumberUtils.formatNumber((int) SkyblockData.Stats.maxHealth, SBTConfig.huds().health.separator) + (SBTConfig.huds().health.icon ? "❤" : ""))
+                () -> Component.literal(NumberUtils.formatNumber((int)SkyblockData.Stats.health, SBTConfig.huds().health.separator) + "/" + NumberUtils.formatNumber((int) SkyblockData.Stats.maxHealth, SBTConfig.huds().health.separator) + (SBTConfig.huds().health.icon ? "❤" : ""))
         );
     }
     @Override

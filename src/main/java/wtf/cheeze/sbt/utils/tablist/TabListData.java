@@ -29,7 +29,6 @@ public class TabListData {
     public Set<WidgetType> activeWidgets;
     public Map<WidgetType, List<String>> widgetLines = new EnumMap<>(WidgetType.class);
 
-
     public String serialize() {
        return SkyblockTweaks.GSON.toJson(this);
     }

@@ -1,7 +1,7 @@
 package wtf.cheeze.sbt.hud.bases;
 
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import org.jetbrains.annotations.NotNull;
 import wtf.cheeze.sbt.hud.bounds.Bounds;
 import wtf.cheeze.sbt.hud.bounds.BoundsRelative;
@@ -10,15 +10,14 @@ import wtf.cheeze.sbt.hud.components.HudComponent;
 import wtf.cheeze.sbt.utils.render.RenderUtils;
 
 public abstract class MultilineTextHud extends HUD {
-
-    private static final MinecraftClient client = MinecraftClient.getInstance();
+    private static final Minecraft mc = Minecraft.getInstance();
 
     protected MultilineTextHud() {
         this.supportsNonLeftAnchors = false;
     }
     public HudComponent[] lines;
 
-    public int getLongestLineWidth(boolean relative){
+    public int getLongestLineWidth(boolean relative) {
         int longest = 0;
         for(var line : lines){
            int width = line.getWidth();
@@ -42,26 +41,27 @@ public abstract class MultilineTextHud extends HUD {
         var scale = (float) INFO.getScale.get();
         var w = getLongestLineWidth();
         var h = getLineNo();
-        return new Bounds(getActualX(INFO.getX.get()), getActualY(INFO.getY.get()), w * scale, h * client.textRenderer.fontHeight * scale, scale);
+        return new Bounds(getActualX(INFO.getX.get()), getActualY(INFO.getY.get()), w * scale, h * mc.font.lineHeight * scale, scale);
     }
+
     @Override
     public @NotNull BoundsRelative getCurrentBoundsRelative() {
         var scale = (float) INFO.getScale.get();
         var w = getLongestLineWidth();
         var h = getLineNo();
-        return new BoundsRelative(INFO.getX.get(), INFO.getY.get(), w * scale, h * client.textRenderer.fontHeight * scale, scale);
+        return new BoundsRelative(INFO.getX.get(), INFO.getY.get(), w * scale, h * mc.font.lineHeight * scale, scale);
     }
 
     @Override
-    public void render(DrawContext context, boolean fromHudScreen, boolean hovered) {
+    public void render(GuiGraphics guiGraphics, boolean fromHudScreen, boolean hovered) {
         if (!shouldRender(fromHudScreen)) return;
 
         var bounds = getCurrentBounds();
         var lineHeight = (int) (9 * bounds.scale);
         if (fromHudScreen) {
-            drawBackground(context, hovered ? BACKGROUND_HOVERED : BACKGROUND_NOT_HOVERED);
+            drawBackground(guiGraphics, hovered ? BACKGROUND_HOVERED : BACKGROUND_NOT_HOVERED);
         }
-        RenderUtils.beginScale(context, bounds.scale);
+        RenderUtils.beginScale(guiGraphics, bounds.scale);
 //
 //        for(int i = 0; i < lines.length; i++){
 //            var line = lines[i];
@@ -71,12 +71,11 @@ public abstract class MultilineTextHud extends HUD {
         int i = 0;
         for (var line : lines) {
             var y = bounds.y + lineHeight * i;
-            i+=line.render(context, bounds.x, y, bounds.scale);
+            i+=line.render(guiGraphics, bounds.x, y, bounds.scale);
            //i+=line.render(context, bounds.x, y, bounds.scale);
         }
-        RenderUtils.popMatrix(context);
+        RenderUtils.popMatrix(guiGraphics);
     }
-
 
 //    private int getXPosition(HudComponent line, int hudX) {
 //        var anchor = INFO.getAnchorPoint.get();

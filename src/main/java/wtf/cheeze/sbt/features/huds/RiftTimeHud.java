@@ -22,7 +22,7 @@ import dev.isxander.yacl3.api.Option;
 import dev.isxander.yacl3.api.OptionGroup;
 import dev.isxander.yacl3.api.controller.ColorControllerBuilder;
 import dev.isxander.yacl3.config.v2.api.SerialEntry;
-import net.minecraft.text.Text;
+import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SBTConfig;
@@ -40,7 +40,6 @@ import wtf.cheeze.sbt.utils.skyblock.SkyblockData;
 import java.awt.*;
 
 public class RiftTimeHud extends TextHud {
-
     public static final RiftTimeHud INSTANCE = new RiftTimeHud();
 
     private RiftTimeHud() {
@@ -58,7 +57,7 @@ public class RiftTimeHud extends TextHud {
                 () -> SkyblockData.Stats.riftTicking ? SBTConfig.huds().riftTime.color : SBTConfig.huds().riftTime.inactiveColor,
                 () -> SBTConfig.huds().riftTime.outlineColor,
                 () -> SBTConfig.huds().riftTime.mode,
-                () -> Text.literal(TimeUtils.toDuration(SkyblockData.Stats.riftSeconds) + (SBTConfig.huds().riftTime.icon ? "ф" : "") + (SBTConfig.huds().riftTime.showLeftText ? " Left" : ""))
+                () -> Component.literal(TimeUtils.toDuration(SkyblockData.Stats.riftSeconds) + (SBTConfig.huds().riftTime.icon ? "ф" : "") + (SBTConfig.huds().riftTime.showLeftText ? " Left" : ""))
         );
 
     }

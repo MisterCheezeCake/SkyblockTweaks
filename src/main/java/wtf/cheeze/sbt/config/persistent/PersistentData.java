@@ -24,8 +24,8 @@ import dev.isxander.yacl3.config.v2.api.SerialEntry;
 import dev.isxander.yacl3.config.v2.api.serializer.GsonConfigSerializerBuilder;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.client.gui.screen.ChatScreen;
-import net.minecraft.util.Identifier;
+import net.minecraft.client.gui.screens.ChatScreen;
+import net.minecraft.resources.ResourceLocation;
 import wtf.cheeze.sbt.utils.skyblock.SkyblockData;
 
 import java.nio.file.Path;
@@ -45,10 +45,9 @@ public class PersistentData {
         return profiles.getOrDefault(SkyblockData.getCurrentProfileUnique(), new ProfileData());
     }
 
-
     private static final Path pdPath = FabricLoader.getInstance().getConfigDir().resolve("skyblocktweaks-persistent.json");
     private static final ConfigClassHandler<PersistentData> HANDLER = ConfigClassHandler.createBuilder(PersistentData.class)
-            .id(Identifier.of("skyblocktweaks", "persistent"))
+            .id(ResourceLocation.fromNamespaceAndPath("skyblocktweaks", "persistent"))
             .serializer(config -> GsonConfigSerializerBuilder.create(config).appendGsonBuilder(builder -> builder.setFieldNamingPolicy(FieldNamingPolicy.IDENTITY))
                     .setPath(pdPath)
                     .build())
@@ -68,13 +67,12 @@ public class PersistentData {
         HANDLER.save();
     }
 
-
     public static void registerEvents() {
         HANDLER.load();
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             if (!get().needsSave) return;
-            if (client.world != null) {
-                if (client.currentScreen != null && !(client.currentScreen instanceof ChatScreen)) return; // Don't save while in a screen, but allow the ChatScreen
+            if (client.level != null) {
+                if (client.screen != null && !(client.screen instanceof ChatScreen)) return; // Don't save while in a screen, but allow the ChatScreen
                 save();
             } else {
                 save();

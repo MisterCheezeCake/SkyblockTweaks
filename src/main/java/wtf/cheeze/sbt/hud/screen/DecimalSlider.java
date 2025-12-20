@@ -18,13 +18,12 @@
  */
 package wtf.cheeze.sbt.hud.screen;
 
-import net.minecraft.client.gui.widget.SliderWidget;
-import net.minecraft.text.Text;
+import net.minecraft.client.gui.components.AbstractSliderButton;
+import net.minecraft.network.chat.Component;
 
 import java.util.function.Consumer;
 
-public class DecimalSlider extends SliderWidget {
-
+public class DecimalSlider extends AbstractSliderButton {
     private final double min;
     private final double max;
     private final double step;
@@ -34,19 +33,17 @@ public class DecimalSlider extends SliderWidget {
         return Math.round((min + (max - min) * this.value) / step) * step;
     }
 
-    public DecimalSlider(int x, int y, int width, int height, Text text, double value, double min, double max, double step, Consumer<Double> valueConsumer) {
+    public DecimalSlider(int x, int y, int width, int height, Component text, double value, double min, double max, double step, Consumer<Double> valueConsumer) {
         super(x, y, width, height, text, value);
         this.min = min;
         this.max = max;
         this.step = step;
         this.valueConsumer = valueConsumer;
-
-
     }
 
     @Override
     protected void updateMessage() {
-        this.setMessage(Text.literal(String.format("%.1f", actualValue())));
+        this.setMessage(Component.literal(String.format("%.1f", actualValue())));
     }
 
     @Override

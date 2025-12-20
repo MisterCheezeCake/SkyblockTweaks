@@ -25,7 +25,7 @@ import dev.isxander.yacl3.api.controller.ColorControllerBuilder;
 import dev.isxander.yacl3.api.controller.EnumControllerBuilder;
 import dev.isxander.yacl3.config.v2.api.SerialEntry;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
-import net.minecraft.text.Text;
+import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SBTConfig;
@@ -114,24 +114,24 @@ public class SkillHudManager {
                     () -> SBTConfig.huds().skills.mode,
                     () -> {
                         try {
-                            if (timeLeft <= 0) return Text.literal("Skill HUD Placeholder Text");
+                            if (timeLeft <= 0) return Component.literal("Skill HUD Placeholder Text");
                             if (percent == -1) {
                                 if (total == 0) {
-                                    return Text.literal("+" + gained + " (" + NumberUtils.formatNumber((long) progress, ",") + ")");
+                                    return Component.literal("+" + gained + " (" + NumberUtils.formatNumber((long) progress, ",") + ")");
                                 } else {
                                     if (SBTConfig.huds().skills.skillMode == Mode.PERCENT) {
                                         var base = "+" + gained + " (" + NumberUtils.formatPercent(progress, total) + ")";
                                         if (SBTConfig.huds().skills.actionsLeft) {
-                                            return Text.literal(base + " - " + actionsLeft(gained, progress, total) + " Left");
+                                            return Component.literal(base + " - " + actionsLeft(gained, progress, total) + " Left");
                                         } else {
-                                            return Text.literal(base);
+                                            return Component.literal(base);
                                         }
                                     } else {
                                         var base = "+" + gained + " (" + NumberUtils.formatNumber((int) progress, ",") + "/" + (SBTConfig.huds().skills.abridgeDenominator ? NumberUtils.addKOrM((int) total, ",") : NumberUtils.formatNumber((int) total, ",")) + ")";
                                         if (SBTConfig.huds().skills.actionsLeft) {
-                                            return Text.literal(base + " - " + actionsLeft(gained, progress, total) + " Left");
+                                            return Component.literal(base + " - " + actionsLeft(gained, progress, total) + " Left");
                                         } else {
-                                            return Text.literal(base);
+                                            return Component.literal(base);
                                         }
                                     }
                                 }
@@ -140,15 +140,15 @@ public class SkillHudManager {
                                     var level = tryAndGetSkillLevel(currentSkill);
                                     int highestLevel = getSkillTable(currentSkill).length - 1;
                                     if (level == -1 || level > highestLevel)
-                                        return Text.literal("+" + gained + " (" + percent + "%)");
+                                        return Component.literal("+" + gained + " (" + percent + "%)");
                                     var table = getSkillTable(currentSkill);
                                     var nextLevel = table[level];
                                     var progressLevel = (percent / 100) * nextLevel;
                                     var base = "+" + gained + " (" + NumberUtils.formatNumber((int) progressLevel, ",") + "/" + (SBTConfig.huds().skills.abridgeDenominator ? NumberUtils.addKOrM(nextLevel, ",") : NumberUtils.formatNumber(nextLevel, ",")) + ")";
                                     if (SBTConfig.huds().skills.actionsLeft && percent < 100) {
-                                        return Text.literal(base + " - " + actionsLeft(gained, progressLevel, nextLevel) + " Left");
+                                        return Component.literal(base + " - " + actionsLeft(gained, progressLevel, nextLevel) + " Left");
                                     } else {
-                                        return Text.literal(base);
+                                        return Component.literal(base);
                                     }
 
                                 } else {
@@ -156,19 +156,19 @@ public class SkillHudManager {
                                     if (SBTConfig.huds().skills.actionsLeft && percent < 100) {
                                         var level = tryAndGetSkillLevel(currentSkill);
                                         int highestLevel = getSkillTable(currentSkill).length - 1;
-                                        if (level == -1 || level > highestLevel) return Text.literal(base);
+                                        if (level == -1 || level > highestLevel) return Component.literal(base);
                                         var table = getSkillTable(currentSkill);
                                         var nextLevel = table[level];
                                         var progressLevel = (percent / 100) * nextLevel;
-                                        return Text.literal(base + " - " + actionsLeft(gained, progressLevel, nextLevel) + " Left");
+                                        return Component.literal(base + " - " + actionsLeft(gained, progressLevel, nextLevel) + " Left");
                                     } else {
-                                        return Text.literal(base);
+                                        return Component.literal(base);
                                     }
                                 }
                             }
                         } catch (Exception e) {
                             ErrorHandler.handle(e, "Error Creating Skill HUD Text", ErrorLevel.WARNING);
-                            return Text.literal("+" + gained + " (" + percent + "%)");
+                            return Component.literal("+" + gained + " (" + percent + "%)");
                         }
                     },
                     () -> {
@@ -223,11 +223,11 @@ public class SkillHudManager {
             PERCENT;
 
             @Override
-            public Text getDisplayName() {
+            public Component getDisplayName() {
                 return switch (this) {
-                    case HYPIXEL -> Text.literal("Default");
-                    case NUMBER -> Text.literal("All Numbers");
-                    case PERCENT -> Text.literal("All Percent");
+                    case HYPIXEL -> Component.literal("Default");
+                    case NUMBER -> Component.literal("All Numbers");
+                    case PERCENT -> Component.literal("All Percent");
                 };
             }
         }

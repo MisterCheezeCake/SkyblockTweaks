@@ -21,7 +21,7 @@ package wtf.cheeze.sbt.config.categories;
 import dev.isxander.yacl3.api.ConfigCategory;
 import dev.isxander.yacl3.api.OptionDescription;
 import dev.isxander.yacl3.config.v2.api.SerialEntry;
-import net.minecraft.text.Text;
+import net.minecraft.network.chat.Component;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.features.mining.EventTimerHud;
 import wtf.cheeze.sbt.features.mining.FetchurFeatures;
@@ -29,7 +29,6 @@ import wtf.cheeze.sbt.features.mining.MiningHud;
 import wtf.cheeze.sbt.features.mining.MiningTitles;
 
 public class Mining {
-
     @SerialEntry
     public MiningHud.Config hud = new MiningHud.Config();
 
@@ -45,8 +44,8 @@ public class Mining {
 
     public static ConfigCategory getCategory(ConfigImpl defaults, ConfigImpl configThing) {
         return ConfigCategory.createBuilder()
-                .name(Text.translatable("sbt.config.mining"))
-                .tooltip(Text.translatable("sbt.config.mining.desc"))
+                .name(Component.translatable("sbt.config.mining"))
+                .tooltip(Component.translatable("sbt.config.mining.desc"))
                 .group(MiningHud.Config.getGroup(defaults, configThing))
                 .group(EventTimerHud.Config.getGroup(defaults, configThing))
                 .group(MiningTitles.Config.getGroup(defaults, configThing))
@@ -56,10 +55,10 @@ public class Mining {
 
 
     private static final String BASE_KEY = "sbt.config.mining.";
-    public static Text key(String key) {
-        return Text.translatable(BASE_KEY + key);
+    public static Component key(String key) {
+        return Component.translatable(BASE_KEY + key);
     }
     public static OptionDescription keyD(String key) {
-        return OptionDescription.of(Text.translatable(BASE_KEY + key + ".desc"));
+        return OptionDescription.of(Component.translatable(BASE_KEY + key + ".desc"));
     }
 }

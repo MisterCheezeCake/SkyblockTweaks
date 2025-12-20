@@ -21,8 +21,8 @@ package wtf.cheeze.sbt.features.mining;
 import dev.isxander.yacl3.api.*;
 import dev.isxander.yacl3.api.controller.ColorControllerBuilder;
 import dev.isxander.yacl3.config.v2.api.SerialEntry;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.text.Text;
+import net.minecraft.client.Minecraft;
+import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SBTConfig;
@@ -50,14 +50,12 @@ import wtf.cheeze.sbt.utils.skyblock.MiningData;
 import wtf.cheeze.sbt.utils.skyblock.SkyblockData;
 import wtf.cheeze.sbt.utils.skyblock.SkyblockUtils;
 
-import java.awt.*;
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
 
-
 public class MiningHud extends MultilineTextHud {
-
     public static final MiningHud INSTANCE = new MiningHud();
 
     private MiningHud() {
@@ -166,7 +164,7 @@ public class MiningHud extends MultilineTextHud {
     }
 
 
-    private final ArrayList<Cache<Text>> comCache = new ArrayList<>();
+    private final ArrayList<Cache<Component>> comCache = new ArrayList<>();
 
     private FlexibleHudLine.Part[] getComParts() {
             var arr = new FlexibleHudLine.Part[SkyblockData.miningData.comNo];
@@ -189,7 +187,7 @@ public class MiningHud extends MultilineTextHud {
             return arr;
     }
 
-    private CheezePair<Supplier<Text>, Supplier<HudIcon>> genComSuppliers(int i) {
+    private CheezePair<Supplier<net.minecraft.network.chat.Component>, Supplier<HudIcon>> genComSuppliers(int i) {
 
         return new CheezePair<>(
                 () -> {
@@ -216,18 +214,18 @@ public class MiningHud extends MultilineTextHud {
 
 
 
-        private final Text name;
-        private final Text preview;
+        private final Component name;
+        private final Component preview;
         private final boolean repeatable;
 
-        Entry(Text name, Text preview, boolean repeatable) {
+        Entry(Component name, Component preview, boolean repeatable) {
             this.name = name;
             this.preview = preview;
             this.repeatable = repeatable;
         }
 
         @Override
-        public Text getDisplayName() {
+        public Component getDisplayName() {
             return name;
         }
 
@@ -237,7 +235,7 @@ public class MiningHud extends MultilineTextHud {
         }
 
         @Override
-        public Text getPreviewText() {
+        public Component getPreviewText() {
             return preview;
         }
     }
@@ -280,10 +278,10 @@ public class MiningHud extends MultilineTextHud {
             var composition = ButtonOption.createBuilder()
                     .name(Mining.key("hud.composition"))
                     .description(Mining.keyD("hud.composition"))
-                    .text(Text.translatable("sbt.gui.config.composition.open"))
+                    .text(Component.translatable("sbt.gui.config.composition.open"))
                     .action((yaclScreen, buttonOption) -> {
                         var screen = new CompositionPopupScreen<>(
-                                TextUtils.join(TextUtils.withColor(Text.translatable("sbt.gui.config.composition"), Colors.CYAN), TextUtils.SPACE, INSTANCE.getName().primaryName()),
+                                TextUtils.join(TextUtils.withColor(Component.translatable("sbt.gui.config.composition"), Colors.CYAN), TextUtils.SPACE, INSTANCE.getName().primaryName()),
                                 yaclScreen,
                                 Binding.generic(
                                         defaults.mining.hud.composition,
@@ -291,7 +289,7 @@ public class MiningHud extends MultilineTextHud {
                                         it -> config.mining.hud.composition = it
                                 ),
                                 Entry.values());
-                        MinecraftClient.getInstance().setScreen(screen);
+                        Minecraft.getInstance().setScreen(screen);
                     })
                     .build();
             var enabled = Option.<Boolean>createBuilder()

@@ -22,14 +22,14 @@ import dev.isxander.yacl3.api.Option;
 import dev.isxander.yacl3.api.OptionGroup;
 import dev.isxander.yacl3.config.v2.api.SerialEntry;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.screen.ingame.HandledScreen;
-import net.minecraft.client.gui.widget.ClickableWidget;
-import net.minecraft.client.gui.widget.TextFieldWidget;
-import net.minecraft.screen.slot.Slot;
-import net.minecraft.text.Text;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.AbstractWidget;
+import net.minecraft.client.gui.components.EditBox;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.inventory.Slot;
 import org.intellij.lang.annotations.Language;
 import org.lwjgl.glfw.GLFW;
 import wtf.cheeze.sbt.SkyblockTweaks;
@@ -55,8 +55,6 @@ import wtf.cheeze.sbt.utils.skyblock.ItemUtils;
 import java.util.*;
 
 public class MinionExp {
-
-
     @Language("RegExp")
     public static final String MINION_EXP_SCREEN_REGEX = "Minion Chest|.+ Minion [IVX]+";
     private static final int[] MINION_SLOTS = {21, 22, 23, 24, 25, 30, 31, 32, 33, 34, 39, 40, 41, 42, 43};
@@ -67,35 +65,32 @@ public class MinionExp {
 
     public static void registerEvents() {
         ScreenEvents.AFTER_INIT.register((client, screen, width, height) -> {
-            if (screen instanceof HandledScreen<?> handledScreen && handledScreen.getTitle().getString().matches(MINION_EXP_SCREEN_REGEX) && SBTConfig.get().minionExp.enabled && !KillSwitch.shouldKill(FEATURE_ID)) {
+            if (screen instanceof AbstractContainerScreen<?> handledScreen && handledScreen.getTitle().getString().matches(MINION_EXP_SCREEN_REGEX) && SBTConfig.get().minionExp.enabled && !KillSwitch.shouldKill(FEATURE_ID)) {
                 ((SBTHandledScreen)handledScreen).sbt$setPopup(new MinionExpPopup(handledScreen));
             }
         });
     }
 
     public static class MinionExpPopup implements Popup {
-
         private static final int CHEST_LAST_SLOT = 27;
         private final int x;
         private final int y;
-        private final HandledScreen<?> screen;
+        private final AbstractContainerScreen<?> screen;
         private final boolean isChest;
-        private final List<TextFieldWidget> children;
+        private final List<EditBox> children;
 
-
-
-        public MinionExpPopup(HandledScreen<?> screen) {
-            this.x = SBTConfig.get().minionExp.side.positionPopup(screen.x);
-            this.y = screen.y;
+        public MinionExpPopup(AbstractContainerScreen<?> screen) {
+            this.x = SBTConfig.get().minionExp.side.positionPopup(screen.leftPos);
+            this.y = screen.topPos;
             this.screen = screen;
             this.isChest = screen.getTitle().getString().equals("Minion Chest");
-            var textWidget = new TextFieldWidget(MinecraftClient.getInstance().textRenderer, x + 10, y + 95, 60, 15, Text.empty());
-            textWidget.setTextPredicate(Predicates.INT);
+            var textWidget = new EditBox(Minecraft.getInstance().font, x + 10, y + 95, 60, 15, Component.empty());
+            textWidget.setFilter(Predicates.INT);
             textWidget.setMaxLength(4);
-            textWidget.setText(contents);
+            textWidget.setValue(contents);
             this.children = List.of(textWidget);
-            screen.drawables.add(this);
-            screen.addDrawableChild(textWidget);
+            screen.renderables.add(this);
+            screen.addRenderableWidget(textWidget);
         }
 
 
@@ -111,7 +106,7 @@ public class MinionExp {
         }
 
         @Override
-        public List<? extends ClickableWidget> childrenList() {
+        public List<? extends AbstractWidget> childrenList() {
             return children;
         }
 
@@ -120,27 +115,26 @@ public class MinionExp {
             return screen;
         }
 
-
         //TODO: Switch to text widgets
         @Override
-        public void render(DrawContext context, int mouseX, int mouseY, float delta) {
+        public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
             boolean shadow = SBTConfig.get().minionExp.shadowText;
             try {
-                Popup.super.renderBackground(context);
-                Popup.super.drawSBTFooter(context, shadow);
-                RenderUtils.drawCenteredText(context, TextUtils.withBold("Skill EXP"), x + WIDTH / 2, y + 5, Colors.WHITE, shadow);
-                RenderUtils.drawCenteredText(context, Text.literal("☯ Wisdom"), x + WIDTH / 2, y + 85, Colors.CYAN, shadow);
+                Popup.super.renderBackground(guiGraphics);
+                Popup.super.drawSBTFooter(guiGraphics, shadow);
+                RenderUtils.drawCenteredText(guiGraphics, TextUtils.withBold("Skill EXP"), x + WIDTH / 2, y + 5, Colors.WHITE, shadow);
+                RenderUtils.drawCenteredText(guiGraphics, Component.literal("☯ Wisdom"), x + WIDTH / 2, y + 85, Colors.CYAN, shadow);
 
                 var renderY = y + 20;
                 var minionExp = getMinionExp();
-                if (this.children.getFirst().getText().equals("____")) {
+                if (this.children.getFirst().getValue().equals("____")) {
                     var primarySkill = getPrimarySkill(minionExp.keySet());
-                    this.children.getFirst().setText(PersistentData.get().currentProfile().skillWisdom.getOrDefault(primarySkill, 0) + "");
+                    this.children.getFirst().setValue(PersistentData.get().currentProfile().skillWisdom.getOrDefault(primarySkill, 0) + "");
                 }
                 for (var entry : minionExp.entrySet()) {
-                    RenderUtils.drawCenteredText(context, Text.literal(entry.getKey().getName() + ":"), x + WIDTH / 2, renderY, Colors.CYAN, shadow);
+                    RenderUtils.drawCenteredText(guiGraphics, Component.literal(entry.getKey().getName() + ":"), x + WIDTH / 2, renderY, Colors.CYAN, shadow);
                     var exp = entry.getValue();
-                    RenderUtils.drawCenteredText(context, Text.literal(NumberUtils.addKOrM((int) (exp * getMult()), ",") + " XP"), x + WIDTH / 2, renderY + 10, Colors.WHITE, shadow);
+                    RenderUtils.drawCenteredText(guiGraphics, Component.literal(NumberUtils.addKOrM((int) (exp * getMult()), ",") + " XP"), x + WIDTH / 2, renderY + 10, Colors.WHITE, shadow);
                     renderY += 30;
                 }
             } catch (Exception e) {
@@ -164,7 +158,7 @@ public class MinionExp {
                     this.children.getFirst().setFocused(false);
                     return true;
                 }
-                if (keyCode == MinecraftClient.getInstance().options.inventoryKey.boundKey.getCode()) {
+                if (keyCode == Minecraft.getInstance().options.keyInventory.key.getValue()) {
                     return true; // Prevents closing the popup when pressing the inventory key while typing in the text field
                 }
             }
@@ -172,19 +166,19 @@ public class MinionExp {
         }
 
         private List<Slot> getRelevantSlots() {
-            return isChest ? screen.getScreenHandler().slots.stream().filter(slot -> slot.id < CHEST_LAST_SLOT).toList() : Arrays.stream(MINION_SLOTS).mapToObj(slotId -> screen.getScreenHandler().slots.get(slotId)).toList();
+            return isChest ? screen.getMenu().slots.stream().filter(slot -> slot.index < CHEST_LAST_SLOT).toList() : Arrays.stream(MINION_SLOTS).mapToObj(slotId -> screen.getMenu().slots.get(slotId)).toList();
         }
 
         private Map<Skill, Double> getMinionExp() {
             var exp = Constants.minions().minionExp();
             var map = new EnumMap<Skill, Double>(Skill.class);
             for (var slot: getRelevantSlots()) {
-                var id = ItemUtils.getSkyblockId(slot.getStack());
+                var id = ItemUtils.getSkyblockId(slot.getItem());
                 if (id.isEmpty()) continue;
                 var entry = exp.get(id);
                 if (entry == null) continue;
                 map.putIfAbsent(entry.skill(), 0d);
-                var xpFromThisStack = entry.exp() * slot.getStack().getCount() * getMult();
+                var xpFromThisStack = entry.exp() * slot.getItem().getCount() * getMult();
                 map.put(entry.skill(), map.get(entry.skill()) + xpFromThisStack);
                 SkyblockTweaks.LOGGER.debug("Adding {} XP to {} from {}", xpFromThisStack, entry.skill(), id);
             }
@@ -192,14 +186,11 @@ public class MinionExp {
         }
 
         private float getMult() {
-            var text = this.children.getFirst().getText();
+            var text = this.children.getFirst().getValue();
             contents = text;
             return  text.isEmpty() || text.equals("____") ? 1f : 1f + Float.parseFloat(text) / 100f;
         }
-
-
     }
-
 
     private static Skill getPrimarySkill(Collection<Skill> skills) {
         if (skills.contains(Skill.MINING)){
@@ -222,7 +213,6 @@ public class MinionExp {
 
         @SerialEntry
         public boolean shadowText = false;
-
 
         public static OptionGroup getGroup(ConfigImpl defaults, ConfigImpl config) {
             var enabled = Option.<Boolean>createBuilder()
@@ -265,8 +255,6 @@ public class MinionExp {
                     .option(side)
                     .option(shadowText)
                     .build();
-
-
         }
     }
 

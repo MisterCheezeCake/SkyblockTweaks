@@ -22,14 +22,14 @@ import dev.isxander.yacl3.api.Option;
 import dev.isxander.yacl3.api.OptionGroup;
 import dev.isxander.yacl3.api.controller.ColorControllerBuilder;
 import dev.isxander.yacl3.config.v2.api.SerialEntry;
-import net.minecraft.text.Text;
+import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SBTConfig;
 import wtf.cheeze.sbt.hud.bases.TextHud;
+import wtf.cheeze.sbt.hud.components.SingleHudLine;
 import wtf.cheeze.sbt.hud.utils.AnchorPoint;
 import wtf.cheeze.sbt.hud.utils.DrawMode;
-import wtf.cheeze.sbt.hud.components.SingleHudLine;
 import wtf.cheeze.sbt.hud.utils.HudInformation;
 import wtf.cheeze.sbt.hud.utils.HudName;
 import wtf.cheeze.sbt.utils.render.Colors;
@@ -38,7 +38,6 @@ import wtf.cheeze.sbt.utils.skyblock.SkyblockData;
 import java.awt.Color;
 
 public class FpsHud extends TextHud {
-
     public static final FpsHud INSTANCE = new FpsHud();
 
     private FpsHud() {
@@ -56,10 +55,11 @@ public class FpsHud extends TextHud {
                 () -> SBTConfig.huds().fps.color,
                 () -> SBTConfig.huds().fps.outlineColor,
                 () -> SBTConfig.huds().fps.mode,
-                () -> Text.literal(SBTConfig.huds().fps.reverse ?  "FPS: " + client.getCurrentFps() : client.getCurrentFps() + " FPS")
+                () -> Component.literal(SBTConfig.huds().fps.reverse ?  "FPS: " + mc.getFps() : mc.getFps() + " FPS")
 
         );
     }
+
     @Override
     public boolean shouldRender(boolean fromHudScreen) {
         if (!super.shouldRender(fromHudScreen)) return false;

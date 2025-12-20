@@ -25,8 +25,6 @@ import wtf.cheeze.sbt.utils.enums.Powder;
  * Java version of <a href="https://github.com/MisterCheezeCake/ChatTriggers-Modules/tree/main/CalcPowder">CalcPowder</a>, by Yours Truly
  */
 public class CalcPowder {
-
-
     @FunctionalInterface
     public interface CostFunction {
         double calculate(double nextLevel);
@@ -44,7 +42,7 @@ public class CalcPowder {
         public int calculateCost(int target) {
             var currentCost = 0;
             for (var i = 1; i <= target; i++) {
-                currentCost += getCostFunction().calculate(i);
+                currentCost += (int) getCostFunction().calculate(i);
             }
             return currentCost;
         }

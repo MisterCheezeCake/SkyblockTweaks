@@ -23,24 +23,23 @@ import dev.isxander.yacl3.api.OptionGroup;
 import dev.isxander.yacl3.api.controller.ColorControllerBuilder;
 import dev.isxander.yacl3.api.controller.StringControllerBuilder;
 import dev.isxander.yacl3.config.v2.api.SerialEntry;
-import net.minecraft.text.Text;
+import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SBTConfig;
 import wtf.cheeze.sbt.hud.bases.TextHud;
+import wtf.cheeze.sbt.hud.components.SingleHudLine;
 import wtf.cheeze.sbt.hud.utils.AnchorPoint;
-import wtf.cheeze.sbt.hud.utils.HudName;
-import wtf.cheeze.sbt.utils.NumberUtils;
 import wtf.cheeze.sbt.hud.utils.DrawMode;
 import wtf.cheeze.sbt.hud.utils.HudInformation;
-import wtf.cheeze.sbt.hud.components.SingleHudLine;
+import wtf.cheeze.sbt.hud.utils.HudName;
+import wtf.cheeze.sbt.utils.NumberUtils;
 import wtf.cheeze.sbt.utils.render.Colors;
 import wtf.cheeze.sbt.utils.skyblock.SkyblockData;
 
 import java.awt.Color;
 
 public class DefenseHud extends TextHud {
-
     public static final DefenseHud INSTANCE = new DefenseHud();
 
     private DefenseHud() {
@@ -59,9 +58,10 @@ public class DefenseHud extends TextHud {
                 () -> SBTConfig.huds().defense.color,
                 () -> SBTConfig.huds().defense.outlineColor,
                 () -> SBTConfig.huds().defense.mode,
-                () -> Text.literal(NumberUtils.formatNumber(SkyblockData.Stats.defense, SBTConfig.huds().defense.separator) + (SBTConfig.huds().defense.icon ? "❈" : ""))
+                () -> Component.literal(NumberUtils.formatNumber(SkyblockData.Stats.defense, SBTConfig.huds().defense.separator) + (SBTConfig.huds().defense.icon ? "❈" : ""))
         );
     }
+
     @Override
     public boolean shouldRender(boolean fromHudScreen) {
         if (!super.shouldRender(fromHudScreen)) return false;

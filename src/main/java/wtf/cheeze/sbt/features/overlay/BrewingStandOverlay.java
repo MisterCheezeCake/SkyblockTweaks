@@ -21,10 +21,9 @@ package wtf.cheeze.sbt.features.overlay;
 import dev.isxander.yacl3.api.Option;
 import dev.isxander.yacl3.api.OptionGroup;
 import dev.isxander.yacl3.config.v2.api.SerialEntry;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.screen.ingame.HandledScreen;
-import net.minecraft.screen.slot.Slot;
-import net.minecraft.util.collection.DefaultedList;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.core.NonNullList;
+import net.minecraft.world.inventory.Slot;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SBTConfig;
 import wtf.cheeze.sbt.config.categories.General;
@@ -32,7 +31,6 @@ import wtf.cheeze.sbt.utils.render.Colors;
 import wtf.cheeze.sbt.utils.render.RenderUtils;
 
 public class BrewingStandOverlay {
-
     private static final int DRAW_OFFSET_X = 20;
     private static final int DRAW_OFFSET_Y = 4;
     public static final float Z_OFFSET = 251;
@@ -41,37 +39,34 @@ public class BrewingStandOverlay {
     private static final int TIMER_SLOT = 24;
     private static final int RIGHT_OUTPUT_SLOT = 42;
 
-
-    public static void render(DefaultedList<Slot> slots, DrawContext context) {
+    public static void render(NonNullList<Slot> slots, GuiGraphics guiGraphics) {
         if (!SBTConfig.get().brewingStandOverlay.enabled) return;
         var input = slots.get(INPUT_SLOT);
         var timer = slots.get(TIMER_SLOT);
         var output = slots.get(RIGHT_OUTPUT_SLOT);
-        RenderUtils.drawWithZ(context, Z_OFFSET, () -> {
-            if (input.hasStack()) {
-                drawName(input, context);
+        RenderUtils.drawWithZ(guiGraphics, Z_OFFSET, () -> {
+            if (input.hasItem()) {
+                drawName(input, guiGraphics);
             }
-            if (!timer.getStack().getName().getString().startsWith("Place Water Bottles")) {
-                drawName(timer, context);
+            if (!timer.getItem().getHoverName().getString().startsWith("Place Water Bottles")) {
+                drawName(timer, guiGraphics);
             }
-            if (output.hasStack()) {
-                drawName(output, context);
+            if (output.hasItem()) {
+                drawName(output, guiGraphics);
             }
         });
-
     }
 
-
-    private static void drawName(Slot slot, DrawContext context) {
-        var name = slot.getStack().getName();
+    private static void drawName(Slot slot, GuiGraphics guiGraphics) {
+        var name = slot.getItem().getHoverName();
         var color =  name.getStyle().getColor();
         int rcolor;
         if (color == null) {
             rcolor = Colors.WHITE;
         } else {
-            rcolor = color.getRgb();
+            rcolor = color.getValue();
         }
-        RenderUtils.drawText(context, name, slot.x + DRAW_OFFSET_X, slot.y + DRAW_OFFSET_Y, rcolor, false);
+        RenderUtils.drawText(guiGraphics, name, slot.x + DRAW_OFFSET_X, slot.y + DRAW_OFFSET_Y, rcolor, false);
     }
 
     public static class Config {

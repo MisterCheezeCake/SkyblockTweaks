@@ -26,8 +26,6 @@ import java.util.zip.*;
  * Adapted from  <a href="https://github.com/ChatTriggers/ctjs/blob/3921da9991ac09b872db63a1f4fd5e5cc928c032/src/main/kotlin/com/chattriggers/ctjs/api/client/FileLib.kt#L228">ChatTriggers FileLib</a>
  */
 public class ZipUtils {
-
-
     private static final int BUFFER_SIZE = 4096;
 
     public static void unzip(String zipFilePath, File destDirectory) throws IOException {
@@ -35,6 +33,7 @@ public class ZipUtils {
             unzip(fis, destDirectory);
         }
     }
+
     public static void unzip(InputStream source, File destDirectory) throws IOException {
         if (!destDirectory.exists()) destDirectory.mkdirs();
         try (ZipInputStream zipIn = new ZipInputStream(source)) {

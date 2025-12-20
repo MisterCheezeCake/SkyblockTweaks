@@ -20,7 +20,7 @@ package wtf.cheeze.sbt.compat.rei;
 
 import me.shedaniel.math.Rectangle;
 import me.shedaniel.rei.api.client.registry.screen.ExclusionZonesProvider;
-import net.minecraft.client.gui.screen.ingame.GenericContainerScreen;
+import net.minecraft.client.gui.screens.inventory.ContainerScreen;
 import wtf.cheeze.sbt.hud.bounds.Bounds;
 import wtf.cheeze.sbt.utils.injected.SBTHandledScreen;
 import wtf.cheeze.sbt.utils.render.Popup;
@@ -28,9 +28,9 @@ import wtf.cheeze.sbt.utils.render.Popup;
 import java.util.Collection;
 import java.util.List;
 
-public class ExclusionZoneProvider implements ExclusionZonesProvider<GenericContainerScreen> {
+public class ExclusionZoneProvider implements ExclusionZonesProvider<ContainerScreen> {
     @Override
-    public Collection<Rectangle> provide(GenericContainerScreen screen) {
+    public Collection<Rectangle> provide(ContainerScreen screen) {
         Popup popup = ((SBTHandledScreen) screen).sbt$getPopup();
         if (popup != null) {
             Bounds bounds = popup.getBounds();

@@ -18,7 +18,8 @@
  */
 package wtf.cheeze.sbt.hud.bases;
 
-import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphics;
 import org.jetbrains.annotations.NotNull;
 import wtf.cheeze.sbt.hud.HUD;
 import wtf.cheeze.sbt.hud.bounds.Bounds;
@@ -32,27 +33,26 @@ public abstract class SingleLineHybridHud extends HUD {
     private int width = 0;
     protected CheezePair<HudComponent, Integer>[] components;
 
-
     //TODO: Scale is not perfect here
     @Override
-    public void render(DrawContext context, boolean fromHudScreen, boolean hovered) {
+    public void render(GuiGraphics guiGraphics, boolean fromHudScreen, boolean hovered) {
         if (!shouldRender(fromHudScreen)) return;
         var bounds = getCurrentBounds();
         if (fromHudScreen) {
-            drawBackground(context, hovered ? BACKGROUND_HOVERED : BACKGROUND_NOT_HOVERED);
+            drawBackground(guiGraphics, hovered ? BACKGROUND_HOVERED : BACKGROUND_NOT_HOVERED);
         }
-        RenderUtils.beginScale(context, bounds.scale);
+        RenderUtils.beginScale(guiGraphics, bounds.scale);
         int renderX = bounds.x;
         int tallest = 0;
         for (var pair: components) {
             var component = pair.key();
-            component.render(context, renderX, bounds.y + (int) (pair.val()*bounds.scale), bounds.scale);
+            component.render(guiGraphics, renderX, bounds.y + (int) (pair.val()*bounds.scale), bounds.scale);
             renderX += (int) (bounds.scale * component.getWidth());
             if (component.getHeight() > tallest) {
                 tallest = component.getHeight();
             }
         }
-        RenderUtils.popMatrix(context);
+        RenderUtils.popMatrix(guiGraphics);
         this.height = (int) (tallest * bounds.scale);
         this.width = renderX - bounds.x;
     }
@@ -65,10 +65,10 @@ public abstract class SingleLineHybridHud extends HUD {
                 return new Bounds(getActualX(INFO.getX.get()), getActualY(INFO.getY.get()), width, height , scale);
             }
             case RIGHT -> {
-                return new Bounds((int) (getActualX(INFO.getX.get()) - width ), getActualY(INFO.getY.get()), width , height , scale);
+                return new Bounds(getActualX(INFO.getX.get()) - width, getActualY(INFO.getY.get()), width , height , scale);
             }
             case CENTER -> {
-                return new Bounds((int) (getActualX(INFO.getX.get()) - width  / 2), getActualY(INFO.getY.get()), width , height , scale);
+                return new Bounds(getActualX(INFO.getX.get()) - width  / 2, getActualY(INFO.getY.get()), width , height , scale);
             }
             default -> throw new IllegalStateException("Unexpected value: " + INFO.getAnchorPoint.get());
         }
@@ -92,9 +92,9 @@ public abstract class SingleLineHybridHud extends HUD {
     }
 
     @Override
-    public void drawBackground(DrawContext context, int color) {
+    public void drawBackground(GuiGraphics guiGraphics, int color) {
         var bounds = getCurrentBounds();
         int i = (int) (1 * bounds.scale);
-        context.fill(bounds.x - i, bounds.y - i, (int) (bounds.x + bounds.width + i), (int) (bounds.y + bounds.height + i - 1), color);
+        guiGraphics.fill(bounds.x - i, bounds.y - i, (int) (bounds.x + bounds.width + i), (int) (bounds.y + bounds.height + i - 1), color);
     }
 }

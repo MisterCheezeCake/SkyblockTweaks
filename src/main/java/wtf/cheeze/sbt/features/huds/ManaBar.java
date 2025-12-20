@@ -35,7 +35,6 @@ import wtf.cheeze.sbt.utils.skyblock.SkyblockData;
 import java.awt.Color;
 
 public class ManaBar extends BarHud {
-
     public static final ManaBar INSTANCE = new ManaBar();
 
     private ManaBar() {

@@ -24,7 +24,6 @@ public record Skills(
         int[] runeLevels,
         int[] dungeonLevels
 ) {
-
     public static Skills empty() {
         return new Skills(new int[0], new int[0], new int[0], new int[0]);
     }

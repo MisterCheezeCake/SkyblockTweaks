@@ -16,18 +16,21 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with SkyblockTweaks. If not, see <https://www.gnu.org/licenses/>.
  */
-package wtf.cheeze.sbt.mixin.accessors;
+package wtf.cheeze.sbt.mixin.hooks;
 
-
-import net.minecraft.client.gui.hud.PlayerListHud;
-import net.minecraft.client.network.PlayerListEntry;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.ReceivingLevelScreen;
+import net.minecraft.client.multiplayer.ClientLevel;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.gen.Accessor;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import wtf.cheeze.sbt.events.WorldLoadEvents;
 
-import java.util.Comparator;
-
-@Mixin(PlayerListHud.class)
-public interface PlayerListHudAccessor {
-    @Accessor("ENTRY_ORDERING")
-    static Comparator<PlayerListEntry> getEntryOrdering() { throw new IllegalStateException();}
+@Mixin(Minecraft.class)
+public abstract class MinecraftMixin {
+    @Inject(method = "setLevel", at = @At("TAIL"))
+    private void sbt$onJoinWorld(ClientLevel world, ReceivingLevelScreen.Reason worldEntryReason, CallbackInfo ci) {
+        WorldLoadEvents.WORLD_LOAD.invoker().onWorldLoad(world, worldEntryReason);
+    }
 }

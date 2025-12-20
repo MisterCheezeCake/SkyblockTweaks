@@ -18,8 +18,8 @@
  */
 package wtf.cheeze.sbt.hud.icon;
 
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.item.ItemStack;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import wtf.cheeze.sbt.utils.render.RenderUtils;
 
@@ -31,9 +31,9 @@ public class ItemStackIcon implements HudIcon {
     }
 
     @Override
-    public void render(DrawContext context, int x, int y, float scale) {
-        RenderUtils.beginScale(context, 0.5f);
-        context.drawItem(iconStack, (int) (x / (0.5f *scale)) , (int) (y / (0.5f *scale)));
-        RenderUtils.popMatrix(context);
+    public void render(GuiGraphics guiGraphics, int x, int y, float scale) {
+        RenderUtils.beginScale(guiGraphics, 0.5f);
+        guiGraphics.renderItem(iconStack, (int) (x / (0.5f *scale)), (int) (y / (0.5f *scale)));
+        RenderUtils.popMatrix(guiGraphics);
     }
 }

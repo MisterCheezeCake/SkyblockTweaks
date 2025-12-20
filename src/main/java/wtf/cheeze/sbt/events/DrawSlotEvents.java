@@ -20,9 +20,9 @@ package wtf.cheeze.sbt.events;
 
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.screen.slot.Slot;
-import net.minecraft.text.Text;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.inventory.Slot;
 
 public class DrawSlotEvents {
 
@@ -32,12 +32,8 @@ public class DrawSlotEvents {
         }
     });
 
-
-
-
-
     @FunctionalInterface
     public interface OnDrawSlot {
-        void onDrawSlot(Text screenTitle, DrawContext context, Slot slot);
+        void onDrawSlot(Component screenTitle, GuiGraphics guiGraphics, Slot slot);
     }
 }

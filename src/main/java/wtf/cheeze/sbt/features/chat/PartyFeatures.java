@@ -1,3 +1,5 @@
+// TODO(Ravel): Failed to fully resolve file: null
+// TODO(Ravel): Failed to fully resolve file: null
 /*
  * Copyright (C) 2024 MisterCheezeCake
  *
@@ -24,8 +26,8 @@ import dev.isxander.yacl3.api.OptionGroup;
 import dev.isxander.yacl3.api.controller.IntegerFieldControllerBuilder;
 import dev.isxander.yacl3.api.controller.StringControllerBuilder;
 import dev.isxander.yacl3.config.v2.api.SerialEntry;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.text.Text;
+import net.minecraft.client.Minecraft;
+import net.minecraft.network.chat.Component;
 import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SBTConfig;
@@ -44,7 +46,6 @@ import static wtf.cheeze.sbt.config.categories.Chat.key;
 import static wtf.cheeze.sbt.config.categories.Chat.keyD;
 
 public class PartyFeatures {
-
     private static final String FEATURE_ID = "party_commands";
 
     public static final Pattern PARTY_PATTERN = Pattern.compile("Party > ([^:]+): !(.+)");
@@ -54,7 +55,7 @@ public class PartyFeatures {
     public static boolean verboseDebug = false;
     public static long lastPartyCommand = 0;
 
-    private static final MinecraftClient client = MinecraftClient.getInstance();
+    private static final Minecraft mc = Minecraft.getInstance();
 
     public static void registerEvents() {
         ChatEvents.ON_GAME.register(message -> {
@@ -98,7 +99,7 @@ public class PartyFeatures {
                             return;
                         }
                         if (verboseDebug) sendDebugMessage("Sending '/p transfer " + name + "'");
-                        client.getNetworkHandler().sendChatCommand("p transfer " + name);
+                        mc.getConnection().sendCommand("p transfer " + name);
                     }
                     case "allinv", "allinvite" -> {
                         if (!SkyblockData.Party.leader) {
@@ -106,7 +107,7 @@ public class PartyFeatures {
                             return;
                         }
                         if (verboseDebug) sendDebugMessage("Sending '/p settings allinvite'");
-                        client.getNetworkHandler().sendChatCommand("p settings allinvite");
+                        mc.getConnection().sendCommand("p settings allinvite");
                     }
                     case "warp" -> {
                         if (!SkyblockData.Party.leader) {
@@ -114,15 +115,15 @@ public class PartyFeatures {
                             return;
                         }
                         if (verboseDebug) sendDebugMessage("Sending '/p warp'");
-                        client.getNetworkHandler().sendChatCommand("p warp");
+                        mc.getConnection().sendCommand("p warp");
                     }
                     case "help" -> {
-                        if ((name.equals(client.player.getName().getString()))) {
+                        if ((name.equals(mc.player.getName().getString()))) {
                             MessageManager.send("Available party commands: !ptme, !allinvite, !warp, !help");
                             return;
                         }
                         if (verboseDebug) sendDebugMessage("Sending help message");
-                        client.getNetworkHandler().sendChatCommand("pc [SkyblockTweaks] Available party commands: !ptme, !allinvite, !warp, !help");
+                        mc.getConnection().sendCommand("pc [SkyblockTweaks] Available party commands: !ptme, !allinvite, !warp, !help");
                     }
                 }
             } else if (s.startsWith("The party was transferred to")) {
@@ -132,7 +133,7 @@ public class PartyFeatures {
                 if (!matcher.matches()) return;
                 var name = matcher.group(1);
                 if (name.contains(" ")) name = name.split(" ")[1];
-                var me = client.player.getName().getString();
+                var me = mc.player.getName().getString();
                 SkyblockData.Party.leader = name.equals(me);
             } else if (s.matches("From .*: Boop!")) {
                 if (!SBTConfig.get().partyCommands.boopInvites) return;
@@ -140,7 +141,7 @@ public class PartyFeatures {
                 if (!matcher.matches()) return;
                 var n = matcher.group(1);
                 var name = n.contains(" ") ? n.split(" ")[1] : n;
-                client.send(() -> MessageManager.send(getInviteMessage(name)));
+                mc.execute(() -> MessageManager.send(getInviteMessage(name)));
             }
         });
     }
@@ -220,7 +221,7 @@ public class PartyFeatures {
 
     }
 
-    private static Text getInviteMessage(String name) {
+    private static Component getInviteMessage(String name) {
         //TODO: Switch this from legacy formatting
         return TextUtils.getTextThatRunsCommand(
                 TextUtils.join(
@@ -237,13 +238,13 @@ public class PartyFeatures {
     }
 
 
-    private static final Text DEBUG_PREFIX = TextUtils.join(
+    private static final Component DEBUG_PREFIX = TextUtils.join(
             TextUtils.withColor("[", Colors.DARK_GRAY),
             TextUtils.withColor("SBT Party Debugger", Colors.GREEN),
             TextUtils.withColor("]", Colors.DARK_GRAY)
     );
     private static void sendDebugMessage(String message) {
-        client.player.sendMessage(TextUtils.join(DEBUG_PREFIX, TextUtils.SPACE, TextUtils.withColor(message, Colors.CYAN)), false);
+        mc.player.displayClientMessage(TextUtils.join(DEBUG_PREFIX, TextUtils.SPACE, TextUtils.withColor(message, Colors.CYAN)), false);
     }
 
 

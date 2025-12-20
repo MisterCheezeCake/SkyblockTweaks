@@ -1,3 +1,5 @@
+// TODO(Ravel): Failed to fully resolve file: null
+// TODO(Ravel): Failed to fully resolve file: null
 /*
  * Copyright (C) 2025 MisterCheezeCake
  *
@@ -18,11 +20,11 @@
  */
 package wtf.cheeze.sbt.hud.screen;
 
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.Drawable;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.widget.ClickableWidget;
-import net.minecraft.text.Text;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.AbstractWidget;
+import net.minecraft.client.gui.components.Renderable;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.network.chat.Component;
 import wtf.cheeze.sbt.utils.CheezePair;
 import wtf.cheeze.sbt.utils.render.Colors;
 import wtf.cheeze.sbt.utils.render.Popup;
@@ -30,26 +32,21 @@ import wtf.cheeze.sbt.utils.render.RenderUtils;
 
 import java.util.List;
 
-public record EditorPopup(Screen screen, int x, int y, Text title, List<CheezePair<String, ? extends ClickableWidget>> children) implements Drawable, Popup {
-
-    public static final int POPUP_Z = 300;
-
-
-
+public record EditorPopup(Screen screen, int x, int y, Component title, List<CheezePair<String, ? extends AbstractWidget>> children) implements Renderable, Popup {
     @Override
-    public List<? extends ClickableWidget> childrenList() {
+    public List<? extends AbstractWidget> childrenList() {
         return children.stream().map(CheezePair::val).toList();
     }
 
     @Override
-    public void render(DrawContext context, int mouseX, int mouseY, float delta) {
-        RenderUtils.drawWithZ(context, 10 , () -> {
-            Popup.super.renderBackground(context);
-            RenderUtils.drawCenteredText(context, title, x + 40, y + 5, Colors.WHITE, false);
+    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
+        RenderUtils.drawWithZ(guiGraphics, 10 , () -> {
+            Popup.super.renderBackground(guiGraphics);
+            RenderUtils.drawCenteredText(guiGraphics, title, x + 40, y + 5, Colors.WHITE, false);
             var renderY = y + 15;
             for (var entry : children) {
-                entry.val().render(context, mouseX, mouseY, delta);
-                RenderUtils.drawCenteredText(context, Text.literal(entry.key()), centerX(), renderY, Colors.WHITE, false);
+                entry.val().render(guiGraphics, mouseX, mouseY, delta);
+                RenderUtils.drawCenteredText(guiGraphics, Component.literal(entry.key()), centerX(), renderY, Colors.WHITE, false);
                 renderY+= 10;
                 var widget = entry.val();
                 widget.setX(centerX() - 35);
@@ -65,7 +62,7 @@ public record EditorPopup(Screen screen, int x, int y, Text title, List<CheezePa
         //screen.drawables.add(this);
         for (var entry : children) {
            // screen.addDrawableChild(entry.val());
-            screen.addSelectableChild(entry.val());
+            screen.addWidget(entry.val());
         }
     }
 

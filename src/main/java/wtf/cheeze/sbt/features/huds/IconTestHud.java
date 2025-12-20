@@ -18,7 +18,8 @@
  */
 package wtf.cheeze.sbt.features.huds;
 
-import net.minecraft.text.Text;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
 import wtf.cheeze.sbt.hud.bases.MultilineTextHud;
 import wtf.cheeze.sbt.hud.icon.HudIcon;
@@ -57,8 +58,6 @@ public class IconTestHud extends MultilineTextHud {
                 y -> this.y = y,
                 scale -> this.scale = scale
         );
-
-
     }
 
     private List<SingleHudLine> getLines() {
@@ -84,7 +83,7 @@ public class IconTestHud extends MultilineTextHud {
                 () -> Colors.WHITE,
                 DataUtils.ALWAYS_WHITE,
                 () -> DrawMode.PURE,
-                () -> Text.literal("Test"),
+                () -> Component.literal("Test"),
                 () -> icon,
                 DataUtils.ALWAYS_TRUE
         );

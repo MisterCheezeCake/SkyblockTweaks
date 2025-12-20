@@ -18,11 +18,10 @@
  */
 package wtf.cheeze.sbt.hud.components;
 
-import net.minecraft.client.gui.DrawContext;
+
+import net.minecraft.client.gui.GuiGraphics;
 
 public class GapComponent implements HudComponent{
-
-
     public static final GapComponent TWO = new GapComponent(2);
 
     private final int width;
@@ -31,9 +30,8 @@ public class GapComponent implements HudComponent{
         this.width = width;
     }
 
-
     @Override
-    public int render(DrawContext context, int x, int y, float scale) {
+    public int render(GuiGraphics guiGraphics, int x, int y, float scale) {
         // This component is used to create a gap in the HUD, so it doesn't need to render anything.
         return 1;
     }

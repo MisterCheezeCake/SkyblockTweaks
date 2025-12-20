@@ -20,7 +20,6 @@ package wtf.cheeze.sbt.utils;
 
 
 public class NumberUtils {
-
     private static final int MILLION = 1_000_000;
     private static final int THOUSAND = 1_000;
 
@@ -65,6 +64,7 @@ public class NumberUtils {
             return Float.parseFloat(text);
         }
     }
+
     @SuppressWarnings("DuplicatedCode")
     public static float parseFloatWithKorM(String text) {
         text = text.toLowerCase();
@@ -87,7 +87,6 @@ public class NumberUtils {
         return formatNumber(str, separator);
     }
 
-
     private static String formatNumber(String numString, String separator) {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < numString.length(); i++) {
@@ -99,7 +98,6 @@ public class NumberUtils {
         return sb.toString();
     }
 
-
     public static String addKOrM(int number, String separator) {
         if (number >= MILLION) {
             return formatNumber(number / MILLION, separator) + "M";
@@ -109,6 +107,4 @@ public class NumberUtils {
             return formatNumber(number, separator);
         }
     }
-
-
 }

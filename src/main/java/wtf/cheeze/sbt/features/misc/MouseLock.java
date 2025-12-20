@@ -25,7 +25,6 @@ import wtf.cheeze.sbt.events.WorldLoadEvents;
 import wtf.cheeze.sbt.utils.render.Colors;
 
 public class MouseLock {
-
     private static final String FEATURE_ID = "mouse_lock";
 
     public static boolean locked = false;

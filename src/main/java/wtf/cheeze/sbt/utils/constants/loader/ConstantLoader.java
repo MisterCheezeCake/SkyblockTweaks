@@ -1,3 +1,5 @@
+// TODO(Ravel): Failed to fully resolve file: null
+// TODO(Ravel): Failed to fully resolve file: null
 /*
  * Copyright (C) 2025 MisterCheezeCake
  *
@@ -52,7 +54,6 @@ import static wtf.cheeze.sbt.config.categories.General.key;
 import static wtf.cheeze.sbt.config.categories.General.keyD;
 
 public class ConstantLoader {
-
     private static final int SPEC_VERSION = 1;
 
     public static final Event<Runnable> RELOAD = EventUtils.getRunnableBackedEvent();

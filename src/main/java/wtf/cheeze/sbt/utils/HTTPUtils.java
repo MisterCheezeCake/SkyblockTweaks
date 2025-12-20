@@ -31,7 +31,6 @@ import java.nio.channels.Channels;
 import java.nio.channels.FileChannel;
 
 public class HTTPUtils {
-
     public static HTTPResponse get(String uri) throws URISyntaxException, IOException {
         URL url = new URI(uri).toURL();
         var connection = url.openConnection();

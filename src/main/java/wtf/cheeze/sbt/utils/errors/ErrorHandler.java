@@ -20,7 +20,7 @@ package wtf.cheeze.sbt.utils.errors;
 
 import dev.isxander.yacl3.api.Option;
 import dev.isxander.yacl3.api.OptionDescription;
-import net.minecraft.text.Text;
+import net.minecraft.network.chat.Component;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import wtf.cheeze.sbt.config.ConfigImpl;
@@ -33,7 +33,6 @@ import wtf.cheeze.sbt.utils.timing.TimedSet;
 import wtf.cheeze.sbt.utils.render.Colors;
 
 import java.util.Arrays;
-
 
 public class ErrorHandler {
 
@@ -58,7 +57,7 @@ public class ErrorHandler {
         if (errorSet.contains(message)) return;
         errorSet.add(message);
         //LOGGER.info(String.valueOf(e.hashCode()));
-        var msg = Text.literal("Error: " + chatMessage + ". Click to copy the stack trace.").withColor(Colors.RED).styled(it -> it.withClickEvent(TextUtils.copyEvent(Arrays.toString(e.getStackTrace()))).withHoverEvent(TextUtils.showTextEvent(TextUtils.withColor("Click to copy the stack trace", Colors.CYAN))));
+        var msg = Component.literal("Error: " + chatMessage + ". Click to copy the stack trace.").withColor(Colors.RED).withStyle(it -> it.withClickEvent(TextUtils.copyEvent(Arrays.toString(e.getStackTrace()))).withHoverEvent(TextUtils.showTextEvent(TextUtils.withColor("Click to copy the stack trace", Colors.CYAN))));
         if (MessageManager.checkPlayer()) {
             MessageManager.send(msg);
         } else {
@@ -97,8 +96,8 @@ public class ErrorHandler {
 
     public static Option<Boolean> getChatAll(ConfigImpl defaults, ConfigImpl config) {
         return Option.<Boolean>createBuilder()
-                .name(Text.translatable("sbt.config.general.errors.chatAll"))
-                .description(OptionDescription.of(Text.translatable("sbt.config.general.errors.chatAll.desc")))
+                .name(Component.translatable("sbt.config.general.errors.chatAll"))
+                .description(OptionDescription.of(Component.translatable("sbt.config.general.errors.chatAll.desc")))
                 .controller(SBTConfig::generateBooleanController)
                 .binding(
                         defaults.chatAllErrors,

@@ -18,11 +18,10 @@
  */
 package wtf.cheeze.sbt.mixin.features;
 
-import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.Minecraft;
 
-import net.minecraft.client.gui.screen.ingame.*;
-
-import net.minecraft.client.gui.widget.ButtonWidget;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.screens.inventory.AbstractRecipeBookScreen;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -32,19 +31,18 @@ import wtf.cheeze.sbt.config.SBTConfig;
 import wtf.cheeze.sbt.utils.KillSwitch;
 import wtf.cheeze.sbt.utils.skyblock.SkyblockData;
 
-@Mixin(RecipeBookScreen.class)
+@Mixin(AbstractRecipeBookScreen.class)
 public abstract class RecipeBookRedirectorMixin {
 
     @Unique private static final String FEATURE_ID = "recipe_book_redirect";
     @Inject(method = "method_64513", at = @At("HEAD"), cancellable = true)
-    private void sbt$onPressRBook(ButtonWidget button, CallbackInfo ci) {
+    private void sbt$onPressRBook(Button button, CallbackInfo ci) {
         if (SBTConfig.get().inventory.redirectRecipeBook && SkyblockData.inSB) {
             if (KillSwitch.shouldKill(FEATURE_ID)) {
                 return;
             }
             ci.cancel();
-            MinecraftClient.getInstance().getNetworkHandler().sendChatCommand("recipebook");
+            Minecraft.getInstance().getConnection().sendCommand("recipebook");
         }
     }
 }
-

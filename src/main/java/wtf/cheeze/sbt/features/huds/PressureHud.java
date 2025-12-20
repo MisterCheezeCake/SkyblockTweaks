@@ -22,7 +22,7 @@ import dev.isxander.yacl3.api.Option;
 import dev.isxander.yacl3.api.OptionGroup;
 import dev.isxander.yacl3.api.controller.ColorControllerBuilder;
 import dev.isxander.yacl3.config.v2.api.SerialEntry;
-import net.minecraft.text.Text;
+import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SBTConfig;
@@ -36,10 +36,9 @@ import wtf.cheeze.sbt.utils.render.Colors;
 import wtf.cheeze.sbt.utils.skyblock.SkyblockData;
 import wtf.cheeze.sbt.utils.text.Symbols;
 
-import java.awt.*;
+import java.awt.Color;
 
 public class PressureHud extends TextHud {
-
     public static final PressureHud INSTANCE = new PressureHud();
 
     private static final String BOTH = Symbols.PRESSURE + "%d%%";
@@ -62,9 +61,8 @@ public class PressureHud extends TextHud {
                 () -> SBTConfig.huds().pressure.color,
                 () -> SBTConfig.huds().pressure.outlineColor,
                 () -> SBTConfig.huds().pressure.mode,
-                () -> Text.literal(getFormatString().formatted(SkyblockData.Stats.pressure))
+                () -> Component.literal(getFormatString().formatted(SkyblockData.Stats.pressure))
         );
-
     }
 
     private String getFormatString() {

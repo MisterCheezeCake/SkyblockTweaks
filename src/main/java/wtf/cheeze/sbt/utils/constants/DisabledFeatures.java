@@ -20,11 +20,9 @@ package wtf.cheeze.sbt.utils.constants;
 
 import wtf.cheeze.sbt.SkyblockTweaks;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 
 public record  DisabledFeatures(
         Map<String, RemoteEntry> features

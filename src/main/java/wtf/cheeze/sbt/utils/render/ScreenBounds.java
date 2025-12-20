@@ -18,17 +18,17 @@
  */
 package wtf.cheeze.sbt.utils.render;
 
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.util.Window;
+import com.mojang.blaze3d.platform.Window;
+import net.minecraft.client.Minecraft;
 
 public class ScreenBounds {
     public int width;
     public int height;
 
     ScreenBounds() {
-        Window window = MinecraftClient.getInstance().getWindow();
-        this.width = window.getScaledWidth();
-        this.height = window.getScaledHeight();
+        Window window = Minecraft.getInstance().getWindow();
+        this.width = window.getGuiScaledWidth();
+        this.height = window.getGuiScaledHeight();
     }
 }
 

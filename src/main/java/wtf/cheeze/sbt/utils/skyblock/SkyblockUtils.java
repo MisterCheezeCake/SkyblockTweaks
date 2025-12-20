@@ -18,12 +18,11 @@
  */
 package wtf.cheeze.sbt.utils.skyblock;
 
-import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.Minecraft;
 import wtf.cheeze.sbt.utils.enums.*;
 
 public class SkyblockUtils {
-
-    private static final MinecraftClient client = MinecraftClient.getInstance();
+    private static final Minecraft client = Minecraft.getInstance();
     private static final float SPRINT_MULT = 1.3f;
 
     public static Rarity castStringToRarity(String input) {
@@ -89,31 +88,29 @@ public class SkyblockUtils {
     }
 
     public static boolean isThePlayerHoldingADrill() {
-        return MinecraftClient.getInstance().player.getMainHandStack().getName().getString().contains("Drill");
+        return Minecraft.getInstance().player.getMainHandItem().getHoverName().getString().contains("Drill");
     }
 
     public static boolean quiverActive() {
-        return client.player.getInventory().getStack(8).getName().getString().startsWith("Quiver");
+        return client.player.getInventory().getItem(8).getHoverName().getString().startsWith("Quiver");
     }
-
 
     /**
      * Please qualify calls to this with a call to quiverActive
      */
     public static QuiverData getQuiverData() {
         try {
-            if (quiverActive()) return new QuiverData(client.player.getInventory().getStack(8));
+            if (quiverActive()) return new QuiverData(client.player.getInventory().getItem(8));
             return QuiverData.DEFAULT;
         } catch (Exception e) {
             return QuiverData.DEFAULT;
         }
     }
 
-
     public static float getSpeed() {
-        MinecraftClient mc = MinecraftClient.getInstance();
+        Minecraft mc = Minecraft.getInstance();
         // sprint = 1.3 x base speed
-        return mc.player.isSprinting() ? (mc.player.getMovementSpeed() / SPRINT_MULT) * 1000 : mc.player.getMovementSpeed() * 1000;
+        return mc.player.isSprinting() ? (mc.player.getSpeed() / SPRINT_MULT) * 1000 : mc.player.getSpeed() * 1000;
     }
 
     public static boolean inMiningIsland() {

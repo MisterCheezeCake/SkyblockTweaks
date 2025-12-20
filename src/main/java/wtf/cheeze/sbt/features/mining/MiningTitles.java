@@ -1,3 +1,5 @@
+// TODO(Ravel): Failed to fully resolve file: null
+// TODO(Ravel): Failed to fully resolve file: null
 package wtf.cheeze.sbt.features.mining;
 
 import dev.isxander.yacl3.api.Option;
@@ -5,31 +7,30 @@ import dev.isxander.yacl3.api.OptionGroup;
 import dev.isxander.yacl3.api.controller.ColorControllerBuilder;
 import dev.isxander.yacl3.api.controller.StringControllerBuilder;
 import dev.isxander.yacl3.config.v2.api.SerialEntry;
-import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.Minecraft;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SBTConfig;
 import wtf.cheeze.sbt.events.ChatEvents;
 import wtf.cheeze.sbt.utils.render.Colors;
 import wtf.cheeze.sbt.utils.text.TextUtils;
 
-import java.awt.*;
+import java.awt.Color;
 
 import static wtf.cheeze.sbt.config.categories.Mining.key;
 import static wtf.cheeze.sbt.config.categories.Mining.keyD;
 
 public class MiningTitles {
-
     public static void registerEvents() {
         ChatEvents.ON_GAME.register(message -> {
             if (!SBTConfig.mining().titles.goblinTitles) return;
             var content = TextUtils.removeFormatting(message.getString()).trim();
             if (content.equals("A Golden Goblin has spawned!")) {
-                MinecraftClient.getInstance().inGameHud.setTitle(TextUtils.withColor(
+                Minecraft.getInstance().gui.setTitle(TextUtils.withColor(
                         SBTConfig.mining().titles.goldenText,
                         SBTConfig.mining().titles.goldenColor
                 ));
             } else if (content.equals("A Diamond Goblin has spawned!")) {
-                MinecraftClient.getInstance().inGameHud.setTitle(TextUtils.withColor(
+                Minecraft.getInstance().gui.setTitle(TextUtils.withColor(
                         SBTConfig.mining().titles.diamondText,
                         SBTConfig.mining().titles.diamondColor
                 ));
@@ -37,9 +38,7 @@ public class MiningTitles {
         });
     }
 
-
     public static class Config {
-
         @SerialEntry
         public boolean goblinTitles = true;
 
@@ -88,6 +87,7 @@ public class MiningTitles {
                             value -> config.mining.titles.goldenColor = value.getRGB()
                     )
                     .build();
+
             var diamondText = Option.<String>createBuilder()
                     .name(key("titles.diamondText"))
                     .description(keyD("titles.diamondText"))
@@ -98,6 +98,7 @@ public class MiningTitles {
                             value -> config.mining.titles.diamondText = value
                     )
                     .build();
+
             var diamondColor = Option.<Color>createBuilder()
                     .name(key("titles.diamondColor"))
                     .description(keyD("titles.diamondColor"))
@@ -108,6 +109,7 @@ public class MiningTitles {
                             value -> config.mining.titles.diamondColor = value.getRGB()
                     )
                     .build();
+
             return OptionGroup.createBuilder()
                     .name(key("titles"))
                     .description(keyD("titles.desc"))
@@ -118,7 +120,6 @@ public class MiningTitles {
                     .option(diamondColor)
                     .collapsed(true)
                     .build();
-
         }
     }
 }

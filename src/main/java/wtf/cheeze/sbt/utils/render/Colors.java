@@ -18,9 +18,8 @@
  */
 package wtf.cheeze.sbt.utils.render;
 
-
 public interface Colors {
-
+    // TODO: Replace with CommonColors
     int WHITE = 0xFFFFFFFF;
     int BLACK = 0xFF000000;
     int GRAY = 0xFFAAAAAA;
@@ -36,7 +35,5 @@ public interface Colors {
     int PINK = 0xFFFF55FF;
     int LIGHT_BLUE = 0xFF55FFFF;
 
-
     int SBT_GREEN = 0xFF37D363;
-    
 }

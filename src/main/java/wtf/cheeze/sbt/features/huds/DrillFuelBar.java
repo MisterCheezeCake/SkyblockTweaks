@@ -36,10 +36,7 @@ import wtf.cheeze.sbt.utils.skyblock.SkyblockUtils;
 import java.awt.Color;
 
 public class DrillFuelBar extends BarHud {
-
     public static final DrillFuelBar INSTANCE = new DrillFuelBar();
-
-
 
     private DrillFuelBar() {
         INFO = new HudInformation(
@@ -71,13 +68,11 @@ public class DrillFuelBar extends BarHud {
         return new HudName("Drill Fuel Bar", "Fuel Bar", Colors.GREEN);
     }
 
-
     @Override
     public boolean shouldRender(boolean fromHudScreen) {
         if (!super.shouldRender(fromHudScreen)) return false;
         return (SkyblockData.inSB && SBTConfig.huds().drillFuelBar.enabled) && SkyblockUtils.isThePlayerHoldingADrill() || fromHudScreen;
     }
-
 
     public static class Config {
         @SerialEntry

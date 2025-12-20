@@ -20,7 +20,7 @@ package wtf.cheeze.sbt.events;
 
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
-import net.minecraft.text.Text;
+import net.minecraft.network.chat.Component;
 
 /**
  * Custom chat events which get us the message before Fabric API has
@@ -29,7 +29,6 @@ import net.minecraft.text.Text;
  * when information needs to be extracted.
  */
 public class ChatEvents {
-
     public static final Event<OnMessage> ON_GAME = EventFactory.createArrayBacked(OnMessage.class, listeners -> (message) -> {
         for (OnMessage listener : listeners) {
             listener.onMessage(message);
@@ -45,6 +44,6 @@ public class ChatEvents {
 
     @FunctionalInterface
     public interface OnMessage {
-        void onMessage(Text message);
+        void onMessage(Component message);
     }
 }

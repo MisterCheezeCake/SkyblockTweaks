@@ -36,7 +36,6 @@ import wtf.cheeze.sbt.utils.skyblock.SkyblockData;
 import java.awt.Color;
 
 public class HealthBar extends BarHud {
-
     public static final HealthBar INSTANCE = new HealthBar();
 
     private HealthBar() {
@@ -51,7 +50,6 @@ public class HealthBar extends BarHud {
                 anchor ->SBTConfig.huds().healthBar.anchor= anchor
         );
     }
-
 
     @Override
     public int getColor() {

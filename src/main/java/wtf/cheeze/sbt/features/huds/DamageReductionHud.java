@@ -22,7 +22,7 @@ import dev.isxander.yacl3.api.Option;
 import dev.isxander.yacl3.api.OptionGroup;
 import dev.isxander.yacl3.api.controller.ColorControllerBuilder;
 import dev.isxander.yacl3.config.v2.api.SerialEntry;
-import net.minecraft.text.Text;
+import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SBTConfig;
@@ -39,7 +39,6 @@ import wtf.cheeze.sbt.utils.skyblock.SkyblockData;
 import java.awt.Color;
 
 public class DamageReductionHud extends TextHud {
-
     public static final DamageReductionHud INSTANCE = new DamageReductionHud();
 
     private DamageReductionHud() {
@@ -57,10 +56,10 @@ public class DamageReductionHud extends TextHud {
                 () -> SBTConfig.huds().dr.color,
                 () -> SBTConfig.huds().dr.outlineColor,
                 () -> SBTConfig.huds().dr.mode,
-                () -> Text.literal(NumberUtils.round(SkyblockData.Stats.damageReduction(), 1) + "%")
+                () -> Component.literal(NumberUtils.round(SkyblockData.Stats.damageReduction(), 1) + "%")
         );
-
     }
+
     @Override
     public boolean shouldRender(boolean fromHudScreen) {
         if (!super.shouldRender(fromHudScreen)) return false;

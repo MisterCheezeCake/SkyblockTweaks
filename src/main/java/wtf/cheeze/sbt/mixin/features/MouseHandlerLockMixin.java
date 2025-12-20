@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 MisterCheezeCake
+ * Copyright (C) 2025 MisterCheezeCake
  *
  * This file is part of SkyblockTweaks.
  *
@@ -16,19 +16,20 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with SkyblockTweaks. If not, see <https://www.gnu.org/licenses/>.
  */
-package wtf.cheeze.sbt.mixin.accessors;
+package wtf.cheeze.sbt.mixin.features;
 
 
-import net.minecraft.client.gui.hud.BossBarHud;
-import net.minecraft.client.gui.hud.ClientBossBar;
+import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
+import net.minecraft.client.MouseHandler;
+import net.minecraft.client.player.LocalPlayer;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.gen.Accessor;
+import org.spongepowered.asm.mixin.injection.At;
+import wtf.cheeze.sbt.features.misc.MouseLock;
 
-import java.util.Map;
-import java.util.UUID;
-
-@Mixin(BossBarHud.class)
-public interface BossBarHudAccessor {
-    @Accessor("bossBars")
-    Map<UUID, ClientBossBar> getBossBars();
+@Mixin(MouseHandler.class)
+public abstract class MouseHandlerLockMixin {
+    @WrapWithCondition(method = "turnPlayer", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/LocalPlayer;turn(DD)V"))
+    private boolean sbt$allowMouseMove(LocalPlayer instance, double v, double v2) {
+        return !MouseLock.locked;
+    }
 }

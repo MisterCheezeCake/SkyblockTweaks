@@ -21,7 +21,6 @@ package wtf.cheeze.sbt.utils.text;
 import java.util.function.Predicate;
 
 public class Predicates {
-
     public static final Predicate<String> ZERO_TO_ONE = string -> {
         if (string.isEmpty()) return true; // allow empty strings
         if (string.startsWith(".")) return false; // don't allow just a dot
@@ -33,7 +32,6 @@ public class Predicates {
             return false;
         }
     };
-
 
     public static final Predicate<String> INT = string -> {
         if (string.isEmpty()) return true; // allow empty strings

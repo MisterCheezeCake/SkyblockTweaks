@@ -41,7 +41,6 @@ import wtf.cheeze.sbt.utils.skyblock.SkyblockUtils;
 import java.awt.*;
 
 public class QuiverHud extends TextHud {
-
     public static final QuiverHud INSTANCE = new QuiverHud();
 
     private QuiverHud() {
@@ -70,7 +69,6 @@ public class QuiverHud extends TextHud {
                 () -> Icons.ARROW,
                 () -> SBTConfig.huds().quiver.icon
         );
-
     }
 
     @Override

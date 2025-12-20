@@ -22,9 +22,7 @@ import wtf.cheeze.sbt.utils.enums.Slayer;
 
 import java.util.Map;
 
-public record Slayers(
-        Map<Slayer, int[]> slayerTables
-) {
+public record Slayers(Map<Slayer, int[]> slayerTables) {
     public static Slayers empty() {
         return new Slayers(Map.of());
     }

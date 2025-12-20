@@ -22,7 +22,7 @@ import dev.isxander.yacl3.api.Option;
 import dev.isxander.yacl3.api.OptionGroup;
 import dev.isxander.yacl3.api.controller.ColorControllerBuilder;
 import dev.isxander.yacl3.config.v2.api.SerialEntry;
-import net.minecraft.text.Text;
+import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SBTConfig;
@@ -39,7 +39,6 @@ import wtf.cheeze.sbt.utils.skyblock.SkyblockUtils;
 import java.awt.Color;
 
 public class SpeedHud extends TextHud {
-
     public static final SpeedHud INSTANCE = new SpeedHud();
 
     private SpeedHud() {
@@ -57,7 +56,7 @@ public class SpeedHud extends TextHud {
                 () -> SBTConfig.huds().speed.color,
                 () -> SBTConfig.huds().speed.outlineColor,
                 () -> SBTConfig.huds().speed.mode,
-                () -> Text.literal((SkyblockUtils.getSpeed()+"").split("\\.")[0] + "%")
+                () -> Component.literal((SkyblockUtils.getSpeed()+"").split("\\.")[0] + "%")
         );
     }
 
@@ -71,8 +70,6 @@ public class SpeedHud extends TextHud {
         if (!super.shouldRender(fromHudScreen)) return false;
         return (SkyblockData.inSB && SBTConfig.huds().speed.enabled) || fromHudScreen;
     }
-
-
 
     public static class Config {
         @SerialEntry
@@ -171,4 +168,3 @@ public class SpeedHud extends TextHud {
         }
     }
 }
-

@@ -27,30 +27,26 @@ import net.hypixel.modapi.fabric.event.HypixelModAPICallback;
 import net.hypixel.modapi.fabric.event.HypixelModAPIErrorCallback;
 import net.hypixel.modapi.packet.impl.clientbound.event.ClientboundLocationPacket;
 import net.hypixel.modapi.packet.impl.serverbound.ServerboundPartyInfoPacket;
-import net.minecraft.text.Text;
-import net.minecraft.util.Util;
+import net.minecraft.network.chat.Component;
+import net.minecraft.Util;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SBTConfig;
 
 public class ModAPI {
-
-
     public static void registerEvents() {
         HypixelModAPI.getInstance().subscribeToEventPacket(ClientboundLocationPacket.class);
         HypixelModAPICallback.EVENT.register(SkyblockData::handlePacket);
         HypixelModAPIErrorCallback.EVENT.register(SkyblockData::handleModApiError);
-
     }
 
     public static void requestPartyInfo() {
-
         HypixelModAPI.getInstance().sendPacket(new ServerboundPartyInfoPacket());
     }
 
     public static Option<Boolean> getShowErrors(ConfigImpl defaults, ConfigImpl config) {
         return Option.<Boolean>createBuilder()
-                .name(Text.translatable("sbt.config.general.errors.modApi"))
-                .description(OptionDescription.of(Text.translatable("sbt.config.general.errors.modApi.desc")))
+                .name(Component.translatable("sbt.config.general.errors.modApi"))
+                .description(OptionDescription.of(Component.translatable("sbt.config.general.errors.modApi.desc")))
                 .controller(SBTConfig::generateBooleanController)
                 .binding(
                         defaults.chatModApiErrors,
@@ -60,6 +56,4 @@ public class ModAPI {
                 .build();
 
     }
-
-
 }

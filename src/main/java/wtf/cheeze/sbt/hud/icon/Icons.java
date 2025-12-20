@@ -18,7 +18,7 @@
  */
 package wtf.cheeze.sbt.hud.icon;
 
-import net.minecraft.util.Identifier;
+import net.minecraft.resources.ResourceLocation;
 
 import java.util.Map;
 
@@ -28,7 +28,6 @@ import wtf.cheeze.sbt.utils.skyblock.ItemUtils;
 import static java.util.Map.entry;
 
 public class Icons {
-
     public static final HudIcon ARROW = itemID("arrow");
     public static final HudIcon CHEST_MINECART = itemID("chest_minecart");
     public static final HudIcon CHEST = itemStack("chest");
@@ -41,7 +40,7 @@ public class Icons {
     public static final HudIcon WATER_BUCKET = itemID("water_bucket");
     public static final HudIcon DEFAULT_HEAD = itemStack("player_head");
 
-    public static final HudIcon DEFAULT_ICON = HudIcon.of(Identifier.of("skyblocktweaks", "missing.png"));
+    public static final HudIcon DEFAULT_ICON = HudIcon.of(ResourceLocation.fromNamespaceAndPath("skyblocktweaks", "missing.png"));
     public static final Map<Skill, HudIcon> SKILL_ICONS = Map.ofEntries(
             entry(Skill.COMBAT, IRON_SWORD),
             entry(Skill.FARMING, itemID("golden_hoe")),
@@ -96,26 +95,17 @@ public class Icons {
             entry("GOURMAND", sb("cyan_dye", "MITHRIL_GOURMAND"))
     );
 
-
-
-
-
 //    public static final HudIcon MITHRIL = new HudIcon(getSkyblockItem("prismarine_crystals", "MITHRIL_ORE"));
 //    // The powders are not technically real items, but this allows resource packs to change the icon
 //    public static final HudIcon MITHRIL_POWDER = new HudIcon(getSkyblockItem("lime_dye", "MITHRIL_POWDER"));
 //    public static final HudIcon TITANIUM = new HudIcon(getHeadItem("TITANIUM_ORE", "TITANIUM"));
 
-
-
-
-
-
     private static HudIcon itemID(String name) {
-        return HudIcon.of(Identifier.ofVanilla("textures/item/" + name + ".png"));
+        return HudIcon.of(ResourceLocation.withDefaultNamespace("textures/item/" + name + ".png"));
     }
 
     private static HudIcon blockID(String name) {
-        return HudIcon.of(Identifier.ofVanilla("textures/block/" + name + ".png"));
+        return HudIcon.of(ResourceLocation.withDefaultNamespace("textures/block/" + name + ".png"));
     }
 
     private static HudIcon itemStack(String name) {
@@ -129,6 +119,7 @@ public class Icons {
     private static HudIcon sbHead(String skyblockID, String skullName) {
         return HudIcon.of(ItemUtils.getHead(skullName, skyblockID));
     }
+
     private static HudIcon sbHead(String both) {
         return sbHead(both, both);
     }

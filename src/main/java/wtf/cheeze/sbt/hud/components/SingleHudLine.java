@@ -18,8 +18,8 @@
  */
 package wtf.cheeze.sbt.hud.components;
 
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.text.Text;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.Nullable;
 import wtf.cheeze.sbt.hud.icon.HudIcon;
 import wtf.cheeze.sbt.hud.cache.Cache;
@@ -31,16 +31,15 @@ import wtf.cheeze.sbt.utils.render.RenderUtils;
 import java.util.function.Supplier;
 
 public class SingleHudLine implements HudComponent {
-
     public Supplier<Integer> color;
     public Supplier<Integer> outlineColor;
     public Supplier<DrawMode> mode;
-    public Supplier<Text> text;
+    public Supplier<Component> text;
     public Supplier<Boolean> useIcon;
 
     private final UpdateTiming timing;
 
-    private final Cache<Text> cache;
+    private final Cache<Component> cache;
 
 
     private static final int LINE_COUNT = 1;
@@ -50,18 +49,18 @@ public class SingleHudLine implements HudComponent {
     // Make sure not to create a new instance of HudIcon every time you call this
     public Supplier<HudIcon> icon;
 
-    public SingleHudLine(Supplier<Integer> getColor, Supplier<Integer> getOutlineColor, Supplier<DrawMode> getMode, Supplier<Text> getText) {
+    public SingleHudLine(Supplier<Integer> getColor, Supplier<Integer> getOutlineColor, Supplier<DrawMode> getMode, Supplier<Component> getText) {
         this(UpdateTiming.FRAME, getColor, getOutlineColor, getMode, getText, null, DataUtils.ALWAYS_FALSE);
     }
-    public SingleHudLine(UpdateTiming timing, Supplier<Integer> getColor, Supplier<Integer> getOutlineColor, Supplier<DrawMode> getMode, Supplier<Text> getText) {
+    public SingleHudLine(UpdateTiming timing, Supplier<Integer> getColor, Supplier<Integer> getOutlineColor, Supplier<DrawMode> getMode, Supplier<Component> getText) {
         this(timing, getColor, getOutlineColor, getMode, getText, null, DataUtils.ALWAYS_FALSE);
     }
 
-    public SingleHudLine(Supplier<Integer> getColor, Supplier<Integer> getOutlineColor, Supplier<DrawMode> getMode, Supplier<Text> getText, Supplier<HudIcon> icon, Supplier<Boolean> useIcon) {
+    public SingleHudLine(Supplier<Integer> getColor, Supplier<Integer> getOutlineColor, Supplier<DrawMode> getMode, Supplier<Component> getText, Supplier<HudIcon> icon, Supplier<Boolean> useIcon) {
         this(UpdateTiming.FRAME, getColor, getOutlineColor, getMode, getText, icon, useIcon);
     }
 
-    public SingleHudLine(UpdateTiming timing, Supplier<Integer> getColor, Supplier<Integer> getOutlineColor, Supplier<DrawMode> getMode, Supplier<Text> getText, Supplier<HudIcon> icon, Supplier<Boolean> useIcon) {
+    public SingleHudLine(UpdateTiming timing, Supplier<Integer> getColor, Supplier<Integer> getOutlineColor, Supplier<DrawMode> getMode, Supplier<Component> getText, Supplier<HudIcon> icon, Supplier<Boolean> useIcon) {
         this.timing = timing;
         this.color = getColor;
         this.outlineColor = getOutlineColor;
@@ -72,40 +71,35 @@ public class SingleHudLine implements HudComponent {
         this.cache = new Cache<>(timing, text, ERROR);
     }
 
-
-
-
     @Override
-    public int render(DrawContext context, int x, int y, float scale) {
+    public int render(GuiGraphics guiGraphics, int x, int y, float scale) {
         if (timing == UpdateTiming.FRAME || cache.isDueForUpdate()) {
             cache.update();
         }
 
         switch (mode.get()) {
-            case PURE -> render(context, x, y, scale, false);
-            case SHADOW ->  render(context, x, y, scale, true);
+            case PURE -> render(guiGraphics, x, y, scale, false);
+            case SHADOW ->  render(guiGraphics, x, y, scale, true);
             case OUTLINE -> {
                 if (useIcon.get()) {
-                    icon.get().render(context, x, y, scale);
+                    icon.get().render(guiGraphics, x, y, scale);
 
-                    RenderUtils.drawTextWithOutline(context, cache.get(), x + (int) (10 * scale), y, color.get(), outlineColor.get(), scale, true);
+                    RenderUtils.drawTextWithOutline(guiGraphics, cache.get(), x + (int) (10 * scale), y, color.get(), outlineColor.get(), scale, true);
                 } else {
-                    RenderUtils.drawTextWithOutline(context, cache.get(), x, y, color.get(), outlineColor.get(), scale, true);
+                    RenderUtils.drawTextWithOutline(guiGraphics, cache.get(), x, y, color.get(), outlineColor.get(), scale, true);
                 }
             }
         }
         return 1;
     }
 
-
-
-    private void render(DrawContext context, int x, int y, float scale, boolean shadow) {
+    private void render(GuiGraphics guiGraphics, int x, int y, float scale, boolean shadow) {
 
         if (useIcon.get()) {
-            icon.get().render(context, x, y, scale);
-            RenderUtils.drawText(context, cache.get(), x + (int) (10 * scale), y, color.get(), shadow, scale, true);
+            icon.get().render(guiGraphics, x, y, scale);
+            RenderUtils.drawText(guiGraphics, cache.get(), x + (int) (10 * scale), y, color.get(), shadow, scale, true);
         } else {
-            RenderUtils.drawText(context, cache.get(), x, y, color.get(), shadow, scale, true);
+            RenderUtils.drawText(guiGraphics, cache.get(), x, y, color.get(), shadow, scale, true);
         }
     }
 

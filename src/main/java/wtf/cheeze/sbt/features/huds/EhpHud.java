@@ -23,24 +23,23 @@ import dev.isxander.yacl3.api.OptionGroup;
 import dev.isxander.yacl3.api.controller.ColorControllerBuilder;
 import dev.isxander.yacl3.api.controller.StringControllerBuilder;
 import dev.isxander.yacl3.config.v2.api.SerialEntry;
-import net.minecraft.text.Text;
+import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SBTConfig;
+import wtf.cheeze.sbt.hud.bases.TextHud;
+import wtf.cheeze.sbt.hud.components.SingleHudLine;
 import wtf.cheeze.sbt.hud.utils.AnchorPoint;
+import wtf.cheeze.sbt.hud.utils.DrawMode;
+import wtf.cheeze.sbt.hud.utils.HudInformation;
 import wtf.cheeze.sbt.hud.utils.HudName;
 import wtf.cheeze.sbt.utils.NumberUtils;
-import wtf.cheeze.sbt.hud.utils.DrawMode;
-import wtf.cheeze.sbt.hud.components.SingleHudLine;
-import wtf.cheeze.sbt.hud.utils.HudInformation;
-import wtf.cheeze.sbt.hud.bases.TextHud;
 import wtf.cheeze.sbt.utils.render.Colors;
 import wtf.cheeze.sbt.utils.skyblock.SkyblockData;
 
 import java.awt.Color;
 
 public class EhpHud extends TextHud {
-
     public static final EhpHud INSTANCE = new EhpHud();
 
     private EhpHud() {
@@ -58,10 +57,11 @@ public class EhpHud extends TextHud {
                 () -> SBTConfig.huds().ehp.color,
                 () -> SBTConfig.huds().ehp.outlineColor,
                 () -> SBTConfig.huds().ehp.mode,
-                () -> Text.literal(NumberUtils.formatNumber((int) SkyblockData.Stats.effectiveHealth(), SBTConfig.huds().ehp.separator) + (SBTConfig.huds().ehp.icon ? "❤" : ""))
+                () -> Component.literal(NumberUtils.formatNumber((int) SkyblockData.Stats.effectiveHealth(), SBTConfig.huds().ehp.separator) + (SBTConfig.huds().ehp.icon ? "❤" : ""))
         );
 
     }
+
     @Override
     public boolean shouldRender(boolean fromHudScreen) {
         if (!super.shouldRender(fromHudScreen)) return false;

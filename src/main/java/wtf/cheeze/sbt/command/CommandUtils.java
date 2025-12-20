@@ -23,9 +23,9 @@ import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.suggestion.SuggestionProvider;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager;
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.text.Text;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.network.chat.Component;
 import wtf.cheeze.sbt.utils.text.MessageManager;
 import wtf.cheeze.sbt.utils.NumberUtils;
 import wtf.cheeze.sbt.utils.text.TextUtils;
@@ -36,11 +36,10 @@ import wtf.cheeze.sbt.utils.render.Colors;
 import java.util.function.Supplier;
 
 public class CommandUtils {
-
     public static LiteralArgumentBuilder<FabricClientCommandSource> getScreenOpeningCommand(String name, Supplier<Screen> screenFactory) {
         return ClientCommandManager.literal(name).executes(context -> {
-            MinecraftClient mc = context.getSource().getClient();
-            mc.send(() -> mc.setScreen(screenFactory.get()));
+            Minecraft mc = context.getSource().getClient();
+            mc.execute(() -> mc.setScreen(screenFactory.get()));
             return 1;
         });
     }
@@ -67,40 +66,40 @@ public class CommandUtils {
     }
 
 
-    static Text getDebugText(String name, boolean value) {
+    static Component getDebugText(String name, boolean value) {
         return getDebugText(name, String.valueOf(value), value ? Colors.LIME : Colors.RED);
     }
-    static Text getDebugText(String name, int value) {
+    static Component getDebugText(String name, int value) {
         return getDebugText(name, String.valueOf(value), Colors.YELLOW);
     }
-    static Text getDebugText(String name, float value) {
+    static Component getDebugText(String name, float value) {
         return getDebugText(name, String.valueOf(value), Colors.YELLOW);
     }
 
-    static Text getDebugText(String name, String value, int color) {
+    static Component getDebugText(String name, String value, int color) {
         return TextUtils.join(
                 TextUtils.withColor(name + ": ", Colors.CYAN),
                 TextUtils.withColor(value, color)
         );
     }
-    static Text getDebugText(String name, String value) {
+    static Component getDebugText(String name, String value) {
         return TextUtils.join(
                 TextUtils.withColor(name + ": ", Colors.CYAN),
                 TextUtils.withColor(value, Colors.YELLOW)
         );
     }
 
-    public static void send(CommandContext<FabricClientCommandSource> context, Text text) {
+    public static void send(CommandContext<FabricClientCommandSource> context, Component text) {
         context.getSource().sendFeedback(TextUtils.join(MessageManager.PREFIX, TextUtils.SPACE, text));
     }
     public static void send(CommandContext<FabricClientCommandSource> context, String text) {
-        context.getSource().sendFeedback(TextUtils.join(MessageManager.PREFIX, TextUtils.SPACE, Text.of(text)));
+        context.getSource().sendFeedback(TextUtils.join(MessageManager.PREFIX, TextUtils.SPACE, Component.nullToEmpty(text)));
     }
-    public static void sendRaw(CommandContext<FabricClientCommandSource> context, Text text) {
+    public static void sendRaw(CommandContext<FabricClientCommandSource> context, Component text) {
         context.getSource().sendFeedback(text);
     }
     public static void sendRaw(CommandContext<FabricClientCommandSource> context, String text) {
-        context.getSource().sendFeedback(Text.of(text));
+        context.getSource().sendFeedback(Component.nullToEmpty(text));
     }
 
     public static void calcSend(CommandContext<FabricClientCommandSource> context, String type, int number) {

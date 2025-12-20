@@ -6,7 +6,7 @@ import java.nio.channels.Channels
 import java.nio.channels.ReadableByteChannel
 
 plugins {
-	id("fabric-loom") version "1.10-SNAPSHOT"
+	id("fabric-loom") version "1.14-SNAPSHOT"
 }
 
 version = property("mod_version")!! as String + "+mc" + property("minecraft_version")!!
@@ -44,12 +44,12 @@ repositories {
 
 dependencies {
 	minecraft("com.mojang:minecraft:${property("minecraft_version")}")
-	mappings("net.fabricmc:yarn:${property("yarn_mappings")}:v2")
+	mappings(loom.officialMojangMappings())
 	modImplementation ("net.fabricmc:fabric-loader:${property("loader_version")}")
 	modImplementation ("net.fabricmc.fabric-api:fabric-api:${property("fabric_version")}")
 	modImplementation ("dev.isxander:yet-another-config-lib:${property("yacl_version")}")
-	//modImplementation ("com.terraformersmc:modmenu:${property("modmenu_version")}")
-	modCompileOnly("com.terraformersmc:modmenu:${property("modmenu_version")}")
+	modImplementation ("com.terraformersmc:modmenu:${property("modmenu_version")}")
+//	modCompileOnly("com.terraformersmc:modmenu:${property("modmenu_version")}")
 	modCompileOnly("me.shedaniel:RoughlyEnoughItems-api-fabric:${property("rei_version")}")
 	//modRuntimeOnly("me.shedaniel:RoughlyEnoughItems-fabric:${property("rei_version")}")
 	implementation("net.hypixel:mod-api:${property("modapi_version")}")
