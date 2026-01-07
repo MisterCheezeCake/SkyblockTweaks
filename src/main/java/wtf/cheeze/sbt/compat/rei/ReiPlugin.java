@@ -23,7 +23,6 @@ import me.shedaniel.rei.api.client.registry.screen.ExclusionZones;
 import net.minecraft.client.gui.screens.inventory.ContainerScreen;
 
 public class ReiPlugin implements REIClientPlugin {
-
     @Override
     public void registerExclusionZones(ExclusionZones zones) {
         zones.register(ContainerScreen.class, new ExclusionZoneProvider());

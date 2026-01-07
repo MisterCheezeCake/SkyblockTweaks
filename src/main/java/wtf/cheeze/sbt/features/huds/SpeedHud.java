@@ -39,7 +39,6 @@ import wtf.cheeze.sbt.utils.skyblock.SkyblockUtils;
 import java.awt.Color;
 
 public class SpeedHud extends TextHud {
-
     public static final SpeedHud INSTANCE = new SpeedHud();
 
     private SpeedHud() {
@@ -71,8 +70,6 @@ public class SpeedHud extends TextHud {
         if (!super.shouldRender(fromHudScreen)) return false;
         return (SkyblockData.inSB && SBTConfig.huds().speed.enabled) || fromHudScreen;
     }
-
-
 
     public static class Config {
         @SerialEntry
@@ -122,6 +119,7 @@ public class SpeedHud extends TextHud {
 
                     )
                     .build();
+
             var outline = Option.<Color>createBuilder()
                     .name(key("speed.outlineColor"))
                     .description(keyD("speed.outlineColor"))
@@ -134,6 +132,7 @@ public class SpeedHud extends TextHud {
 
                     )
                     .build();
+
             var mode = Option.<DrawMode>createBuilder()
                     .name(key("speed.mode"))
                     .description(keyD("speed.mode"))
@@ -147,6 +146,7 @@ public class SpeedHud extends TextHud {
                             }
                     )
                     .build();
+
             var scale = Option.<Float>createBuilder()
                     .name(key("speed.scale"))
                     .description(keyD("speed.scale"))

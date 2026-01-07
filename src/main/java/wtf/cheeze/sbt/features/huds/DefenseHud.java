@@ -40,7 +40,6 @@ import wtf.cheeze.sbt.utils.skyblock.SkyblockData;
 import java.awt.Color;
 
 public class DefenseHud extends TextHud {
-
     public static final DefenseHud INSTANCE = new DefenseHud();
 
     private DefenseHud() {
@@ -54,7 +53,6 @@ public class DefenseHud extends TextHud {
                 scale -> SBTConfig.huds().defense.scale = scale,
                 anchor -> SBTConfig.huds().defense.anchor = anchor
         );
-
         line = new SingleHudLine(
                 () -> SBTConfig.huds().defense.color,
                 () -> SBTConfig.huds().defense.outlineColor,
@@ -67,8 +65,6 @@ public class DefenseHud extends TextHud {
         if (!super.shouldRender(fromHudScreen)) return false;
         return (SkyblockData.inSB && SBTConfig.huds().defense.enabled) || fromHudScreen;
     }
-
-
 
     @Override
     public @NotNull HudName getName() {
@@ -117,6 +113,7 @@ public class DefenseHud extends TextHud {
                             value -> config.huds.defense.enabled = value
                     )
                     .build();
+
             var color = Option.<Color>createBuilder()
                     .name(key("defense.color"))
                     .description(keyD("defense.color"))
@@ -128,6 +125,7 @@ public class DefenseHud extends TextHud {
 
                     )
                     .build();
+
             var outline = Option.<Color>createBuilder()
                     .name(key("defense.outlineColor"))
                     .description(keyD("defense.outlineColor"))
@@ -140,6 +138,7 @@ public class DefenseHud extends TextHud {
 
                     )
                     .build();
+
             var mode = Option.<DrawMode>createBuilder()
                     .name(key("defense.mode"))
                     .description(keyD("defense.mode"))
@@ -153,6 +152,7 @@ public class DefenseHud extends TextHud {
                             }
                     )
                     .build();
+
             var icon = Option.<Boolean>createBuilder()
                     .name(key("defense.icon"))
                     .description(keyD("defense.icon"))
@@ -163,6 +163,7 @@ public class DefenseHud extends TextHud {
                             value -> config.huds.defense.icon = value
                     )
                     .build();
+
             var separator = Option.<String>createBuilder()
                     .name(key("defense.separator"))
                     .description(keyD("defense.separator"))
@@ -173,6 +174,7 @@ public class DefenseHud extends TextHud {
                             value -> config.huds.defense.separator = value
                     )
                     .build();
+
             var scale = Option.<Float>createBuilder()
                     .name(key("defense.scale"))
                     .description(keyD("defense.scale"))
@@ -199,5 +201,3 @@ public class DefenseHud extends TextHud {
         }
     }
 }
-
-

@@ -57,8 +57,6 @@ public class IconTestHud extends MultilineTextHud {
                 y -> this.y = y,
                 scale -> this.scale = scale
         );
-
-
     }
 
     private List<SingleHudLine> getLines() {

@@ -44,30 +44,30 @@ public abstract class AbstractTickerHud extends HUD {
     public abstract int getUsable(boolean fromHudScreen);
 
     @Override
-    public void render(GuiGraphics context, boolean fromHudScreen, boolean hovered) {
+    public void render(GuiGraphics guiGraphics, boolean fromHudScreen, boolean hovered) {
         if (!shouldRender(fromHudScreen)) return;
         var bounds = getCurrentBounds();
         if (fromHudScreen) {
-            drawBackground(context, hovered ? BACKGROUND_HOVERED : BACKGROUND_NOT_HOVERED);
+            drawBackground(guiGraphics, hovered ? BACKGROUND_HOVERED : BACKGROUND_NOT_HOVERED);
             fhs = true;
         } else {
             fhs = false;
         }
         if (bounds.scale != 1.0f) {
-            RenderUtils.beginScale(context, bounds.scale);
+            RenderUtils.beginScale(guiGraphics, bounds.scale);
         }
-        var x2 = drawTickers(context, getUsable(fromHudScreen), bounds.x, bounds.y, bounds.scale, true);
-        drawTickers(context, getMax(fromHudScreen) - getUsable(fromHudScreen), x2, bounds.y, bounds.scale, false);
+        var x2 = drawTickers(guiGraphics, getUsable(fromHudScreen), bounds.x, bounds.y, bounds.scale, true);
+        drawTickers(guiGraphics, getMax(fromHudScreen) - getUsable(fromHudScreen), x2, bounds.y, bounds.scale, false);
         if (bounds.scale != 1.0f) {
-            RenderUtils.popMatrix(context);
+            RenderUtils.popMatrix(guiGraphics);
         }
 
     }
 
-    private static float drawTickers(GuiGraphics context, int number, float x, int y, float scale, boolean filled) {
+    private static float drawTickers(GuiGraphics guiGraphics, int number, float x, int y, float scale, boolean filled) {
         float drawX = x;
         for (int i = 0; i < number; i++) {
-            RenderUtils.drawTexture(context, filled ? FULL : BLANK, (int) (drawX / scale), (int) (y / scale), DIMENSION, DIMENSION, DIMENSION , DIMENSION);
+            RenderUtils.drawTexture(guiGraphics, filled ? FULL : BLANK, (int) (drawX / scale), (int) (y / scale), DIMENSION, DIMENSION, DIMENSION , DIMENSION);
             drawX = (2 + drawX + (DIMENSION * scale));
         }
         return drawX;

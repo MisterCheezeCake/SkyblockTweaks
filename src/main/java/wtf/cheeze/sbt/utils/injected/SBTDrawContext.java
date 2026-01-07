@@ -19,7 +19,6 @@
 package wtf.cheeze.sbt.utils.injected;
 
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.network.chat.Component;
 
 public interface SBTDrawContext {

@@ -25,14 +25,14 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.network.chat.Component;
 
 public class DrawSlotEvents {
-    public static Event<OnDrawSlot> BEFORE_ITEM = EventFactory.createArrayBacked(OnDrawSlot.class, listeners -> (screenTitle, context, slot) -> {
+    public static Event<OnDrawSlot> BEFORE_ITEM = EventFactory.createArrayBacked(OnDrawSlot.class, listeners -> (screenTitle, guiGraphics, slot) -> {
         for (OnDrawSlot listener : listeners) {
-            listener.onDrawSlot(screenTitle, context, slot);
+            listener.onDrawSlot(screenTitle, guiGraphics, slot);
         }
     });
 
     @FunctionalInterface
     public interface OnDrawSlot {
-        void onDrawSlot(Component screenTitle, GuiGraphics context, Slot slot);
+        void onDrawSlot(Component screenTitle, GuiGraphics guiGraphics, Slot slot);
     }
 }

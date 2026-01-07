@@ -119,5 +119,4 @@ public class  SBTConfig {
     public static EnumControllerBuilder<Side> generateSideController(Option<Side> opt) {
         return EnumControllerBuilder.create(opt).enumClass(Side.class);
     }
-
 }

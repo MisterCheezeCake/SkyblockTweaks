@@ -31,11 +31,9 @@ public class ItemStackComponent implements HudComponent {
     private static final int BASE_WIDTH = 16;
     private static final int BASE_HEIGHT = 16;
 
-
     private final Cache<ItemStack> cache;
     private final Supplier<ItemStack> itemStack;
     private static final ItemStack ITEM_ERROR =  new ItemStack(Items.BARRIER);
-
 
     public ItemStackComponent(UpdateTiming updateTiming, Supplier<ItemStack> itemStack) {
         this.cache = new Cache<>(updateTiming, itemStack, ITEM_ERROR);
@@ -46,14 +44,13 @@ public class ItemStackComponent implements HudComponent {
         this( UpdateTiming.FRAME, itemStack);
     }
 
-
     @Override
-    public int render(GuiGraphics context, int x, int y, float scale) {
+    public int render(GuiGraphics guiGraphics, int x, int y, float scale) {
         if (cache.timing == UpdateTiming.FRAME || cache.isDueForUpdate()) {
             cache.update();
         }
-            context.renderItem(cache.get(),  (int) (x / scale), (int) (y / scale));
-            context.renderItemDecorations(Minecraft.getInstance().font, cache.get(), (int) (x / scale), (int) (y / scale));
+            guiGraphics.renderItem(cache.get(),  (int) (x / scale), (int) (y / scale));
+            guiGraphics.renderItemDecorations(Minecraft.getInstance().font, cache.get(), (int) (x / scale), (int) (y / scale));
         return 1;
     }
 

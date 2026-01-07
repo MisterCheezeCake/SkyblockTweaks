@@ -35,30 +35,20 @@ public class RenderUtils {
     private static final Minecraft client = Minecraft.getInstance();
     private static final int OUTLINE_LIGHT = 15728880;
 
-    public static void pushMatrix(GuiGraphics context) {
-        context.pose().pushMatrix();
+    public static void pushMatrix(GuiGraphics guiGraphics) {
+        guiGraphics.pose().pushMatrix();
     }
 
-    public static void beginScale(GuiGraphics context, float scale) {
-        pushMatrix(context);
-        context.pose().scale(scale, scale);
+    public static void beginScale(GuiGraphics guiGraphics, float scale) {
+        pushMatrix(guiGraphics);
+        guiGraphics.pose().scale(scale, scale);
     }
-    public static void popMatrix(GuiGraphics context) {
-        context.pose().popMatrix();
-    }
-
-    public static void drawTranslated(GuiGraphics context, float z, int layers, Runnable runnable) {
-        pushMatrix(context);
-        runnable.run();
-        popMatrix(context);
-    }
-    
-    public static void drawWithZ(GuiGraphics context, float z, Runnable runnable) {
-        runnable.run();
+    public static void popMatrix(GuiGraphics guiGraphics) {
+        guiGraphics.pose().popMatrix();
     }
 
-    public static void drawNonBlockingTooltip(GuiGraphics context, Component text, int x, int y) {
-        drawNonBlockingTooltip(context, List.of(text), x, y);
+    public static void drawNonBlockingTooltip(GuiGraphics guiGraphics, Component text, int x, int y) {
+        drawNonBlockingTooltip(guiGraphics, List.of(text), x, y);
     }
 
     /**
@@ -66,56 +56,56 @@ public class RenderUtils {
      * a tooltip drawer, of which a context can have only one, is used. This method should be used
      * where a tooltip needs to be rendered without interfering with other tooltips.
      */
-    public static void drawNonBlockingTooltip(GuiGraphics context, List<Component> text, int x, int y) {
-        context.renderTooltip(client.font, text.stream().map(it -> new ClientTextTooltip(it.getVisualOrderText()) ).collect(Collectors.toList()), x, y, DefaultTooltipPositioner.INSTANCE, null);
+    public static void drawNonBlockingTooltip(GuiGraphics guiGraphics, List<Component> text, int x, int y) {
+        guiGraphics.renderTooltip(client.font, text.stream().map(it -> new ClientTextTooltip(it.getVisualOrderText()) ).collect(Collectors.toList()), x, y, DefaultTooltipPositioner.INSTANCE, null);
     }
 
-    public static void drawText(GuiGraphics context, Component text, int x, int y, int color, boolean shadow, float scale) {
-        beginScale(context, scale);
-        drawText(context, text, (int) (x/scale), (int) (y/scale), color, shadow);
-        popMatrix(context);
+    public static void drawScaledText(GuiGraphics guiGraphics, Component text, int x, int y, int color, boolean shadow, float scale) {
+        beginScale(guiGraphics, scale);
+        drawText(guiGraphics, text, (int) (x/scale), (int) (y/scale), color, shadow);
+        popMatrix(guiGraphics);
     }
 
-    public static void drawText(GuiGraphics context, Component text, int x, int y, int color, boolean shadow, float scale, boolean imHandlingTheScaleMyself) {
-        drawText(context, text, (int) (x/scale), (int) (y/scale), color, shadow);
+    public static void drawText(GuiGraphics guiGraphics, Component text, int x, int y, int color, boolean shadow, float scale) {
+        drawText(guiGraphics, text, (int) (x/scale), (int) (y/scale), color, shadow);
     }
 
-    public static void drawText(GuiGraphics context, Component text, int x, int y, int color, boolean shadow) {
-        context.drawString(client.font, text, x, y, color, shadow);
+    public static void drawText(GuiGraphics guiGraphics, Component text, int x, int y, int color, boolean shadow) {
+        guiGraphics.drawString(client.font, text, x, y, color, shadow);
     }
 
-    public static void drawTextWithOutline(GuiGraphics context, Component text, int x, int y, int color, int outlineColor) {
+    public static void drawTextWithOutline(GuiGraphics guiGraphics, Component text, int x, int y, int color, int outlineColor) {
         // We reimplement it ourselves post 1.21.6 because it's more annoying to make the vanilla method work with rendering changes
         //TODO: Check if this works well and explore replacing it if possible
-        context.drawString(client.font, text, x -1, y -1, outlineColor, false);
-        context.drawString(client.font, text, x, y -1, outlineColor, false);
-        context.drawString(client.font, text, x + 1, y -1, outlineColor, false);
-        context.drawString(client.font, text, x + 1, y, outlineColor, false);
-        context.drawString(client.font, text, x + 1, y + 1, outlineColor, false);
-        context.drawString(client.font, text, x, y + 1, outlineColor, false);
-        context.drawString(client.font, text, x - 1, y + 1, outlineColor, false);
-        context.drawString(client.font, text, x - 1, y, outlineColor, false);
-        context.drawString(client.font, text, x, y, color, false);
+        guiGraphics.drawString(client.font, text, x -1, y -1, outlineColor, false);
+        guiGraphics.drawString(client.font, text, x, y -1, outlineColor, false);
+        guiGraphics.drawString(client.font, text, x + 1, y -1, outlineColor, false);
+        guiGraphics.drawString(client.font, text, x + 1, y, outlineColor, false);
+        guiGraphics.drawString(client.font, text, x + 1, y + 1, outlineColor, false);
+        guiGraphics.drawString(client.font, text, x, y + 1, outlineColor, false);
+        guiGraphics.drawString(client.font, text, x - 1, y + 1, outlineColor, false);
+        guiGraphics.drawString(client.font, text, x - 1, y, outlineColor, false);
+        guiGraphics.drawString(client.font, text, x, y, color, false);
     }
 
-    public static void drawTextWithOutline(GuiGraphics context, Component text, int x, int y, int color, int outlineColor, float scale) {
-        beginScale(context, scale);
-        drawTextWithOutline(context, text, (int) (x/scale), (int) (y/scale), color, outlineColor);
-        popMatrix(context);
+    public static void drawScaledTextWithOutline(GuiGraphics guiGraphics, Component text, int x, int y, int color, int outlineColor, float scale) {
+        beginScale(guiGraphics, scale);
+        drawTextWithOutline(guiGraphics, text, (int) (x/scale), (int) (y/scale), color, outlineColor);
+        popMatrix(guiGraphics);
     }
 
-    public static void drawTextWithOutline(GuiGraphics context, Component text, int x, int y, int color, int outlineColor, float scale, boolean imHandlingTheScaleMyself) {
-        drawTextWithOutline(context, text, (int) (x/scale), (int) (y/scale), color, outlineColor);
+    public static void drawTextWithOutline(GuiGraphics guiGraphics, Component text, int x, int y, int color, int outlineColor, float scale) {
+        drawTextWithOutline(guiGraphics, text, (int) (x/scale), (int) (y/scale), color, outlineColor);
     }
 
-    public static void drawCenteredText(GuiGraphics context, Component text, int x, int y, int color, boolean shadow, float scale) {
+    public static void drawCenteredText(GuiGraphics guiGraphics, Component text, int x, int y, int color, boolean shadow, float scale) {
         int width = (int) (getStringWidth(text) * scale);
-        drawText(context, text, x - width / 2, y, color, shadow, scale);
+        drawScaledText(guiGraphics, text, x - width / 2, y, color, shadow, scale);
     }
 
-    public static void drawCenteredText(GuiGraphics context, Component text, int x, int y, int color, boolean shadow) {
+    public static void drawCenteredText(GuiGraphics guiGraphics, Component text, int x, int y, int color, boolean shadow) {
         int width = getStringWidth(text);
-        drawText(context, text, x - width / 2, y, color, shadow);
+        drawText(guiGraphics, text, x - width / 2, y, color, shadow);
     }
 
     public static int getStringWidth(Component text) {
@@ -135,18 +125,18 @@ public class RenderUtils {
         return client.font.width(text) / Minecraft.getInstance().getWindow().getGuiScaledWidth();
     }
 
-    public static void drawBorder(GuiGraphics context, int borderWidth, int color, int x, int y, int rectWidth, int rectHeight) {
+    public static void drawBorder(GuiGraphics guiGraphics, int borderWidth, int color, int x, int y, int rectWidth, int rectHeight) {
         // Top border
-        context.fill(x - borderWidth, y - borderWidth, x + rectWidth + borderWidth, y, color);
+        guiGraphics.fill(x - borderWidth, y - borderWidth, x + rectWidth + borderWidth, y, color);
 
         // Bottom border
-        context.fill(x - borderWidth, y + rectHeight, x + rectWidth + borderWidth, y + rectHeight + borderWidth, color);
+        guiGraphics.fill(x - borderWidth, y + rectHeight, x + rectWidth + borderWidth, y + rectHeight + borderWidth, color);
 
         // Left border
-        context.fill(x - borderWidth, y, x, y + rectHeight, color);
+        guiGraphics.fill(x - borderWidth, y, x, y + rectHeight, color);
 
         // Right border
-        context.fill(x + rectWidth, y, x + rectWidth + borderWidth, y + rectHeight, color);
+        guiGraphics.fill(x + rectWidth, y, x + rectWidth + borderWidth, y + rectHeight, color);
     }
 
     public static BreachResult isOffscreen(ScreenRectangle rect) {
@@ -170,12 +160,12 @@ public class RenderUtils {
 
     }
 
-    public static void drawTexture(GuiGraphics context, Identifier texture, int x, int y, int width, int height, int textureWidth, int textureHeight) {
-        context.blit(RenderPipelines.GUI_TEXTURED, texture, x, y, 0, 0, width, height, textureWidth, textureHeight);
+    public static void drawTexture(GuiGraphics guiGraphics, Identifier texture, int x, int y, int width, int height, int textureWidth, int textureHeight) {
+        guiGraphics.blit(RenderPipelines.GUI_TEXTURED, texture, x, y, 0, 0, width, height, textureWidth, textureHeight);
     }
 
-    public static void drawBar(GuiGraphics context, Identifier texture, int x, int y, int width, int color) {
-        context.blit(RenderPipelines.GUI_TEXTURED, texture, x, y, 0, 0, width, BarHud.BAR_HEIGHT, BarHud.BAR_WIDTH, BarHud.BAR_HEIGHT, color);
+    public static void drawBar(GuiGraphics guiGraphics, Identifier texture, int x, int y, int width, int color) {
+        guiGraphics.blit(RenderPipelines.GUI_TEXTURED, texture, x, y, 0, 0, width, BarHud.BAR_HEIGHT, BarHud.BAR_WIDTH, BarHud.BAR_HEIGHT, color);
     }
 
     public static ScreenBounds getScreenBounds() {

@@ -55,7 +55,7 @@ public class FlexibleHudLine implements HudComponent {
     }
 
     @Override
-    public int render(GuiGraphics context, int x, int y, float scale) {
+    public int render(GuiGraphics guiGraphics, int x, int y, float scale) {
         if (timing == UpdateTiming.FRAME || partCache.isDueForUpdate()) {
             partCache.update();
         }
@@ -70,9 +70,9 @@ public class FlexibleHudLine implements HudComponent {
             var w = RenderUtils.getStringWidth(text);
             if (part.useIcon.get()) {
                 w += 10;
-                renderLine(context, text, part.icon.get(), x, y, scale, part.mode.get(), part.color.get(), part.outlineColor.get());
+                renderLine(guiGraphics, text, part.icon.get(), x, y, scale, part.mode.get(), part.color.get(), part.outlineColor.get());
             } else {
-                renderLine(context, text, x, y, scale, part.mode.get(), part.color.get(), part.outlineColor.get());
+                renderLine(guiGraphics, text, x, y, scale, part.mode.get(), part.color.get(), part.outlineColor.get());
             }
             if (w > longest) {
                 longest = w;
@@ -97,27 +97,27 @@ public class FlexibleHudLine implements HudComponent {
     }
 
 
-//    private static void renderLine(DrawContext context, Text text, HudIcon icon,  int x, int y, float scale, DrawMode mode, int color) {
-//        renderLine(context, text, icon, x, y, scale, mode, color, -1);
+//    private static void renderLine(DrawContext guiGraphics, Text text, HudIcon icon,  int x, int y, float scale, DrawMode mode, int color) {
+//        renderLine(guiGraphics, text, icon, x, y, scale, mode, color, -1);
 //    }
-//    private static  void renderLine(DrawContext context, Text text, int x, int y, float scale, DrawMode mode, int color) {
-//        renderLine(context, text, x, y, scale, mode, color, -1);
+//    private static  void renderLine(DrawContext guiGraphics, Text text, int x, int y, float scale, DrawMode mode, int color) {
+//        renderLine(guiGraphics, text, x, y, scale, mode, color, -1);
 //    }
 
-    private static void renderLine(GuiGraphics context, Component text, int x, int y, float scale, DrawMode mode, int color, int outlineColor) {
+    private static void renderLine(GuiGraphics guiGraphics, Component text, int x, int y, float scale, DrawMode mode, int color, int outlineColor) {
         switch (mode) {
-            case PURE -> RenderUtils.drawText(context, text, x, y, color, false, scale, true);
-            case SHADOW -> RenderUtils.drawText(context, text, x, y, color, true, scale, true);
-            case OUTLINE -> RenderUtils.drawTextWithOutline(context, text, x, y, color, outlineColor, scale, true);
+            case PURE -> RenderUtils.drawText(guiGraphics, text, x, y, color, false, scale);
+            case SHADOW -> RenderUtils.drawText(guiGraphics, text, x, y, color, true, scale);
+            case OUTLINE -> RenderUtils.drawTextWithOutline(guiGraphics, text, x, y, color, outlineColor, scale);
         }
     }
 
-    private static void renderLine(GuiGraphics context, Component text, HudIcon icon, int x, int y, float scale, DrawMode mode, int color, int outlineColor) {
-        icon.render(context, x, y, scale);
+    private static void renderLine(GuiGraphics guiGraphics, Component text, HudIcon icon, int x, int y, float scale, DrawMode mode, int color, int outlineColor) {
+        icon.render(guiGraphics, x, y, scale);
         switch (mode) {
-            case PURE -> RenderUtils.drawText(context, text, x + (int) (10 * scale), y, color, false, scale, true);
-            case SHADOW -> RenderUtils.drawText(context, text, x + (int) (10 * scale), y, color, true, scale, true);
-            case OUTLINE -> RenderUtils.drawTextWithOutline(context, text, x + (int) (10 * scale), y, color, outlineColor, scale, true);
+            case PURE -> RenderUtils.drawText(guiGraphics, text, x + (int) (10 * scale), y, color, false, scale);
+            case SHADOW -> RenderUtils.drawText(guiGraphics, text, x + (int) (10 * scale), y, color, true, scale);
+            case OUTLINE -> RenderUtils.drawTextWithOutline(guiGraphics, text, x + (int) (10 * scale), y, color, outlineColor, scale);
         }
     }
 

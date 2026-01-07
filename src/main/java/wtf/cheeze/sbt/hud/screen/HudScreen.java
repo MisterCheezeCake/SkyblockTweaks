@@ -106,10 +106,7 @@ public class HudScreen extends Screen {
             setMode(Mode.DRAG);
         }, centerX - 25, 95, 150, 20);
 
-        resetButton = new ConstructableButton(Component.literal("Reset"), button -> {
-            this.huds.get(this.resetModeIndex).updatePosition(0.1f, 0.f);
-
-        }, centerX - 25, 65, 150, 20);
+        resetButton = new ConstructableButton(Component.literal("Reset"), button -> this.huds.get(this.resetModeIndex).updatePosition(0.1f, 0.f), centerX - 25, 65, 150, 20);
         resetModeButton = new ConstructableButton(this.huds.getFirst().getName().primaryName(), button -> {
             this.resetModeIndex++;
             if (this.resetModeIndex >= this.huds.size()) {
@@ -127,19 +124,19 @@ public class HudScreen extends Screen {
     }
 
     @Override
-    public void render(GuiGraphics context, int mouseX, int mouseY, float delta) {
-        super.render(context, mouseX, mouseY, delta);
+    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
+        super.render(guiGraphics, mouseX, mouseY, delta);
 
         HUD hovered = null;
         boolean drawnTooltip = false;
         for (HUD hud : huds) {
             boolean inBounds = clickInBounds(hud, mouseX, mouseY);
-            hud.render(context, true, inBounds);
+            hud.render(guiGraphics, true, inBounds);
             if (inBounds) {
                 hovered = hud;
                 if (hasShiftDown()) {
 //                    context.drawTooltip(hud.getName().primaryName(),);
-                    if (!drawnTooltip) context.setTooltipForNextFrame(Minecraft.getInstance().font, hud.getName().primaryName(), mouseX, mouseY );
+                    if (!drawnTooltip) guiGraphics.setTooltipForNextFrame(Minecraft.getInstance().font, hud.getName().primaryName(), mouseX, mouseY );
                     drawnTooltip = true;
                     //this.setTooltip(Tooltip.of(hud.getName().primaryName()), HoveredTooltipPositioner.INSTANCE.getPosition(), false);
                 }
@@ -150,9 +147,9 @@ public class HudScreen extends Screen {
 //            this.clearTooltip();
 //        }
 
-        drawInstructions(context);
+        drawInstructions(guiGraphics);
         if (this.popup != null) {
-            this.popup.render(context, mouseX, mouseY, delta);
+            this.popup.render(guiGraphics, mouseX, mouseY, delta);
         }
     }
 
@@ -306,29 +303,26 @@ public class HudScreen extends Screen {
         return !textToggledOff;
     }
 
-    private void drawInstructions(GuiGraphics context) {
+    private void drawInstructions(GuiGraphics guiGraphics) {
         var centerX = minecraft.getWindow().getGuiScaledWidth() / 2;
-//        context.getMatrices().push();
-//        context.getMatrices().translate(0, 0, 100);
         if (shouldShowText() && this.mode == Mode.DRAG) {
-            context.drawCenteredString(minecraft.font, "Drag or use the arrow keys to move items", centerX, 5, Colors.WHITE);
-            context.drawCenteredString(minecraft.font, "Scroll or use the + and - keys to scale items", centerX, 15, Colors.WHITE);
-            context.drawCenteredString(minecraft.font, "Press shift and hover to see the name of the item", centerX, 25, Colors.WHITE);
-            context.drawCenteredString(minecraft.font, (macOS() ? "Command" : "Control") + " click for text mode/to edit anchor points", centerX, 35, Colors.WHITE);
-            context.drawCenteredString(minecraft.font, (macOS() ? "Command" : "Control") + "+ R to enter Reset Mode", centerX, 45, Colors.WHITE);
-            context.drawCenteredString(minecraft.font, "Hold " + (macOS() ? "option" : "alt") + " to hide this text or " + (macOS() ? "Cmd+Opt" : "Ctrl+Alt") + " to toggle it", centerX, 55, Colors.WHITE);
+            guiGraphics.drawCenteredString(minecraft.font, "Drag or use the arrow keys to move items", centerX, 5, Colors.WHITE);
+            guiGraphics.drawCenteredString(minecraft.font, "Scroll or use the + and - keys to scale items", centerX, 15, Colors.WHITE);
+            guiGraphics.drawCenteredString(minecraft.font, "Press shift and hover to see the name of the item", centerX, 25, Colors.WHITE);
+            guiGraphics.drawCenteredString(minecraft.font, (macOS() ? "Command" : "Control") + " click for text mode/to edit anchor points", centerX, 35, Colors.WHITE);
+            guiGraphics.drawCenteredString(minecraft.font, (macOS() ? "Command" : "Control") + "+ R to enter Reset Mode", centerX, 45, Colors.WHITE);
+            guiGraphics.drawCenteredString(minecraft.font, "Hold " + (macOS() ? "option" : "alt") + " to hide this text or " + (macOS() ? "Cmd+Opt" : "Ctrl+Alt") + " to toggle it", centerX, 55, Colors.WHITE);
         } else if (shouldShowText() && this.mode == Mode.TEXT) {
-            context.drawCenteredString(minecraft.font, "You are now in exact positioning mode", centerX, 5, Colors.WHITE);
-            context.drawCenteredString(minecraft.font, "Enter the x and y positions in the text fields below", centerX, 15, Colors.WHITE);
-            context.drawCenteredString(minecraft.font, "The number is relative, so 0 is fully up/left and 1 is fully down/right", centerX, 25, Colors.WHITE);
-            context.drawCenteredString(minecraft.font, "Press the anchor button to change where the hud anchors itself", centerX, 35, Colors.WHITE);
-            context.drawCenteredString(minecraft.font, "Hold " + (macOS() ? "option" : "alt") + " to hide this text or " + (macOS() ? "Cmd+Opt" : "Ctrl+Alt") + " to toggle it", centerX, 45, Colors.WHITE);
+            guiGraphics.drawCenteredString(minecraft.font, "You are now in exact positioning mode", centerX, 5, Colors.WHITE);
+            guiGraphics.drawCenteredString(minecraft.font, "Enter the x and y positions in the text fields below", centerX, 15, Colors.WHITE);
+            guiGraphics.drawCenteredString(minecraft.font, "The number is relative, so 0 is fully up/left and 1 is fully down/right", centerX, 25, Colors.WHITE);
+            guiGraphics.drawCenteredString(minecraft.font, "Press the anchor button to change where the hud anchors itself", centerX, 35, Colors.WHITE);
+            guiGraphics.drawCenteredString(minecraft.font, "Hold " + (macOS() ? "option" : "alt") + " to hide this text or " + (macOS() ? "Cmd+Opt" : "Ctrl+Alt") + " to toggle it", centerX, 45, Colors.WHITE);
         } else if (this.mode == Mode.RESET) {
-            context.drawCenteredString(minecraft.font, "You are now in reset mode", centerX, 5, Colors.WHITE);
-            context.drawCenteredString(minecraft.font, "Press the reset button to reset the selected item to the default position", centerX, 15, Colors.WHITE);
-            context.drawCenteredString(minecraft.font, "Press the first button to cycle between elements", centerX, 25, Colors.WHITE);
+            guiGraphics.drawCenteredString(minecraft.font, "You are now in reset mode", centerX, 5, Colors.WHITE);
+            guiGraphics.drawCenteredString(minecraft.font, "Press the reset button to reset the selected item to the default position", centerX, 15, Colors.WHITE);
+            guiGraphics.drawCenteredString(minecraft.font, "Press the first button to cycle between elements", centerX, 25, Colors.WHITE);
         }
-//        context.getMatrices().pop();
     }
 
     private void updateOffset(HUD hud, double mouseX, double mouseY) {

@@ -31,7 +31,7 @@ public class TextureIcon implements HudIcon {
     }
 
     @Override
-    public void render(GuiGraphics context, int x, int y, float scale) {
-        RenderUtils.drawTexture(context, iconTexture, (int) (x /scale) , (int) (y / scale),  8, 8, 8, 8);
+    public void render(GuiGraphics guiGraphics, int x, int y, float scale) {
+        RenderUtils.drawTexture(guiGraphics, iconTexture, (int) (x /scale) , (int) (y / scale),  8, 8, 8, 8);
     }
 }

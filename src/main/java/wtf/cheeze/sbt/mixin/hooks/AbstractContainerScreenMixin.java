@@ -70,8 +70,8 @@ public abstract class AbstractContainerScreenMixin<T extends AbstractContainerMe
     }
 
     @Inject(method = "renderSlot", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;renderItem(Lnet/minecraft/world/item/ItemStack;III)V"))
-    protected void sbt$beforeDrawItem(GuiGraphics context, Slot slot, CallbackInfo ci) {
-        DrawSlotEvents.BEFORE_ITEM.invoker().onDrawSlot(getTitle(), context, slot);
+    protected void sbt$beforeDrawItem(GuiGraphics guiGraphics, Slot slot, CallbackInfo ci) {
+        DrawSlotEvents.BEFORE_ITEM.invoker().onDrawSlot(getTitle(), guiGraphics, slot);
     }
 
     @Inject(method = "mouseClicked", at = @At("HEAD"), cancellable = true)
@@ -104,10 +104,10 @@ public abstract class AbstractContainerScreenMixin<T extends AbstractContainerMe
 //    }
 
     @Inject(method = "renderContents", at = @At(value = "INVOKE", target = "Lorg/joml/Matrix3x2fStack;popMatrix()Lorg/joml/Matrix3x2fStack;"))
-    protected void sbt$endRenderMain(GuiGraphics context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
+    protected void sbt$endRenderMain(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta, CallbackInfo ci) {
         if (getTitle().getString().equals("Brewing Stand")) {
             if (this.menu instanceof BrewingStandMenu) return;
-            BrewingStandOverlay.render(menu.slots, context);
+            BrewingStandOverlay.render(menu.slots, guiGraphics);
         }
     }
 

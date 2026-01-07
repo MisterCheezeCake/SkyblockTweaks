@@ -119,6 +119,7 @@ public class ArmorStackHud extends TextHud {
 
                     )
                     .build();
+
             var outline = Option.<Color>createBuilder()
                     .name(key("armorStack.outlineColor"))
                     .description(keyD("armorStack.outlineColor"))
@@ -131,6 +132,7 @@ public class ArmorStackHud extends TextHud {
 
                     )
                     .build();
+
             var mode = Option.<DrawMode>createBuilder()
                     .name(key("armorStack.mode"))
                     .description(keyD("armorStack.mode"))
@@ -144,6 +146,7 @@ public class ArmorStackHud extends TextHud {
                             }
                     )
                     .build();
+
             var scale = Option.<Float>createBuilder()
                     .name(key("armorStack.scale"))
                     .description(keyD("armorStack.scale"))
@@ -168,4 +171,3 @@ public class ArmorStackHud extends TextHud {
         }
     }
 }
-

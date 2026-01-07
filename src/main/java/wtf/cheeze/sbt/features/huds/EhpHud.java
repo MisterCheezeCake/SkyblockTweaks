@@ -40,7 +40,6 @@ import wtf.cheeze.sbt.utils.skyblock.SkyblockData;
 import java.awt.Color;
 
 public class EhpHud extends TextHud {
-
     public static final EhpHud INSTANCE = new EhpHud();
 
     private EhpHud() {
@@ -62,6 +61,7 @@ public class EhpHud extends TextHud {
         );
 
     }
+
     @Override
     public boolean shouldRender(boolean fromHudScreen) {
         if (!super.shouldRender(fromHudScreen)) return false;
@@ -70,7 +70,6 @@ public class EhpHud extends TextHud {
 
     @Override
     public @NotNull HudName getName() {
-
         return new HudName("Effective Health HUD", "EHP HUD", Colors.GREEN);
     }
 
@@ -116,6 +115,7 @@ public class EhpHud extends TextHud {
                             value -> config.huds.ehp.enabled = value
                     )
                     .build();
+
             var outline = Option.<Color>createBuilder()
                     .name(key("ehp.outlineColor"))
                     .description(keyD("ehp.outlineColor"))
@@ -130,6 +130,7 @@ public class EhpHud extends TextHud {
 
                     )
                     .build();
+
             var mode = Option.<DrawMode>createBuilder()
                     .name(key("ehp.mode"))
                     .description(keyD("ehp.mode"))
@@ -155,6 +156,7 @@ public class EhpHud extends TextHud {
 
                     )
                     .build();
+
             var icon = Option.<Boolean>createBuilder()
                     .name(key("ehp.icon"))
                     .description(keyD("ehp.icon"))
@@ -165,6 +167,7 @@ public class EhpHud extends TextHud {
                             value -> config.huds.ehp.icon = value
                     )
                     .build();
+
             var separator = Option.<String>createBuilder()
                     .name(key("ehp.separator"))
                     .description(keyD("ehp.separator"))
@@ -175,6 +178,7 @@ public class EhpHud extends TextHud {
                             value -> config.huds.ehp.separator = value
                     )
                     .build();
+
             var scale = Option.<Float>createBuilder()
                     .name(key("ehp.scale"))
                     .description(keyD("ehp.scale"))
@@ -185,7 +189,6 @@ public class EhpHud extends TextHud {
                             value -> config.huds.ehp.scale = value
                     )
                     .build();
-
 
             return OptionGroup.createBuilder()
                     .name(key("ehp"))
@@ -199,13 +202,6 @@ public class EhpHud extends TextHud {
                     .option(scale)
                     .collapsed(true)
                     .build();
-
         }
-
-
     }
-
 }
-
-
-

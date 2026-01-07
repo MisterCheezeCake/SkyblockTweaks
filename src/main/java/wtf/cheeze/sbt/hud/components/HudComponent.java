@@ -26,7 +26,7 @@ import wtf.cheeze.sbt.utils.render.Colors;
 public interface HudComponent {
     Component ERROR = TextUtils.withColor("ERROR", Colors.RED);
 
-    int render(GuiGraphics context, int x, int y, float scale);
+    int render(GuiGraphics guiGraphics, int x, int y, float scale);
     int getWidth();
     int getHeight();
     int getlines();

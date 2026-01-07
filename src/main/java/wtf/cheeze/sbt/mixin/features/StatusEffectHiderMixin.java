@@ -30,7 +30,7 @@ import wtf.cheeze.sbt.utils.skyblock.SkyblockData;
 @Mixin(InventoryScreen.class)
 public abstract class StatusEffectHiderMixin {
     @WrapWithCondition(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/inventory/EffectsInInventory;renderEffects(Lnet/minecraft/client/gui/GuiGraphics;II)V"))
-    private boolean sbt$onDrawStatusEffects(EffectsInInventory instance, GuiGraphics context, int mouseX, int mouseY) {
+    private boolean sbt$onDrawStatusEffects(EffectsInInventory instance, GuiGraphics guiGraphics, int mouseX, int mouseY) {
         return !SBTConfig.get().inventory.noRenderPotionHud || !SkyblockData.inSB;
     }
 }

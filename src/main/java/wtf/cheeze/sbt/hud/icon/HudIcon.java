@@ -24,7 +24,7 @@ import net.minecraft.resources.Identifier;
 import org.jetbrains.annotations.NotNull;
 
 public interface HudIcon {
-    void render(GuiGraphics context, int x, int y, float scale);
+    void render(GuiGraphics guiGraphics, int x, int y, float scale);
 
     static HudIcon of(@NotNull ItemStack stack) {
         return new ItemStackIcon(stack);

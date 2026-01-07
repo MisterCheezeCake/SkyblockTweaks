@@ -27,7 +27,7 @@ import wtf.cheeze.sbt.utils.errors.ErrorLevel;
 import java.util.ArrayList;
 public class NotificationHandler {
 
-    private static final ArrayList<Component> NOTIFICATION_QUEUE = new ArrayList<Component>();
+    private static final ArrayList<Component> NOTIFICATION_QUEUE = new ArrayList<>();
 
     public static void registerEvents() {
         ClientPlayConnectionEvents.JOIN.register((handler, sender, client) -> {

@@ -71,7 +71,6 @@ public class TabListParser {
                         currentWidget = widget;
                         data.widgetLines.putIfAbsent(currentWidget, new ArrayList<>());
                         data.widgetLines.get(currentWidget).add(content);
-                        continue;
                     } else {
                         currentWidget = null;
                     }

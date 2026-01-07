@@ -36,7 +36,6 @@ public class SkyblockTweaksScreenMain extends Screen {
     public static final Identifier ICON = Identifier.fromNamespaceAndPath("skyblocktweaks", "icon.png");
     private final Screen parent;
 
-    private Button hudButton;
     public SkyblockTweaksScreenMain(Screen parent) {
         super(Component.literal("SkyBlockTweaks"));
         this.parent = parent;
@@ -48,27 +47,13 @@ public class SkyblockTweaksScreenMain extends Screen {
         var centerx = mc.getWindow().getGuiScaledWidth() / 2;
         var leftColumn = centerx - 100;
         var rightColumn = centerx + 5;
-        Button configButton = Button.builder(Component.literal("Open Config"), button -> {
-            mc.schedule(() -> mc.setScreen(SBTConfig.getScreen(this)));
-        }).bounds(centerx - 100, 55, 200, 20).build();
-        hudButton = Button.builder(Component.literal("Edit HUD Positions"), button -> {
-            mc.schedule(() -> mc.setScreen(new HudScreen(Component.literal("SkyBlockTweaks"), HudManager.HUDS, this)));
-        }).bounds(centerx - 100, 85, 200, 20).build();
-        Button modrinthButton = Button.builder(Component.literal("Modrinth"), button -> {
-            ConfirmLinkScreen.confirmLinkNow(this, "https://modrinth.com/mod/sbt", true);
-        }).bounds(leftColumn, 115, 95, 20).build();
-        Button githubButton = Button.builder(Component.literal("GitHub"), button -> {
-            ConfirmLinkScreen.confirmLinkNow(this, "https://github.com/MisterCheezeCake/SkyblockTweaks", true);
-        }).bounds(rightColumn, 115, 95, 20).build();
-        Button discordButton = Button.builder(Component.literal("Discord"), button -> {
-            ConfirmLinkScreen.confirmLinkNow(this, "https://discord.gg/YH3hw926hz", true);
-        }).bounds(leftColumn, 145, 95, 20).build();
-        Button legalButton = Button.builder(Component.literal("Legal"), button -> {
-            ConfirmLinkScreen.confirmLinkNow(this, "https://github.com/MisterCheezeCake/SkyblockTweaks/blob/main/OPENSOURCE.md", true);
-        }).bounds(rightColumn, 145, 95, 20).build();
-        Button closeButton = Button.builder(Component.literal("Close"), button -> {
-            mc.schedule(() -> mc.setScreen(parent));
-        }).bounds(centerx - 100, 175, 200, 20).build();
+        Button configButton = Button.builder(Component.literal("Open Config"), button -> mc.schedule(() -> mc.setScreen(SBTConfig.getScreen(this)))).bounds(centerx - 100, 55, 200, 20).build();
+        Button hudButton = Button.builder(Component.literal("Edit HUD Positions"), button -> mc.schedule(() -> mc.setScreen(new HudScreen(Component.literal("SkyBlockTweaks"), HudManager.HUDS, this)))).bounds(centerx - 100, 85, 200, 20).build();
+        Button modrinthButton = Button.builder(Component.literal("Modrinth"), button -> ConfirmLinkScreen.confirmLinkNow(this, "https://modrinth.com/mod/sbt", true)).bounds(leftColumn, 115, 95, 20).build();
+        Button githubButton = Button.builder(Component.literal("GitHub"), button -> ConfirmLinkScreen.confirmLinkNow(this, "https://github.com/MisterCheezeCake/SkyblockTweaks", true)).bounds(rightColumn, 115, 95, 20).build();
+        Button discordButton = Button.builder(Component.literal("Discord"), button -> ConfirmLinkScreen.confirmLinkNow(this, "https://discord.gg/YH3hw926hz", true)).bounds(leftColumn, 145, 95, 20).build();
+        Button legalButton = Button.builder(Component.literal("Legal"), button -> ConfirmLinkScreen.confirmLinkNow(this, "https://github.com/MisterCheezeCake/SkyblockTweaks/blob/main/OPENSOURCE.md", true)).bounds(rightColumn, 145, 95, 20).build();
+        Button closeButton = Button.builder(Component.literal("Close"), button -> mc.schedule(() -> mc.setScreen(parent))).bounds(centerx - 100, 175, 200, 20).build();
         this.addRenderableWidget(configButton);
         this.addRenderableWidget(hudButton);
         this.addRenderableWidget(modrinthButton);
@@ -88,12 +73,12 @@ public class SkyblockTweaksScreenMain extends Screen {
     }
 
     @Override
-    public void render(GuiGraphics context, int mouseX, int mouseY, float delta) {
+    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
         Minecraft mc = Minecraft.getInstance();
         var centerX = mc.getWindow().getGuiScaledWidth() / 2;
-        super.render(context, mouseX, mouseY, delta);
-        RenderUtils.drawCenteredText(context, Component.literal("SkyblockTweaks"), centerX, 3, Colors.SBT_GREEN, true, 2.5f);
-        RenderUtils.drawCenteredText(context, Component.literal("v" + SkyblockTweaks.VERSION.getVersionString()), centerX, 25, Colors.WHITE, true);
-        RenderUtils.drawCenteredText(context, Component.literal("By MisterCheezeCake"), centerX, 36, Colors.RED, true);
+        super.render(guiGraphics, mouseX, mouseY, delta);
+        RenderUtils.drawCenteredText(guiGraphics, Component.literal("SkyblockTweaks"), centerX, 3, Colors.SBT_GREEN, true, 2.5f);
+        RenderUtils.drawCenteredText(guiGraphics, Component.literal("v" + SkyblockTweaks.VERSION.getVersionString()), centerX, 25, Colors.WHITE, true);
+        RenderUtils.drawCenteredText(guiGraphics, Component.literal("By MisterCheezeCake"), centerX, 36, Colors.RED, true);
     }
 }

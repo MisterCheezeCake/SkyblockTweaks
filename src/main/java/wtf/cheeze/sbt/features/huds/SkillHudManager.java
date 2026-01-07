@@ -53,7 +53,6 @@ import java.awt.*;
  * Manages the Skill HUD and Skill Bar, storing data and common functions, Singleton
  */
 public class SkillHudManager {
-
     public static final SkillHudManager INSTANCE = new SkillHudManager();
 
     private SkillHudManager() {
@@ -205,7 +204,6 @@ public class SkillHudManager {
             return Math.round(remain / gain);
         }
 
-
         public @NotNull HudName getName() {
             return new HudName("Skill Progress HUD", "Skill HUD", Colors.CYAN);
         }
@@ -299,6 +297,7 @@ public class SkillHudManager {
                                 value -> config.huds.skills.actionsLeft = value
                         )
                         .build();
+
                 var abridgeDenominator = Option.<Boolean>createBuilder()
                         .name(key("skills.abridgeDenominator"))
                         .description(keyD("skills.abridgeDenominator"))
@@ -321,6 +320,7 @@ public class SkillHudManager {
 
                         )
                         .build();
+
                 var outline = Option.<Color>createBuilder()
                         .name(key("skills.outlineColor"))
                         .description(keyD("skills.outlineColor"))
@@ -333,6 +333,7 @@ public class SkillHudManager {
 
                         )
                         .build();
+
                 var mode = Option.<DrawMode>createBuilder()
                         .name(key("skills.mode"))
                         .description(keyD("skills.mode"))
@@ -346,6 +347,7 @@ public class SkillHudManager {
                                 }
                         )
                         .build();
+
                 var scale = Option.<Float>createBuilder()
                         .name(key("skills.scale"))
                         .description(keyD("skills.scale"))
@@ -372,8 +374,8 @@ public class SkillHudManager {
                         .build();
             }
         }
-
     }
+
     public class SkillBar extends BarHud {
         public SkillBar() {
             INFO = new HudInformation(
@@ -385,7 +387,6 @@ public class SkillHudManager {
                     y -> SBTConfig.huds().skillBar.y = y,
                     scale -> SBTConfig.huds().skillBar.scale = scale,
                     anchor -> SBTConfig.huds().skillBar.anchor = anchor
-
             );
         }
 
@@ -463,6 +464,7 @@ public class SkillHudManager {
 
                         )
                         .build();
+
                 var scale = Option.<Float>createBuilder()
                         .name(key("skillBar.scale"))
                         .description(keyD("skillBar.scale"))
@@ -473,6 +475,7 @@ public class SkillHudManager {
                                 value -> config.huds.skillBar.scale = value
                         )
                         .build();
+
                 return OptionGroup.createBuilder()
                         .name(key("skillBar"))
                         .description(keyD("skillBar"))

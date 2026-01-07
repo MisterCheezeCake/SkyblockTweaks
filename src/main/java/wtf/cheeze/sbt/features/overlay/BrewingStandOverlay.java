@@ -22,7 +22,6 @@ import dev.isxander.yacl3.api.Option;
 import dev.isxander.yacl3.api.OptionGroup;
 import dev.isxander.yacl3.config.v2.api.SerialEntry;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.core.NonNullList;
 import wtf.cheeze.sbt.config.ConfigImpl;
@@ -32,37 +31,30 @@ import wtf.cheeze.sbt.utils.render.Colors;
 import wtf.cheeze.sbt.utils.render.RenderUtils;
 
 public class BrewingStandOverlay {
-
     private static final int DRAW_OFFSET_X = 20;
     private static final int DRAW_OFFSET_Y = 4;
-    public static final float Z_OFFSET = 251;
 
     private static final int INPUT_SLOT = 13;
     private static final int TIMER_SLOT = 24;
     private static final int RIGHT_OUTPUT_SLOT = 42;
 
-
-    public static void render(NonNullList<Slot> slots, GuiGraphics context) {
+    public static void render(NonNullList<Slot> slots, GuiGraphics guiGraphics) {
         if (!SBTConfig.get().brewingStandOverlay.enabled) return;
         var input = slots.get(INPUT_SLOT);
         var timer = slots.get(TIMER_SLOT);
         var output = slots.get(RIGHT_OUTPUT_SLOT);
-        RenderUtils.drawWithZ(context, Z_OFFSET, () -> {
-            if (input.hasItem()) {
-                drawName(input, context);
-            }
-            if (!timer.getItem().getHoverName().getString().startsWith("Place Water Bottles")) {
-                drawName(timer, context);
-            }
-            if (output.hasItem()) {
-                drawName(output, context);
-            }
-        });
-
+        if (input.hasItem()) {
+            drawName(input, guiGraphics);
+        }
+        if (!timer.getItem().getHoverName().getString().startsWith("Place Water Bottles")) {
+            drawName(timer, guiGraphics);
+        }
+        if (output.hasItem()) {
+            drawName(output, guiGraphics);
+        }
     }
 
-
-    private static void drawName(Slot slot, GuiGraphics context) {
+    private static void drawName(Slot slot, GuiGraphics guiGraphics) {
         var name = slot.getItem().getHoverName();
         var color =  name.getStyle().getColor();
         int rcolor;
@@ -71,14 +63,12 @@ public class BrewingStandOverlay {
         } else {
             rcolor = color.getValue();
         }
-        RenderUtils.drawText(context, name, slot.x + DRAW_OFFSET_X, slot.y + DRAW_OFFSET_Y, rcolor, false);
+        RenderUtils.drawText(guiGraphics, name, slot.x + DRAW_OFFSET_X, slot.y + DRAW_OFFSET_Y, rcolor, false);
     }
 
     public static class Config {
         @SerialEntry
         public boolean enabled = true;
-
-
 
         public static OptionGroup getGroup(ConfigImpl defaults, ConfigImpl config) {
             var enabled = Option.<Boolean>createBuilder()
@@ -100,7 +90,5 @@ public class BrewingStandOverlay {
 
 
         }
-
     }
-
 }

@@ -42,14 +42,11 @@ public class SecretsHud extends TextHud {
                 DataUtils.ALWAYS_WHITE,
                 () -> SBTConfig.huds().time.outlineColor,
                 () -> SBTConfig.huds().time.mode,
-                () ->  {
-                   return SBTConfig.huds().secrets.label ?
-                           TextUtils.join(
-                                   TextUtils.withColor("Secrets: ", SBTConfig.huds().secrets.labelColor),
-                                   getNumText()
-                           ) : getNumText();
-
-                },
+                () -> SBTConfig.huds().secrets.label ?
+                        TextUtils.join(
+                                TextUtils.withColor("Secrets: ", SBTConfig.huds().secrets.labelColor),
+                                getNumText()
+                        ) : getNumText(),
                 () -> Icons.CHEST,
                 () -> SBTConfig.huds().secrets.icon
         );

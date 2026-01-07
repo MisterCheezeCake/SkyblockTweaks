@@ -70,7 +70,6 @@ public class QuiverHud extends TextHud {
                 () -> Icons.ARROW,
                 () -> SBTConfig.huds().quiver.icon
         );
-
     }
 
     @Override
@@ -122,6 +121,7 @@ public class QuiverHud extends TextHud {
                             value -> config.huds.quiver.enabled = value
                     )
                     .build();
+
             var icon = Option.<Boolean>createBuilder()
                     .name(key("quiver.icon"))
                     .description(keyD("quiver.icon"))
@@ -132,8 +132,6 @@ public class QuiverHud extends TextHud {
                             value -> config.huds.quiver.icon = value
                     )
                     .build();
-
-
 
             var outline = Option.<Color>createBuilder()
                     .name(key("quiver.outlineColor"))
@@ -173,5 +171,4 @@ public class QuiverHud extends TextHud {
                     .build();
         }
     }
-
 }

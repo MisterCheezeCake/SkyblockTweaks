@@ -38,7 +38,6 @@ import wtf.cheeze.sbt.utils.skyblock.SkyblockData;
 import java.awt.Color;
 
 public class FpsHud extends TextHud {
-
     public static final FpsHud INSTANCE = new FpsHud();
 
     private FpsHud() {
@@ -70,7 +69,6 @@ public class FpsHud extends TextHud {
     public @NotNull HudName getName() {
         return new HudName("FPS HUD", Colors.LIGHT_BLUE);
     }
-
 
     public static class Config {
         @SerialEntry
@@ -136,6 +134,7 @@ public class FpsHud extends TextHud {
                             value -> config.huds.fps.reverse = value
                     )
                     .build();
+
             var color = Option.<Color>createBuilder()
                     .name(key("fps.color"))
                     .description(keyD("fps.color"))
@@ -147,6 +146,7 @@ public class FpsHud extends TextHud {
 
                     )
                     .build();
+
             var outline = Option.<Color>createBuilder()
                     .name(key("fps.outlineColor"))
                     .description(keyD("fps.outlineColor"))
@@ -159,6 +159,7 @@ public class FpsHud extends TextHud {
 
                     )
                     .build();
+
             var mode = Option.<DrawMode>createBuilder()
                     .name(key("fps.mode"))
                     .description(keyD("fps.mode"))
@@ -172,6 +173,7 @@ public class FpsHud extends TextHud {
                             }
                     )
                     .build();
+
             var scale = Option.<Float>createBuilder()
                     .name(key("fps.scale"))
                     .description(keyD("fps.scale"))

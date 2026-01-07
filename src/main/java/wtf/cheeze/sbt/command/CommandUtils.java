@@ -36,7 +36,6 @@ import wtf.cheeze.sbt.utils.render.Colors;
 import java.util.function.Supplier;
 
 public class CommandUtils {
-
     public static LiteralArgumentBuilder<FabricClientCommandSource> getScreenOpeningCommand(String name, Supplier<Screen> screenFactory) {
         return ClientCommandManager.literal(name).executes(context -> {
             Minecraft mc = context.getSource().getClient();
@@ -54,7 +53,6 @@ public class CommandUtils {
         };
     }
 
-
     static int[] getCalcPetTable(Rarity rarity) {
         return switch (rarity) {
             case COMMON -> Constants.pets().levelsCommon();
@@ -66,13 +64,14 @@ public class CommandUtils {
         };
     }
 
-
     static Component getDebugText(String name, boolean value) {
         return getDebugText(name, String.valueOf(value), value ? Colors.LIME : Colors.RED);
     }
+
     static Component getDebugText(String name, int value) {
         return getDebugText(name, String.valueOf(value), Colors.YELLOW);
     }
+
     static Component getDebugText(String name, float value) {
         return getDebugText(name, String.valueOf(value), Colors.YELLOW);
     }
@@ -83,6 +82,7 @@ public class CommandUtils {
                 TextUtils.withColor(value, color)
         );
     }
+
     static Component getDebugText(String name, String value) {
         return TextUtils.join(
                 TextUtils.withColor(name + ": ", Colors.CYAN),
@@ -93,12 +93,15 @@ public class CommandUtils {
     public static void send(CommandContext<FabricClientCommandSource> context, Component text) {
         context.getSource().sendFeedback(TextUtils.join(MessageManager.PREFIX, TextUtils.SPACE, text));
     }
+
     public static void send(CommandContext<FabricClientCommandSource> context, String text) {
         context.getSource().sendFeedback(TextUtils.join(MessageManager.PREFIX, TextUtils.SPACE, Component.nullToEmpty(text)));
     }
+
     public static void sendRaw(CommandContext<FabricClientCommandSource> context, Component text) {
         context.getSource().sendFeedback(text);
     }
+
     public static void sendRaw(CommandContext<FabricClientCommandSource> context, String text) {
         context.getSource().sendFeedback(Component.nullToEmpty(text));
     }

@@ -18,13 +18,8 @@
  */
 package wtf.cheeze.sbt.hud.screen;
 
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
-import com.mojang.blaze3d.vertex.PoseStack;
-import net.minecraft.client.gui.components.Button.OnPress;
 import net.minecraft.network.chat.Component;
-
-import java.util.function.Consumer;
 
 /**
  * This used to be a MatrixConsumingButton

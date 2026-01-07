@@ -30,7 +30,7 @@ public class GapComponent implements HudComponent{
     }
 
     @Override
-    public int render(GuiGraphics context, int x, int y, float scale) {
+    public int render(GuiGraphics guiGraphics, int x, int y, float scale) {
         // This component is used to create a gap in the HUD, so it doesn't need to render anything.
         return 1;
     }

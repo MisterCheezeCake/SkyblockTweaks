@@ -40,22 +40,22 @@ public abstract class BarHud extends HUD {
     public static final int BAR_HEIGHT = 5;
 
     @Override
-    public void render(GuiGraphics context, boolean fromHudScreen, boolean hovered) {
+    public void render(GuiGraphics guiGraphics, boolean fromHudScreen, boolean hovered) {
         if (!shouldRender(fromHudScreen)) return;
         var bounds = getCurrentBounds();
         if (fromHudScreen) {
-            drawBackground(context, hovered ? BACKGROUND_HOVERED : BACKGROUND_NOT_HOVERED);
+            drawBackground(guiGraphics, hovered ? BACKGROUND_HOVERED : BACKGROUND_NOT_HOVERED);
         }
 
         var color = getColor();
         if (bounds.scale == 1.0f) {
-            RenderUtils.drawBar(context, UNFILLED, bounds.x, bounds.y, BAR_WIDTH, color);
-            RenderUtils.drawBar(context, FILLED, bounds.x, bounds.y, calculateFill(getFill()), color);
+            RenderUtils.drawBar(guiGraphics, UNFILLED, bounds.x, bounds.y, BAR_WIDTH, color);
+            RenderUtils.drawBar(guiGraphics, FILLED, bounds.x, bounds.y, calculateFill(getFill()), color);
         } else {
-            RenderUtils.beginScale(context, bounds.scale);
-            RenderUtils.drawBar(context, UNFILLED, (int) (bounds.x / bounds.scale), (int) (bounds.y / bounds.scale), BAR_WIDTH, color);
-            RenderUtils.drawBar(context, FILLED, (int) (bounds.x / bounds.scale), (int) (bounds.y / bounds.scale), calculateFill(getFill()), color);
-            RenderUtils.popMatrix(context);
+            RenderUtils.beginScale(guiGraphics, bounds.scale);
+            RenderUtils.drawBar(guiGraphics, UNFILLED, (int) (bounds.x / bounds.scale), (int) (bounds.y / bounds.scale), BAR_WIDTH, color);
+            RenderUtils.drawBar(guiGraphics, FILLED, (int) (bounds.x / bounds.scale), (int) (bounds.y / bounds.scale), calculateFill(getFill()), color);
+            RenderUtils.popMatrix(guiGraphics);
         }
     }
 
@@ -94,12 +94,11 @@ public abstract class BarHud extends HUD {
     }
     private static int calculateFill(float percent) {
         if (percent >= 1.0f) return BAR_WIDTH;
-        var i = (int) (percent * BAR_WIDTH);
-        return i;
+        return (int) (percent * BAR_WIDTH);
     }
 
     private static float getRelativeBarWidth(){
-        return BAR_WIDTH / client.getWindow().getScreenWidth();
+        return (float) BAR_WIDTH / client.getWindow().getScreenWidth();
     }
 
 }

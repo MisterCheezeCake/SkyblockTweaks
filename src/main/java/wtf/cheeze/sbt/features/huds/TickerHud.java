@@ -32,7 +32,6 @@ import wtf.cheeze.sbt.utils.render.Colors;
 import wtf.cheeze.sbt.utils.skyblock.SkyblockData;
 
 public class TickerHud extends AbstractTickerHud {
-
     public static final TickerHud INSTANCE = new TickerHud();
 
     private TickerHud() {
@@ -48,7 +47,6 @@ public class TickerHud extends AbstractTickerHud {
         );
     }
 
-
     @Override
     public @NotNull HudName getName() {
         return new HudName("Ticker/Charges HUD", "Ticker HUD", Colors.YELLOW);
@@ -59,7 +57,6 @@ public class TickerHud extends AbstractTickerHud {
         if (!super.shouldRender(fromHudScreen)) return false;
         return (SkyblockData.inSB && SBTConfig.huds().ticker.enabled && SkyblockData.Stats.tickerActive) || fromHudScreen;
     }
-
 
     @Override
     public int getMax(boolean fromHudScreen) {
@@ -103,6 +100,7 @@ public class TickerHud extends AbstractTickerHud {
                             value -> config.huds.ticker.enabled = value
                     )
                     .build();
+
             var scale = Option.<Float>createBuilder()
                     .name(key("ticker.scale"))
                     .description(keyD("ticker.scale"))
@@ -123,5 +121,4 @@ public class TickerHud extends AbstractTickerHud {
                     .build();
         }
     }
-
 }

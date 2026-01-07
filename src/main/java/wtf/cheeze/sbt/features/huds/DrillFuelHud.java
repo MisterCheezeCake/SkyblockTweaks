@@ -41,7 +41,6 @@ import wtf.cheeze.sbt.utils.skyblock.SkyblockUtils;
 import java.awt.Color;
 
 public class DrillFuelHud extends TextHud {
-
     public static final DrillFuelHud INSTANCE = new DrillFuelHud();
 
     private DrillFuelHud() {
@@ -65,12 +64,12 @@ public class DrillFuelHud extends TextHud {
                         + (SBTConfig.huds().drillFuel.abridgeSecondNumber ? NumberUtils.addKOrM((int) SkyblockData.Stats.maxDrillFuel, SBTConfig.huds().drillFuel.separator) : NumberUtils.formatNumber((int) SkyblockData.Stats.maxDrillFuel, SBTConfig.huds().drillFuel.separator)))
         );
     }
+
     @Override
     public boolean shouldRender(boolean fromHudScreen) {
         if (!super.shouldRender(fromHudScreen)) return false;
         return (SkyblockData.inSB && SBTConfig.huds().drillFuel.enabled) && SkyblockUtils.isThePlayerHoldingADrill() || fromHudScreen;
     }
-
 
     @Override
     public @NotNull HudName getName() {
@@ -120,6 +119,7 @@ public class DrillFuelHud extends TextHud {
                             value -> config.huds.drillFuel.enabled = value
                     )
                     .build();
+
             var secondNo = Option.<Boolean>createBuilder()
                     .name(key("drillFuel.abridgeSecondNumber"))
                     .description(keyD("drillFuel.abridgeSecondNumber"))
@@ -130,6 +130,7 @@ public class DrillFuelHud extends TextHud {
                             value -> config.huds.drillFuel.abridgeSecondNumber = value
                     )
                     .build();
+
             var color = Option.<Color>createBuilder()
                     .name(key("drillFuel.color"))
                     .description(keyD("drillFuel.color"))
@@ -141,6 +142,7 @@ public class DrillFuelHud extends TextHud {
 
                     )
                     .build();
+
             var outline = Option.<Color>createBuilder()
                     .name(key("drillFuel.outlineColor"))
                     .description(keyD("drillFuel.outlineColor"))
@@ -152,6 +154,7 @@ public class DrillFuelHud extends TextHud {
                             value -> config.huds.drillFuel.outlineColor = value.getRGB()
                     )
                     .build();
+
             var mode = Option.<DrawMode>createBuilder()
                     .name(key("drillFuel.mode"))
                     .description(keyD("drillFuel.mode"))
@@ -165,6 +168,7 @@ public class DrillFuelHud extends TextHud {
                             }
                     )
                     .build();
+
             var separator = Option.<String>createBuilder()
                     .name(key("drillFuel.separator"))
                     .description(keyD("drillFuel.separator"))
@@ -175,6 +179,7 @@ public class DrillFuelHud extends TextHud {
                             value -> config.huds.drillFuel.separator = value
                     )
                     .build();
+
             var scale = Option.<Float>createBuilder()
                     .name(key("drillFuel.scale"))
                     .description(keyD("drillFuel.scale"))
@@ -200,8 +205,4 @@ public class DrillFuelHud extends TextHud {
                     .build();
         }
     }
-
-
 }
-
-

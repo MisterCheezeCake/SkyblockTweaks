@@ -61,17 +61,17 @@ public abstract class HUD {
 
     /**
      * Draws the HUD to the screen
-     * @param context the DrawContext
+     * @param guiGraphics the DrawContext
      * @param fromHudScreen whether the HUD is being drawn in the context of the edit screen
      * @param hovered whether the HUD is hovered while being drawn in the context of the edit screen
      */
-    public abstract void render(GuiGraphics context, boolean fromHudScreen, boolean hovered);
+    public abstract void render(GuiGraphics guiGraphics, boolean fromHudScreen, boolean hovered);
 
     /**
      * Calls the render method with hovered set to false
      */
-    public void render(GuiGraphics context, boolean fromHudScreen) {
-        render(context, fromHudScreen, false);
+    public void render(GuiGraphics guiGraphics, boolean fromHudScreen) {
+        render(guiGraphics, fromHudScreen, false);
     }
 
 
@@ -97,13 +97,14 @@ public abstract class HUD {
         INFO.setScale.accept(scale);
     }
 
-    public void drawBackground(GuiGraphics context, int color, boolean hasOutline) {
+    public void drawBackground(GuiGraphics guiGraphics, int color, boolean hasOutline) {
         var bounds = getCurrentBounds();
         int i = (int) (1 * bounds.scale);
-        context.fill(bounds.x - i, bounds.y - i, (int) (bounds.x + bounds.width + i), (int) (bounds.y + bounds.height + i - 1), color);
+        guiGraphics.fill(bounds.x - i, bounds.y - i, (int) (bounds.x + bounds.width + i), (int) (bounds.y + bounds.height + i - 1), color);
     }
-    public void drawBackground(GuiGraphics context, int color) {
-        drawBackground(context, color, false);
+
+    public void drawBackground(GuiGraphics guiGraphics, int color) {
+        drawBackground(guiGraphics, color, false);
     }
 
     public static final float MIN_SCALE = 0.1f;
@@ -116,18 +117,23 @@ public abstract class HUD {
     public static int getActualX(float x) {
         return (int) (x * Minecraft.getInstance().getWindow().getGuiScaledWidth());
     }
+
     public static int getActualY(float y) {
         return (int) (y * Minecraft.getInstance().getWindow().getGuiScaledHeight());
     }
+
     public static float getRelativeX(double x) {
         return (float) (x / Minecraft.getInstance().getWindow().getGuiScaledWidth());
     }
+
     public static float getRelativeX(int x) {
         return (float) (x / Minecraft.getInstance().getWindow().getGuiScaledWidth());
     }
+
     public static float getRelativeY(double y) {
         return (float) (y / Minecraft.getInstance().getWindow().getGuiScaledHeight());
     }
+
     public static float getRelativeY(int y) {
         return (float) (y / Minecraft.getInstance().getWindow().getGuiScaledHeight());
     }

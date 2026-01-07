@@ -29,7 +29,6 @@ import wtf.cheeze.sbt.features.mining.MiningHud;
 import wtf.cheeze.sbt.features.mining.MiningTitles;
 
 public class Mining {
-
     @SerialEntry
     public MiningHud.Config hud = new MiningHud.Config();
 
@@ -53,7 +52,6 @@ public class Mining {
                 .group(FetchurFeatures.Config.getGroup(defaults, configThing))
                 .build();
     }
-
 
     private static final String BASE_KEY = "sbt.config.mining.";
     public static Component key(String key) {

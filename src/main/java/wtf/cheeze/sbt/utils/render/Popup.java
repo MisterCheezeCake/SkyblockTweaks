@@ -43,12 +43,12 @@ public interface Popup extends Renderable {
     List<? extends AbstractWidget> childrenList();
     Screen screen();
 
-    default void renderBackground(GuiGraphics context) {
-        RenderUtils.drawTexture(context, BACKGROUND, x(), y(), WIDTH, HEIGHT, WIDTH, HEIGHT);
+    default void renderBackground(GuiGraphics guiGraphics) {
+        RenderUtils.drawTexture(guiGraphics, BACKGROUND, x(), y(), WIDTH, HEIGHT, WIDTH, HEIGHT);
     }
 
-    default void drawSBTFooter(GuiGraphics context, boolean shadow) {
-        RenderUtils.drawText(context, SBT_FOOTER, x() + WIDTH - 3 - RenderUtils.getStringWidth(SBT_FOOTER.getString()), y() + HEIGHT - 12, Colors.WHITE, shadow);
+    default void drawSBTFooter(GuiGraphics guiGraphics, boolean shadow) {
+        RenderUtils.drawText(guiGraphics, SBT_FOOTER, x() + WIDTH - 3 - RenderUtils.getStringWidth(SBT_FOOTER.getString()), y() + HEIGHT - 12, Colors.WHITE, shadow);
     }
 
     default void remove() {

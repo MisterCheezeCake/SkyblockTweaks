@@ -31,9 +31,9 @@ public class ItemStackIcon implements HudIcon {
     }
 
     @Override
-    public void render(GuiGraphics context, int x, int y, float scale) {
-        RenderUtils.beginScale(context, 0.5f);
-        context.renderItem(iconStack, (int) (x / (0.5f *scale)) , (int) (y / (0.5f *scale)));
-        RenderUtils.popMatrix(context);
+    public void render(GuiGraphics guiGraphics, int x, int y, float scale) {
+        RenderUtils.beginScale(guiGraphics, 0.5f);
+        guiGraphics.renderItem(iconStack, (int) (x / (0.5f *scale)) , (int) (y / (0.5f *scale)));
+        RenderUtils.popMatrix(guiGraphics);
     }
 }

@@ -33,15 +33,15 @@ public abstract class TextHud extends HUD {
     public SingleHudLine line;
 
     @Override
-    public void render(GuiGraphics context, boolean fromHudScreen, boolean hovered) {
+    public void render(GuiGraphics guiGraphics, boolean fromHudScreen, boolean hovered) {
         if (!shouldRender(fromHudScreen)) return;
         var bounds = getCurrentBounds();
         if (fromHudScreen) {
-            drawBackground(context, hovered ? BACKGROUND_HOVERED : BACKGROUND_NOT_HOVERED, line.mode.get() == DrawMode.OUTLINE);
+            drawBackground(guiGraphics, hovered ? BACKGROUND_HOVERED : BACKGROUND_NOT_HOVERED, line.mode.get() == DrawMode.OUTLINE);
         }
-        RenderUtils.beginScale(context, bounds.scale);
-        line.render(context, bounds.x, bounds.y, bounds.scale);
-        RenderUtils.popMatrix(context);
+        RenderUtils.beginScale(guiGraphics, bounds.scale);
+        line.render(guiGraphics, bounds.x, bounds.y, bounds.scale);
+        RenderUtils.popMatrix(guiGraphics);
     }
 
     public @NotNull Bounds getCurrentBounds() {

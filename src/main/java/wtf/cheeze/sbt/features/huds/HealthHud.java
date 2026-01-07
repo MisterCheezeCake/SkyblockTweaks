@@ -41,7 +41,6 @@ import wtf.cheeze.sbt.utils.skyblock.SkyblockData;
 import java.awt.Color;
 
 public class HealthHud extends TextHud {
-
     public static final HealthHud INSTANCE = new HealthHud();
 
     private HealthHud() {
@@ -120,6 +119,7 @@ public class HealthHud extends TextHud {
                             value -> config.huds.health.enabled = value
                     )
                     .build();
+
             var color = Option.<Color>createBuilder()
                     .name(key("health.color"))
                     .description(keyD("health.color"))
@@ -131,6 +131,7 @@ public class HealthHud extends TextHud {
 
                     )
                     .build();
+
             var colorAbsorption = Option.<Color>createBuilder()
                     .name(key("health.colorAbsorption"))
                     .description(keyD("health.colorAbsorption"))
@@ -142,6 +143,7 @@ public class HealthHud extends TextHud {
 
                     )
                     .build();
+
             var outline = Option.<Color>createBuilder()
                     .name(key("health.outlineColor"))
                     .description(keyD("health.outlineColor"))
@@ -154,6 +156,7 @@ public class HealthHud extends TextHud {
 
                     )
                     .build();
+
             var mode = Option.<DrawMode>createBuilder()
                     .name(key("health.mode"))
                     .description(keyD("health.mode"))
@@ -167,6 +170,7 @@ public class HealthHud extends TextHud {
                             }
                     )
                     .build();
+
             var icon = Option.<Boolean>createBuilder()
                     .name(key("health.icon"))
                     .description(keyD("health.icon"))
@@ -177,6 +181,7 @@ public class HealthHud extends TextHud {
                             value -> config.huds.health.icon = value
                     )
                     .build();
+
             var separator = Option.<String>createBuilder()
                     .name(key("health.separator"))
                     .description(keyD("health.separator"))
@@ -187,6 +192,7 @@ public class HealthHud extends TextHud {
                             value -> config.huds.health.separator = value
                     )
                     .build();
+
             var rift = Option.<Boolean>createBuilder()
                     .name(key("health.hideInRift"))
                     .description(keyD("health.hideInRift"))
@@ -197,6 +203,7 @@ public class HealthHud extends TextHud {
                             value -> config.huds.healthBar.hideInRift = value
                     )
                     .build();
+
             var scale = Option.<Float>createBuilder()
                     .name(key("health.scale"))
                     .description(keyD("health.scale"))
@@ -207,6 +214,7 @@ public class HealthHud extends TextHud {
                             value -> config.huds.health.scale = value
                     )
                     .build();
+
             return OptionGroup.createBuilder()
                     .name(key("health"))
                     .description(keyD("health"))

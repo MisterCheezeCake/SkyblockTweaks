@@ -37,23 +37,21 @@ public record EditorPopup(Screen screen, int x, int y, Component title, List<Che
     }
 
     @Override
-    public void render(GuiGraphics context, int mouseX, int mouseY, float delta) {
-        RenderUtils.drawWithZ(context, 10 , () -> {
-            Popup.super.renderBackground(context);
-            RenderUtils.drawCenteredText(context, title, x + 40, y + 5, Colors.WHITE, false);
-            var renderY = y + 15;
-            for (var entry : children) {
-                entry.val().render(context, mouseX, mouseY, delta);
-                RenderUtils.drawCenteredText(context, Component.literal(entry.key()), centerX(), renderY, Colors.WHITE, false);
-                renderY+= 10;
-                var widget = entry.val();
-                widget.setX(centerX() - 35);
-                widget.setY(renderY);
-                widget.setWidth(70);
-                widget.setHeight(15);
-                renderY += 18;
-            }
-        });
+    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
+        Popup.super.renderBackground(guiGraphics);
+        RenderUtils.drawCenteredText(guiGraphics, title, x + 40, y + 5, Colors.WHITE, false);
+        var renderY = y + 15;
+        for (var entry : children) {
+            entry.val().render(guiGraphics, mouseX, mouseY, delta);
+            RenderUtils.drawCenteredText(guiGraphics, Component.literal(entry.key()), centerX(), renderY, Colors.WHITE, false);
+            renderY+= 10;
+            var widget = entry.val();
+            widget.setX(centerX() - 35);
+            widget.setY(renderY);
+            widget.setWidth(70);
+            widget.setHeight(15);
+            renderY += 18;
+        }
     }
 
     public EditorPopup {

@@ -35,7 +35,6 @@ import wtf.cheeze.sbt.utils.skyblock.SkyblockData;
 import java.awt.Color;
 
 public class ManaBar extends BarHud {
-
     public static final ManaBar INSTANCE = new ManaBar();
 
     private ManaBar() {
@@ -66,7 +65,6 @@ public class ManaBar extends BarHud {
         return new HudName("Mana Bar", Colors.BLUE);
     }
 
-
     @Override
     public boolean shouldRender(boolean fromHudScreen) {
         if (!super.shouldRender(fromHudScreen)) return false;
@@ -92,7 +90,6 @@ public class ManaBar extends BarHud {
         @SerialEntry
         public AnchorPoint anchor = AnchorPoint.LEFT;
 
-
         public static OptionGroup getGroup(ConfigImpl defaults, ConfigImpl config) {
             var enabled = Option.<Boolean>createBuilder()
                     .name(key("manaBar.enabled"))
@@ -116,6 +113,7 @@ public class ManaBar extends BarHud {
 
                     )
                     .build();
+
             var scale = Option.<Float>createBuilder()
                     .name(key("manaBar.scale"))
                     .description(keyD("manaBar.scale"))
@@ -126,6 +124,7 @@ public class ManaBar extends BarHud {
                             value -> config.huds.manaBar.scale = value
                     )
                     .build();
+
             return OptionGroup.createBuilder()
                     .name(key("manaBar"))
                     .description(keyD("manaBar"))

@@ -50,10 +50,8 @@ import java.util.stream.Stream;
 
 //TODO: make this work in the hex
 public class ReforgeOverlay {
-
     private static final int REFORGE_ITEM_SLOT = 13;
     private static final int REFORGE_BUTTON_SLOT = 22;
-    private static final float Z_TRANSLATE = 300;
     private static final int X_LABEL_OFFSET = 20 ;
     private static final String SCREEN_TITLE = "Reforge Item";
 
@@ -80,7 +78,6 @@ public class ReforgeOverlay {
             "exclusion substrings below"
     ).map(Component::nullToEmpty).toList();
 
-
     public static void registerEvents() {
         DrawSlotEvents.BEFORE_ITEM.register((screenTitle, context, slot) -> {
             if (!SBTConfig.get().reforgeOverlay.nameTooltip) return;
@@ -90,7 +87,7 @@ public class ReforgeOverlay {
             if (reforge.isEmpty()) return;
             var text = TextUtils.withColor(Constants.reforges().specialModifiers().getOrDefault(reforge, TextUtils.firstLetterUppercase(reforge.toLowerCase())), Colors.YELLOW);
             var x = slot.x - X_LABEL_OFFSET - RenderUtils.getStringWidth(text);
-            RenderUtils.drawWithZ(context, Z_TRANSLATE,  () -> RenderUtils.drawNonBlockingTooltip(context, text, x, slot.y + 16));
+            RenderUtils.drawNonBlockingTooltip(context, text, x, slot.y + 16);
         });
 
         ScreenEvents.AFTER_INIT.register((client, screen, width, height) -> {
@@ -98,16 +95,9 @@ public class ReforgeOverlay {
                 ((SBTHandledScreen)handledScreen).sbt$setPopup(new FilterOverlayPopup(handledScreen));
             }
         });
-
     }
 
-
-
-
     public static class FilterOverlayPopup implements Popup {
-
-
-
         private final AbstractContainerScreen<?> screen;
         private final int x;
         private final int y;
@@ -124,7 +114,6 @@ public class ReforgeOverlay {
             this.screen = screen;
 
             screen.renderables.add(this);
-
 
             this.matchLabel =  TextUtils.join(
                     MATCHES_TEXT,
@@ -143,15 +132,12 @@ public class ReforgeOverlay {
             this.exclusionWidget.setMaxLength(70);
             this.exclusionWidget.setHint(TextUtils.withColor("e.g. \"c, d\"", Colors.GRAY));
 
-
             screen.addRenderableWidget(this.matchWidget);
             screen.addRenderableWidget(this.exclusionWidget);
-
         }
 
-
         @Override
-        public int x() { return x; };
+        public int x() { return x; }
 
         @Override
         public int y() { return y;}
@@ -254,23 +240,21 @@ public class ReforgeOverlay {
         }
 
         @Override
-        public void render(GuiGraphics context, int mouseX, int mouseY, float deltaTicks) {
+        public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float deltaTicks) {
             boolean shadow = SBTConfig.get().reforgeOverlay.filterOverlayShadow;
-            Popup.super.renderBackground(context);
-            Popup.super.drawSBTFooter(context, shadow);
-            RenderUtils.drawCenteredText(context, TextUtils.withBold("Filters"), x + WIDTH / 2, y + 5, Colors.WHITE, shadow);
-            RenderUtils.drawCenteredText(context, matchLabel, x + WIDTH / 2, y + 20, Colors.WHITE, shadow);
-            RenderUtils.drawCenteredText(context, exclusionLabel, x + WIDTH / 2, y + 50, Colors.WHITE, shadow);
+            Popup.super.renderBackground(guiGraphics);
+            Popup.super.drawSBTFooter(guiGraphics, shadow);
+            RenderUtils.drawCenteredText(guiGraphics, TextUtils.withBold("Filters"), x + WIDTH / 2, y + 5, Colors.WHITE, shadow);
+            RenderUtils.drawCenteredText(guiGraphics, matchLabel, x + WIDTH / 2, y + 20, Colors.WHITE, shadow);
+            RenderUtils.drawCenteredText(guiGraphics, exclusionLabel, x + WIDTH / 2, y + 50, Colors.WHITE, shadow);
             switch (whichHovering(mouseX, mouseY)) {
-                case 1 -> context.setComponentTooltipForNextFrame(Minecraft.getInstance().font, MATCH_HELP_LINES, mouseX, mouseY);
-                case 2 -> context.setComponentTooltipForNextFrame(Minecraft.getInstance().font, EXLCUSION_HELP_LINES, mouseX, mouseY);
+                case 1 -> guiGraphics.setComponentTooltipForNextFrame(Minecraft.getInstance().font, MATCH_HELP_LINES, mouseX, mouseY);
+                case 2 -> guiGraphics.setComponentTooltipForNextFrame(Minecraft.getInstance().font, EXLCUSION_HELP_LINES, mouseX, mouseY);
             }
         }
     }
 
-
     public static class Config {
-
         @SerialEntry
         public boolean filterOverlay = true;
 
@@ -282,9 +266,6 @@ public class ReforgeOverlay {
 
         @SerialEntry
         public boolean nameTooltip = true;
-
-
-
 
         public static OptionGroup getGroup(ConfigImpl defaults, ConfigImpl config) {
             var overlay = Option.<Boolean>createBuilder()
@@ -341,8 +322,6 @@ public class ReforgeOverlay {
                     .option(shadow)
                     .option(toolTip)
                     .build();
-
-
         }
     }
 }

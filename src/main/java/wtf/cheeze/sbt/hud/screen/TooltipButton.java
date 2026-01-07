@@ -18,7 +18,6 @@
  */
 package wtf.cheeze.sbt.hud.screen;
 
-import net.minecraft.client.gui.components.Button.OnPress;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.components.Button;

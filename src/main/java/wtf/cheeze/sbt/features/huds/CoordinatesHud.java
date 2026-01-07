@@ -60,6 +60,7 @@ public class CoordinatesHud extends TextHud {
                 () -> Component.literal(String.format("X: %s Y: %s Z: %s" , NumberUtils.formattedRound(client.player.getX(), SBTConfig.huds().coordinates.decimalPlaces), NumberUtils.formattedRound(client.player.getY(), SBTConfig.huds().coordinates.decimalPlaces), NumberUtils.formattedRound(client.player.getZ(), SBTConfig.huds().coordinates.decimalPlaces)))
         );
     }
+
     @Override
     public boolean shouldRender(boolean fromHudScreen) {
         if (!super.shouldRender(fromHudScreen)) return false;
@@ -124,6 +125,7 @@ public class CoordinatesHud extends TextHud {
                             value -> config.huds.coordinates.showOutside = value
                     )
                     .build();
+
             var decimalPlaces = Option.<Integer>createBuilder()
                     .name(key("coordinates.decimalPlaces"))
                     .description(keyD("coordinates.decimalPlaces"))
@@ -151,6 +153,7 @@ public class CoordinatesHud extends TextHud {
 
                     )
                     .build();
+
             var outline = Option.<Color>createBuilder()
                     .name(key("coordinates.outlineColor"))
                     .description(keyD("coordinates.outlineColor"))
@@ -163,6 +166,7 @@ public class CoordinatesHud extends TextHud {
 
                     )
                     .build();
+
             var mode = Option.<DrawMode>createBuilder()
                     .name(key("coordinates.mode"))
                     .description(keyD("coordinates.mode"))
@@ -176,6 +180,7 @@ public class CoordinatesHud extends TextHud {
                             }
                     )
                     .build();
+
             var scale = Option.<Float>createBuilder()
                     .name(key("coordinates.scale"))
                     .description(keyD("coordinates.scale"))

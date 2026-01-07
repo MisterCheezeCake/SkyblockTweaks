@@ -40,7 +40,6 @@ import wtf.cheeze.sbt.utils.skyblock.SkyblockData;
 import java.awt.*;
 
 public class OverflowManaHud extends TextHud {
-
     public static final OverflowManaHud INSTANCE = new OverflowManaHud();
 
     private OverflowManaHud() {
@@ -72,13 +71,12 @@ public class OverflowManaHud extends TextHud {
 //    public String getName() {
 //        return TextUtils.SECTION +  "3Oveflow Mana HUD";
 //    }
-    public @NotNull HudName getName() {
 
+    public @NotNull HudName getName() {
         return new HudName("Overflow Mana HUD", "OF Mana HUD", Colors.CYAN);
     }
 
     public static class Config {
-
         @SerialEntry
         public boolean enabled = false;
 
@@ -123,6 +121,7 @@ public class OverflowManaHud extends TextHud {
                             value -> config.huds.overflowMana.enabled = value
                     )
                     .build();
+
             var hideWhenZero = Option.<Boolean>createBuilder()
                     .name(key("overflowMana.hideWhenZero"))
                     .description(keyD("overflowMana.hideWhenZero"))
@@ -133,6 +132,7 @@ public class OverflowManaHud extends TextHud {
                             value -> config.huds.overflowMana.hideWhenZero = value
                     )
                     .build();
+
             var color = Option.<Color>createBuilder()
                     .name(key("overflowMana.color"))
                     .description(keyD("overflowMana.color"))
@@ -144,6 +144,7 @@ public class OverflowManaHud extends TextHud {
 
                     )
                     .build();
+
             var outline = Option.<Color>createBuilder()
                     .name(key("overflowMana.outlineColor"))
                     .description(keyD("overflowMana.outlineColor"))
@@ -156,6 +157,7 @@ public class OverflowManaHud extends TextHud {
 
                     )
                     .build();
+
             var mode = Option.<DrawMode>createBuilder()
                     .name(key("overflowMana.mode"))
                     .description(keyD("overflowMana.mode"))
@@ -169,6 +171,7 @@ public class OverflowManaHud extends TextHud {
                             }
                     )
                     .build();
+
             var icon = Option.<Boolean>createBuilder()
                     .name(key("overflowMana.icon"))
                     .description(keyD("overflowMana.icon"))
@@ -179,6 +182,7 @@ public class OverflowManaHud extends TextHud {
                             value -> config.huds.overflowMana.icon = value
                     )
                     .build();
+
             var separator = Option.<String>createBuilder()
                     .name(key("overflowMana.separator"))
                     .description(keyD("overflowMana.separator"))
@@ -189,6 +193,7 @@ public class OverflowManaHud extends TextHud {
                             value -> config.huds.overflowMana.separator = value
                     )
                     .build();
+
             var scale = Option.<Float>createBuilder()
                     .name(key("overflowMana.scale"))
                     .description(keyD("overflowMana.scale"))
@@ -199,6 +204,7 @@ public class OverflowManaHud extends TextHud {
                             value -> config.huds.overflowMana.scale = value
                     )
                     .build();
+
             return OptionGroup.createBuilder()
                     .name(key("overflowMana"))
                     .description(keyD("overflowMana"))
@@ -213,6 +219,5 @@ public class OverflowManaHud extends TextHud {
                     .collapsed(true)
                     .build();
         }
-
     }
 }

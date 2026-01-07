@@ -50,9 +50,9 @@ public class HudRenderEvents {
     public static final Event<HudRenderStage> LAST = createEventForStage();
 
     private static Event<HudRenderStage> createEventForStage() {
-        return EventFactory.createArrayBacked(HudRenderStage.class, listeners -> (context, tickDelta) -> {
+        return EventFactory.createArrayBacked(HudRenderStage.class, listeners -> (guiGraphics, tickDelta) -> {
             for (HudRenderStage listener : listeners) {
-                listener.onRender(context, tickDelta);
+                listener.onRender(guiGraphics, tickDelta);
             }
         });
     }
@@ -71,9 +71,9 @@ public class HudRenderEvents {
         /**
          * Called sometime during a specific HUD render stage.
          *
-         * @param context The {@link GuiGraphics} instance
+         * @param guiGraphics The {@link GuiGraphics} instance
          * @param tickCounter The {@link DeltaTracker} instance
          */
-        void onRender(GuiGraphics context, DeltaTracker tickCounter);
+        void onRender(GuiGraphics guiGraphics, DeltaTracker tickCounter);
     }
 }

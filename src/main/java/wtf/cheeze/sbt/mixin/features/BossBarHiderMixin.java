@@ -29,7 +29,7 @@ import wtf.cheeze.sbt.config.SBTConfig;
 @Mixin(BossHealthOverlay.class)
 public abstract class BossBarHiderMixin {
     @Inject(method = "render", at = @At("HEAD"), cancellable = true)
-    private void sbt$onRender(GuiGraphics context, CallbackInfo ci) {
+    private void sbt$onRender(GuiGraphics guiGraphics, CallbackInfo ci) {
         if (SBTConfig.get().hudTweaks.noRenderBossBar) {
             ci.cancel();
         }

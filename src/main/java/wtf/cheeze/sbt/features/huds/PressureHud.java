@@ -64,7 +64,6 @@ public class PressureHud extends TextHud {
                 () -> SBTConfig.huds().pressure.mode,
                 () -> Component.literal(getFormatString().formatted(SkyblockData.Stats.pressure))
         );
-
     }
 
     private String getFormatString() {
@@ -79,7 +78,6 @@ public class PressureHud extends TextHud {
         }
     }
 
-
     @Override
     public @NotNull HudName getName() {
         return new HudName("Pressure HUD", "Pressure", Colors.BLUE);
@@ -92,7 +90,6 @@ public class PressureHud extends TextHud {
     }
 
     public static class Config {
-
         @SerialEntry
         public boolean enabled = false;
 
@@ -120,7 +117,6 @@ public class PressureHud extends TextHud {
         @SerialEntry
         public boolean percent = true;
 
-
         @SerialEntry
         public AnchorPoint anchor = AnchorPoint.LEFT;
 
@@ -147,6 +143,7 @@ public class PressureHud extends TextHud {
 
                     )
                     .build();
+
             var outline = Option.<Color>createBuilder()
                     .name(key("pressure.outlineColor"))
                     .description(keyD("pressure.outlineColor"))
@@ -172,6 +169,7 @@ public class PressureHud extends TextHud {
                             }
                     )
                     .build();
+
             var icon = Option.<Boolean>createBuilder()
                     .name(key("pressure.icon"))
                     .description(keyD("pressure.icon"))
@@ -182,6 +180,7 @@ public class PressureHud extends TextHud {
                             value -> config.huds.pressure.icon = value
                     )
                     .build();
+
             var percent = Option.<Boolean>createBuilder()
                     .name(key("pressure.percent"))
                     .description(keyD("pressure.percent"))
@@ -203,6 +202,7 @@ public class PressureHud extends TextHud {
                             value -> config.huds.pressure.scale = value
                     )
                     .build();
+
             return OptionGroup.createBuilder()
                     .name(key("pressure"))
                     .description(keyD("pressure"))

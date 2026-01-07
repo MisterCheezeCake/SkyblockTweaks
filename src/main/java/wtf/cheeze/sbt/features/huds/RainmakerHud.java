@@ -48,9 +48,7 @@ public class RainmakerHud extends TextHud {
                 () -> SBTConfig.huds().rainmaker.color,
                 () -> SBTConfig.huds().rainmaker.outlineColor,
                 () -> SBTConfig.huds().rainmaker.mode,
-                () -> {
-                    return Component.literal(TimeUtils.formatTime(calcTime(), false));
-                },
+                () -> Component.literal(TimeUtils.formatTime(calcTime(), false)),
                 () -> Icons.WATER_BUCKET,
                 () -> SBTConfig.huds().rainmaker.icon
         );

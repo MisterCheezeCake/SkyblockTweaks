@@ -45,7 +45,6 @@ import wtf.cheeze.sbt.utils.version.UpdateChecker;
 
 
 public class GlobalSearchCategory {
-
     public static ConfigCategory getCategory(ConfigImpl defaults, ConfigImpl config) {
         return ConfigCategory.createBuilder()
                 .name(Component.translatable("sbt.config.globalSearch"))
@@ -100,16 +99,11 @@ public class GlobalSearchCategory {
                 .description(OptionDescription.of(Component.translatable("sbt.config.globalSearch.open.desc")))
                 .text(Component.translatable("sbt.config.globalSearch.open.text"))
                 .action((y, o) -> {
-
                     if (y.pendingChanges()) {
                         y.finishOrSave();
                     }
-                   Minecraft.getInstance().setScreen(SBTConfig.getSpecialGlobalSearchScreen(((YACLScreenAccessor) y).sbt$getParent()));
-
-
+                    Minecraft.getInstance().setScreen(SBTConfig.getSpecialGlobalSearchScreen(((YACLScreenAccessor) y).sbt$getParent()));
                 })
                 .build();
     }
-
-
 }

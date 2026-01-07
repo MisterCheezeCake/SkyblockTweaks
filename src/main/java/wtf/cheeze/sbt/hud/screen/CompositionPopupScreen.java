@@ -146,9 +146,7 @@ public class CompositionPopupScreen<T extends CompositionEntry> extends Screen {
 
         this.addRenderableWidget(previewButton);
 
-        var doneButton = Button.builder(Component.translatable("gui.done"), button -> {
-            onClose();
-        }).bounds(centralButtonOffset, popupY + TOP_OFFSET + ModifyItemList.HEIGHT + 5, 70, 20).build();
+        var doneButton = Button.builder(Component.translatable("gui.done"), button -> onClose()).bounds(centralButtonOffset, popupY + TOP_OFFSET + ModifyItemList.HEIGHT + 5, 70, 20).build();
 
         this.addRenderableWidget(doneButton);
         this.addRenderableWidget(resetCompositionButton);
@@ -163,15 +161,14 @@ public class CompositionPopupScreen<T extends CompositionEntry> extends Screen {
     }
 
     @Override
-    public void render(GuiGraphics context, int mouseX, int mouseY, float delta) {
-        parent.render(context, -1, -1, delta);
+    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
+        parent.render(guiGraphics, -1, -1, delta);
 
-        RenderUtils.drawWithZ(context, 10,  () -> {
-            RenderUtils.drawTexture(context, BACKGROUND, popupX, popupY, WIDTH, HEIGHT, WIDTH, HEIGHT);
-            for (Renderable drawable : this.renderables) {
-                drawable.render(context, mouseX, mouseY, delta);
-            }
-        });
+        RenderUtils.drawTexture(guiGraphics, BACKGROUND, popupX, popupY, WIDTH, HEIGHT, WIDTH, HEIGHT);
+        for (Renderable drawable : this.renderables) {
+            drawable.render(guiGraphics, mouseX, mouseY, delta);
+        }
+
         if (hasShiftDown()) {
             var base = Component.empty();
             boolean first = true;
@@ -185,7 +182,6 @@ public class CompositionPopupScreen<T extends CompositionEntry> extends Screen {
             previewButton.setTooltip(Tooltip.create(base));
         } else {
             previewButton.setTooltip(PREVIEW_INACTIVE);
-
         }
     }
 
@@ -199,8 +195,6 @@ public class CompositionPopupScreen<T extends CompositionEntry> extends Screen {
                    popupX + 6,
                     popupY + TOP_OFFSET,
                     ENTRY_HEIGHT
-
-
             );
         }
 
@@ -210,12 +204,11 @@ public class CompositionPopupScreen<T extends CompositionEntry> extends Screen {
                     addEntry(new NewItemListEntry(item));
                 }
             }
-
         }
 
         @Override
-        protected void renderListSeparators(GuiGraphics context) {
-            RenderUtils.drawBorder(context, 1, Colors.GRAY, x, getY(), getWidthForBorder() , getHeight());
+        protected void renderListSeparators(GuiGraphics guiGraphics) {
+            RenderUtils.drawBorder(guiGraphics, 1, Colors.GRAY, x, getY(), getWidthForBorder() , getHeight());
         }
     }
 
@@ -230,9 +223,9 @@ public class CompositionPopupScreen<T extends CompositionEntry> extends Screen {
         }
 
         @Override
-        public void render(GuiGraphics context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
-            context.fill(x -1  , y - 2, x + entryWidth , y + entryHeight + 2, index % 2 == 0 ? HIGHLIGHT_1: HIGHLIGHT_2);
-            context.drawCenteredString(client.font, item.getDisplayName(), x + entryWidth / 2, y + 2, Colors.WHITE);
+        public void render(GuiGraphics guiGraphics, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
+            guiGraphics.fill(x -1  , y - 2, x + entryWidth , y + entryHeight + 2, index % 2 == 0 ? HIGHLIGHT_1: HIGHLIGHT_2);
+            guiGraphics.drawCenteredString(client.font, item.getDisplayName(), x + entryWidth / 2, y + 2, Colors.WHITE);
         }
     }
 
@@ -309,16 +302,16 @@ public class CompositionPopupScreen<T extends CompositionEntry> extends Screen {
         }
 
         @Override
-        public void renderWidget(GuiGraphics context, int mouseX, int mouseY, float delta) {
+        public void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
             try {
-                super.renderWidget(context, mouseX, mouseY, delta);
-                context.enableScissor(popupX, this.getY(), rightEdge, this.getBottom());
+                super.renderWidget(guiGraphics, mouseX, mouseY, delta);
+                guiGraphics.enableScissor(popupX, this.getY(), rightEdge, this.getBottom());
                 for (var entry : this.children()) {
                     int i = this.children().indexOf(entry);
                     boolean isFirst = i == 0;
                     boolean isLast = i == this.children().size() - 1;
-                    entry.moveUp.render(context, mouseX, mouseY, delta);
-                    entry.moveDown.render(context, mouseX, mouseY, delta);
+                    entry.moveUp.render(guiGraphics, mouseX, mouseY, delta);
+                    entry.moveDown.render(guiGraphics, mouseX, mouseY, delta);
                     if (entry.moveUp.getY() + ModifyItemListEntry.BUTTON_DIMENSION < this.getY() || entry.moveUp.getY() > this.getBottom()) {
                         if (!isFirst) entry.moveUp.active = false;
                         if (!isLast) entry.moveDown.active = false;
@@ -333,16 +326,16 @@ public class CompositionPopupScreen<T extends CompositionEntry> extends Screen {
 
 
                 }
-                context.disableScissor();
+                guiGraphics.disableScissor();
             } catch (Exception e) {
                 ErrorHandler.handle(e, "Failed to render modify item list", ErrorLevel.WARNING);
-                context.disableScissor();
+                guiGraphics.disableScissor();
             }
         }
 
         @Override
-        protected void renderListSeparators(GuiGraphics context) {
-            RenderUtils.drawBorder(context, 1, Colors.GRAY, x - ModifyItemListEntry.BUTTON_DIMENSION*2, getY(), getWidthForBorder() + ModifyItemListEntry.BUTTON_DIMENSION*2 , getHeight());
+        protected void renderListSeparators(GuiGraphics guiGraphics) {
+            RenderUtils.drawBorder(guiGraphics, 1, Colors.GRAY, x - ModifyItemListEntry.BUTTON_DIMENSION*2, getY(), getWidthForBorder() + ModifyItemListEntry.BUTTON_DIMENSION*2 , getHeight());
         }
     }
 
@@ -352,12 +345,8 @@ public class CompositionPopupScreen<T extends CompositionEntry> extends Screen {
 
         public ModifyItemListEntry(T item) {
             super(item);
-            moveUp = new TooltipButton(CompositionPopupScreen.this, 0, 0, BUTTON_DIMENSION, BUTTON_DIMENSION, UP_SYMBOL, MOVE_UP, button -> {
-                modifyItemList.moveUp(this);
-            });
-            moveDown = new TooltipButton(CompositionPopupScreen.this, 0, 0, BUTTON_DIMENSION, BUTTON_DIMENSION, DOWN_SYMBOL, MOVE_DOWN, button -> {
-                modifyItemList.moveDown(this);
-            });
+            moveUp = new TooltipButton(CompositionPopupScreen.this, 0, 0, BUTTON_DIMENSION, BUTTON_DIMENSION, UP_SYMBOL, MOVE_UP, button -> modifyItemList.moveUp(this));
+            moveDown = new TooltipButton(CompositionPopupScreen.this, 0, 0, BUTTON_DIMENSION, BUTTON_DIMENSION, DOWN_SYMBOL, MOVE_DOWN, button -> modifyItemList.moveDown(this));
             CompositionPopupScreen.this.addWidget(moveUp);
             CompositionPopupScreen.this.addWidget(moveDown);
         }
@@ -368,11 +357,11 @@ public class CompositionPopupScreen<T extends CompositionEntry> extends Screen {
         }
 
         @Override
-        public void render(GuiGraphics context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
+        public void render(GuiGraphics guiGraphics, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
             moveUp.setPosition(x - 1 - 2*BUTTON_DIMENSION, y - 2);
             moveDown.setPosition(x - 1 - BUTTON_DIMENSION, y - 2);
-            context.fill(x, y - 2, x + entryWidth , y + entryHeight + 2, index % 2 == 0 ? HIGHLIGHT_1: HIGHLIGHT_2);
-            context.drawCenteredString(client.font, item.getDisplayName(), x + entryWidth / 2, y + 2, Colors.WHITE);
+            guiGraphics.fill(x, y - 2, x + entryWidth , y + entryHeight + 2, index % 2 == 0 ? HIGHLIGHT_1: HIGHLIGHT_2);
+            guiGraphics.drawCenteredString(client.font, item.getDisplayName(), x + entryWidth / 2, y + 2, Colors.WHITE);
         }
     }
 
@@ -417,7 +406,7 @@ public class CompositionPopupScreen<T extends CompositionEntry> extends Screen {
         }
 
         @Override
-        protected void renderListBackground(GuiGraphics context) {
+        protected void renderListBackground(GuiGraphics guiGraphics) {
             // Intentionally empty
         }
 
@@ -453,5 +442,4 @@ public class CompositionPopupScreen<T extends CompositionEntry> extends Screen {
             return item.getDisplayName();
         }
     }
-
 }

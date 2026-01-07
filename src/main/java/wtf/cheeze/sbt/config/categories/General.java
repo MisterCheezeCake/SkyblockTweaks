@@ -43,6 +43,7 @@ public class General {
     public static Component key(String key) {
         return Component.translatable(BASE_KEY + key);
     }
+
     public static OptionDescription keyD(String key) {
         return OptionDescription.of(Component.translatable(BASE_KEY + key + ".desc"));
     }
@@ -55,7 +56,6 @@ public class General {
         @SerialEntry
         public boolean noRenderPotionHud = true;
 
-
         public static OptionGroup getGroup(ConfigImpl defaults, ConfigImpl config) {
             var noRenderPotionHud = Option.<Boolean>createBuilder()
                     .name(key("inventory.noRenderPotionHud"))
@@ -67,6 +67,7 @@ public class General {
                             value -> config.inventory.noRenderPotionHud = value
                     )
                     .build();
+
             var redirectRecipeBook = Option.<Boolean>createBuilder()
                     .name(key("inventory.redirectRecipeBook"))
                     .description(keyD("inventory.redirectRecipeBook"))
@@ -77,7 +78,6 @@ public class General {
                             value -> config.inventory.redirectRecipeBook = value
                     )
                     .build();
-
 
             return OptionGroup.createBuilder()
                     .name(key("inventory"))
@@ -136,7 +136,6 @@ public class General {
                     )
                     .build();
 
-
             var showHearsInRift = Option.<Boolean>createBuilder()
                     .name(key("hudTweaks.showHeartsInRift"))
                     .description(keyD("hudTweaks.showHeartsInRift"))
@@ -162,7 +161,6 @@ public class General {
                     )
                     .build();
 
-
             var noRenderArmor = Option.<Boolean>createBuilder()
                     .name(key("hudTweaks.noRenderArmor"))
                     .description(keyD("hudTweaks.noRenderArmor"))
@@ -184,6 +182,7 @@ public class General {
                             value -> config.hudTweaks.noRenderHunger = value
                     )
                     .build();
+
             var noRenderMountHealth = Option.<Boolean>createBuilder()
                     .name(key("hudTweaks.noRenderMountHealth"))
                     .description(keyD("hudTweaks.noRenderMountHealth"))
@@ -205,7 +204,6 @@ public class General {
                             value -> config.hudTweaks.noRenderPotionOverlay = value
                     )
                     .build();
-
 
             return OptionGroup.createBuilder()
                     .name(key("hudTweaks"))

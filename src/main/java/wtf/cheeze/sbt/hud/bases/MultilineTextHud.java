@@ -52,15 +52,15 @@ public abstract class MultilineTextHud extends HUD {
     }
 
     @Override
-    public void render(GuiGraphics context, boolean fromHudScreen, boolean hovered) {
+    public void render(GuiGraphics guiGraphics, boolean fromHudScreen, boolean hovered) {
         if (!shouldRender(fromHudScreen)) return;
 
         var bounds = getCurrentBounds();
         var lineHeight = (int) (9 * bounds.scale);
         if (fromHudScreen) {
-            drawBackground(context, hovered ? BACKGROUND_HOVERED : BACKGROUND_NOT_HOVERED);
+            drawBackground(guiGraphics, hovered ? BACKGROUND_HOVERED : BACKGROUND_NOT_HOVERED);
         }
-        RenderUtils.beginScale(context, bounds.scale);
+        RenderUtils.beginScale(guiGraphics, bounds.scale);
 //
 //        for(int i = 0; i < lines.length; i++){
 //            var line = lines[i];
@@ -70,10 +70,10 @@ public abstract class MultilineTextHud extends HUD {
         int i = 0;
         for (var line : lines) {
             var y = bounds.y + lineHeight * i;
-            i+=line.render(context, bounds.x, y, bounds.scale);
+            i+=line.render(guiGraphics, bounds.x, y, bounds.scale);
            //i+=line.render(context, bounds.x, y, bounds.scale);
         }
-        RenderUtils.popMatrix(context);
+        RenderUtils.popMatrix(guiGraphics);
     }
 
 

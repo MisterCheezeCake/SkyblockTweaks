@@ -43,7 +43,6 @@ public class PersistentData {
         return profiles.getOrDefault(SkyblockData.getCurrentProfileUnique(), new ProfileData());
     }
 
-
     private static final Path pdPath = FabricLoader.getInstance().getConfigDir().resolve("skyblocktweaks-persistent.json");
     private static final ConfigClassHandler<PersistentData> HANDLER = ConfigClassHandler.createBuilder(PersistentData.class)
             .id(Identifier.fromNamespaceAndPath("skyblocktweaks", "persistent"))
@@ -65,7 +64,6 @@ public class PersistentData {
         HANDLER.instance().needsSave = false; // Reset the flag
         HANDLER.save();
     }
-
 
     public static void registerEvents() {
         HANDLER.load();

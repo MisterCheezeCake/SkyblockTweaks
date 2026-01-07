@@ -71,7 +71,7 @@ public class FetchurFeatures {
     private static boolean isWaitingToSend = false;
 
     public static void registerEvents() {
-        ChatEvents.ON_GAME.register(message -> {;
+        ChatEvents.ON_GAME.register(message -> {
             var str = TextUtils.removeFormatting(message.getString());
             var matcher = FETCHUR_PATTERN.matcher(str);
             if (!matcher.matches()) return;
@@ -164,11 +164,8 @@ public class FetchurFeatures {
             }
 
             return list.toArray(CheezePair[]::new);
-
         }
     }
-
-
 
     private static boolean hasFetchuredToday() {
         return TimeUtils.isInSameDayET(System.currentTimeMillis() - 1, PersistentData.get().currentProfile().lastGaveFetchurItem);

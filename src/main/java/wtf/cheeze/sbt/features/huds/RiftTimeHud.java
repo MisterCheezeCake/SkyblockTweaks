@@ -40,7 +40,6 @@ import wtf.cheeze.sbt.utils.skyblock.SkyblockData;
 import java.awt.*;
 
 public class RiftTimeHud extends TextHud {
-
     public static final RiftTimeHud INSTANCE = new RiftTimeHud();
 
     private RiftTimeHud() {
@@ -60,8 +59,8 @@ public class RiftTimeHud extends TextHud {
                 () -> SBTConfig.huds().riftTime.mode,
                 () -> Component.literal(TimeUtils.toDuration(SkyblockData.Stats.riftSeconds) + (SBTConfig.huds().riftTime.icon ? "ф" : "") + (SBTConfig.huds().riftTime.showLeftText ? " Left" : ""))
         );
-
     }
+
     @Override
     public boolean shouldRender(boolean fromHudScreen) {
         if (!super.shouldRender(fromHudScreen)) return false;
@@ -78,10 +77,7 @@ public class RiftTimeHud extends TextHud {
         return new HudName("Rift Time HUD", "Rift HUD", Colors.LIME);
     }
 
-
-
     public static class Config {
-
         @SerialEntry
         public boolean enabled = false;
 
@@ -138,6 +134,7 @@ public class RiftTimeHud extends TextHud {
 
                     )
                     .build();
+
             var inactiveColor = Option.<Color>createBuilder()
                     .name(key("riftTime.inactiveColor"))
                     .description(keyD("riftTime.inactiveColor"))
@@ -149,6 +146,7 @@ public class RiftTimeHud extends TextHud {
 
                     )
                     .build();
+
             var outline = Option.<Color>createBuilder()
                     .name(key("riftTime.outlineColor"))
                     .description(keyD("riftTime.outlineColor"))
@@ -161,6 +159,7 @@ public class RiftTimeHud extends TextHud {
 
                     )
                     .build();
+
             var mode = Option.<DrawMode>createBuilder()
                     .name(key("riftTime.mode"))
                     .description(keyD("riftTime.mode"))
@@ -174,6 +173,7 @@ public class RiftTimeHud extends TextHud {
                             }
                     )
                     .build();
+
             var icon = Option.<Boolean>createBuilder()
                     .name(key("riftTime.icon"))
                     .description(keyD("riftTime.icon"))
@@ -206,6 +206,7 @@ public class RiftTimeHud extends TextHud {
                             value -> config.huds.riftTime.scale = value
                     )
                     .build();
+
             return OptionGroup.createBuilder()
                     .name(key("riftTime"))
                     .description(keyD("riftTime"))
@@ -219,6 +220,5 @@ public class RiftTimeHud extends TextHud {
                     .collapsed(true)
                     .build();
         }
-
     }
 }

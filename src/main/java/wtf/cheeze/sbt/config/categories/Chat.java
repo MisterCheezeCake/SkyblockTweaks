@@ -8,7 +8,6 @@ import wtf.cheeze.sbt.features.chat.ChatProtections;
 import wtf.cheeze.sbt.features.chat.PartyFeatures;
 
 public class Chat {
-
     public static ConfigCategory getCategory(ConfigImpl defaults, ConfigImpl config) {
         return ConfigCategory.createBuilder()
                 .name(Component.translatable("sbt.config.chat"))

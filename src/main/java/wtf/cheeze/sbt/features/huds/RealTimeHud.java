@@ -39,7 +39,6 @@ import java.awt.Color;
 import java.time.LocalDateTime;
 
 public class RealTimeHud extends TextHud {
-
     public static final RealTimeHud INSTANCE = new RealTimeHud();
 
     private RealTimeHud() {
@@ -88,7 +87,6 @@ public class RealTimeHud extends TextHud {
         if (!super.shouldRender(fromHudScreen)) return false;
         return ((SkyblockData.inSB || SBTConfig.huds().time.showOutside) && SBTConfig.huds().time.enabled) || fromHudScreen;
     }
-
 
     @Override
     public @NotNull HudName getName() {
@@ -177,6 +175,7 @@ public class RealTimeHud extends TextHud {
                     )
                     .available(config.huds.time.twelveHour)
                     .build();
+
             var twelveHour = Option.<Boolean>createBuilder()
                     .name(key("time.twelveHour"))
                     .description(keyD("time.twelveHour"))
@@ -202,6 +201,7 @@ public class RealTimeHud extends TextHud {
 
                     )
                     .build();
+
             var outline = Option.<Color>createBuilder()
                     .name(key("time.outlineColor"))
                     .description(keyD("time.outlineColor"))
@@ -214,6 +214,7 @@ public class RealTimeHud extends TextHud {
 
                     )
                     .build();
+
             var mode = Option.<DrawMode>createBuilder()
                     .name(key("time.mode"))
                     .description(keyD("time.mode"))
@@ -227,6 +228,7 @@ public class RealTimeHud extends TextHud {
                             }
                     )
                     .build();
+
             var scale = Option.<Float>createBuilder()
                     .name(key("time.scale"))
                     .description(keyD("time.scale"))

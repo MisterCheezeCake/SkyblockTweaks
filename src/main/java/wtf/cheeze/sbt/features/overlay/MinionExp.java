@@ -123,13 +123,13 @@ public class MinionExp {
 
         //TODO: Switch to text widgets
         @Override
-        public void render(GuiGraphics context, int mouseX, int mouseY, float delta) {
+        public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
             boolean shadow = SBTConfig.get().minionExp.shadowText;
             try {
-                Popup.super.renderBackground(context);
-                Popup.super.drawSBTFooter(context, shadow);
-                RenderUtils.drawCenteredText(context, TextUtils.withBold("Skill EXP"), x + WIDTH / 2, y + 5, Colors.WHITE, shadow);
-                RenderUtils.drawCenteredText(context, Component.literal("☯ Wisdom"), x + WIDTH / 2, y + 85, Colors.CYAN, shadow);
+                Popup.super.renderBackground(guiGraphics);
+                Popup.super.drawSBTFooter(guiGraphics, shadow);
+                RenderUtils.drawCenteredText(guiGraphics, TextUtils.withBold("Skill EXP"), x + WIDTH / 2, y + 5, Colors.WHITE, shadow);
+                RenderUtils.drawCenteredText(guiGraphics, Component.literal("☯ Wisdom"), x + WIDTH / 2, y + 85, Colors.CYAN, shadow);
 
                 var renderY = y + 20;
                 var minionExp = getMinionExp();
@@ -138,9 +138,9 @@ public class MinionExp {
                     this.children.getFirst().setValue(PersistentData.get().currentProfile().skillWisdom.getOrDefault(primarySkill, 0) + "");
                 }
                 for (var entry : minionExp.entrySet()) {
-                    RenderUtils.drawCenteredText(context, Component.literal(entry.getKey().getName() + ":"), x + WIDTH / 2, renderY, Colors.CYAN, shadow);
+                    RenderUtils.drawCenteredText(guiGraphics, Component.literal(entry.getKey().getName() + ":"), x + WIDTH / 2, renderY, Colors.CYAN, shadow);
                     var exp = entry.getValue();
-                    RenderUtils.drawCenteredText(context, Component.literal(NumberUtils.addKOrM((int) (exp * getMult()), ",") + " XP"), x + WIDTH / 2, renderY + 10, Colors.WHITE, shadow);
+                    RenderUtils.drawCenteredText(guiGraphics, Component.literal(NumberUtils.addKOrM((int) (exp * getMult()), ",") + " XP"), x + WIDTH / 2, renderY + 10, Colors.WHITE, shadow);
                     renderY += 30;
                 }
             } catch (Exception e) {

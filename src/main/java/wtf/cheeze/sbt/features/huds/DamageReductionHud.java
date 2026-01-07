@@ -39,7 +39,6 @@ import wtf.cheeze.sbt.utils.skyblock.SkyblockData;
 import java.awt.Color;
 
 public class DamageReductionHud extends TextHud {
-
     public static final DamageReductionHud INSTANCE = new DamageReductionHud();
 
     private DamageReductionHud() {
@@ -59,8 +58,8 @@ public class DamageReductionHud extends TextHud {
                 () -> SBTConfig.huds().dr.mode,
                 () -> Component.literal(NumberUtils.round(SkyblockData.Stats.damageReduction(), 1) + "%")
         );
-
     }
+
     @Override
     public boolean shouldRender(boolean fromHudScreen) {
         if (!super.shouldRender(fromHudScreen)) return false;
@@ -72,9 +71,7 @@ public class DamageReductionHud extends TextHud {
         return new HudName("Damage Reduction Percentage HUD", "DR % HUD",Colors.LIME);
     }
 
-
     public static class Config {
-
         @SerialEntry
         public boolean enabled = false;
 
@@ -99,8 +96,6 @@ public class DamageReductionHud extends TextHud {
         @SerialEntry
         public float scale = 1.0f;
 
-
-
         public static OptionGroup getGroup(ConfigImpl defaults, ConfigImpl config) {
             var enabled = Option.<Boolean>createBuilder()
                     .name(key("dr.enabled"))
@@ -112,6 +107,7 @@ public class DamageReductionHud extends TextHud {
                             value -> config.huds.dr.enabled = value
                     )
                     .build();
+
             var color = Option.<Color>createBuilder()
                     .name(key("dr.color"))
                     .description(keyD("dr.color"))
@@ -123,6 +119,7 @@ public class DamageReductionHud extends TextHud {
 
                     )
                     .build();
+
             var outline = Option.<Color>createBuilder()
                     .name(key("dr.outlineColor"))
                     .description(keyD("dr.outlineColor"))
@@ -135,6 +132,7 @@ public class DamageReductionHud extends TextHud {
 
                     )
                     .build();
+
             var mode = Option.<DrawMode>createBuilder()
                     .name(key("dr.mode"))
                     .description(keyD("dr.mode"))
@@ -148,6 +146,7 @@ public class DamageReductionHud extends TextHud {
                             }
                     )
                     .build();
+
             var scale = Option.<Float>createBuilder()
                     .name(key("dr.scale"))
                     .description(keyD("dr.scale"))
@@ -170,6 +169,5 @@ public class DamageReductionHud extends TextHud {
                     .collapsed(true)
                     .build();
         }
-
     }
 }

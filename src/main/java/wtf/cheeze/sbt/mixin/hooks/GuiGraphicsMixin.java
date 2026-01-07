@@ -21,7 +21,6 @@ package wtf.cheeze.sbt.mixin.hooks;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.ARGB;
 import org.spongepowered.asm.mixin.Final;

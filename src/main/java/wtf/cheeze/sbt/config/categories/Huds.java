@@ -25,8 +25,6 @@ import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.features.huds.*;
 
 public class Huds {
-
-
     @SerialEntry
     public ManaHud.Config mana = new ManaHud.Config();
 
@@ -95,8 +93,6 @@ public class Huds {
 
     @SerialEntry
     public PressureHud.Config pressure = new PressureHud.Config();
-
-
 
     public static ConfigCategory getCategory(ConfigImpl defaults, ConfigImpl config) {
         return ConfigCategory.createBuilder()

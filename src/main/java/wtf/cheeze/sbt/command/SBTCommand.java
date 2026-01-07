@@ -64,10 +64,7 @@ import static wtf.cheeze.sbt.command.CommandUtils.*;
 
 
 public class SBTCommand {
-
     //public static String PREFIX = "§7[§aSkyblockTweaks§f§7]";
-
-
     private static final Component INVALID = TextUtils.withColor("Invalid arguments", Colors.RED);
     private static final LiteralArgumentBuilder<FabricClientCommandSource> calc = literal("calc")
             .then(literal("skill")
@@ -147,7 +144,6 @@ public class SBTCommand {
                         send(context, INVALID);
                         return 0;
                     })
-
             )
             .then(literal("pet")
                     .then(argument("rarity", StringArgumentType.string()).suggests(CommandUtils.getArrayAsSuggestions("common", "uncommon", "rare", "epic", "legendary", "mythic"))
@@ -202,8 +198,6 @@ public class SBTCommand {
                                                 return 1;
                                             }
                                     )
-
-
                             ))
                     .executes(context -> {
                         send(context, INVALID);
@@ -302,7 +296,6 @@ public class SBTCommand {
                         send(context, INVALID);
                         return 0;
                     })
-
             );
 
     public static void registerEvents() {
@@ -367,9 +360,7 @@ public class SBTCommand {
                                                                     return 1;
                                                                 })
                                                         )
-
                                                 )
-
                                         )
                                         .then(literal("dumpBossbars").executes(context -> {
                                             for (var bar : ((BossHealthOverlayAccessor) context.getSource().getClient().gui.getBossOverlay()).getEvents().values()) {
@@ -389,7 +380,6 @@ public class SBTCommand {
                                             }
                                             return 1;
                                         }))
-
                                         .then(literal("sysInfo").executes(context -> {
                                             var source = context.getSource();
                                             send(context, TextUtils.withColor("System Information", Colors.CYAN));
@@ -402,14 +392,11 @@ public class SBTCommand {
                                             return 1;
 
                                         }))
-
                                         .then(literal("dumpComponents")
                                                 .then(literal("hand")
                                                         .executes(context -> {
                                                             var components = context.getSource().getClient().player.getMainHandItem().getComponents();
-                                                            components.forEach((component) -> {
-                                                                send(context, TextUtils.withColor(component.toString(), Colors.CYAN));
-                                                            });
+                                                            components.forEach((component) -> send(context, TextUtils.withColor(component.toString(), Colors.CYAN)));
                                                             return 1;
                                                         }))
                                                 .then(literal("inventory")
@@ -417,10 +404,7 @@ public class SBTCommand {
                                                                 .executes(context -> {
 
                                                                     var components = context.getSource().getClient().player.getInventory().getItem(IntegerArgumentType.getInteger(context, "number")).getComponents();
-                                                                    components.forEach((component) -> {
-                                                                        send(context, TextUtils.withColor(component.toString(), Colors.CYAN));
-
-                                                                    });
+                                                                    components.forEach((component) -> send(context, TextUtils.withColor(component.toString(), Colors.CYAN)));
                                                                     return 1;
                                                                 })
 
@@ -433,9 +417,7 @@ public class SBTCommand {
                                                                             Thread.sleep(1500);
                                                                             var screen = (ContainerScreen) context.getSource().getClient().screen;
                                                                             var components = screen.getMenu().getSlot(IntegerArgumentType.getInteger(context, "number")).getItem().getComponents();
-                                                                            components.forEach((component) -> {
-                                                                                send(context, TextUtils.withColor(component.toString(), Colors.CYAN));
-                                                                            });
+                                                                            components.forEach((component) -> send(context, TextUtils.withColor(component.toString(), Colors.CYAN)));
                                                                         } catch (Exception e) {
                                                                             ErrorHandler.handle(e, "Thread Sleep Error in Dump Components", ErrorLevel.WARNING);
                                                                         }
@@ -460,7 +442,6 @@ public class SBTCommand {
                                             }
                                             return 1;
                                         }))
-
                                         .then(literal("compareVersions").then(argument("a", StringArgumentType.string()).then(argument("b", StringArgumentType.string())
                                                 .executes(context -> {
                                                      Version a = new Version(StringArgumentType.getString(context, "a"));
@@ -490,7 +471,6 @@ public class SBTCommand {
                                             source.sendFeedback(CommandUtils.getDebugText("Armor Stack", Stats.armorStack));
                                             source.sendFeedback(CommandUtils.getDebugText("Stack String", Stats.stackString));
 
-
                                             return 1;
                                         }))
                                         .then(literal("repo")
@@ -503,7 +483,6 @@ public class SBTCommand {
                                                             }
                                                             return 1;
                                                         }
-
                                                 ))
                                                 .executes(context -> {
                                                     var manifest = ConstantLoader.getLocalManifestSafe();
@@ -522,26 +501,22 @@ public class SBTCommand {
                                                     return 0;
                                                 })
                                         )
-
                                         .then(literal("fetchur").executes(context -> {
                                             MessageManager.send(TextUtils.join(TextUtils.withColor("Today Fetchur wants: ", Colors.CYAN), FetchurFeatures.FetchurItem.forToday().display));
                                             return 1;
                                         }))
-//
                                         .then(literal("dumpTablist").executes(context -> {
                                                     SkyblockTweaks.LOGGER.info(TabListParser.parseTabList().serialize());
                                                     MessageManager.send("Tablist data dumped to logs", Colors.CYAN);
                                                     return 1;
                                                 })
-
-
                                         ).executes(context -> {
                                             var source = context.getSource();
-//                                            ModAPI.requestPartyInfo();
+                                            // ModAPI.requestPartyInfo();
                                             send(context, TextUtils.withColor("Debug Information", Colors.CYAN));
                                             source.sendFeedback(CommandUtils.getDebugText("Version", SkyblockTweaks.VERSION.getVersionString()));
                                             source.sendFeedback(CommandUtils.getDebugText("In Skyblock", SkyblockData.inSB));
-                                            //source.sendFeedback(CommandUtils.getDebugText("Mode", SkyblockData.Stats.mode));
+                                            // source.sendFeedback(CommandUtils.getDebugText("Mode", SkyblockData.Stats.mode));
                                             source.sendFeedback(CommandUtils.getDebugText("Location", SkyblockData.location.getName()));
                                             source.sendFeedback(CommandUtils.getDebugText("On Alpha Network", SkyblockData.alphaNetwork));
                                             source.sendFeedback(CommandUtils.getDebugText("In Party", SkyblockData.Party.inParty));
@@ -557,7 +532,6 @@ public class SBTCommand {
                             send(context, INVALID);
                             return 0;
                         })
-
                         .executes(context -> {
                                     Minecraft mc = context.getSource().getClient();
                                     Screen screen = new SkyblockTweaksScreenMain(null);
@@ -568,4 +542,3 @@ public class SBTCommand {
         ));
     }
 }
-

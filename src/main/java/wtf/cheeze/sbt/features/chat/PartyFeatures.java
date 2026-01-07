@@ -234,6 +234,7 @@ public class PartyFeatures {
             TextUtils.withColor("SBT Party Debugger", Colors.GREEN),
             TextUtils.withColor("]", Colors.DARK_GRAY)
     );
+
     private static void sendDebugMessage(String message) {
         client.player.displayClientMessage(TextUtils.join(DEBUG_PREFIX, TextUtils.SPACE, TextUtils.withColor(message, Colors.CYAN)), false);
     }
