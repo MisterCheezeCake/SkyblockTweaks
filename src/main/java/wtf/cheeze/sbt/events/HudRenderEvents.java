@@ -58,7 +58,7 @@ public class HudRenderEvents {
     }
 
     public static void registerEvents() {
-        HudElementRegistry.attachElementAfter(VanillaHudElements.EXPERIENCE_LEVEL, Identifier.fromNamespaceAndPath("skyblocktweaks", "after_main_hud"), AFTER_MAIN_HUD.invoker()::onRender);
+        HudElementRegistry.attachElementBefore(VanillaHudElements.HOTBAR, Identifier.fromNamespaceAndPath("skyblocktweaks", "after_main_hud"), AFTER_MAIN_HUD.invoker()::onRender);
         HudElementRegistry.attachElementBefore(VanillaHudElements.CHAT, Identifier.fromNamespaceAndPath("skyblocktweaks", "before_chat"), BEFORE_CHAT.invoker()::onRender);
         HudElementRegistry.addLast(Identifier.fromNamespaceAndPath("skyblocktweaks", "last"), LAST.invoker()::onRender);
     }
