@@ -20,7 +20,7 @@ package wtf.cheeze.sbt.config.categories;
 
 import dev.isxander.yacl3.api.ConfigCategory;
 import dev.isxander.yacl3.config.v2.api.SerialEntry;
-import net.minecraft.text.Text;
+import net.minecraft.network.chat.Component;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.features.huds.*;
 
@@ -100,8 +100,8 @@ public class Huds {
 
     public static ConfigCategory getCategory(ConfigImpl defaults, ConfigImpl config) {
         return ConfigCategory.createBuilder()
-                .name(Text.translatable("sbt.config.huds"))
-                .tooltip(Text.translatable("sbt.config.huds.desc"))
+                .name(Component.translatable("sbt.config.huds"))
+                .tooltip(Component.translatable("sbt.config.huds.desc"))
                 .group(SkillHudManager.SkillHud.Config.getGroup(defaults, config))
                 .group(SkillHudManager.SkillBar.Config.getGroup(defaults, config))
                 .group(HealthHud.Config.getGroup(defaults, config))

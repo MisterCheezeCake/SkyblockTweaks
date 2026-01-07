@@ -16,20 +16,18 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with SkyblockTweaks. If not, see <https://www.gnu.org/licenses/>.
  */
-package wtf.cheeze.sbt.mixin.features;
+package wtf.cheeze.sbt.mixin.accessors;
 
 
-import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
-import net.minecraft.client.Mouse;
-import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.client.gui.components.PlayerTabOverlay;
+import net.minecraft.client.multiplayer.PlayerInfo;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.At;
-import wtf.cheeze.sbt.features.misc.MouseLock;
+import org.spongepowered.asm.mixin.gen.Accessor;
 
-@Mixin(Mouse.class)
-public abstract class MouseLockMixin {
-    @WrapWithCondition(method = "updateMouse", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;changeLookDirection(DD)V"))
-    private boolean sbt$allowMouseMove(ClientPlayerEntity instance, double v, double v2) {
-        return !MouseLock.locked;
-    }
+import java.util.Comparator;
+
+@Mixin(PlayerTabOverlay.class)
+public interface PlayerTabOverlayAccessor {
+    @Accessor("PLAYER_COMPARATOR")
+    static Comparator<PlayerInfo> getEntryOrdering() { throw new IllegalStateException();}
 }

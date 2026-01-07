@@ -22,7 +22,7 @@ import dev.isxander.yacl3.api.Option;
 import dev.isxander.yacl3.api.OptionGroup;
 import dev.isxander.yacl3.api.controller.ColorControllerBuilder;
 import dev.isxander.yacl3.config.v2.api.SerialEntry;
-import net.minecraft.text.Text;
+import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SBTConfig;
@@ -62,7 +62,7 @@ public class PressureHud extends TextHud {
                 () -> SBTConfig.huds().pressure.color,
                 () -> SBTConfig.huds().pressure.outlineColor,
                 () -> SBTConfig.huds().pressure.mode,
-                () -> Text.literal(getFormatString().formatted(SkyblockData.Stats.pressure))
+                () -> Component.literal(getFormatString().formatted(SkyblockData.Stats.pressure))
         );
 
     }

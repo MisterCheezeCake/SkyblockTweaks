@@ -57,7 +57,6 @@ public class SkyblockTweaks implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
-
 		SBTConfig.load();
 		PersistentData.registerEvents();
 
@@ -79,12 +78,7 @@ public class SkyblockTweaks implements ModInitializer {
 		MiningTitles.registerEvents();
 		FetchurFeatures.registerEvents();
 		ReforgeOverlay.registerEvents();
-
-		//? if >1.21.5
-		/*HudRenderEvents.registerEvents();*/
-
-
-
+		HudRenderEvents.registerEvents();
 		UpdateChecker.checkForUpdates();
 	}
 }

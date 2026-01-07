@@ -18,8 +18,8 @@
  */
 package wtf.cheeze.sbt.hud.bases;
 
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.util.Identifier;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.resources.Identifier;
 import org.jetbrains.annotations.NotNull;
 import wtf.cheeze.sbt.features.huds.TickerHud;
 import wtf.cheeze.sbt.hud.bounds.Bounds;
@@ -31,8 +31,8 @@ import wtf.cheeze.sbt.utils.render.RenderUtils;
  * The abstract representation of the ticker HUD, for the implementation, see {@link TickerHud}
  */
 public abstract class AbstractTickerHud extends HUD {
-    private static final Identifier FULL = Identifier.of("skyblocktweaks", "tickers/full.png");
-    private static final Identifier BLANK = Identifier.of("skyblocktweaks", "tickers/blank.png");
+    private static final Identifier FULL = Identifier.fromNamespaceAndPath("skyblocktweaks", "tickers/full.png");
+    private static final Identifier BLANK = Identifier.fromNamespaceAndPath("skyblocktweaks", "tickers/blank.png");
     private static final int DIMENSION = 9;
 
     /**
@@ -44,7 +44,7 @@ public abstract class AbstractTickerHud extends HUD {
     public abstract int getUsable(boolean fromHudScreen);
 
     @Override
-    public void render(DrawContext context, boolean fromHudScreen, boolean hovered) {
+    public void render(GuiGraphics context, boolean fromHudScreen, boolean hovered) {
         if (!shouldRender(fromHudScreen)) return;
         var bounds = getCurrentBounds();
         if (fromHudScreen) {
@@ -64,7 +64,7 @@ public abstract class AbstractTickerHud extends HUD {
 
     }
 
-    private static float drawTickers(DrawContext context, int number, float x, int y, float scale, boolean filled) {
+    private static float drawTickers(GuiGraphics context, int number, float x, int y, float scale, boolean filled) {
         float drawX = x;
         for (int i = 0; i < number; i++) {
             RenderUtils.drawTexture(context, filled ? FULL : BLANK, (int) (drawX / scale), (int) (y / scale), DIMENSION, DIMENSION, DIMENSION , DIMENSION);
@@ -78,7 +78,7 @@ public abstract class AbstractTickerHud extends HUD {
     }
 
     private int getRelativeWidth() {
-        return getWidth() / client.getWindow().getWidth();
+        return getWidth() / client.getWindow().getScreenWidth();
     }
 
     @Override

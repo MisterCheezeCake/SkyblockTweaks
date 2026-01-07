@@ -23,7 +23,7 @@ import dev.isxander.yacl3.api.OptionGroup;
 import dev.isxander.yacl3.api.controller.ColorControllerBuilder;
 import dev.isxander.yacl3.api.controller.IntegerSliderControllerBuilder;
 import dev.isxander.yacl3.config.v2.api.SerialEntry;
-import net.minecraft.text.Text;
+import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SBTConfig;
@@ -40,7 +40,6 @@ import wtf.cheeze.sbt.utils.skyblock.SkyblockData;
 import java.awt.Color;
 
 public class CoordinatesHud extends TextHud {
-
     public static final CoordinatesHud INSTANCE = new CoordinatesHud();
 
     private CoordinatesHud() {
@@ -58,7 +57,7 @@ public class CoordinatesHud extends TextHud {
                 () -> SBTConfig.huds().coordinates.color,
                 () -> SBTConfig.huds().coordinates.outlineColor,
                 () -> SBTConfig.huds().coordinates.mode,
-                () -> Text.literal(String.format("X: %s Y: %s Z: %s" , NumberUtils.formattedRound(client.player.getX(), SBTConfig.huds().coordinates.decimalPlaces), NumberUtils.formattedRound(client.player.getY(), SBTConfig.huds().coordinates.decimalPlaces), NumberUtils.formattedRound(client.player.getZ(), SBTConfig.huds().coordinates.decimalPlaces)))
+                () -> Component.literal(String.format("X: %s Y: %s Z: %s" , NumberUtils.formattedRound(client.player.getX(), SBTConfig.huds().coordinates.decimalPlaces), NumberUtils.formattedRound(client.player.getY(), SBTConfig.huds().coordinates.decimalPlaces), NumberUtils.formattedRound(client.player.getZ(), SBTConfig.huds().coordinates.decimalPlaces)))
         );
     }
     @Override

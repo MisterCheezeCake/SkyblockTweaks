@@ -24,12 +24,10 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 public class HudInformation {
-
     public Supplier<Float> getX;
     public Supplier<Float> getY;
     public Supplier<Float> getScale;
     public Supplier<AnchorPoint> getAnchorPoint;
-
 
     public Consumer<Float> setX;
     public Consumer<Float> setY;
@@ -50,7 +48,6 @@ public class HudInformation {
         this.setScale = scaleConsumer;
         this.setAnchorPoint = anchorPointConsumer;
     }
-
 
     /**
      * This constructor is used for Multi Line Text HUDs

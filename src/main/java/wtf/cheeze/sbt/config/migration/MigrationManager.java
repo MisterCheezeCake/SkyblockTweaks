@@ -17,14 +17,11 @@ import java.util.ArrayList;
  * Manages config migrations and transformations
  */
 public class MigrationManager {
-
     private static final ArrayList<ConfigMigration> migrations = new ArrayList<>();
 
     public static void registerMigration(ConfigMigration migration) {
         migrations.add(migration);
     }
-
-
 
     /**
      * Checks all registered migrations and runs any needed ones.
@@ -77,4 +74,3 @@ public class MigrationManager {
         return true;
     }
 }
-

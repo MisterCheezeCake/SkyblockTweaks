@@ -16,22 +16,18 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with SkyblockTweaks. If not, see <https://www.gnu.org/licenses/>.
  */
-package wtf.cheeze.sbt.mixin.features;
+package wtf.cheeze.sbt.mixin.accessors;
 
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.BossHealthOverlay;
+import net.minecraft.client.gui.components.LerpingBossEvent;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import wtf.cheeze.sbt.config.SBTConfig;
+import org.spongepowered.asm.mixin.gen.Accessor;
+
+import java.util.Map;
+import java.util.UUID;
 
 @Mixin(BossHealthOverlay.class)
-public abstract class BossBarHiderMixin {
-    @Inject(method = "render", at = @At("HEAD"), cancellable = true)
-    private void sbt$onRender(GuiGraphics context, CallbackInfo ci) {
-        if (SBTConfig.get().hudTweaks.noRenderBossBar) {
-            ci.cancel();
-        }
-    }
+public interface BossHealthOverlayAccessor {
+    @Accessor("events")
+    Map<UUID, LerpingBossEvent> getEvents();
 }

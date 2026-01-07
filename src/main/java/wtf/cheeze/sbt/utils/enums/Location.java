@@ -21,7 +21,7 @@ package wtf.cheeze.sbt.utils.enums;
 
 import com.google.common.collect.ImmutableMap;
 import com.ibm.icu.impl.locale.XCldrStub;
-import net.minecraft.item.Items;
+import net.minecraft.world.item.Items;
 
 import java.util.Collections;
 import java.util.HashMap;

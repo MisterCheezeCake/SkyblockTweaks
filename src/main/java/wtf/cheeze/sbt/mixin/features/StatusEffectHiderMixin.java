@@ -19,9 +19,9 @@
 package wtf.cheeze.sbt.mixin.features;
 
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.screen.ingame.InventoryScreen;
-import net.minecraft.client.gui.screen.ingame.StatusEffectsDisplay;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.screens.inventory.InventoryScreen;
+import net.minecraft.client.gui.screens.inventory.EffectsInInventory;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import wtf.cheeze.sbt.config.SBTConfig;
@@ -29,17 +29,8 @@ import wtf.cheeze.sbt.utils.skyblock.SkyblockData;
 
 @Mixin(InventoryScreen.class)
 public abstract class StatusEffectHiderMixin {
-    @WrapWithCondition(method = "render", at = @At(value = "INVOKE", target =
-            //? if <=1.21.5 {
-            "Lnet/minecraft/client/gui/screen/ingame/StatusEffectsDisplay;drawStatusEffects(Lnet/minecraft/client/gui/DrawContext;IIF)V"
-            //?} else {
-            /*"Lnet/minecraft/client/gui/screen/ingame/StatusEffectsDisplay;drawStatusEffects(Lnet/minecraft/client/gui/DrawContext;II)V"
-            *///?}
-    ))
-    private boolean sbt$onDrawStatusEffects(StatusEffectsDisplay instance, DrawContext context, int mouseX, int mouseY
-            //? if <=1.21.5
-            , float tickDelta
-    ) {
+    @WrapWithCondition(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/inventory/EffectsInInventory;renderEffects(Lnet/minecraft/client/gui/GuiGraphics;II)V"))
+    private boolean sbt$onDrawStatusEffects(EffectsInInventory instance, GuiGraphics context, int mouseX, int mouseY) {
         return !SBTConfig.get().inventory.noRenderPotionHud || !SkyblockData.inSB;
     }
 }

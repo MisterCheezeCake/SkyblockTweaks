@@ -18,7 +18,7 @@
  */
 package wtf.cheeze.sbt.hud.bases;
 
-import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.gui.GuiGraphics;
 import org.jetbrains.annotations.NotNull;
 import wtf.cheeze.sbt.hud.HUD;
 import wtf.cheeze.sbt.hud.bounds.Bounds;
@@ -32,10 +32,9 @@ public abstract class SingleLineHybridHud extends HUD {
     private int width = 0;
     protected CheezePair<HudComponent, Integer>[] components;
 
-
     //TODO: Scale is not perfect here
     @Override
-    public void render(DrawContext context, boolean fromHudScreen, boolean hovered) {
+    public void render(GuiGraphics context, boolean fromHudScreen, boolean hovered) {
         if (!shouldRender(fromHudScreen)) return;
         var bounds = getCurrentBounds();
         if (fromHudScreen) {
@@ -92,7 +91,7 @@ public abstract class SingleLineHybridHud extends HUD {
     }
 
     @Override
-    public void drawBackground(DrawContext context, int color) {
+    public void drawBackground(GuiGraphics context, int color) {
         var bounds = getCurrentBounds();
         int i = (int) (1 * bounds.scale);
         context.fill(bounds.x - i, bounds.y - i, (int) (bounds.x + bounds.width + i), (int) (bounds.y + bounds.height + i - 1), color);

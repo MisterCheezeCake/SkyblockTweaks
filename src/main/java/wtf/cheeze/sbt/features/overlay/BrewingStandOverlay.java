@@ -21,10 +21,10 @@ package wtf.cheeze.sbt.features.overlay;
 import dev.isxander.yacl3.api.Option;
 import dev.isxander.yacl3.api.OptionGroup;
 import dev.isxander.yacl3.config.v2.api.SerialEntry;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.screen.ingame.HandledScreen;
-import net.minecraft.screen.slot.Slot;
-import net.minecraft.util.collection.DefaultedList;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.core.NonNullList;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SBTConfig;
 import wtf.cheeze.sbt.config.categories.General;
@@ -42,19 +42,19 @@ public class BrewingStandOverlay {
     private static final int RIGHT_OUTPUT_SLOT = 42;
 
 
-    public static void render(DefaultedList<Slot> slots, DrawContext context) {
+    public static void render(NonNullList<Slot> slots, GuiGraphics context) {
         if (!SBTConfig.get().brewingStandOverlay.enabled) return;
         var input = slots.get(INPUT_SLOT);
         var timer = slots.get(TIMER_SLOT);
         var output = slots.get(RIGHT_OUTPUT_SLOT);
         RenderUtils.drawWithZ(context, Z_OFFSET, () -> {
-            if (input.hasStack()) {
+            if (input.hasItem()) {
                 drawName(input, context);
             }
-            if (!timer.getStack().getName().getString().startsWith("Place Water Bottles")) {
+            if (!timer.getItem().getHoverName().getString().startsWith("Place Water Bottles")) {
                 drawName(timer, context);
             }
-            if (output.hasStack()) {
+            if (output.hasItem()) {
                 drawName(output, context);
             }
         });
@@ -62,14 +62,14 @@ public class BrewingStandOverlay {
     }
 
 
-    private static void drawName(Slot slot, DrawContext context) {
-        var name = slot.getStack().getName();
+    private static void drawName(Slot slot, GuiGraphics context) {
+        var name = slot.getItem().getHoverName();
         var color =  name.getStyle().getColor();
         int rcolor;
         if (color == null) {
             rcolor = Colors.WHITE;
         } else {
-            rcolor = color.getRgb();
+            rcolor = color.getValue();
         }
         RenderUtils.drawText(context, name, slot.x + DRAW_OFFSET_X, slot.y + DRAW_OFFSET_Y, rcolor, false);
     }

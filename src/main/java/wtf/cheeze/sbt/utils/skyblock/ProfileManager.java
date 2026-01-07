@@ -18,8 +18,8 @@
  */
 package wtf.cheeze.sbt.utils.skyblock;
 
-import net.minecraft.component.DataComponentTypes;
-import net.minecraft.component.type.LoreComponent;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.world.item.component.ItemLore;
 import wtf.cheeze.sbt.config.persistent.PersistentData;
 import wtf.cheeze.sbt.config.persistent.ProfileData;
 import wtf.cheeze.sbt.events.ChatEvents;
@@ -64,7 +64,7 @@ public class ProfileManager {
         //TODO: Switch to public API
         DrawSlotEvents.BEFORE_ITEM.register(((screenTitle, context, slot) -> {
             if (screenTitle.getString().equals("Your Skills")) {
-                var name = slot.getStack().getName().getString();
+                var name = slot.getItem().getHoverName().getString();
                 var matcher = SKILL_PATTERN.matcher(name);
                 if (matcher.matches()) {
                     var skill = SkyblockUtils.strictCastStringToSkill(matcher.group(1));
@@ -75,8 +75,8 @@ public class ProfileManager {
                     profile.skillLevels.put(skill, level);
                 }
                 PersistentData.get().requestSave();
-            } else if (screenTitle.getString().equals("Your Equipment and Stats") && slot.getStack() != null && slot.getStack().getName().getString().equals("Wisdom Stats")) {
-                var lines = slot.getStack().getOrDefault(DataComponentTypes.LORE, LoreComponent.DEFAULT).lines();
+            } else if (screenTitle.getString().equals("Your Equipment and Stats") && slot.getItem() != null && slot.getItem().getHoverName().getString().equals("Wisdom Stats")) {
+                var lines = slot.getItem().getOrDefault(DataComponents.LORE, ItemLore.EMPTY).lines();
                 for (var line: lines) {
                     var matcher = WISDOM_PATTERN.matcher(line.getString());
                     if (matcher.find()) {

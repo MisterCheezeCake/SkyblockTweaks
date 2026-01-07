@@ -18,10 +18,10 @@
  */
 package wtf.cheeze.sbt.hud.utils;
 
-import net.minecraft.text.Text;
+import net.minecraft.network.chat.Component;
 
 public interface CompositionEntry {
-    Text getDisplayName();
+    Component getDisplayName();
     boolean isRepeatable();
-    Text getPreviewText();
+    Component getPreviewText();
 }

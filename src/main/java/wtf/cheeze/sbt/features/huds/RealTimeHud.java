@@ -22,7 +22,7 @@ import dev.isxander.yacl3.api.Option;
 import dev.isxander.yacl3.api.OptionGroup;
 import dev.isxander.yacl3.api.controller.ColorControllerBuilder;
 import dev.isxander.yacl3.config.v2.api.SerialEntry;
-import net.minecraft.text.Text;
+import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SBTConfig;
@@ -76,9 +76,9 @@ public class RealTimeHud extends TextHud {
                             amPM = SBTConfig.huds().time.amPM ? "AM" : "";
                             if (hour == 0) hour = 12;
                         }
-                        return Text.literal(String.format("%d:%02d%s %s", hour, minute, secondString, amPM));
+                        return Component.literal(String.format("%d:%02d%s %s", hour, minute, secondString, amPM));
                     } else {
-                        return Text.literal(String.format("%02d:%02d%s", hour, minute, secondString));
+                        return Component.literal(String.format("%02d:%02d%s", hour, minute, secondString));
                     }
                 }
         );

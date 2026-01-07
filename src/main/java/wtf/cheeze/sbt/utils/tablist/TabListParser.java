@@ -19,9 +19,9 @@
 package wtf.cheeze.sbt.utils.tablist;
 
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.network.PlayerListEntry;
-import wtf.cheeze.sbt.mixin.accessors.PlayerListHudAccessor;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.PlayerInfo;
+import wtf.cheeze.sbt.mixin.accessors.PlayerTabOverlayAccessor;
 import wtf.cheeze.sbt.utils.errors.ErrorHandler;
 import wtf.cheeze.sbt.utils.errors.ErrorLevel;
 import wtf.cheeze.sbt.utils.skyblock.SkyblockData;
@@ -33,7 +33,7 @@ import java.util.Comparator;
 
 public class TabListParser {
 
-    private static final Comparator<PlayerListEntry> ORDER = PlayerListHudAccessor.getEntryOrdering();
+    private static final Comparator<PlayerInfo> ORDER = PlayerTabOverlayAccessor.getEntryOrdering();
 
 
     /**
@@ -45,10 +45,10 @@ public class TabListParser {
             var data = new TabListData();
             boolean inInfoColumn = false;
             WidgetType currentWidget = null;
-            var network = MinecraftClient.getInstance().getNetworkHandler();
+            var network = Minecraft.getInstance().getConnection();
             if (network == null) return TabListData.EMPTY;
-            for (PlayerListEntry entry : network.getPlayerList().stream().sorted(ORDER).toList()) {
-                var displayName = entry.getDisplayName();
+            for (PlayerInfo entry : network.getOnlinePlayers().stream().sorted(ORDER).toList()) {
+                var displayName = entry.getTabListDisplayName();
                 if (displayName == null) continue;
                 var content = displayName.getString();
                 var profileName = entry.getProfile().getName();

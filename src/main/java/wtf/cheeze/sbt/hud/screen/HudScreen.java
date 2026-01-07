@@ -18,16 +18,14 @@
  */
 package wtf.cheeze.sbt.hud.screen;
 
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.ScreenRect;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.tooltip.HoveredTooltipPositioner;
-import net.minecraft.client.gui.tooltip.Tooltip;
-import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.client.gui.widget.ClickableWidget;
-import net.minecraft.client.gui.widget.TextFieldWidget;
-import net.minecraft.text.Text;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.navigation.ScreenRectangle;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.AbstractWidget;
+import net.minecraft.client.gui.components.EditBox;
+import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
 import wtf.cheeze.sbt.SkyblockTweaks;
@@ -43,12 +41,8 @@ import wtf.cheeze.sbt.utils.render.RenderUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-import static wtf.cheeze.sbt.hud.screen.EditorPopup.POPUP_Z;
-
 public class HudScreen extends Screen {
-
     private static final float RELATIVE_MOVE_AMOUNT = 2.0f;
-    private static final float BUTTON_Z = 100;
     private final List<HUD> huds;
     private final Screen parent;
     @Nullable
@@ -57,9 +51,9 @@ public class HudScreen extends Screen {
     private HUD hoveredElement = null;
     @Nullable
     private HUD selectedViaTheKeyboard = null;
-    private ButtonWidget resetModeButton;
-    private ButtonWidget cancelButton;
-    private ButtonWidget resetButton;
+    private Button resetModeButton;
+    private Button cancelButton;
+    private Button resetButton;
     private Mode mode = Mode.DRAG;
     private int resetModeIndex = 0;
     private float offsetX = 0;
@@ -68,7 +62,7 @@ public class HudScreen extends Screen {
     @Nullable
     private EditorPopup popup = null;
 
-    public HudScreen(Text title, ArrayList<HUD> huds, Screen parent) {
+    public HudScreen(Component title, ArrayList<HUD> huds, Screen parent) {
         super(title);
         this.huds = huds.stream().filter(it -> it.shouldRender(true)).toList();
         this.parent = parent;
@@ -87,7 +81,7 @@ public class HudScreen extends Screen {
     }
 
     private static float getMoveAmount() {
-        return RELATIVE_MOVE_AMOUNT / MinecraftClient.getInstance().getWindow().getScaledWidth();
+        return RELATIVE_MOVE_AMOUNT / Minecraft.getInstance().getWindow().getGuiScaledWidth();
     }
 
     private static void moveHorizontal(HUD hud, float amount) {
@@ -104,15 +98,15 @@ public class HudScreen extends Screen {
     @SuppressWarnings("MagicNumber")
     protected void init() {
         super.init();
-        MinecraftClient mc = MinecraftClient.getInstance();
-        var centerX = (mc.getWindow().getScaledWidth() / 2) - 50;
+        Minecraft mc = Minecraft.getInstance();
+        var centerX = (mc.getWindow().getGuiScaledWidth() / 2) - 50;
 
-        cancelButton = new ConstructableButton(Text.literal("Exit"), button -> {
+        cancelButton = new ConstructableButton(Component.literal("Exit"), button -> {
             this.selectedElement = null;
             setMode(Mode.DRAG);
         }, centerX - 25, 95, 150, 20);
 
-        resetButton = new ConstructableButton(Text.literal("Reset"), button -> {
+        resetButton = new ConstructableButton(Component.literal("Reset"), button -> {
             this.huds.get(this.resetModeIndex).updatePosition(0.1f, 0.f);
 
         }, centerX - 25, 65, 150, 20);
@@ -126,14 +120,14 @@ public class HudScreen extends Screen {
         }, centerX - 25, 35, 150, 20);
 
         setMode(Mode.DRAG);
-        this.addDrawableChild(cancelButton);
-        this.addDrawableChild(resetButton);
-        this.addDrawableChild(resetModeButton);
+        this.addRenderableWidget(cancelButton);
+        this.addRenderableWidget(resetButton);
+        this.addRenderableWidget(resetModeButton);
 
     }
 
     @Override
-    public void render(DrawContext context, int mouseX, int mouseY, float delta) {
+    public void render(GuiGraphics context, int mouseX, int mouseY, float delta) {
         super.render(context, mouseX, mouseY, delta);
 
         HUD hovered = null;
@@ -145,7 +139,7 @@ public class HudScreen extends Screen {
                 hovered = hud;
                 if (hasShiftDown()) {
 //                    context.drawTooltip(hud.getName().primaryName(),);
-                    if (!drawnTooltip) context.drawTooltip(MinecraftClient.getInstance().textRenderer, hud.getName().primaryName(), mouseX, mouseY );
+                    if (!drawnTooltip) context.setTooltipForNextFrame(Minecraft.getInstance().font, hud.getName().primaryName(), mouseX, mouseY );
                     drawnTooltip = true;
                     //this.setTooltip(Tooltip.of(hud.getName().primaryName()), HoveredTooltipPositioner.INSTANCE.getPosition(), false);
                 }
@@ -163,8 +157,8 @@ public class HudScreen extends Screen {
     }
 
     @Override
-    public void close() {
-        MinecraftClient.getInstance().setScreen(parent);
+    public void onClose() {
+        Minecraft.getInstance().setScreen(parent);
         SBTConfig.save();
     }
 
@@ -312,27 +306,27 @@ public class HudScreen extends Screen {
         return !textToggledOff;
     }
 
-    private void drawInstructions(DrawContext context) {
-        var centerX = client.getWindow().getScaledWidth() / 2;
+    private void drawInstructions(GuiGraphics context) {
+        var centerX = minecraft.getWindow().getGuiScaledWidth() / 2;
 //        context.getMatrices().push();
 //        context.getMatrices().translate(0, 0, 100);
         if (shouldShowText() && this.mode == Mode.DRAG) {
-            context.drawCenteredTextWithShadow(client.textRenderer, "Drag or use the arrow keys to move items", centerX, 5, Colors.WHITE);
-            context.drawCenteredTextWithShadow(client.textRenderer, "Scroll or use the + and - keys to scale items", centerX, 15, Colors.WHITE);
-            context.drawCenteredTextWithShadow(client.textRenderer, "Press shift and hover to see the name of the item", centerX, 25, Colors.WHITE);
-            context.drawCenteredTextWithShadow(client.textRenderer, (macOS() ? "Command" : "Control") + " click for text mode/to edit anchor points", centerX, 35, Colors.WHITE);
-            context.drawCenteredTextWithShadow(client.textRenderer, (macOS() ? "Command" : "Control") + "+ R to enter Reset Mode", centerX, 45, Colors.WHITE);
-            context.drawCenteredTextWithShadow(client.textRenderer, "Hold " + (macOS() ? "option" : "alt") + " to hide this text or " + (macOS() ? "Cmd+Opt" : "Ctrl+Alt") + " to toggle it", centerX, 55, Colors.WHITE);
+            context.drawCenteredString(minecraft.font, "Drag or use the arrow keys to move items", centerX, 5, Colors.WHITE);
+            context.drawCenteredString(minecraft.font, "Scroll or use the + and - keys to scale items", centerX, 15, Colors.WHITE);
+            context.drawCenteredString(minecraft.font, "Press shift and hover to see the name of the item", centerX, 25, Colors.WHITE);
+            context.drawCenteredString(minecraft.font, (macOS() ? "Command" : "Control") + " click for text mode/to edit anchor points", centerX, 35, Colors.WHITE);
+            context.drawCenteredString(minecraft.font, (macOS() ? "Command" : "Control") + "+ R to enter Reset Mode", centerX, 45, Colors.WHITE);
+            context.drawCenteredString(minecraft.font, "Hold " + (macOS() ? "option" : "alt") + " to hide this text or " + (macOS() ? "Cmd+Opt" : "Ctrl+Alt") + " to toggle it", centerX, 55, Colors.WHITE);
         } else if (shouldShowText() && this.mode == Mode.TEXT) {
-            context.drawCenteredTextWithShadow(client.textRenderer, "You are now in exact positioning mode", centerX, 5, Colors.WHITE);
-            context.drawCenteredTextWithShadow(client.textRenderer, "Enter the x and y positions in the text fields below", centerX, 15, Colors.WHITE);
-            context.drawCenteredTextWithShadow(client.textRenderer, "The number is relative, so 0 is fully up/left and 1 is fully down/right", centerX, 25, Colors.WHITE);
-            context.drawCenteredTextWithShadow(client.textRenderer, "Press the anchor button to change where the hud anchors itself", centerX, 35, Colors.WHITE);
-            context.drawCenteredTextWithShadow(client.textRenderer, "Hold " + (macOS() ? "option" : "alt") + " to hide this text or " + (macOS() ? "Cmd+Opt" : "Ctrl+Alt") + " to toggle it", centerX, 45, Colors.WHITE);
+            context.drawCenteredString(minecraft.font, "You are now in exact positioning mode", centerX, 5, Colors.WHITE);
+            context.drawCenteredString(minecraft.font, "Enter the x and y positions in the text fields below", centerX, 15, Colors.WHITE);
+            context.drawCenteredString(minecraft.font, "The number is relative, so 0 is fully up/left and 1 is fully down/right", centerX, 25, Colors.WHITE);
+            context.drawCenteredString(minecraft.font, "Press the anchor button to change where the hud anchors itself", centerX, 35, Colors.WHITE);
+            context.drawCenteredString(minecraft.font, "Hold " + (macOS() ? "option" : "alt") + " to hide this text or " + (macOS() ? "Cmd+Opt" : "Ctrl+Alt") + " to toggle it", centerX, 45, Colors.WHITE);
         } else if (this.mode == Mode.RESET) {
-            context.drawCenteredTextWithShadow(client.textRenderer, "You are now in reset mode", centerX, 5, Colors.WHITE);
-            context.drawCenteredTextWithShadow(client.textRenderer, "Press the reset button to reset the selected item to the default position", centerX, 15, Colors.WHITE);
-            context.drawCenteredTextWithShadow(client.textRenderer, "Press the first button to cycle between elements", centerX, 25, Colors.WHITE);
+            context.drawCenteredString(minecraft.font, "You are now in reset mode", centerX, 5, Colors.WHITE);
+            context.drawCenteredString(minecraft.font, "Press the reset button to reset the selected item to the default position", centerX, 15, Colors.WHITE);
+            context.drawCenteredString(minecraft.font, "Press the first button to cycle between elements", centerX, 25, Colors.WHITE);
         }
 //        context.getMatrices().pop();
     }
@@ -350,28 +344,28 @@ public class HudScreen extends Screen {
         offsetY = (float) (mouseY - bounds.y);
     }
 
-    private List<CheezePair<String, ? extends ClickableWidget>> getPopupWidgets(HUD hud) {
-        var x = new TextFieldWidget(MinecraftClient.getInstance().textRenderer, 0, 0, 70, 15, Text.literal(""));
-        var y = new TextFieldWidget(MinecraftClient.getInstance().textRenderer, 0, 0, 70, 15, Text.literal(""));
-        x.setTextPredicate(Predicates.ZERO_TO_ONE);
-        y.setTextPredicate(Predicates.ZERO_TO_ONE);
-        x.setChangedListener(s -> {
+    private List<CheezePair<String, ? extends AbstractWidget>> getPopupWidgets(HUD hud) {
+        var x = new EditBox(Minecraft.getInstance().font, 0, 0, 70, 15, Component.literal(""));
+        var y = new EditBox(Minecraft.getInstance().font, 0, 0, 70, 15, Component.literal(""));
+        x.setFilter(Predicates.ZERO_TO_ONE);
+        y.setFilter(Predicates.ZERO_TO_ONE);
+        x.setResponder(s -> {
             if (s.isEmpty()) return;
             hud.updatePosition(Float.parseFloat(s), hud.getCurrentBoundsRelative().y);
         });
-        y.setChangedListener(s -> {
+        y.setResponder(s -> {
             if (s.isEmpty()) return;
             hud.updatePosition(hud.getCurrentBoundsRelative().x, Float.parseFloat(s));
         });
         var bounds = hud.getCurrentBoundsRelative();
-        x.setText("" + bounds.x);
-        y.setText("" + bounds.y);
+        x.setValue("" + bounds.x);
+        y.setValue("" + bounds.y);
 
-        SkyblockTweaks.LOGGER.info("X text: " + x.getText() + " Y text: " + y.getText());
+        SkyblockTweaks.LOGGER.info("X text: " + x.getValue() + " Y text: " + y.getValue());
 
 
-        var scale = new DecimalSlider(0, 0, 0, 0, Text.literal(hud.INFO.getScale.get().toString().formatted("%.1f")), hud.INFO.getScale.get() / 3.0, 0.1, 3.0, 0.1, (val) -> hud.INFO.setScale.accept((float) (double) val));
-        var anchor = new ConstructableButton(Text.literal(hud.INFO.getAnchorPoint.get().name()), button -> {
+        var scale = new DecimalSlider(0, 0, 0, 0, Component.literal(hud.INFO.getScale.get().toString().formatted("%.1f")), hud.INFO.getScale.get() / 3.0, 0.1, 3.0, 0.1, (val) -> hud.INFO.setScale.accept((float) (double) val));
+        var anchor = new ConstructableButton(Component.literal(hud.INFO.getAnchorPoint.get().name()), button -> {
             var anchorPoint = hud.INFO.getAnchorPoint.get();
             if (anchorPoint == AnchorPoint.LEFT) {
                 hud.INFO.setAnchorPoint.accept(AnchorPoint.CENTER);
@@ -380,7 +374,7 @@ public class HudScreen extends Screen {
             } else if (anchorPoint == AnchorPoint.RIGHT) {
                 hud.INFO.setAnchorPoint.accept(AnchorPoint.LEFT);
             }
-            button.setMessage(Text.literal(hud.INFO.getAnchorPoint.get().name()));
+            button.setMessage(Component.literal(hud.INFO.getAnchorPoint.get().name()));
         });
 
         if (!hud.supportsNonLeftAnchors) anchor.active = false;
@@ -392,12 +386,12 @@ public class HudScreen extends Screen {
 
     }
 
-    public void addPopup(Text title, int desiredX, int desiredY, List<CheezePair<String, ? extends ClickableWidget>> widgets) {
+    public void addPopup(Component title, int desiredX, int desiredY, List<CheezePair<String, ? extends AbstractWidget>> widgets) {
         this.setMode(Mode.TEXT);
-        ScreenRect bounds;
+        ScreenRectangle bounds;
         int i = 0;
         while (i < 1E6) { // prevent infinite loops if something goes wrong
-            bounds = new ScreenRect(desiredX, desiredY, EditorPopup.WIDTH, EditorPopup.HEIGHT);
+            bounds = new ScreenRectangle(desiredX, desiredY, EditorPopup.WIDTH, EditorPopup.HEIGHT);
             RenderUtils.BreachResult breachResult = RenderUtils.isOffscreen(bounds);
             if (breachResult.breachesAll()) {
                 break;

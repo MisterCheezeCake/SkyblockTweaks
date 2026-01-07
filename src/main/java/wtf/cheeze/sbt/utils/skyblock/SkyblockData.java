@@ -25,10 +25,10 @@ import net.hypixel.modapi.packet.ClientboundHypixelPacket;
 import net.hypixel.modapi.packet.impl.clientbound.ClientboundHelloPacket;
 import net.hypixel.modapi.packet.impl.clientbound.ClientboundPartyInfoPacket;
 import net.hypixel.modapi.packet.impl.clientbound.event.ClientboundLocationPacket;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.component.DataComponentTypes;
-import net.minecraft.component.type.LoreComponent;
-import net.minecraft.text.Text;
+import net.minecraft.client.Minecraft;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.world.item.component.ItemLore;
+import net.minecraft.network.chat.Component;
 import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.config.SBTConfig;
 import wtf.cheeze.sbt.events.ChatEvents;
@@ -47,7 +47,7 @@ import java.util.regex.Pattern;
 
 public class SkyblockData {
 
-    private static final MinecraftClient client = MinecraftClient.getInstance();
+    private static final Minecraft client = Minecraft.getInstance();
 
     private static final Pattern COOLDOWN_PATTERN = Pattern.compile("Cooldown: (\\d+)s");
     private static final Pattern PICK_USED_PATTERN = Pattern.compile("You used your .* Pickaxe Ability!");
@@ -58,13 +58,13 @@ public class SkyblockData {
             if (!inSB) return;
             if (client.player == null) return;
             for (int i = 0; i < 36; i++) {
-                var stack = client.player.getInventory().getStack(i);
+                var stack = client.player.getInventory().getItem(i);
                 if (stack.isEmpty()) continue;
-                if (ItemUtils.isPickaxe(stack.getItem()) || stack.getName().getString().contains("Drill")) {
-                    var lines = stack.getOrDefault(DataComponentTypes.LORE, LoreComponent.DEFAULT).lines();
+                if (ItemUtils.isPickaxe(stack.getItem()) || stack.getHoverName().getString().contains("Drill")) {
+                    var lines = stack.getOrDefault(DataComponents.LORE, ItemLore.EMPTY).lines();
                     if (lines.isEmpty()) continue;
                     boolean shouldBreak = false;
-                    for (Text line: lines) {
+                    for (Component line: lines) {
                         var matcher = COOLDOWN_PATTERN.matcher(line.getString());
                         if (!matcher.matches()) continue;
                         try {
@@ -213,7 +213,7 @@ public class SkyblockData {
             Stats.pressure = data.pressure;
             Stats.pressureActive = true;
         } else {
-            if (!client.player.isInFluid()) { // This stops pressure from disappearing if an ability is used
+            if (!client.player.isInLiquid()) { // This stops pressure from disappearing if an ability is used
                 Stats.pressure = 0;
                 Stats.pressureActive = false;
             }
@@ -235,7 +235,7 @@ public class SkyblockData {
             }
             case ClientboundPartyInfoPacket partyPacket -> {
                 Party.inParty = partyPacket.isInParty();
-                var myUUID = client.player.getUuid();
+                var myUUID = client.player.getUUID();
                 if (myUUID == null || partyPacket.getMemberMap() == null || partyPacket.getMemberMap().get(myUUID) == null) {
                     Party.leader = false;
                     return;

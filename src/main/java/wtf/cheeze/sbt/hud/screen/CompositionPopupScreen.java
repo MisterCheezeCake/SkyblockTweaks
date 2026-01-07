@@ -19,16 +19,16 @@
 package wtf.cheeze.sbt.hud.screen;
 
 import dev.isxander.yacl3.api.Binding;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.Drawable;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.tooltip.Tooltip;
-import net.minecraft.client.gui.widget.AlwaysSelectedEntryListWidget;
-import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.client.gui.widget.TextWidget;
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.Renderable;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.components.Tooltip;
+import net.minecraft.client.gui.components.ObjectSelectionList;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.StringWidget;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
 import wtf.cheeze.sbt.config.SBTConfig;
 import wtf.cheeze.sbt.hud.utils.CompositionEntry;
 import wtf.cheeze.sbt.utils.errors.ErrorHandler;
@@ -46,9 +46,8 @@ import java.util.List;
  * TODO: Reset only works the first time its used
  */
 public class CompositionPopupScreen<T extends CompositionEntry> extends Screen {
-
-    private static final Identifier BACKGROUND = Identifier.of("skyblocktweaks", "gui/panel_super_wide.png");
-    private static final MinecraftClient client = MinecraftClient.getInstance();
+    private static final Identifier BACKGROUND = Identifier.fromNamespaceAndPath("skyblocktweaks", "gui/panel_super_wide.png");
+    private static final Minecraft client = Minecraft.getInstance();
     private static final int WIDTH = 300;
     private static final int HEIGHT = 150;
     private static final int CLICK_CLOSE_BUFFER = 5;
@@ -58,23 +57,19 @@ public class CompositionPopupScreen<T extends CompositionEntry> extends Screen {
 
     private NewItemList newItemList;
     private ModifyItemList modifyItemList;
-    private ButtonWidget previewButton;
+    private Button previewButton;
 
-
-
-
-    public CompositionPopupScreen(Text title, Screen parent, Binding<List<T>> binding, T[] values) {
+    public CompositionPopupScreen(Component title, Screen parent, Binding<List<T>> binding, T[] values) {
         super(title);
         this.parent = parent;
         this.binding = binding;
         this.values = values;
     }
 
-
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
         if (mouseX < popupX - CLICK_CLOSE_BUFFER || mouseX > rightEdge + CLICK_CLOSE_BUFFER || mouseY < popupY - CLICK_CLOSE_BUFFER || mouseY > popupY + HEIGHT + CLICK_CLOSE_BUFFER) {
-            close();
+            onClose();
             return true;
         }
         return super.mouseClicked(mouseX, mouseY, button);
@@ -85,29 +80,28 @@ public class CompositionPopupScreen<T extends CompositionEntry> extends Screen {
     private int popupY;
     private int centerX;
 
-    private static final Text ADD_ITEMS_TITLE = Text.translatable("sbt.gui.config.composition.add_items");
-    private static final Text ADD_ITEM_BUTTON = Text.translatable("sbt.gui.config.composition.add_item");
-    private static final Text MODIFY_ITEMS_TITLE = Text.translatable("sbt.gui.config.composition.modify_items");
-    private static final Text DELETE_ITEM_BUTTON = Text.translatable("sbt.gui.config.composition.delete_item");
+    private static final Component ADD_ITEMS_TITLE = Component.translatable("sbt.gui.config.composition.add_items");
+    private static final Component ADD_ITEM_BUTTON = Component.translatable("sbt.gui.config.composition.add_item");
+    private static final Component MODIFY_ITEMS_TITLE = Component.translatable("sbt.gui.config.composition.modify_items");
+    private static final Component DELETE_ITEM_BUTTON = Component.translatable("sbt.gui.config.composition.delete_item");
 
-    private static final Tooltip PREVIEW_INACTIVE = Tooltip.of(Text.translatable("sbt.gui.config.composition.preview.disabled"));
-
+    private static final Tooltip PREVIEW_INACTIVE = Tooltip.create(Component.translatable("sbt.gui.config.composition.preview.disabled"));
 
     @Override
     protected void init() {
-        centerX = client.getWindow().getScaledWidth() / 2;
+        centerX = client.getWindow().getGuiScaledWidth() / 2;
         popupX = centerX - WIDTH /2;
-        popupY = (client.getWindow().getScaledHeight() / 2) - HEIGHT /2;
+        popupY = (client.getWindow().getGuiScaledHeight() / 2) - HEIGHT /2;
         rightEdge = popupX + WIDTH;
         newItemList = new NewItemList(client);
         newItemList.reload();
-        this.addDrawableChild(newItemList);
-        var title = new TextWidget(centerX - RenderUtils.getStringWidth(getTitle()) / 2, popupY + 6, RenderUtils.getStringWidth(getTitle()), textRenderer.fontHeight, getTitle(), textRenderer);
-        this.addDrawableChild(title);
-        var addItemsTitle = new TextWidget(popupX + 6 + newItemList.getWidthForBorder() / 2 - RenderUtils.getStringWidth(ADD_ITEMS_TITLE) / 2, popupY + 19, RenderUtils.getStringWidth(ADD_ITEMS_TITLE), textRenderer.fontHeight, ADD_ITEMS_TITLE, textRenderer);
-        this.addDrawableChild(addItemsTitle);
-        var addItemButton = ButtonWidget.builder(ADD_ITEM_BUTTON, button -> {
-            var selected = newItemList.getSelectedOrNull();
+        this.addRenderableWidget(newItemList);
+        var title = new StringWidget(centerX - RenderUtils.getStringWidth(getTitle()) / 2, popupY + 6, RenderUtils.getStringWidth(getTitle()), font.lineHeight, getTitle(), font);
+        this.addRenderableWidget(title);
+        var addItemsTitle = new StringWidget(popupX + 6 + newItemList.getWidthForBorder() / 2 - RenderUtils.getStringWidth(ADD_ITEMS_TITLE) / 2, popupY + 19, RenderUtils.getStringWidth(ADD_ITEMS_TITLE), font.lineHeight, ADD_ITEMS_TITLE, font);
+        this.addRenderableWidget(addItemsTitle);
+        var addItemButton = Button.builder(ADD_ITEM_BUTTON, button -> {
+            var selected = newItemList.getSelected();
             if (selected == null) return;
             var selectedItem = selected.item;
             var list = binding.getValue();
@@ -115,13 +109,13 @@ public class CompositionPopupScreen<T extends CompositionEntry> extends Screen {
             binding.setValue(list);
             newItemList.reload();
             modifyItemList.reload();
-        }).dimensions(popupX + 6 + newItemList.getWidthForBorder() / 2 - 45, popupY + TOP_OFFSET + NewItemList.HEIGHT + 5, 90, 20).build();
-        this.addDrawableChild(addItemButton);
+        }).bounds(popupX + 6 + newItemList.getWidthForBorder() / 2 - 45, popupY + TOP_OFFSET + NewItemList.HEIGHT + 5, 90, 20).build();
+        this.addRenderableWidget(addItemButton);
 
-        var modifyItemsTitle = new TextWidget(rightEdge - 6 - ModifyItemList.WIDTH / 2 - ModifyItemListEntry.BUTTON_DIMENSION - RenderUtils.getStringWidth(MODIFY_ITEMS_TITLE) / 2, popupY + 19, RenderUtils.getStringWidth(MODIFY_ITEMS_TITLE), textRenderer.fontHeight, MODIFY_ITEMS_TITLE, textRenderer);
-        this.addDrawableChild(modifyItemsTitle);
-        var deleteItemButton = ButtonWidget.builder(DELETE_ITEM_BUTTON, button -> {
-            var selected = modifyItemList.getSelectedOrNull();
+        var modifyItemsTitle = new StringWidget(rightEdge - 6 - ModifyItemList.WIDTH / 2 - ModifyItemListEntry.BUTTON_DIMENSION - RenderUtils.getStringWidth(MODIFY_ITEMS_TITLE) / 2, popupY + 19, RenderUtils.getStringWidth(MODIFY_ITEMS_TITLE), font.lineHeight, MODIFY_ITEMS_TITLE, font);
+        this.addRenderableWidget(modifyItemsTitle);
+        var deleteItemButton = Button.builder(DELETE_ITEM_BUTTON, button -> {
+            var selected = modifyItemList.getSelected();
             if (selected == null) return;
             var selectedItem = selected.item;
             var list = binding.getValue();
@@ -129,60 +123,57 @@ public class CompositionPopupScreen<T extends CompositionEntry> extends Screen {
             binding.setValue(list);
             newItemList.reload();
             modifyItemList.reload();
-        }).dimensions(rightEdge - 6 - ModifyItemList.WIDTH / 2 - ModifyItemListEntry.BUTTON_DIMENSION - 45, popupY + TOP_OFFSET + ModifyItemList.HEIGHT + 5, 90, 20).build();
-        this.addDrawableChild(deleteItemButton);
+        }).bounds(rightEdge - 6 - ModifyItemList.WIDTH / 2 - ModifyItemListEntry.BUTTON_DIMENSION - 45, popupY + TOP_OFFSET + ModifyItemList.HEIGHT + 5, 90, 20).build();
+        this.addRenderableWidget(deleteItemButton);
         modifyItemList = new ModifyItemList(client);
         modifyItemList.reload();
-        this.addDrawableChild(modifyItemList);
+        this.addRenderableWidget(modifyItemList);
 
         int centralButtonOffset = popupX + 6 + NewItemList.WIDTH + 8 ;
 
-        var resetCompositionButton = ButtonWidget.builder(Text.translatable("sbt.gui.config.composition.reset"), button -> {
+        var resetCompositionButton = Button.builder(Component.translatable("sbt.gui.config.composition.reset"), button -> {
             binding.setValue(binding.defaultValue());
             newItemList.reload();
             modifyItemList.reload();
-        }).dimensions(centralButtonOffset, popupY + TOP_OFFSET + 6, 70, 20).build();
+        }).bounds(centralButtonOffset, popupY + TOP_OFFSET + 6, 70, 20).build();
 
-        this.previewButton = ButtonWidget.builder(Text.translatable("sbt.gui.config.composition.preview"), button -> {
+        this.previewButton = Button.builder(Component.translatable("sbt.gui.config.composition.preview"), button -> {
 
-        }) .dimensions(centralButtonOffset, popupY + TOP_OFFSET + 6 + 40, 70, 20).build();
+        }) .bounds(centralButtonOffset, popupY + TOP_OFFSET + 6 + 40, 70, 20).build();
 
         previewButton.active = false;
         previewButton.setTooltip(PREVIEW_INACTIVE);
 
-        this.addDrawableChild(previewButton);
+        this.addRenderableWidget(previewButton);
 
-        var doneButton = ButtonWidget.builder(Text.translatable("gui.done"), button -> {
-            close();
-        }).dimensions(centralButtonOffset, popupY + TOP_OFFSET + ModifyItemList.HEIGHT + 5, 70, 20).build();
+        var doneButton = Button.builder(Component.translatable("gui.done"), button -> {
+            onClose();
+        }).bounds(centralButtonOffset, popupY + TOP_OFFSET + ModifyItemList.HEIGHT + 5, 70, 20).build();
 
-        this.addDrawableChild(doneButton);
-
-
-        this.addDrawableChild(resetCompositionButton);
+        this.addRenderableWidget(doneButton);
+        this.addRenderableWidget(resetCompositionButton);
     }
 
 
     @Override
-    public void close() {
+    public void onClose() {
         //client.setScreen(parent);
-        client.currentScreen = parent;
+        client.screen = parent;
         SBTConfig.save();
     }
 
     @Override
-    public void render(DrawContext context, int mouseX, int mouseY, float delta) {
+    public void render(GuiGraphics context, int mouseX, int mouseY, float delta) {
         parent.render(context, -1, -1, delta);
 
         RenderUtils.drawWithZ(context, 10,  () -> {
             RenderUtils.drawTexture(context, BACKGROUND, popupX, popupY, WIDTH, HEIGHT, WIDTH, HEIGHT);
-            for (Drawable drawable : this.drawables) {
+            for (Renderable drawable : this.renderables) {
                 drawable.render(context, mouseX, mouseY, delta);
             }
         });
         if (hasShiftDown()) {
-
-            var base = Text.empty();
+            var base = Component.empty();
             boolean first = true;
 
             for (var item: binding.getValue()) {
@@ -191,22 +182,17 @@ public class CompositionPopupScreen<T extends CompositionEntry> extends Screen {
                 first = false;
             }
 
-            previewButton.setTooltip(Tooltip.of(base));
-
-
-
+            previewButton.setTooltip(Tooltip.create(base));
         } else {
             previewButton.setTooltip(PREVIEW_INACTIVE);
 
         }
-
-
     }
 
     private class NewItemList extends AbstractList<NewItemListEntry> {
         private static final int WIDTH = 90;
         private static final int HEIGHT = 90;
-        public NewItemList(MinecraftClient client) {
+        public NewItemList(Minecraft client) {
             super(client,
                    WIDTH,
                    HEIGHT,
@@ -228,10 +214,9 @@ public class CompositionPopupScreen<T extends CompositionEntry> extends Screen {
         }
 
         @Override
-        protected void drawHeaderAndFooterSeparators(DrawContext context) {
+        protected void renderListSeparators(GuiGraphics context) {
             RenderUtils.drawBorder(context, 1, Colors.GRAY, x, getY(), getWidthForBorder() , getHeight());
         }
-
     }
 
     private static final int HIGHLIGHT_1 = -2131561742;
@@ -239,33 +224,30 @@ public class CompositionPopupScreen<T extends CompositionEntry> extends Screen {
     private static final int ENTRY_HEIGHT = 15;
     private static final int TOP_OFFSET = 30;
 
-
     private class NewItemListEntry extends AbstractEntry<NewItemListEntry> {
         public NewItemListEntry(T item) {
             super(item);
         }
 
         @Override
-        public void render(DrawContext context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
+        public void render(GuiGraphics context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
             context.fill(x -1  , y - 2, x + entryWidth , y + entryHeight + 2, index % 2 == 0 ? HIGHLIGHT_1: HIGHLIGHT_2);
-            context.drawCenteredTextWithShadow(client.textRenderer, item.getDisplayName(), x + entryWidth / 2, y + 2, Colors.WHITE);
+            context.drawCenteredString(client.font, item.getDisplayName(), x + entryWidth / 2, y + 2, Colors.WHITE);
         }
     }
 
-    private static final Text MOVE_UP = Text.translatable("sbt.gui.config.move_up");
-    private static final Text MOVE_DOWN = Text.translatable("sbt.gui.config.move_down");
-    private static final Text UP_SYMBOL = Text.literal(Symbols.BUTTON_UP);
-    private static final Text DOWN_SYMBOL = Text.literal(Symbols.BUTTON_DOWN);
+    private static final Component MOVE_UP = Component.translatable("sbt.gui.config.move_up");
+    private static final Component MOVE_DOWN = Component.translatable("sbt.gui.config.move_down");
+    private static final Component UP_SYMBOL = Component.literal(Symbols.BUTTON_UP);
+    private static final Component DOWN_SYMBOL = Component.literal(Symbols.BUTTON_DOWN);
 
     private class ModifyItemList extends AbstractList<ModifyItemListEntry> {
 
         private static final int HEIGHT = 90;
         private static final int WIDTH = 90;
 
-
-        public ModifyItemList(MinecraftClient minecraftClient) {
+        public ModifyItemList(Minecraft minecraftClient) {
             super(minecraftClient, WIDTH, HEIGHT, rightEdge - 6 - WIDTH, popupY + TOP_OFFSET, ENTRY_HEIGHT);
-
         }
 
         @Override
@@ -279,8 +261,6 @@ public class CompositionPopupScreen<T extends CompositionEntry> extends Screen {
             } else {
                 this.x = rightEdge - 6 - WIDTH;
             }
-
-
         }
 
         //TODO: This may not properly work with repeatable items
@@ -329,7 +309,7 @@ public class CompositionPopupScreen<T extends CompositionEntry> extends Screen {
         }
 
         @Override
-        public void renderWidget(DrawContext context, int mouseX, int mouseY, float delta) {
+        public void renderWidget(GuiGraphics context, int mouseX, int mouseY, float delta) {
             try {
                 super.renderWidget(context, mouseX, mouseY, delta);
                 context.enableScissor(popupX, this.getY(), rightEdge, this.getBottom());
@@ -361,16 +341,14 @@ public class CompositionPopupScreen<T extends CompositionEntry> extends Screen {
         }
 
         @Override
-        protected void drawHeaderAndFooterSeparators(DrawContext context) {
+        protected void renderListSeparators(GuiGraphics context) {
             RenderUtils.drawBorder(context, 1, Colors.GRAY, x - ModifyItemListEntry.BUTTON_DIMENSION*2, getY(), getWidthForBorder() + ModifyItemListEntry.BUTTON_DIMENSION*2 , getHeight());
         }
     }
 
     private class ModifyItemListEntry extends AbstractEntry<ModifyItemListEntry> {
-
         public final TooltipButton moveUp, moveDown;
         private static final int BUTTON_DIMENSION = 15;
-
 
         public ModifyItemListEntry(T item) {
             super(item);
@@ -380,27 +358,25 @@ public class CompositionPopupScreen<T extends CompositionEntry> extends Screen {
             moveDown = new TooltipButton(CompositionPopupScreen.this, 0, 0, BUTTON_DIMENSION, BUTTON_DIMENSION, DOWN_SYMBOL, MOVE_DOWN, button -> {
                 modifyItemList.moveDown(this);
             });
-            CompositionPopupScreen.this.addSelectableChild(moveUp);
-            CompositionPopupScreen.this.addSelectableChild(moveDown);
+            CompositionPopupScreen.this.addWidget(moveUp);
+            CompositionPopupScreen.this.addWidget(moveDown);
         }
 
         public void cleanup() {
-            CompositionPopupScreen.this.remove(moveUp);
-            CompositionPopupScreen.this.remove(moveDown);
+            CompositionPopupScreen.this.removeWidget(moveUp);
+            CompositionPopupScreen.this.removeWidget(moveDown);
         }
 
         @Override
-        public void render(DrawContext context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
+        public void render(GuiGraphics context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
             moveUp.setPosition(x - 1 - 2*BUTTON_DIMENSION, y - 2);
             moveDown.setPosition(x - 1 - BUTTON_DIMENSION, y - 2);
             context.fill(x, y - 2, x + entryWidth , y + entryHeight + 2, index % 2 == 0 ? HIGHLIGHT_1: HIGHLIGHT_2);
-            context.drawCenteredTextWithShadow(client.textRenderer, item.getDisplayName(), x + entryWidth / 2, y + 2, Colors.WHITE);
+            context.drawCenteredString(client.font, item.getDisplayName(), x + entryWidth / 2, y + 2, Colors.WHITE);
         }
-
     }
 
-    private abstract static class AbstractList<E extends AlwaysSelectedEntryListWidget.Entry<E>> extends AlwaysSelectedEntryListWidget<E> {
-
+    private abstract static class AbstractList<E extends ObjectSelectionList.Entry<E>> extends ObjectSelectionList<E> {
         public static final int SCROLLBAR_WIDTH = 6;
         protected int x;
 
@@ -409,7 +385,7 @@ public class CompositionPopupScreen<T extends CompositionEntry> extends Screen {
          * in case it changes again in the future.
          */
         protected boolean sbtCheckOverflow() {
-            return overflows();
+            return scrollbarVisible();
         }
 
         /**
@@ -417,10 +393,10 @@ public class CompositionPopupScreen<T extends CompositionEntry> extends Screen {
          * in case it changes again in the future.
          */
         protected void sbtSetScroll(double scroll) {
-            setScrollY(scroll);
+            setScrollAmount(scroll);
         }
 
-        public AbstractList(MinecraftClient minecraftClient, int width, int height, int x, int y, int entryHeight) {
+        public AbstractList(Minecraft minecraftClient, int width, int height, int x, int y, int entryHeight) {
             super(minecraftClient, width, height, y, entryHeight, 0);
             this.x = x;
         }
@@ -436,12 +412,12 @@ public class CompositionPopupScreen<T extends CompositionEntry> extends Screen {
         }
 
         @Override
-        protected int getScrollbarX() {
+        protected int scrollBarX() {
             return getRight();
         }
 
         @Override
-        protected void drawMenuListBackground(DrawContext context) {
+        protected void renderListBackground(GuiGraphics context) {
             // Intentionally empty
         }
 
@@ -465,7 +441,7 @@ public class CompositionPopupScreen<T extends CompositionEntry> extends Screen {
 
     }
 
-    private abstract class AbstractEntry<E extends AlwaysSelectedEntryListWidget.Entry<E>> extends AlwaysSelectedEntryListWidget.Entry<E> {
+    private abstract class AbstractEntry<E extends ObjectSelectionList.Entry<E>> extends ObjectSelectionList.Entry<E> {
         public final T item;
 
         private AbstractEntry(T item) {
@@ -473,7 +449,7 @@ public class CompositionPopupScreen<T extends CompositionEntry> extends Screen {
         }
 
         @Override
-        public Text getNarration() {
+        public Component getNarration() {
             return item.getDisplayName();
         }
     }

@@ -18,27 +18,27 @@
  */
 package wtf.cheeze.sbt.utils.skyblock;
 
-import net.minecraft.component.DataComponentTypes;
-import net.minecraft.component.type.LoreComponent;
-import net.minecraft.item.ItemStack;
-import net.minecraft.text.Text;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.world.item.component.ItemLore;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.network.chat.Component;
 
 import java.util.regex.Pattern;
 
 public class QuiverData {
     private static final Pattern QUIVER_PATTERN = Pattern.compile("Active Arrow: (.+) \\((\\d+)\\)");
 
-    public final Text arrowName;
+    public final Component arrowName;
     public final int arrowCount;
 
 
-    public static QuiverData DEFAULT = new QuiverData(Text.of("Placeholder Arrow"), 0);
+    public static QuiverData DEFAULT = new QuiverData(Component.nullToEmpty("Placeholder Arrow"), 0);
 
    QuiverData (ItemStack stack) {
-        var lines = stack.getOrDefault(DataComponentTypes.LORE, LoreComponent.DEFAULT).lines();
+        var lines = stack.getOrDefault(DataComponents.LORE, ItemLore.EMPTY).lines();
         if (lines.size() < 5) {
             arrowCount = 0;
-            arrowName = Text.of("Placeholder Arrow");
+            arrowName = Component.nullToEmpty("Placeholder Arrow");
             return;
         }
         var line = lines.get(4);
@@ -46,15 +46,15 @@ public class QuiverData {
         if (matcher.matches()) {
             arrowCount = Integer.parseInt(matcher.group(2));
             var type = line.getSiblings().get(1);
-            arrowName = Text.literal(type.getString().trim()).setStyle(type.getStyle());
+            arrowName = Component.literal(type.getString().trim()).setStyle(type.getStyle());
         } else {
             arrowCount = 0;
-            arrowName = Text.of("Placeholder Arrow");
+            arrowName = Component.nullToEmpty("Placeholder Arrow");
         }
     }
 
 
-    private QuiverData(Text arrowName, int arrowCount) {
+    private QuiverData(Component arrowName, int arrowCount) {
         this.arrowName = arrowName;
         this.arrowCount = arrowCount;
     }

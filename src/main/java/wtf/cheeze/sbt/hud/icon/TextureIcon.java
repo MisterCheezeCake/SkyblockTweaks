@@ -18,13 +18,12 @@
  */
 package wtf.cheeze.sbt.hud.icon;
 
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.util.Identifier;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.resources.Identifier;
 import org.jetbrains.annotations.NotNull;
 import wtf.cheeze.sbt.utils.render.RenderUtils;
 
 public class TextureIcon implements HudIcon {
-
     private final Identifier iconTexture;
 
     public TextureIcon(@NotNull Identifier texture) {
@@ -32,7 +31,7 @@ public class TextureIcon implements HudIcon {
     }
 
     @Override
-    public void render(DrawContext context, int x, int y, float scale) {
+    public void render(GuiGraphics context, int x, int y, float scale) {
         RenderUtils.drawTexture(context, iconTexture, (int) (x /scale) , (int) (y / scale),  8, 8, 8, 8);
     }
 }

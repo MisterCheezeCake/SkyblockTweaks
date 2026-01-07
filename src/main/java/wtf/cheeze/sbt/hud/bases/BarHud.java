@@ -18,11 +18,8 @@
  */
 package wtf.cheeze.sbt.hud.bases;
 
-//? if > 1.21.5
-/*import net.minecraft.client.gl.RenderPipelines;*/
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.render.RenderLayer;
-import net.minecraft.util.Identifier;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.resources.Identifier;
 import org.jetbrains.annotations.NotNull;
 import wtf.cheeze.sbt.hud.bounds.Bounds;
 import wtf.cheeze.sbt.hud.bounds.BoundsRelative;
@@ -33,8 +30,8 @@ import wtf.cheeze.sbt.utils.render.RenderUtils;
  * A HUD that displays a bar, code liberally inspired by SBA, but way simpler thanks to modern mc, bar textures taken directly from SBA
  */
 public abstract class BarHud extends HUD {
-    public static final Identifier UNFILLED = Identifier.of("skyblocktweaks", "bars/unfilled.png");
-    public static final Identifier FILLED = Identifier.of("skyblocktweaks", "bars/filled.png");
+    public static final Identifier UNFILLED = Identifier.fromNamespaceAndPath("skyblocktweaks", "bars/unfilled.png");
+    public static final Identifier FILLED = Identifier.fromNamespaceAndPath("skyblocktweaks", "bars/filled.png");
 
     public abstract int getColor();
     public abstract float getFill();
@@ -43,7 +40,7 @@ public abstract class BarHud extends HUD {
     public static final int BAR_HEIGHT = 5;
 
     @Override
-    public void render(DrawContext context, boolean fromHudScreen, boolean hovered) {
+    public void render(GuiGraphics context, boolean fromHudScreen, boolean hovered) {
         if (!shouldRender(fromHudScreen)) return;
         var bounds = getCurrentBounds();
         if (fromHudScreen) {
@@ -102,7 +99,7 @@ public abstract class BarHud extends HUD {
     }
 
     private static float getRelativeBarWidth(){
-        return BAR_WIDTH / client.getWindow().getWidth();
+        return BAR_WIDTH / client.getWindow().getScreenWidth();
     }
 
 }

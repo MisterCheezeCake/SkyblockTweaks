@@ -23,7 +23,7 @@ import dev.isxander.yacl3.api.OptionGroup;
 import dev.isxander.yacl3.api.controller.ColorControllerBuilder;
 import dev.isxander.yacl3.api.controller.StringControllerBuilder;
 import dev.isxander.yacl3.config.v2.api.SerialEntry;
-import net.minecraft.text.Text;
+import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SBTConfig;
@@ -58,7 +58,7 @@ public class OverflowManaHud extends TextHud {
                 () -> SBTConfig.huds().overflowMana.color,
                 () -> SBTConfig.huds().overflowMana.outlineColor,
                 () -> SBTConfig.huds().overflowMana.mode,
-                () -> Text.literal(NumberUtils.formatNumber((int) SkyblockData.Stats.overflowMana, SBTConfig.huds().overflowMana.separator) + (SBTConfig.huds().overflowMana.icon ? "ʬ" : ""))
+                () -> Component.literal(NumberUtils.formatNumber((int) SkyblockData.Stats.overflowMana, SBTConfig.huds().overflowMana.separator) + (SBTConfig.huds().overflowMana.icon ? "ʬ" : ""))
         );
 
     }

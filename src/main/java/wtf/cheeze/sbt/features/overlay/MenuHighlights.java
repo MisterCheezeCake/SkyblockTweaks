@@ -21,11 +21,11 @@ package wtf.cheeze.sbt.features.overlay;
 import dev.isxander.yacl3.api.Option;
 import dev.isxander.yacl3.api.OptionGroup;
 import dev.isxander.yacl3.config.v2.api.SerialEntry;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.component.DataComponentTypes;
-import net.minecraft.component.type.LoreComponent;
-import net.minecraft.screen.slot.Slot;
-import net.minecraft.text.Text;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.world.item.component.ItemLore;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.network.chat.Component;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SBTConfig;
 import wtf.cheeze.sbt.events.DrawSlotEvents;
@@ -56,7 +56,7 @@ public class MenuHighlights {
     }
 
 
-    public static void onDrawSlot(Text screenTitle, DrawContext context, Slot slot) {
+    public static void onDrawSlot(Component screenTitle, GuiGraphics context, Slot slot) {
         var title = screenTitle.getString();
         switch (title) {
             case "SkyBlock Hub Selector" -> tryDrawHighlight(context, slot);
@@ -78,20 +78,20 @@ public class MenuHighlights {
 
 
 
-    private static void tryDrawHighlight(DrawContext context, Slot slot) {
+    private static void tryDrawHighlight(GuiGraphics context, Slot slot) {
         if (!SBTConfig.get().hubSelectorHighlight.enabledRegular) return;
-        if (!slot.getStack().getName().getString().contains("SkyBlock Hub #")) return;
+        if (!slot.getItem().getHoverName().getString().contains("SkyBlock Hub #")) return;
         sharedHighlight(context, slot);
 
     }
-    private static void tryDrawHighlightDH(DrawContext context, Slot slot) {
+    private static void tryDrawHighlightDH(GuiGraphics context, Slot slot) {
         if (!SBTConfig.get().hubSelectorHighlight.enabledDungeon) return;
-        if (!slot.getStack().getName().getString().contains("Dungeon Hub #")) return;
+        if (!slot.getItem().getHoverName().getString().contains("Dungeon Hub #")) return;
         sharedHighlight(context, slot);
     }
 
-    private static void sharedHighlight(DrawContext context, Slot slot) {
-        var lines = slot.getStack().getOrDefault(DataComponentTypes.LORE, LoreComponent.DEFAULT).lines();
+    private static void sharedHighlight(GuiGraphics context, Slot slot) {
+        var lines = slot.getItem().getOrDefault(DataComponents.LORE, ItemLore.EMPTY).lines();
         var matcher = PLAYER_COUNT_PATTERN.matcher(lines.getFirst().getString());
         if (!matcher.matches()) return;
         var playerCount = Integer.parseInt(matcher.group(1));
@@ -106,9 +106,9 @@ public class MenuHighlights {
         else highlight(context, slot, HIGHLIGHT_GREEN);
     }
 
-    private static void tryDrawHighlightHOTM(DrawContext context, Slot slot) {
+    private static void tryDrawHighlightHOTM(GuiGraphics context, Slot slot) {
         if (!SBTConfig.get().hubSelectorHighlight.hotmHighlight) return;
-        var lines = slot.getStack().getOrDefault(DataComponentTypes.LORE, LoreComponent.DEFAULT).lines();
+        var lines = slot.getItem().getOrDefault(DataComponents.LORE, ItemLore.EMPTY).lines();
         for (var line: lines) {
             switch (line.getString()) {
                 case "ENABLED", "SELECTED" -> {
@@ -127,9 +127,9 @@ public class MenuHighlights {
         }
     }
 
-    private static void tryDrawHighlightHOTF(DrawContext context, Slot slot) {
+    private static void tryDrawHighlightHOTF(GuiGraphics context, Slot slot) {
         if (!SBTConfig.get().hubSelectorHighlight.hotfHighlight) return;
-        var lines = slot.getStack().getOrDefault(DataComponentTypes.LORE, LoreComponent.DEFAULT).lines();
+        var lines = slot.getItem().getOrDefault(DataComponents.LORE, ItemLore.EMPTY).lines();
         for (var line: lines) {
             switch (line.getString()) {
                 case "ENABLED", "SELECTED" -> {
@@ -150,12 +150,12 @@ public class MenuHighlights {
 
 
 
-    private static void tryDrawHighlightWidget(DrawContext context, Slot slot) {
+    private static void tryDrawHighlightWidget(GuiGraphics context, Slot slot) {
         if (!SBTConfig.get().hubSelectorHighlight.widgetHighlight) return;
-        var name = slot.getStack().getName().getString();
+        var name = slot.getItem().getHoverName().getString();
         if (!name.contains("✔") && !name.contains("✖")) {
             if (name.equals("Third Column")) {
-                var fistLine = slot.getStack().getOrDefault(DataComponentTypes.LORE, LoreComponent.DEFAULT).lines().getFirst().getString();
+                var fistLine = slot.getItem().getOrDefault(DataComponents.LORE, ItemLore.EMPTY).lines().getFirst().getString();
                 if (fistLine.equals("Currently: ENABLED")) highlight(context, slot, HIGHLIGHT_GREEN2);
                 else highlight(context, slot, HIGHLIGHT_RED2);
             }
@@ -165,9 +165,9 @@ public class MenuHighlights {
         else highlight(context, slot, HIGHLIGHT_RED2);
     }
 
-    private static void tryDrawHighlightTasks(DrawContext context, Slot slot) {
+    private static void tryDrawHighlightTasks(GuiGraphics context, Slot slot) {
         if (!SBTConfig.get().hubSelectorHighlight.sblevelHighlight) return;
-        var lines = slot.getStack().getOrDefault(DataComponentTypes.LORE, LoreComponent.DEFAULT).lines();
+        var lines = slot.getItem().getOrDefault(DataComponents.LORE, ItemLore.EMPTY).lines();
         for (var line: lines) {
             var s = line.getString();
             if (s.equals("Total Progress: 100%")) highlight(context, slot, HIGHLIGHT_GREEN2);
@@ -180,30 +180,30 @@ public class MenuHighlights {
         }
     }
 
-    private static void tryDrawHighlightComs(DrawContext context, Slot slot) {
+    private static void tryDrawHighlightComs(GuiGraphics context, Slot slot) {
         if (!SBTConfig.get().hubSelectorHighlight.unclaimedCommissionHighlight) return;
-        if (slot.getStack().isEmpty()) return;
-        var lines = slot.getStack().getOrDefault(DataComponentTypes.LORE, LoreComponent.DEFAULT).lines();
+        if (slot.getItem().isEmpty()) return;
+        var lines = slot.getItem().getOrDefault(DataComponents.LORE, ItemLore.EMPTY).lines();
         if (lines.isEmpty()) return;
         if (lines.getLast().getString().equals("Click to claim rewards!")) {
             highlight(context, slot, HIGHLIGHT_GREEN2);
         }
     }
 
-    private static void tryDrawHighlightContests(DrawContext context, Slot slot) {
+    private static void tryDrawHighlightContests(GuiGraphics context, Slot slot) {
         if (!SBTConfig.get().hubSelectorHighlight.unclaimedContestHighlight) return;
-        if (slot.getStack().isEmpty()) return;
-        var lines = slot.getStack().getOrDefault(DataComponentTypes.LORE, LoreComponent.DEFAULT).lines();
+        if (slot.getItem().isEmpty()) return;
+        var lines = slot.getItem().getOrDefault(DataComponents.LORE, ItemLore.EMPTY).lines();
         if (lines.isEmpty()) return;
         if (lines.getLast().getString().equals("Click to claim reward!")) {
             highlight(context, slot, HIGHLIGHT_GREEN2);
         }
     }
 
-    private static void tryDrawHighlightEffects(DrawContext context, Slot slot) {
+    private static void tryDrawHighlightEffects(GuiGraphics context, Slot slot) {
         if (!SBTConfig.get().hubSelectorHighlight.toggleEffectHighlight) return;
-        if (slot.getStack().isEmpty()) return;
-        var lines = slot.getStack().getOrDefault(DataComponentTypes.LORE, LoreComponent.DEFAULT).lines();
+        if (slot.getItem().isEmpty()) return;
+        var lines = slot.getItem().getOrDefault(DataComponents.LORE, ItemLore.EMPTY).lines();
         if (lines.isEmpty()) return;
         var lastStr = lines.getLast().getString();
         if (lastStr.equals("Click to disable!")) {
@@ -214,7 +214,7 @@ public class MenuHighlights {
 
     }
 
-    private static void highlight(DrawContext context, Slot slot, int color) {
+    private static void highlight(GuiGraphics context, Slot slot, int color) {
         context.fill(slot.x, slot.y, slot.x + SLOT_DIMENSION, slot.y + SLOT_DIMENSION, color);
     }
 

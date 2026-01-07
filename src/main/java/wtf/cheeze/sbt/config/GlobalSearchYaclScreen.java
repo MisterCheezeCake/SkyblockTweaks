@@ -20,12 +20,11 @@ package wtf.cheeze.sbt.config;
 
 import dev.isxander.yacl3.api.YetAnotherConfigLib;
 import dev.isxander.yacl3.gui.YACLScreen;
-import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.screens.Screen;
 
 import java.util.function.Supplier;
 
 public class GlobalSearchYaclScreen extends YACLScreen {
-
     private final Supplier<Screen> parentSupplier;
 
     public GlobalSearchYaclScreen(YetAnotherConfigLib config, Supplier<Screen> parent) {
@@ -34,7 +33,7 @@ public class GlobalSearchYaclScreen extends YACLScreen {
     }
 
     @Override
-    public void close() {
-        this.client.setScreen(parentSupplier.get());
+    public void onClose() {
+        this.minecraft.setScreen(parentSupplier.get());
     }
 }

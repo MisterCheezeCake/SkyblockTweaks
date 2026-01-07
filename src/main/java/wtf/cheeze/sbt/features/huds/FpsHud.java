@@ -22,7 +22,7 @@ import dev.isxander.yacl3.api.Option;
 import dev.isxander.yacl3.api.OptionGroup;
 import dev.isxander.yacl3.api.controller.ColorControllerBuilder;
 import dev.isxander.yacl3.config.v2.api.SerialEntry;
-import net.minecraft.text.Text;
+import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SBTConfig;
@@ -56,7 +56,7 @@ public class FpsHud extends TextHud {
                 () -> SBTConfig.huds().fps.color,
                 () -> SBTConfig.huds().fps.outlineColor,
                 () -> SBTConfig.huds().fps.mode,
-                () -> Text.literal(SBTConfig.huds().fps.reverse ?  "FPS: " + client.getCurrentFps() : client.getCurrentFps() + " FPS")
+                () -> Component.literal(SBTConfig.huds().fps.reverse ?  "FPS: " + client.getFps() : client.getFps() + " FPS")
 
         );
     }

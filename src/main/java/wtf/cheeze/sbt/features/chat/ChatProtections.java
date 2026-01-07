@@ -36,11 +36,9 @@ import static wtf.cheeze.sbt.config.categories.Chat.keyD;
 import java.util.regex.Pattern;
 
 public class ChatProtections {
-
     private static final String COOP_ID = "chat_protections_coop";
     private static final String IP_ID = "chat_protections_ip";
     private static final String GUILD_LEAVE_ID = "chat_protections_guild_leave";
-
 
     private static TimedValue<String> lastMessageCoop = TimedValue.of(null);
     private static TimedValue<String> lastMessageIp = TimedValue.of(null);
@@ -48,7 +46,6 @@ public class ChatProtections {
     //TODO: Switch this away from legacy formatting
     private static final String BASE_COOP_MESSAGE = "§cAre you sure you want to invite §e%s §cto your island? They will have complete access and you may not be able to remove them! Run the command again to add them.";
     private static final Pattern IP_PATTERN = Pattern.compile("(?:[0-9]{1,3}\\.){3}[0-9]{1,3}");
-
 
     public static void registerEvents() {
         ClientSendMessageEvents.ALLOW_COMMAND.register((message) -> {
@@ -140,7 +137,6 @@ public class ChatProtections {
 
         @SerialEntry
         public boolean ip = true;
-
 
         public static OptionGroup getGroup(ConfigImpl defaults, ConfigImpl config) {
 

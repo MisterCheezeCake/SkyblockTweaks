@@ -1,7 +1,7 @@
 package wtf.cheeze.sbt.hud.bases;
 
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import org.jetbrains.annotations.NotNull;
 import wtf.cheeze.sbt.hud.bounds.Bounds;
 import wtf.cheeze.sbt.hud.bounds.BoundsRelative;
@@ -10,8 +10,7 @@ import wtf.cheeze.sbt.hud.components.HudComponent;
 import wtf.cheeze.sbt.utils.render.RenderUtils;
 
 public abstract class MultilineTextHud extends HUD {
-
-    private static final MinecraftClient client = MinecraftClient.getInstance();
+    private static final Minecraft client = Minecraft.getInstance();
 
     protected MultilineTextHud() {
         this.supportsNonLeftAnchors = false;
@@ -42,18 +41,18 @@ public abstract class MultilineTextHud extends HUD {
         var scale = (float) INFO.getScale.get();
         var w = getLongestLineWidth();
         var h = getLineNo();
-        return new Bounds(getActualX(INFO.getX.get()), getActualY(INFO.getY.get()), w * scale, h * client.textRenderer.fontHeight * scale, scale);
+        return new Bounds(getActualX(INFO.getX.get()), getActualY(INFO.getY.get()), w * scale, h * client.font.lineHeight * scale, scale);
     }
     @Override
     public @NotNull BoundsRelative getCurrentBoundsRelative() {
         var scale = (float) INFO.getScale.get();
         var w = getLongestLineWidth();
         var h = getLineNo();
-        return new BoundsRelative(INFO.getX.get(), INFO.getY.get(), w * scale, h * client.textRenderer.fontHeight * scale, scale);
+        return new BoundsRelative(INFO.getX.get(), INFO.getY.get(), w * scale, h * client.font.lineHeight * scale, scale);
     }
 
     @Override
-    public void render(DrawContext context, boolean fromHudScreen, boolean hovered) {
+    public void render(GuiGraphics context, boolean fromHudScreen, boolean hovered) {
         if (!shouldRender(fromHudScreen)) return;
 
         var bounds = getCurrentBounds();

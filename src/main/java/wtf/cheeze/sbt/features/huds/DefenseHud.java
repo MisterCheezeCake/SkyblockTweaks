@@ -23,7 +23,7 @@ import dev.isxander.yacl3.api.OptionGroup;
 import dev.isxander.yacl3.api.controller.ColorControllerBuilder;
 import dev.isxander.yacl3.api.controller.StringControllerBuilder;
 import dev.isxander.yacl3.config.v2.api.SerialEntry;
-import net.minecraft.text.Text;
+import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SBTConfig;
@@ -59,7 +59,7 @@ public class DefenseHud extends TextHud {
                 () -> SBTConfig.huds().defense.color,
                 () -> SBTConfig.huds().defense.outlineColor,
                 () -> SBTConfig.huds().defense.mode,
-                () -> Text.literal(NumberUtils.formatNumber(SkyblockData.Stats.defense, SBTConfig.huds().defense.separator) + (SBTConfig.huds().defense.icon ? "❈" : ""))
+                () -> Component.literal(NumberUtils.formatNumber(SkyblockData.Stats.defense, SBTConfig.huds().defense.separator) + (SBTConfig.huds().defense.icon ? "❈" : ""))
         );
     }
     @Override

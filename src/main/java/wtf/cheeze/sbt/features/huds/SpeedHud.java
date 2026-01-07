@@ -22,7 +22,7 @@ import dev.isxander.yacl3.api.Option;
 import dev.isxander.yacl3.api.OptionGroup;
 import dev.isxander.yacl3.api.controller.ColorControllerBuilder;
 import dev.isxander.yacl3.config.v2.api.SerialEntry;
-import net.minecraft.text.Text;
+import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SBTConfig;
@@ -57,7 +57,7 @@ public class SpeedHud extends TextHud {
                 () -> SBTConfig.huds().speed.color,
                 () -> SBTConfig.huds().speed.outlineColor,
                 () -> SBTConfig.huds().speed.mode,
-                () -> Text.literal((SkyblockUtils.getSpeed()+"").split("\\.")[0] + "%")
+                () -> Component.literal((SkyblockUtils.getSpeed()+"").split("\\.")[0] + "%")
         );
     }
 

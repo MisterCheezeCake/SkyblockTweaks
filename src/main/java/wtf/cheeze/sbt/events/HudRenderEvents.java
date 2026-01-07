@@ -18,15 +18,13 @@
  */
 package wtf.cheeze.sbt.events;
 
-//? if > 1.21.5 {
-/*import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElementRegistry;
+import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElementRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.hud.VanillaHudElements;
-*///?}
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.render.RenderTickCounter;
-import net.minecraft.util.Identifier;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.DeltaTracker;
+import net.minecraft.resources.Identifier;
 
 
 /**
@@ -42,7 +40,7 @@ public class HudRenderEvents {
     public static final Event<HudRenderStage> AFTER_MAIN_HUD = createEventForStage();
 
     /**
-     * Called before the {@link net.minecraft.client.gui.hud.ChatHud} is rendered.
+     * Called before the {@link net.minecraft.client.gui.components.ChatComponent} is rendered.
      */
     public static final Event<HudRenderStage> BEFORE_CHAT = createEventForStage();
 
@@ -60,11 +58,9 @@ public class HudRenderEvents {
     }
 
     public static void registerEvents() {
-        //? if >1.21.5 {
-        /*HudElementRegistry.attachElementAfter(VanillaHudElements.EXPERIENCE_LEVEL, Identifier.of("skyblocktweaks", "after_main_hud"), AFTER_MAIN_HUD.invoker()::onRender);
-        HudElementRegistry.attachElementBefore(VanillaHudElements.CHAT, Identifier.of("skyblocktweaks", "before_chat"), BEFORE_CHAT.invoker()::onRender);
-        HudElementRegistry.addLast(Identifier.of("skyblocktweaks", "last"), LAST.invoker()::onRender);
-        *///?}
+        HudElementRegistry.attachElementAfter(VanillaHudElements.EXPERIENCE_LEVEL, Identifier.fromNamespaceAndPath("skyblocktweaks", "after_main_hud"), AFTER_MAIN_HUD.invoker()::onRender);
+        HudElementRegistry.attachElementBefore(VanillaHudElements.CHAT, Identifier.fromNamespaceAndPath("skyblocktweaks", "before_chat"), BEFORE_CHAT.invoker()::onRender);
+        HudElementRegistry.addLast(Identifier.fromNamespaceAndPath("skyblocktweaks", "last"), LAST.invoker()::onRender);
     }
 
     /**
@@ -75,11 +71,9 @@ public class HudRenderEvents {
         /**
          * Called sometime during a specific HUD render stage.
          *
-         * @param context The {@link DrawContext} instance
-         * @param tickCounter The {@link RenderTickCounter} instance
+         * @param context The {@link GuiGraphics} instance
+         * @param tickCounter The {@link DeltaTracker} instance
          */
-        void onRender(DrawContext context, RenderTickCounter tickCounter);
+        void onRender(GuiGraphics context, DeltaTracker tickCounter);
     }
-
-
 }

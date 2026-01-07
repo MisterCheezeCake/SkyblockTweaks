@@ -6,7 +6,7 @@ import java.nio.channels.Channels
 import java.nio.channels.ReadableByteChannel
 
 plugins {
-	id("fabric-loom") version "1.10-SNAPSHOT"
+	id("fabric-loom") version "1.14-SNAPSHOT"
 }
 
 version = property("mod_version")!! as String + "+mc" + property("minecraft_version")!!
@@ -17,9 +17,14 @@ base {
 }
 
 loom {
-	accessWidenerPath = project.file("src/main/resources/skyblocktweaks.accesswidener")
-}
+    accessWidenerPath = project.file("src/main/resources/skyblocktweaks.accesswidener")
 
+    runConfigs.all {
+        ideConfigGenerated(stonecutter.current.isActive)
+    }
+
+    runConfigs.remove(runConfigs["server"])
+}
 
 repositories {
 	maven("https://maven.isxander.dev/releases")
@@ -40,24 +45,38 @@ repositories {
 	}
 	maven("https://pkgs.dev.azure.com/djtheredstoner/DevAuth/_packaging/public/maven/v1")
 	maven("https://repo.hypixel.net/repository/Hypixel/")
+    maven("https://maven.parchmentmc.org")
+    maven("https://maven.gegy.dev/releases")
 }
 
 dependencies {
 	minecraft("com.mojang:minecraft:${property("minecraft_version")}")
-	mappings("net.fabricmc:yarn:${property("yarn_mappings")}:v2")
+//    mappings(loom.layered {
+//        officialMojangMappings()
+//        optionalProp("parchment_version") {
+//            parchment("org.parchmentmc.data:parchment-${property("minecraft_version")}:$it@zip")
+//        }
+//        optionalProp("yalmm_version") {
+//            mappings("dev.lambdaurora:yalmm-mojbackward:${property("minecraft_version")}+build.$it}")
+//        }
+//    })
+    mappings(loom.layered {
+        officialMojangMappings()
+        parchment("org.parchmentmc.data:parchment-${property("minecraft_version")}:${property("parchment_version")}@zip")
+        mappings("dev.lambdaurora:yalmm-mojbackward:${property("minecraft_version")}+build.${property("yalmm_version")}")
+    })
 	modImplementation ("net.fabricmc:fabric-loader:${property("loader_version")}")
 	modImplementation ("net.fabricmc.fabric-api:fabric-api:${property("fabric_version")}")
 	modImplementation ("dev.isxander:yet-another-config-lib:${property("yacl_version")}")
-	//modImplementation ("com.terraformersmc:modmenu:${property("modmenu_version")}")
-	modCompileOnly("com.terraformersmc:modmenu:${property("modmenu_version")}")
+	modImplementation ("com.terraformersmc:modmenu:${property("modmenu_version")}")
+	//modCompileOnly("com.terraformersmc:modmenu:${property("modmenu_version")}")
 	modCompileOnly("me.shedaniel:RoughlyEnoughItems-api-fabric:${property("rei_version")}")
 	//modRuntimeOnly("me.shedaniel:RoughlyEnoughItems-fabric:${property("rei_version")}")
 	implementation("net.hypixel:mod-api:${property("modapi_version")}")
 	include(modImplementation("maven.modrinth:hypixel-mod-api:${property("modapi_fabric_version")}") as Any)
-	modRuntimeOnly("me.djtheredstoner:DevAuth-fabric:1.2.1") 
-
-
+	modRuntimeOnly("me.djtheredstoner:DevAuth-fabric:1.2.1")
 }
+
 tasks.processResources {
 	inputs.property("version", project.version)
 
@@ -85,6 +104,10 @@ tasks.named<Jar>("jar") {
 		this["Main-Class"] = "SkyblockTweaksInstallerFrame"
 	}
 }
+
+fun <T> optionalProp(property: String, block: (String) -> T?): T? =
+    findProperty(property)?.toString()?.takeUnless { it.isBlank() }?.let(block)
+
 
 
 

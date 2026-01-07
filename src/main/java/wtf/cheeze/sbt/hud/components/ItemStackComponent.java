@@ -18,17 +18,16 @@
  */
 package wtf.cheeze.sbt.hud.components;
 
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import wtf.cheeze.sbt.hud.cache.Cache;
 import wtf.cheeze.sbt.hud.cache.UpdateTiming;
 
 import java.util.function.Supplier;
 
 public class ItemStackComponent implements HudComponent {
-
     private static final int BASE_WIDTH = 16;
     private static final int BASE_HEIGHT = 16;
 
@@ -49,12 +48,12 @@ public class ItemStackComponent implements HudComponent {
 
 
     @Override
-    public int render(DrawContext context, int x, int y, float scale) {
+    public int render(GuiGraphics context, int x, int y, float scale) {
         if (cache.timing == UpdateTiming.FRAME || cache.isDueForUpdate()) {
             cache.update();
         }
-            context.drawItem(cache.get(),  (int) (x / scale), (int) (y / scale));
-            context.drawStackOverlay(MinecraftClient.getInstance().textRenderer, cache.get(), (int) (x / scale), (int) (y / scale));
+            context.renderItem(cache.get(),  (int) (x / scale), (int) (y / scale));
+            context.renderItemDecorations(Minecraft.getInstance().font, cache.get(), (int) (x / scale), (int) (y / scale));
         return 1;
     }
 

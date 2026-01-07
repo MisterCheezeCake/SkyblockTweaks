@@ -4,9 +4,9 @@ import dev.isxander.yacl3.api.Option;
 import dev.isxander.yacl3.api.OptionGroup;
 import dev.isxander.yacl3.api.controller.ColorControllerBuilder;
 import dev.isxander.yacl3.config.v2.api.SerialEntry;
-import net.minecraft.component.DataComponentTypes;
-import net.minecraft.component.type.LoreComponent;
-import net.minecraft.text.Text;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.world.item.component.ItemLore;
+import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SBTConfig;
@@ -49,7 +49,7 @@ public class RainmakerHud extends TextHud {
                 () -> SBTConfig.huds().rainmaker.outlineColor,
                 () -> SBTConfig.huds().rainmaker.mode,
                 () -> {
-                    return Text.literal(TimeUtils.formatTime(calcTime(), false));
+                    return Component.literal(TimeUtils.formatTime(calcTime(), false));
                 },
                 () -> Icons.WATER_BUCKET,
                 () -> SBTConfig.huds().rainmaker.icon
@@ -63,12 +63,12 @@ public class RainmakerHud extends TextHud {
             if (!screenTitle.getString().equals("Vanessa")) {
                 return;
             }
-            if (slot.id != 13) {
+            if (slot.index != 13) {
                 return;
             }
          //   SkyblockTweaks.LOGGER.info("Rainmaker HUD: Slot ID: " + slot.id);
-            if (slot.getStack() != null && !slot.getStack().getName().getString().equals("The Rainmaker")) return;
-            var lines = slot.getStack().getOrDefault(DataComponentTypes.LORE, LoreComponent.DEFAULT).lines();
+            if (slot.getItem() != null && !slot.getItem().getHoverName().getString().equals("The Rainmaker")) return;
+            var lines = slot.getItem().getOrDefault(DataComponents.LORE, ItemLore.EMPTY).lines();
             for (var line: lines) {
                // SkyblockTweaks.LOGGER.info("Rainmaker HUD: " + line.getString());
                 var matcher = RAINMAKER_PATTERN.matcher(line.getString());

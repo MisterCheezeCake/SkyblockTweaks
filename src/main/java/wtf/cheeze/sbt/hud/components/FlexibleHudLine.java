@@ -18,8 +18,8 @@
  */
 package wtf.cheeze.sbt.hud.components;
 
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.text.Text;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.Nullable;
 import wtf.cheeze.sbt.hud.icon.HudIcon;
 import wtf.cheeze.sbt.hud.cache.Cache;
@@ -32,14 +32,11 @@ import wtf.cheeze.sbt.utils.render.RenderUtils;
 import java.util.function.Supplier;
 
 public class FlexibleHudLine implements HudComponent {
-
-
     public Supplier<Part[]> parts;
 
     private final UpdateTiming timing;
 
     private final Cache<Part[]> partCache;
-
 
     private int width = 1;
     private int lines = 1;
@@ -58,7 +55,7 @@ public class FlexibleHudLine implements HudComponent {
     }
 
     @Override
-    public int render(DrawContext context, int x, int y, float scale) {
+    public int render(GuiGraphics context, int x, int y, float scale) {
         if (timing == UpdateTiming.FRAME || partCache.isDueForUpdate()) {
             partCache.update();
         }
@@ -89,7 +86,6 @@ public class FlexibleHudLine implements HudComponent {
 
     }
 
-
     @Override
     public int getWidth() {
         return width;
@@ -108,14 +104,15 @@ public class FlexibleHudLine implements HudComponent {
 //        renderLine(context, text, x, y, scale, mode, color, -1);
 //    }
 
-    private static void renderLine(DrawContext context, Text text, int x, int y, float scale, DrawMode mode, int color, int outlineColor) {
+    private static void renderLine(GuiGraphics context, Component text, int x, int y, float scale, DrawMode mode, int color, int outlineColor) {
         switch (mode) {
             case PURE -> RenderUtils.drawText(context, text, x, y, color, false, scale, true);
             case SHADOW -> RenderUtils.drawText(context, text, x, y, color, true, scale, true);
             case OUTLINE -> RenderUtils.drawTextWithOutline(context, text, x, y, color, outlineColor, scale, true);
         }
     }
-    private static void renderLine(DrawContext context, Text text, HudIcon icon, int x, int y, float scale, DrawMode mode, int color, int outlineColor) {
+
+    private static void renderLine(GuiGraphics context, Component text, HudIcon icon, int x, int y, float scale, DrawMode mode, int color, int outlineColor) {
         icon.render(context, x, y, scale);
         switch (mode) {
             case PURE -> RenderUtils.drawText(context, text, x + (int) (10 * scale), y, color, false, scale, true);
@@ -125,7 +122,7 @@ public class FlexibleHudLine implements HudComponent {
     }
 
     public static class Part {
-        public final Supplier<Text> text;
+        public final Supplier<Component> text;
         public final Supplier<Boolean> useIcon;
         @Nullable
         public Supplier<HudIcon> icon;
@@ -133,23 +130,23 @@ public class FlexibleHudLine implements HudComponent {
         public final Supplier<Integer> color;
         public final Supplier<Integer> outlineColor;
 
-        private final Cache<Text> cache;
+        private final Cache<Component> cache;
 
 
-        public Part (Supplier<Text> text, Supplier<DrawMode> mode, Supplier<Integer> color, Supplier<Integer> outlineColor) {
+        public Part (Supplier<Component> text, Supplier<DrawMode> mode, Supplier<Integer> color, Supplier<Integer> outlineColor) {
             this(text, mode, color, outlineColor, null, DataUtils.ALWAYS_FALSE, new Cache<>(UpdateTiming.FRAME, text, ERROR));
         }
 
-        public Part(Supplier<Text> text, Supplier<DrawMode> mode, Supplier<Integer> color, Supplier<Integer> outlineColor, Supplier<HudIcon> icon, Supplier<Boolean> useIcon) {
+        public Part(Supplier<Component> text, Supplier<DrawMode> mode, Supplier<Integer> color, Supplier<Integer> outlineColor, Supplier<HudIcon> icon, Supplier<Boolean> useIcon) {
             this(text, mode, color, outlineColor, icon, useIcon, new Cache<>(UpdateTiming.FRAME, text, ERROR));
         }
 
-        public Part(Supplier<Text> text, Supplier<DrawMode> mode, Supplier<Integer> color, Supplier<Integer> outlineColor, Cache<Text> cache) {
+        public Part(Supplier<Component> text, Supplier<DrawMode> mode, Supplier<Integer> color, Supplier<Integer> outlineColor, Cache<Component> cache) {
            this(text, mode, color, outlineColor, null, DataUtils.ALWAYS_FALSE, cache);
 
         }
 
-        public Part(Supplier<Text> text, Supplier<DrawMode> mode, Supplier<Integer> color, Supplier<Integer> outlineColor, Supplier<HudIcon> icon, Supplier<Boolean> useIcon, Cache<Text> cache) {
+        public Part(Supplier<Component> text, Supplier<DrawMode> mode, Supplier<Integer> color, Supplier<Integer> outlineColor, Supplier<HudIcon> icon, Supplier<Boolean> useIcon, Cache<Component> cache) {
             this.text = text;
             this.mode = mode;
             this.color = color;
