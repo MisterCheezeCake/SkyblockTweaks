@@ -58,6 +58,7 @@ public class HudRenderEvents {
     }
 
     public static void registerEvents() {
+        // TODO: skyblocker doesnt have this issue of rendering breaking if the vanilla hud element is missing
         HudElementRegistry.attachElementBefore(VanillaHudElements.HOTBAR, Identifier.fromNamespaceAndPath("skyblocktweaks", "after_main_hud"), AFTER_MAIN_HUD.invoker()::onRender);
         HudElementRegistry.attachElementBefore(VanillaHudElements.CHAT, Identifier.fromNamespaceAndPath("skyblocktweaks", "before_chat"), BEFORE_CHAT.invoker()::onRender);
         HudElementRegistry.addLast(Identifier.fromNamespaceAndPath("skyblocktweaks", "last"), LAST.invoker()::onRender);

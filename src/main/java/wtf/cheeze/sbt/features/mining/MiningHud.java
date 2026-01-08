@@ -55,9 +55,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
 
-
 public class MiningHud extends MultilineTextHud {
-
     public static final MiningHud INSTANCE = new MiningHud();
 
     private MiningHud() {
@@ -77,7 +75,6 @@ public class MiningHud extends MultilineTextHud {
     private static final String COOLDOWN_FORMAT = "%ds";
     @Override
     public @NotNull HudName getName() {
-
         return new HudName("Mining HUD", Colors.CYAN);
     }
 
@@ -92,8 +89,6 @@ public class MiningHud extends MultilineTextHud {
     public void refreshComposition() {
         this.lines = genLines();
     }
-
-
 
     private HudComponent[] genLines() {
         List<HudComponent> lines = new ArrayList<>();
@@ -165,7 +160,6 @@ public class MiningHud extends MultilineTextHud {
         return lines.toArray(new HudComponent[0]);
     }
 
-
     private final ArrayList<Cache<Component>> comCache = new ArrayList<>();
 
     private FlexibleHudLine.Part[] getComParts() {
@@ -190,7 +184,6 @@ public class MiningHud extends MultilineTextHud {
     }
 
     private CheezePair<Supplier<Component>, Supplier<HudIcon>> genComSuppliers(int i) {
-
         return new CheezePair<>(
                 () -> {
                     var com = SkyblockData.miningData.coms[i];
@@ -203,9 +196,7 @@ public class MiningHud extends MultilineTextHud {
                     );
                 },
                 () -> MiningData.getComIcon(SkyblockData.miningData.coms[i].key()));
-
     }
-
 
     public enum Entry implements NameableEnum, CompositionEntry {
         COMMISSIONS(TextUtils.withColor("Commissions", Colors.CYAN), TextUtils.join(TextUtils.withColor("Mithril Miner: ", Colors.CYAN), TextUtils.withColor("0/350", Colors.RED)), false),
@@ -213,8 +204,6 @@ public class MiningHud extends MultilineTextHud {
         GEMSTONE_POWDER(TextUtils.withColor("Gemstone Powder", Colors.PINK), TextUtils.join(TextUtils.withColor("Gemstone Powder: ", Colors.CYAN), TextUtils.withColor("850K", Colors.PINK)), false),
         GLACITE_POWER(TextUtils.withColor("Glacite Power", Colors.LIGHT_BLUE), TextUtils.join(TextUtils.withColor("Glacite Powder: ", Colors.CYAN), TextUtils.withColor("50K", Colors.LIGHT_BLUE)), false),
         COOLDOWN(TextUtils.withColor("Pickaxe Cooldown", Colors.LIME), TextUtils.join(TextUtils.withColor("Pickaxe CD: ", Colors.CYAN), TextUtils.withColor("Ready", Colors.LIME)),false);
-
-
 
         private final Component name;
         private final Component preview;
@@ -316,7 +305,6 @@ public class MiningHud extends MultilineTextHud {
                     )
                     .build();
 
-
             var abbreviatePowder = Option.<Boolean>createBuilder()
                     .name(Mining.key("hud.abbreviatePowder"))
                     .description(Mining.keyD("hud.abbreviatePowder"))
@@ -338,6 +326,7 @@ public class MiningHud extends MultilineTextHud {
                             value -> config.mining.hud.icons = value
                     )
                     .build();
+
             var color = Option.<Color>createBuilder()
                     .name(Mining.key("hud.color"))
                     .description(Mining.keyD("hud.color"))
@@ -348,6 +337,7 @@ public class MiningHud extends MultilineTextHud {
                             value -> config.mining.hud.color = value.getRGB()
                     )
                     .build();
+
             var outlineColor = Option.<Color>createBuilder()
                     .name(Mining.key("hud.outlineColor"))
                     .description(Mining.keyD("hud.outlineColor"))
@@ -358,7 +348,6 @@ public class MiningHud extends MultilineTextHud {
                             value -> config.mining.hud.outlineColor = value.getRGB()
                     )
                     .build();
-
 
             var drawMode = Option.<DrawMode>createBuilder()
                     .name(Mining.key("hud.mode"))
@@ -373,6 +362,7 @@ public class MiningHud extends MultilineTextHud {
                             }
                     )
                     .build();
+
             var scale = Option.<Float>createBuilder()
                     .name(Mining.key("hud.scale"))
                     .description(Mining.keyD("hud.scale"))
@@ -401,6 +391,3 @@ public class MiningHud extends MultilineTextHud {
         }
     }
 }
-
-
-
