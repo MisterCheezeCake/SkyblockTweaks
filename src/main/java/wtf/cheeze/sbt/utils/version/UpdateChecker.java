@@ -21,8 +21,8 @@ package wtf.cheeze.sbt.utils.version;
 import dev.isxander.yacl3.api.NameableEnum;
 import dev.isxander.yacl3.api.Option;
 import dev.isxander.yacl3.api.controller.EnumControllerBuilder;
-import net.minecraft.MinecraftVersion;
-import net.minecraft.text.Text;
+import net.minecraft.DetectedVersion;
+import net.minecraft.network.chat.Component;
 import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SBTConfig;
@@ -85,11 +85,7 @@ public class UpdateChecker {
     }
 
     public static String mcVersionName() {
-        //? if <=1.21.5 {
-        return MinecraftVersion.CURRENT.getName();
-        //?} else {
-        /*return MinecraftVersion.CURRENT.name();
-        *///?}
+        return DetectedVersion.BUILT_IN.name();
     }
 
     private static void internalRun(Map<String, RemoteVersion> map) {
@@ -163,8 +159,8 @@ public class UpdateChecker {
         NONE;
 
         @Override
-        public Text getDisplayName() {
-            return Text.literal(name());
+        public Component getDisplayName() {
+            return Component.literal(name());
         }
     }
 }

@@ -81,6 +81,4 @@ public class ConfigImpl extends VersionedObject {
 
     @SerialEntry
     public Mining mining = new Mining();
-
-
 }

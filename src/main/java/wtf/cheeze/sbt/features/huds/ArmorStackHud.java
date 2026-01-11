@@ -22,7 +22,7 @@ import dev.isxander.yacl3.api.Option;
 import dev.isxander.yacl3.api.OptionGroup;
 import dev.isxander.yacl3.api.controller.ColorControllerBuilder;
 import dev.isxander.yacl3.config.v2.api.SerialEntry;
-import net.minecraft.text.Text;
+import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SBTConfig;
@@ -38,7 +38,6 @@ import wtf.cheeze.sbt.utils.skyblock.SkyblockData;
 import java.awt.Color;
 
 public class ArmorStackHud extends TextHud {
-
     public static final ArmorStackHud INSTANCE = new ArmorStackHud();
 
     private ArmorStackHud() {
@@ -56,7 +55,7 @@ public class ArmorStackHud extends TextHud {
                 () -> SBTConfig.huds().armorStack.color,
                 () -> SBTConfig.huds().armorStack.outlineColor,
                 () -> SBTConfig.huds().armorStack.mode,
-                () -> SkyblockData.Stats.stackString != null ? Text.literal(SkyblockData.Stats.armorStack + SkyblockData.Stats.stackString) : Text.literal("0ᝐ")
+                () -> SkyblockData.Stats.stackString != null ? Component.literal(SkyblockData.Stats.armorStack + SkyblockData.Stats.stackString) : Component.literal("0ᝐ")
         );
     }
 
@@ -120,6 +119,7 @@ public class ArmorStackHud extends TextHud {
 
                     )
                     .build();
+
             var outline = Option.<Color>createBuilder()
                     .name(key("armorStack.outlineColor"))
                     .description(keyD("armorStack.outlineColor"))
@@ -132,6 +132,7 @@ public class ArmorStackHud extends TextHud {
 
                     )
                     .build();
+
             var mode = Option.<DrawMode>createBuilder()
                     .name(key("armorStack.mode"))
                     .description(keyD("armorStack.mode"))
@@ -145,6 +146,7 @@ public class ArmorStackHud extends TextHud {
                             }
                     )
                     .build();
+
             var scale = Option.<Float>createBuilder()
                     .name(key("armorStack.scale"))
                     .description(keyD("armorStack.scale"))
@@ -169,4 +171,3 @@ public class ArmorStackHud extends TextHud {
         }
     }
 }
-

@@ -18,18 +18,18 @@
  */
 package wtf.cheeze.sbt.mixin.features;
 
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.hud.BossBarHud;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.BossHealthOverlay;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import wtf.cheeze.sbt.config.SBTConfig;
 
-@Mixin(BossBarHud.class)
+@Mixin(BossHealthOverlay.class)
 public abstract class BossBarHiderMixin {
     @Inject(method = "render", at = @At("HEAD"), cancellable = true)
-    private void sbt$onRender(DrawContext context, CallbackInfo ci) {
+    private void sbt$onRender(GuiGraphics guiGraphics, CallbackInfo ci) {
         if (SBTConfig.get().hudTweaks.noRenderBossBar) {
             ci.cancel();
         }

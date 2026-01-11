@@ -5,7 +5,7 @@ import dev.isxander.yacl3.api.OptionGroup;
 import dev.isxander.yacl3.api.controller.ColorControllerBuilder;
 import dev.isxander.yacl3.api.controller.StringControllerBuilder;
 import dev.isxander.yacl3.config.v2.api.SerialEntry;
-import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.Minecraft;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SBTConfig;
 import wtf.cheeze.sbt.events.ChatEvents;
@@ -24,12 +24,12 @@ public class MiningTitles {
             if (!SBTConfig.mining().titles.goblinTitles) return;
             var content = TextUtils.removeFormatting(message.getString()).trim();
             if (content.equals("A Golden Goblin has spawned!")) {
-                MinecraftClient.getInstance().inGameHud.setTitle(TextUtils.withColor(
+                Minecraft.getInstance().gui.setTitle(TextUtils.withColor(
                         SBTConfig.mining().titles.goldenText,
                         SBTConfig.mining().titles.goldenColor
                 ));
             } else if (content.equals("A Diamond Goblin has spawned!")) {
-                MinecraftClient.getInstance().inGameHud.setTitle(TextUtils.withColor(
+                Minecraft.getInstance().gui.setTitle(TextUtils.withColor(
                         SBTConfig.mining().titles.diamondText,
                         SBTConfig.mining().titles.diamondColor
                 ));

@@ -79,11 +79,7 @@ public class Version {
     }
 
     public static String getBuildMCVersion() {
-        //? if =1.21.5 {
-        return "1.21.5";
-        //?} else if >1.21.5 {
-         /*return "1.21.6";
-         *///?}
+         return "1.21.8"; // TODO: 1.21.10
     }
 
     public String getVersionString() {

@@ -18,27 +18,22 @@
  */
 package wtf.cheeze.sbt.hud.screen;
 
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.text.Text;
-
-import java.util.function.Consumer;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.network.chat.Component;
 
 /**
  * This used to be a MatrixConsumingButton
  */
-public class ConstructableButton extends ButtonWidget {
-
-    public ConstructableButton(Text message, PressAction onPress, int x, int y, int width, int height) {
-        super(x, y, width, height, message, onPress, ButtonWidget.DEFAULT_NARRATION_SUPPLIER);
+public class ConstructableButton extends Button {
+    public ConstructableButton(Component message, OnPress onPress, int x, int y, int width, int height) {
+        super(x, y, width, height, message, onPress, Button.DEFAULT_NARRATION);
     }
 
-    public ConstructableButton(Text message, PressAction onPress, int x, int y) {
+    public ConstructableButton(Component message, OnPress onPress, int x, int y) {
         this(message, onPress, x, y, 80, 20);
     }
 
-    public ConstructableButton(Text message, PressAction onPress) {
+    public ConstructableButton(Component message, OnPress onPress) {
         this(message, onPress, 0, 0);
     }
 //

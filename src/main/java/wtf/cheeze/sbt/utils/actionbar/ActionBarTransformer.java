@@ -22,7 +22,7 @@ import dev.isxander.yacl3.api.Option;
 import dev.isxander.yacl3.api.OptionGroup;
 import dev.isxander.yacl3.config.v2.api.SerialEntry;
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents;
-import net.minecraft.text.Text;
+import net.minecraft.network.chat.Component;
 import org.intellij.lang.annotations.Language;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SBTConfig;
@@ -239,7 +239,7 @@ public class ActionBarTransformer {
 
     }
 
-    public static Text runTransformations(Text actionBarText) {
+    public static Component runTransformations(Component actionBarText) {
         try {
             String[] unmodifiedParts = actionBarText.getString().split(SEPERATOR3);
             StringBuilder newText = new StringBuilder();
@@ -347,7 +347,7 @@ public class ActionBarTransformer {
 
                 }
             }
-            return Text.of(newText.toString());
+            return Component.nullToEmpty(newText.toString());
         } catch (Exception e) {
             ErrorHandler.handle(e, "Error Parsing transforming bar text/*LOGONLY {}*/", ErrorLevel.WARNING, false, actionBarText.getString());
             return actionBarText;

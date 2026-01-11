@@ -18,20 +18,20 @@
  */
 package wtf.cheeze.sbt.utils.render;
 
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.Drawable;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.widget.ClickableWidget;
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.Renderable;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.components.AbstractWidget;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
 import wtf.cheeze.sbt.hud.bounds.Bounds;
 import wtf.cheeze.sbt.utils.text.TextUtils;
 
 import java.util.List;
 
-public interface Popup extends Drawable {
-    Identifier BACKGROUND = Identifier.of("skyblocktweaks", "gui/panel.png");
-    Text SBT_FOOTER = TextUtils.withColor("SBT", Colors.SBT_GREEN);
+public interface Popup extends Renderable {
+    Identifier BACKGROUND = Identifier.fromNamespaceAndPath("skyblocktweaks", "gui/panel.png");
+    Component SBT_FOOTER = TextUtils.withColor("SBT", Colors.SBT_GREEN);
 
     int WIDTH = 80;
     int HEIGHT = 130;
@@ -40,21 +40,21 @@ public interface Popup extends Drawable {
     int x();
     int y();
 
-    List<? extends ClickableWidget> childrenList();
+    List<? extends AbstractWidget> childrenList();
     Screen screen();
 
-    default void renderBackground(DrawContext context) {
-        RenderUtils.drawTexture(context, BACKGROUND, x(), y(), WIDTH, HEIGHT, WIDTH, HEIGHT);
+    default void renderBackground(GuiGraphics guiGraphics) {
+        RenderUtils.drawTexture(guiGraphics, BACKGROUND, x(), y(), WIDTH, HEIGHT, WIDTH, HEIGHT);
     }
 
-    default void drawSBTFooter(DrawContext context, boolean shadow) {
-        RenderUtils.drawText(context, SBT_FOOTER, x() + WIDTH - 3 - RenderUtils.getStringWidth(SBT_FOOTER.getString()), y() + HEIGHT - 12, Colors.WHITE, shadow);
+    default void drawSBTFooter(GuiGraphics guiGraphics, boolean shadow) {
+        RenderUtils.drawText(guiGraphics, SBT_FOOTER, x() + WIDTH - 3 - RenderUtils.getStringWidth(SBT_FOOTER.getString()), y() + HEIGHT - 12, Colors.WHITE, shadow);
     }
 
     default void remove() {
-        screen().drawables.remove(this);
+        screen().renderables.remove(this);
         for (var child : childrenList()) {
-            screen().remove(child);
+            screen().removeWidget(child);
         }
     }
     default int centerX() {

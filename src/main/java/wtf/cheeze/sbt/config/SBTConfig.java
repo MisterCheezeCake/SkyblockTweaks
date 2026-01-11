@@ -18,7 +18,6 @@
  */
 package wtf.cheeze.sbt.config;
 
-
 import com.google.gson.FieldNamingPolicy;
 import dev.isxander.yacl3.api.*;
 import dev.isxander.yacl3.api.controller.*;
@@ -26,9 +25,9 @@ import dev.isxander.yacl3.config.v2.api.ConfigClassHandler;
 import dev.isxander.yacl3.config.v2.api.serializer.GsonConfigSerializerBuilder;
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
 import wtf.cheeze.sbt.config.categories.*;
 import wtf.cheeze.sbt.config.migration.BarColorTransformation;
 import wtf.cheeze.sbt.config.migration.MigrationManager;
@@ -40,13 +39,11 @@ import wtf.cheeze.sbt.utils.enums.Side;
 
 import java.nio.file.Path;
 
-
 public class  SBTConfig {
-
     public static final Path PATH = FabricLoader.getInstance().getConfigDir().resolve("skyblocktweaks-config.json");
 
     private static final ConfigClassHandler<ConfigImpl> HANDLER = ConfigClassHandler.createBuilder(ConfigImpl.class)
-            .id(Identifier.of("skyblocktweaks", "config"))
+            .id(Identifier.fromNamespaceAndPath("skyblocktweaks", "config"))
             .serializer(config -> GsonConfigSerializerBuilder.create(config).appendGsonBuilder(builder -> builder.setFieldNamingPolicy(FieldNamingPolicy.IDENTITY))
                     .setPath(PATH)
                     .build())
@@ -78,12 +75,9 @@ public class  SBTConfig {
     }
 
     public static void save() {
-
         HANDLER.save();
         CONFIG_SAVE.invoker().run();
-
     }
-
 
     public static Screen getGlobalSearchScreen(Screen parent) {
         return baseBuilder().category(GlobalSearchCategory.getCategory(HANDLER.defaults(), HANDLER.instance())).build().generateScreen(parent);
@@ -103,7 +97,7 @@ public class  SBTConfig {
     }
 
     private static YetAnotherConfigLib.Builder baseBuilder() {
-        return YetAnotherConfigLib.createBuilder().title(Text.literal("SkyblockTweaks")).save(
+        return YetAnotherConfigLib.createBuilder().title(Component.literal("SkyblockTweaks")).save(
                 SBTConfig::save
         );
     }
@@ -111,6 +105,7 @@ public class  SBTConfig {
     public static BooleanControllerBuilder generateBooleanController(Option<Boolean> opt) {
         return BooleanControllerBuilder.create(opt).coloured(true);
     }
+
     public static FloatSliderControllerBuilder generateScaleController(Option<Float> opt) {
         return FloatSliderControllerBuilder.create(opt)
                 .range(HUD.MIN_SCALE, HUD.MAX_SCALE)
@@ -124,5 +119,4 @@ public class  SBTConfig {
     public static EnumControllerBuilder<Side> generateSideController(Option<Side> opt) {
         return EnumControllerBuilder.create(opt).enumClass(Side.class);
     }
-
 }

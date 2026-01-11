@@ -36,7 +36,6 @@ import wtf.cheeze.sbt.utils.skyblock.SkyblockData;
 import java.awt.Color;
 
 public class HealthBar extends BarHud {
-
     public static final HealthBar INSTANCE = new HealthBar();
 
     private HealthBar() {
@@ -68,13 +67,11 @@ public class HealthBar extends BarHud {
         return new HudName("Health Bar", "HP Bar", Colors.RED);
     }
 
-
     @Override
     public boolean shouldRender(boolean fromHudScreen) {
         if (!super.shouldRender(fromHudScreen)) return false;
         return (SkyblockData.inSB && SBTConfig.huds().healthBar.enabled && (SkyblockData.location != Location.RIFT || !SBTConfig.huds().healthBar.hideInRift)) || fromHudScreen;
     }
-
 
     public static class Config {
         @SerialEntry
@@ -112,6 +109,7 @@ public class HealthBar extends BarHud {
                             value -> config.huds.healthBar.enabled = value
                     )
                     .build();
+
             var color = Option.<Color>createBuilder()
                     .name(key("healthBar.color"))
                     .description(keyD("healthBar.color"))
@@ -123,6 +121,7 @@ public class HealthBar extends BarHud {
 
                     )
                     .build();
+
             var absorbColor = Option.<Color>createBuilder()
                     .name(key("healthBar.colorAbsorption"))
                     .description(keyD("healthBar.colorAbsorption"))
@@ -134,6 +133,7 @@ public class HealthBar extends BarHud {
 
                     )
                     .build();
+
             var rift = Option.<Boolean>createBuilder()
                     .name(key("healthBar.hideInRift"))
                     .description(keyD("healthBar.hideInRift"))
@@ -144,6 +144,7 @@ public class HealthBar extends BarHud {
                             value -> config.huds.healthBar.hideInRift = value
                     )
                     .build();
+
             var scale = Option.<Float>createBuilder()
                     .name(key("healthBar.scale"))
                     .description(keyD("healthBar.scale"))
@@ -154,6 +155,7 @@ public class HealthBar extends BarHud {
                             value -> config.huds.healthBar.scale = value
                     )
                     .build();
+
             return OptionGroup.createBuilder()
                     .name(key("healthBar"))
                     .description(keyD("healthBar"))
@@ -164,8 +166,6 @@ public class HealthBar extends BarHud {
                     .option(scale)
                     .collapsed(true)
                     .build();
-
-
         }
     }
 }

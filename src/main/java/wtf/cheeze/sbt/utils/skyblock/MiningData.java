@@ -18,11 +18,11 @@
  */
 package wtf.cheeze.sbt.utils.skyblock;
 
-import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.Minecraft;
 import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.hud.icon.HudIcon;
 import wtf.cheeze.sbt.hud.icon.Icons;
-import wtf.cheeze.sbt.mixin.accessors.BossBarHudAccessor;
+import wtf.cheeze.sbt.mixin.accessors.BossHealthOverlayAccessor;
 import wtf.cheeze.sbt.utils.CheezePair;
 import wtf.cheeze.sbt.utils.NumberUtils;
 import wtf.cheeze.sbt.utils.text.TextUtils;
@@ -38,7 +38,7 @@ import static wtf.cheeze.sbt.hud.icon.Icons.MINING_ICONS;
 
 public class MiningData {
 
-    public static final MinecraftClient client = MinecraftClient.getInstance();
+    public static final Minecraft client = Minecraft.getInstance();
 
     private static final Pattern ACTIVE_EVENT = Pattern.compile("EVENT (?<name>.+) ACTIVE IN (?<location>.+) for (?<minutes>\\d\\d):(?<seconds>\\d\\d)");
     private static final Pattern PASSIVE_EVENT = Pattern.compile("PASSIVE EVENT (?<name>.+) RUNNING FOR (?<minutes>\\d\\d):(?<seconds>\\d\\d)");
@@ -180,7 +180,7 @@ public class MiningData {
             }
         }
 
-        var bossBars = ((BossBarHudAccessor) client.inGameHud.getBossBarHud()).getBossBars();
+        var bossBars = ((BossHealthOverlayAccessor) client.gui.getBossOverlay()).getEvents();
         for (var bar: bossBars.values()) {
             var name = TextUtils.removeFormatting(bar.getName().getString());
             var passive = PASSIVE_EVENT.matcher(name);

@@ -16,24 +16,18 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with SkyblockTweaks. If not, see <https://www.gnu.org/licenses/>.
  */
-package wtf.cheeze.sbt.hud.icon;
+package wtf.cheeze.sbt.mixin.accessors;
 
-import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.world.item.ItemStack;
-import org.jetbrains.annotations.NotNull;
-import wtf.cheeze.sbt.utils.render.RenderUtils;
+import net.minecraft.client.gui.components.BossHealthOverlay;
+import net.minecraft.client.gui.components.LerpingBossEvent;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.gen.Accessor;
 
-public class ItemStackIcon implements HudIcon {
-    private final ItemStack iconStack;
+import java.util.Map;
+import java.util.UUID;
 
-    public ItemStackIcon(@NotNull ItemStack stack) {
-        this.iconStack = stack;
-    }
-
-    @Override
-    public void render(GuiGraphics guiGraphics, int x, int y, float scale) {
-        RenderUtils.beginScale(guiGraphics, 0.5f);
-        guiGraphics.renderItem(iconStack, (int) (x / (0.5f *scale)) , (int) (y / (0.5f *scale)));
-        RenderUtils.popMatrix(guiGraphics);
-    }
+@Mixin(BossHealthOverlay.class)
+public interface BossHealthOverlayAccessor {
+    @Accessor("events")
+    Map<UUID, LerpingBossEvent> getEvents();
 }

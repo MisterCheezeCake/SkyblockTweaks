@@ -23,7 +23,7 @@ import dev.isxander.yacl3.api.OptionGroup;
 import dev.isxander.yacl3.api.controller.ColorControllerBuilder;
 import dev.isxander.yacl3.api.controller.IntegerSliderControllerBuilder;
 import dev.isxander.yacl3.config.v2.api.SerialEntry;
-import net.minecraft.text.Text;
+import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SBTConfig;
@@ -40,7 +40,6 @@ import wtf.cheeze.sbt.utils.skyblock.SkyblockData;
 import java.awt.Color;
 
 public class CoordinatesHud extends TextHud {
-
     public static final CoordinatesHud INSTANCE = new CoordinatesHud();
 
     private CoordinatesHud() {
@@ -58,9 +57,10 @@ public class CoordinatesHud extends TextHud {
                 () -> SBTConfig.huds().coordinates.color,
                 () -> SBTConfig.huds().coordinates.outlineColor,
                 () -> SBTConfig.huds().coordinates.mode,
-                () -> Text.literal(String.format("X: %s Y: %s Z: %s" , NumberUtils.formattedRound(client.player.getX(), SBTConfig.huds().coordinates.decimalPlaces), NumberUtils.formattedRound(client.player.getY(), SBTConfig.huds().coordinates.decimalPlaces), NumberUtils.formattedRound(client.player.getZ(), SBTConfig.huds().coordinates.decimalPlaces)))
+                () -> Component.literal(String.format("X: %s Y: %s Z: %s" , NumberUtils.formattedRound(client.player.getX(), SBTConfig.huds().coordinates.decimalPlaces), NumberUtils.formattedRound(client.player.getY(), SBTConfig.huds().coordinates.decimalPlaces), NumberUtils.formattedRound(client.player.getZ(), SBTConfig.huds().coordinates.decimalPlaces)))
         );
     }
+
     @Override
     public boolean shouldRender(boolean fromHudScreen) {
         if (!super.shouldRender(fromHudScreen)) return false;
@@ -125,6 +125,7 @@ public class CoordinatesHud extends TextHud {
                             value -> config.huds.coordinates.showOutside = value
                     )
                     .build();
+
             var decimalPlaces = Option.<Integer>createBuilder()
                     .name(key("coordinates.decimalPlaces"))
                     .description(keyD("coordinates.decimalPlaces"))
@@ -152,6 +153,7 @@ public class CoordinatesHud extends TextHud {
 
                     )
                     .build();
+
             var outline = Option.<Color>createBuilder()
                     .name(key("coordinates.outlineColor"))
                     .description(keyD("coordinates.outlineColor"))
@@ -164,6 +166,7 @@ public class CoordinatesHud extends TextHud {
 
                     )
                     .build();
+
             var mode = Option.<DrawMode>createBuilder()
                     .name(key("coordinates.mode"))
                     .description(keyD("coordinates.mode"))
@@ -177,6 +180,7 @@ public class CoordinatesHud extends TextHud {
                             }
                     )
                     .build();
+
             var scale = Option.<Float>createBuilder()
                     .name(key("coordinates.scale"))
                     .description(keyD("coordinates.scale"))

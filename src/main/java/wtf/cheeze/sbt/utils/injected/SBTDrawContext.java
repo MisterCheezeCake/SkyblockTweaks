@@ -18,21 +18,9 @@
  */
 package wtf.cheeze.sbt.utils.injected;
 
-import net.minecraft.client.font.TextRenderer;
-import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.text.Text;
+import net.minecraft.client.gui.Font;
+import net.minecraft.network.chat.Component;
 
 public interface SBTDrawContext {
-    //? if <=1.21.5 {
-    int
-     //?} else {
-    /*void
-    *///?}
-    sbt$drawTextWithBackgroundNoShadow(TextRenderer textRenderer, Text text, int x, int y, int width, int color);
-
-    /**
-     * You may ask yourself, "Why is this not an accessor?" The answer is that I really did not want to deal with mixins only existing on one version, and this works fine
-     */
-    //? if <=1.21.5
-    VertexConsumerProvider.Immediate sbt$getVertexConsumers();
+    void sbt$drawTextWithBackgroundNoShadow(Font textRenderer, Component text, int x, int y, int width, int color);
 }
