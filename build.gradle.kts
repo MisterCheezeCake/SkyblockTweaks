@@ -19,9 +19,9 @@ base {
 loom {
     accessWidenerPath = project.file("src/main/resources/skyblocktweaks.accesswidener")
 
-    runConfigs.all {
-        ideConfigGenerated(stonecutter.current.isActive)
-    }
+//    runConfigs.all {
+//        ideConfigGenerated(stonecutter.current.isActive)
+//    }
 
     runConfigs.remove(runConfigs["server"])
 }
