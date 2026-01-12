@@ -23,14 +23,14 @@ import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import wtf.cheeze.sbt.hud.bounds.Bounds;
 import wtf.cheeze.sbt.utils.text.TextUtils;
 
 import java.util.List;
 
 public interface Popup extends Renderable {
-    Identifier BACKGROUND = Identifier.fromNamespaceAndPath("skyblocktweaks", "gui/panel.png");
+    ResourceLocation BACKGROUND = ResourceLocation.fromNamespaceAndPath("skyblocktweaks", "gui/panel.png");
     Component SBT_FOOTER = TextUtils.withColor("SBT", Colors.SBT_GREEN);
 
     int WIDTH = 80;

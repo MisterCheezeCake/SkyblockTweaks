@@ -1,14 +1,14 @@
 package wtf.cheeze.sbt.config.migration;
 
 import com.mojang.blaze3d.pipeline.RenderPipeline;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.utils.render.Colors;
 
 /**
  * In mod versions prior to 0.1.0-Alpha.8, bar colors (all colors actually), defaulted to RGB ints.
  * This was fine pre 1.21.2 since the shader system was used, which was fine with RGB ints
- * However, in 1.21.2, the shader system was tweaked, and we moved to the color parameter in {@link net.minecraft.client.gui.GuiGraphics#blit(RenderPipeline, Identifier, int, int, float, float, int, int, int, int)}
+ * However, in 1.21.2, the shader system was tweaked, and we moved to the color parameter in {@link net.minecraft.client.gui.GuiGraphics#blit(RenderPipeline, ResourceLocation, int, int, float, float, int, int, int, int)}
  * This method interprets ints as ARGB, not RGB, which resulted in the bars not rendering with default settings due to the alpha value being 0.
  * YACL always treated the color as ARGB, so this issue only affects users who never modified the settings.
  * This transformation checks for the old defaults and updates them to the new defaults.

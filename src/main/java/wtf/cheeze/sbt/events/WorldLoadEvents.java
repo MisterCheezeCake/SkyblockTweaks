@@ -20,18 +20,17 @@ package wtf.cheeze.sbt.events;
 
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
-import net.minecraft.client.gui.screens.ReceivingLevelScreen.Reason;
 import net.minecraft.client.multiplayer.ClientLevel;
 
 public class WorldLoadEvents {
-    public static Event<OnWorldLoad> WORLD_LOAD = EventFactory.createArrayBacked(OnWorldLoad.class, listeners -> (world, worldEntryReason) -> {
+    public static Event<OnWorldLoad> WORLD_LOAD = EventFactory.createArrayBacked(OnWorldLoad.class, listeners -> world -> {
         for (OnWorldLoad listener : listeners) {
-            listener.onWorldLoad(world, worldEntryReason);
+            listener.onWorldLoad(world);
         }
     });
 
     @FunctionalInterface
     public interface OnWorldLoad {
-        void onWorldLoad(ClientLevel world, Reason worldEntryReason);
+        void onWorldLoad(ClientLevel world);
     }
 }

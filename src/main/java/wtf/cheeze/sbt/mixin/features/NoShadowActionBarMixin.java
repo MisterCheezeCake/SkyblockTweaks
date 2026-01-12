@@ -27,14 +27,14 @@ import net.minecraft.network.chat.Component;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import wtf.cheeze.sbt.config.SBTConfig;
-import wtf.cheeze.sbt.utils.injected.SBTDrawContext;
+import wtf.cheeze.sbt.utils.injected.SBTGuiGraphics;
 
 @Mixin(Gui.class)
 public abstract class NoShadowActionBarMixin {
     @WrapOperation(method = "renderOverlayMessage", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;drawStringWithBackdrop(Lnet/minecraft/client/gui/Font;Lnet/minecraft/network/chat/Component;IIII)V"))
     private void sbt$drawTextWithBackgroundNoShadowWrap(GuiGraphics instance, Font textRenderer, Component text, int x, int y, int width, int color, Operation<Void> original) {
         if (SBTConfig.get().hudTweaks.noShadowActionBar) {
-            ((SBTDrawContext) instance).sbt$drawTextWithBackgroundNoShadow(textRenderer, text, x, y, width, color);
+            ((SBTGuiGraphics) instance).sbt$drawTextWithBackgroundNoShadow(textRenderer, text, x, y, width, color);
         } else {
            original.call(instance, textRenderer, text, x, y, width, color);
         }

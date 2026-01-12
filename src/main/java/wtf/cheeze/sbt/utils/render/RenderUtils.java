@@ -23,7 +23,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.navigation.ScreenRectangle;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import wtf.cheeze.sbt.hud.bases.BarHud;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTextTooltip;
@@ -160,11 +160,11 @@ public class RenderUtils {
 
     }
 
-    public static void drawTexture(GuiGraphics guiGraphics, Identifier texture, int x, int y, int width, int height, int textureWidth, int textureHeight) {
+    public static void drawTexture(GuiGraphics guiGraphics, ResourceLocation texture, int x, int y, int width, int height, int textureWidth, int textureHeight) {
         guiGraphics.blit(RenderPipelines.GUI_TEXTURED, texture, x, y, 0, 0, width, height, textureWidth, textureHeight);
     }
 
-    public static void drawBar(GuiGraphics guiGraphics, Identifier texture, int x, int y, int width, int color) {
+    public static void drawBar(GuiGraphics guiGraphics, ResourceLocation texture, int x, int y, int width, int color) {
         guiGraphics.blit(RenderPipelines.GUI_TEXTURED, texture, x, y, 0, 0, width, BarHud.BAR_HEIGHT, BarHud.BAR_WIDTH, BarHud.BAR_HEIGHT, color);
     }
 

@@ -28,6 +28,7 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.EditBox;
+import net.minecraft.client.input.KeyEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.network.chat.Component;
 import org.lwjgl.glfw.GLFW;
@@ -38,7 +39,7 @@ import wtf.cheeze.sbt.events.DrawSlotEvents;
 import wtf.cheeze.sbt.utils.KillSwitch;
 import wtf.cheeze.sbt.utils.constants.loader.Constants;
 import wtf.cheeze.sbt.utils.enums.Side;
-import wtf.cheeze.sbt.utils.injected.SBTHandledScreen;
+import wtf.cheeze.sbt.utils.injected.SBTAbstractContainerScreen;
 import wtf.cheeze.sbt.utils.render.Colors;
 import wtf.cheeze.sbt.utils.render.Popup;
 import wtf.cheeze.sbt.utils.render.RenderUtils;
@@ -92,7 +93,7 @@ public class ReforgeOverlay {
 
         ScreenEvents.AFTER_INIT.register((client, screen, width, height) -> {
             if (screen instanceof AbstractContainerScreen<?> handledScreen && handledScreen.getTitle().getString().equals(SCREEN_TITLE) && SBTConfig.get().reforgeOverlay.filterOverlay && !KillSwitch.shouldKill(FILTER_FEATURE_ID)) {
-                ((SBTHandledScreen)handledScreen).sbt$setPopup(new FilterOverlayPopup(handledScreen));
+                ((SBTAbstractContainerScreen)handledScreen).sbt$setPopup(new FilterOverlayPopup(handledScreen));
             }
         });
     }
@@ -198,9 +199,9 @@ public class ReforgeOverlay {
                     matchWidget.setFocused(false);
                     return true;
                 }
-                if (!inv) return matchWidget.keyPressed(keyCode, scanCode, modifiers);
+                if (!inv) return matchWidget.keyPressed(new KeyEvent(keyCode, scanCode, modifiers));
                 else {
-                    matchWidget.keyPressed(keyCode, scanCode, modifiers);
+                    matchWidget.keyPressed(new KeyEvent(keyCode, scanCode, modifiers));
                     return true;
                 }
             }
@@ -209,9 +210,9 @@ public class ReforgeOverlay {
                     exclusionWidget.setFocused(false);
                     return true;
                 }
-                if (!inv) return exclusionWidget.keyPressed(keyCode, scanCode, modifiers);
+                if (!inv) return exclusionWidget.keyPressed(new KeyEvent(keyCode, scanCode, modifiers));
                 else {
-                    exclusionWidget.keyPressed(keyCode, scanCode, modifiers);
+                    exclusionWidget.keyPressed(new KeyEvent(keyCode, scanCode, modifiers));
                     return true;
                 }
             }

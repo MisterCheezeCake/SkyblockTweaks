@@ -21,6 +21,6 @@ package wtf.cheeze.sbt.utils.injected;
 import net.minecraft.client.gui.Font;
 import net.minecraft.network.chat.Component;
 
-public interface SBTDrawContext {
+public interface SBTGuiGraphics {
     void sbt$drawTextWithBackgroundNoShadow(Font textRenderer, Component text, int x, int y, int width, int color);
 }

@@ -41,11 +41,5 @@
 		"java": ">=21",
 		"fabric-api": "*",
 		"yet_another_config_lib_v3": "*"
-	},
-	"custom": {
-		"loom:injected_interfaces": {
-			"net/minecraft/class_332": ["wtf/cheeze/sbt/utils/injected/SBTDrawContext"],
-			"net/minecraft/class_465": ["wtf/cheeze/sbt/utils/injected/SBTHandledScreen"]
-		}
 	}
 }

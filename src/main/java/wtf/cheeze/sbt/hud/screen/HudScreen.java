@@ -18,13 +18,19 @@
  */
 package wtf.cheeze.sbt.hud.screen;
 
+import dev.isxander.yacl3.gui.utils.KeyUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.events.GuiEventListener;
+import net.minecraft.client.gui.narration.NarratableEntry;
+import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.navigation.ScreenRectangle;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.EditBox;
+import net.minecraft.client.input.KeyEvent;
+import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
@@ -34,6 +40,7 @@ import wtf.cheeze.sbt.hud.HUD;
 import wtf.cheeze.sbt.hud.bounds.Bounds;
 import wtf.cheeze.sbt.hud.utils.AnchorPoint;
 import wtf.cheeze.sbt.utils.CheezePair;
+import wtf.cheeze.sbt.utils.render.ScreenListener;
 import wtf.cheeze.sbt.utils.text.Predicates;
 import wtf.cheeze.sbt.utils.render.Colors;
 import wtf.cheeze.sbt.utils.render.RenderUtils;
@@ -120,7 +127,7 @@ public class HudScreen extends Screen {
         this.addRenderableWidget(cancelButton);
         this.addRenderableWidget(resetButton);
         this.addRenderableWidget(resetModeButton);
-
+        this.addWidget(new EventListener());
     }
 
     @Override
@@ -134,7 +141,8 @@ public class HudScreen extends Screen {
             hud.render(guiGraphics, true, inBounds);
             if (inBounds) {
                 hovered = hud;
-                if (hasShiftDown()) {
+                // TODO: Reduce Reliance on YAc
+                if (KeyUtils.hasShiftDown()) {
 //                    context.drawTooltip(hud.getName().primaryName(),);
                     if (!drawnTooltip) guiGraphics.setTooltipForNextFrame(Minecraft.getInstance().font, hud.getName().primaryName(), mouseX, mouseY );
                     drawnTooltip = true;
@@ -160,51 +168,6 @@ public class HudScreen extends Screen {
     }
 
     @Override
-    public boolean mouseDragged(double mouseX, double mouseY, int button, double deltaX, double deltaY) {
-        boolean b = super.mouseDragged(mouseX, mouseY, button, deltaX, deltaY);
-        if (this.mode != Mode.DRAG) return b;
-        if (selectedElement != null) {
-            selectedElement.updatePosition(HUD.getRelativeX(mouseX - offsetX), HUD.getRelativeY(mouseY - offsetY));
-        }
-        return b;
-    }
-
-    @Override
-    public boolean mouseClicked(double mouseX, double mouseY, int button) {
-        boolean b = super.mouseClicked(mouseX, mouseY, button);
-        selectedViaTheKeyboard = null;
-        for (HUD hud : huds) {
-            if (clickInBounds(hud, mouseX, mouseY)) {
-//                if (hasControlDown() || this.mode == Mode.TEXT) {
-//                    enableTextMode(hud);
-//                    return b;
-//                }
-                if (this.mode == Mode.DRAG) {
-                    selectedElement = hud;
-                    updateOffset(hud, mouseX, mouseY);
-                }
-                if (hasControlDown() || (this.mode == Mode.TEXT && !clickInBounds(popup.getBounds(), mouseX, mouseY))) {
-                    this.addPopup(hud.getName().name(EditorPopup.WIDTH), (int) mouseX, (int) mouseY, getPopupWidgets(hud));
-                    return b;
-                }
-            }
-        }
-        if (this.popup != null && !clickInBounds(this.popup.getBounds(), mouseX, mouseY)) {
-            this.popup.remove();
-            this.popup = null;
-            this.setMode(Mode.DRAG);
-        }
-        return b;
-    }
-
-    @Override
-    public boolean mouseReleased(double mouseX, double mouseY, int button) {
-        boolean x = super.mouseReleased(mouseX, mouseY, button);
-        if (this.mode == Mode.DRAG) selectedElement = null;
-        return x;
-    }
-
-    @Override
     public boolean mouseScrolled(double mouseX, double mouseY, double horizontal, double vertical) {
         boolean b = super.mouseScrolled(mouseX, mouseY, horizontal, vertical);
         if (hoveredElement != null) {
@@ -214,18 +177,18 @@ public class HudScreen extends Screen {
     }
 
     @Override
-    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+    public boolean keyPressed(KeyEvent event) {
 
-        if (hasAltDown() && hasControlDown()) {
+        if (Minecraft.getInstance().hasAltDown() && Minecraft.getInstance().hasControlDown()) {
             textToggledOff = !textToggledOff;
         }
 
-        if (keyCode == GLFW.GLFW_KEY_R && hasControlDown()) {
+        if (event.key() == GLFW.GLFW_KEY_R && Minecraft.getInstance().hasControlDown()) {
             setMode(Mode.RESET);
         }
         if (this.mode == Mode.DRAG) {
             if (this.hoveredElement != null) {
-                switch (keyCode) {
+                switch (event.key()) {
                     case GLFW.GLFW_KEY_UP -> {
                         moveVertical(hoveredElement, -getMoveAmount());
                         selectedViaTheKeyboard = hoveredElement;
@@ -253,7 +216,7 @@ public class HudScreen extends Screen {
                     }
                 }
             } else if (this.selectedViaTheKeyboard != null) {
-                switch (keyCode) {
+                switch (event.key()) {
                     case GLFW.GLFW_KEY_UP -> moveVertical(selectedViaTheKeyboard, -getMoveAmount());
                     case GLFW.GLFW_KEY_DOWN -> moveVertical(selectedViaTheKeyboard, getMoveAmount());
                     case GLFW.GLFW_KEY_LEFT -> moveHorizontal(selectedViaTheKeyboard, -getMoveAmount());
@@ -265,7 +228,7 @@ public class HudScreen extends Screen {
                 }
             }
         }
-        if (keyCode == GLFW.GLFW_KEY_ESCAPE) {
+        if (event.key() == GLFW.GLFW_KEY_ESCAPE) {
             if (this.popup != null) {
                 this.popup.remove();
                 this.popup = null;
@@ -277,7 +240,7 @@ public class HudScreen extends Screen {
                 return true;
             }
         }
-        return super.keyPressed(keyCode, scanCode, modifiers);
+        return super.keyPressed(event);
     }
 
     private void setMode(Mode newMode) {
@@ -299,7 +262,7 @@ public class HudScreen extends Screen {
     }
 
     private boolean shouldShowText() {
-        if (hasAltDown()) return false;
+        if (Minecraft.getInstance().hasAltDown()) return false;
         return !textToggledOff;
     }
 
@@ -411,6 +374,48 @@ public class HudScreen extends Screen {
 
     private enum Mode {
         DRAG, TEXT, RESET
+    }
+
+    private class EventListener extends ScreenListener {
+        @Override
+        public boolean mouseReleased(MouseButtonEvent event) {
+            if (HudScreen.this.mode == Mode.DRAG) selectedElement = null;
+            return false;
+        }
+
+        @Override
+        public boolean mouseClicked(MouseButtonEvent event, boolean isDoubleClick) {
+            HudScreen.this.selectedViaTheKeyboard = null;
+            for (HUD hud : huds) {
+                if (clickInBounds(hud, event.x(), event.y())) {
+                    if (HudScreen.this.mode == Mode.DRAG) {
+                        selectedElement = hud;
+                        updateOffset(hud, event.x(), event.y());
+                    }
+                    if (Minecraft.getInstance().hasControlDown() || (HudScreen.this.mode == Mode.TEXT && !clickInBounds(popup.getBounds(), event.x(), event.y()))) {
+                        HudScreen.this.addPopup(hud.getName().name(EditorPopup.WIDTH), (int) event.x(), (int) event.y(), getPopupWidgets(hud));
+                        return false;
+                    }
+                }
+            }
+            if (HudScreen.this.popup != null && !clickInBounds(HudScreen.this.popup.getBounds(), event.x(), event.y())) {
+                HudScreen.this.popup.remove();
+                HudScreen.this.popup = null;
+                HudScreen.this.setMode(Mode.DRAG);
+            }
+            return false;
+        }
+
+        @Override
+        public boolean mouseDragged(MouseButtonEvent event, double mouseX, double mouseY) {
+            // TODO: What are these parameters?
+            if (HudScreen.this.mode != Mode.DRAG) return false;
+            if (HudScreen.this.selectedElement != null) {
+                HudScreen.this.selectedElement.updatePosition(HUD.getRelativeX(event.x() - HudScreen.this.offsetX), HUD.getRelativeY(event.y() - HudScreen.this.offsetY));
+            }
+            return false;
+        }
+
     }
 
 }

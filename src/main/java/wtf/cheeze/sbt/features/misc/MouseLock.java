@@ -31,7 +31,7 @@ public class MouseLock {
     public static boolean locked = false;
 
     public static void registerEvents() {
-        WorldLoadEvents.WORLD_LOAD.register((world, wer) -> {
+        WorldLoadEvents.WORLD_LOAD.register((world) -> {
             if (locked) {
                 locked = false;
                 MessageManager.send("Disabled Mouse Lock due to world change", Colors.RED);

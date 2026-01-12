@@ -26,12 +26,12 @@ import net.minecraft.util.ARGB;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import wtf.cheeze.sbt.utils.injected.SBTDrawContext;
+import wtf.cheeze.sbt.utils.injected.SBTGuiGraphics;
 
 import java.util.Objects;
 
 @Mixin(GuiGraphics.class)
-public abstract class GuiGraphicsMixin implements SBTDrawContext {
+public abstract class GuiGraphicsMixin implements SBTGuiGraphics {
     @Final
     @Shadow
     private Minecraft minecraft;

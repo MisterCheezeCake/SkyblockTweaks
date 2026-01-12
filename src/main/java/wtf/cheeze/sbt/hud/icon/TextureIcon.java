@@ -19,14 +19,14 @@
 package wtf.cheeze.sbt.hud.icon;
 
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 import wtf.cheeze.sbt.utils.render.RenderUtils;
 
 public class TextureIcon implements HudIcon {
-    private final Identifier iconTexture;
+    private final ResourceLocation iconTexture;
 
-    public TextureIcon(@NotNull Identifier texture) {
+    public TextureIcon(@NotNull ResourceLocation texture) {
         this.iconTexture = texture;
     }
 

@@ -20,7 +20,7 @@ package wtf.cheeze.sbt.hud.icon;
 
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 
 public interface HudIcon {
@@ -29,7 +29,7 @@ public interface HudIcon {
     static HudIcon of(@NotNull ItemStack stack) {
         return new ItemStackIcon(stack);
     }
-    static HudIcon of(@NotNull Identifier texture) {
+    static HudIcon of(@NotNull ResourceLocation texture) {
         return new TextureIcon(texture);
     }
 

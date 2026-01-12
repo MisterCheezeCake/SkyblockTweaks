@@ -46,7 +46,7 @@ import wtf.cheeze.sbt.utils.constants.loader.Constants;
 import wtf.cheeze.sbt.utils.enums.Skill;
 import wtf.cheeze.sbt.utils.errors.ErrorHandler;
 import wtf.cheeze.sbt.utils.errors.ErrorLevel;
-import wtf.cheeze.sbt.utils.injected.SBTHandledScreen;
+import wtf.cheeze.sbt.utils.injected.SBTAbstractContainerScreen;
 import wtf.cheeze.sbt.utils.render.Colors;
 import wtf.cheeze.sbt.utils.render.Popup;
 import wtf.cheeze.sbt.utils.render.RenderUtils;
@@ -68,7 +68,7 @@ public class MinionExp {
     public static void registerEvents() {
         ScreenEvents.AFTER_INIT.register((client, screen, width, height) -> {
             if (screen instanceof AbstractContainerScreen<?> handledScreen && handledScreen.getTitle().getString().matches(MINION_EXP_SCREEN_REGEX) && SBTConfig.get().minionExp.enabled && !KillSwitch.shouldKill(FEATURE_ID)) {
-                ((SBTHandledScreen)handledScreen).sbt$setPopup(new MinionExpPopup(handledScreen));
+                ((SBTAbstractContainerScreen)handledScreen).sbt$setPopup(new MinionExpPopup(handledScreen));
             }
         });
     }

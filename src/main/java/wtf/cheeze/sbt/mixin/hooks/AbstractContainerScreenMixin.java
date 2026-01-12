@@ -21,6 +21,8 @@ package wtf.cheeze.sbt.mixin.hooks;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.input.KeyEvent;
+import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.world.inventory.BrewingStandMenu;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.Slot;
@@ -37,11 +39,13 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import wtf.cheeze.sbt.events.DrawSlotEvents;
 import wtf.cheeze.sbt.features.overlay.BrewingStandOverlay;
 import wtf.cheeze.sbt.utils.KillSwitch;
-import wtf.cheeze.sbt.utils.injected.SBTHandledScreen;
+import wtf.cheeze.sbt.utils.injected.SBTAbstractContainerScreen;
 import wtf.cheeze.sbt.utils.render.Popup;
 
+import java.awt.event.MouseEvent;
+
 @Mixin(AbstractContainerScreen.class)
-public abstract class AbstractContainerScreenMixin<T extends AbstractContainerMenu> extends Screen implements SBTHandledScreen {
+public abstract class AbstractContainerScreenMixin<T extends AbstractContainerMenu> extends Screen implements SBTAbstractContainerScreen {
     @Unique
     private static final String SBT$FEATURE_ID_POPUP = "handled_screen_popups";
 
@@ -75,18 +79,18 @@ public abstract class AbstractContainerScreenMixin<T extends AbstractContainerMe
     }
 
     @Inject(method = "mouseClicked", at = @At("HEAD"), cancellable = true)
-    public void sbt$onMouseClicked(double mouseX, double mouseY, int button, CallbackInfoReturnable<Boolean> cir) {
+    public void sbt$onMouseClicked(MouseButtonEvent event, boolean isDoubleClick, CallbackInfoReturnable<Boolean> cir) {
         if (this.sbt$popup != null) {
-            if (this.sbt$popup.mouseClicked(mouseX, mouseY, button)) {
+            if (this.sbt$popup.mouseClicked(event.x(), event.y(), event.button())) {
                 cir.setReturnValue(true);
             }
         }
     }
 
     @Inject(method = "keyPressed", at = @At("HEAD"), cancellable = true)
-    public void sbt$onKeyPressed(int keyCode, int scanCode, int modifiers, CallbackInfoReturnable<Boolean> cir) {
+    public void sbt$onKeyPressed(KeyEvent event, CallbackInfoReturnable<Boolean> cir) {
         if (this.sbt$popup != null) {
-            if (this.sbt$popup.keyPressed(keyCode, scanCode, modifiers)) {
+            if (this.sbt$popup.keyPressed(event.key(), event.scancode(), event.modifiers())) {
                 cir.setReturnValue(true);
             }
         }

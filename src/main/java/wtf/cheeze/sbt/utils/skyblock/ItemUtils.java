@@ -18,10 +18,13 @@
  */
 package wtf.cheeze.sbt.utils.skyblock;
 
-import com.mojang.authlib.properties.Property;
+import com.google.gson.JsonParser;
+import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.PropertyMap;
+import com.mojang.serialization.JsonOps;
 import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.component.ResolvableProfile;
 import net.minecraft.world.item.Item;
@@ -30,7 +33,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.Holder;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.utils.errors.ErrorHandler;
 import wtf.cheeze.sbt.utils.errors.ErrorLevel;
@@ -40,6 +43,7 @@ import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 public class ItemUtils {
 
@@ -122,7 +126,7 @@ public class ItemUtils {
                 getRegistryEntry("player_head"),
                 1,
                 DataComponentPatch.builder()
-                        .set(DataComponents.PROFILE, new ResolvableProfile(Optional.empty(), Optional.empty(), headProps(SkullMap.get(skullName))))
+                        .set(DataComponents.PROFILE, ResolvableProfile.createResolved(new GameProfile(UUID.randomUUID(), "sbt-skull", headProps(SkullMap.get(skullName)))))
                         .set(DataComponents.CUSTOM_DATA, getSkyblockItemNBT(skyblockID))
                         .set(DataComponents.ENCHANTMENT_GLINT_OVERRIDE, enchanted)
                         .build()
@@ -141,22 +145,23 @@ public class ItemUtils {
                 getRegistryEntry("player_head"),
                 1,
                 DataComponentPatch.builder()
-                        .set(DataComponents.PROFILE, new ResolvableProfile(Optional.empty(), Optional.empty(), headProps(SkullMap.get(skullName))))
+                        .set(DataComponents.PROFILE, ResolvableProfile.createResolved(new GameProfile(UUID.randomUUID(), "sbt-skull", headProps(SkullMap.get(skullName)))))
                         .build()
         );
     }
 
+
+
     private static PropertyMap headProps(String texture) {
         if (texture == null) {
-            return new PropertyMap();
+            return PropertyMap.EMPTY;
         }
         try {
-            var props = new PropertyMap();
-            props.put("textures", new Property("textures", texture));
-            return props;
+            // Taken from Skyblocker
+            return ExtraCodecs.PROPERTY_MAP.parse(JsonOps.INSTANCE, JsonParser.parseString("[{\"name\":\"textures\",\"value\":\"" + texture + "\"}]")).getOrThrow();
         } catch (Exception e) {
             ErrorHandler.handle(e, "Error while creating skull texture", ErrorLevel.WARNING);
-            return new PropertyMap();
+            return PropertyMap.EMPTY;
         }
     }
 
@@ -168,7 +173,7 @@ public class ItemUtils {
     }
 
     private static Holder<Item> getRegistryEntry(String minecraftID) {
-        return Holder.direct(BuiltInRegistries.ITEM.getValue(Identifier.parse(minecraftID)));
+        return Holder.direct(BuiltInRegistries.ITEM.getValue(ResourceLocation.parse(minecraftID)));
     }
 
     public static class SkullMap {
