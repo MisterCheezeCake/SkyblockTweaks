@@ -15,7 +15,6 @@ import wtf.cheeze.sbt.utils.render.Colors;
  * were present. This transformation also handles colors for any other HUDs present prior to 0.1.0-Alpha.8, to be safe if someone has an old config.
  */
 public class TextColorTransformation implements ConfigTransformation<ConfigImpl> {
-
     private static final int OLD_RED = 16733525;
     private static final int OLD_ORANGE = 16755200;
     private static final int OLD_BLUE = 5592575;
@@ -25,11 +24,9 @@ public class TextColorTransformation implements ConfigTransformation<ConfigImpl>
     private static final int OLD_WHITE = 0xFFFFFF;
     private static final int OLD_BLACK = 0;
 
-
     private TextColorTransformation() {}
 
     public static final TextColorTransformation INSTANCE = new TextColorTransformation();
-
 
     @Override
     public ConfigImpl tranform(ConfigImpl config) {

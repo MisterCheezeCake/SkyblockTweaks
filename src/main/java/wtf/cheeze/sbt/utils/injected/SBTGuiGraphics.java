@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 MisterCheezeCake
+ * Copyright (C) 2024 MisterCheezeCake
  *
  * This file is part of SkyblockTweaks.
  *
@@ -16,20 +16,11 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with SkyblockTweaks. If not, see <https://www.gnu.org/licenses/>.
  */
-package wtf.cheeze.sbt.mixin.features;
+package wtf.cheeze.sbt.utils.injected;
 
+import net.minecraft.client.gui.Font;
+import net.minecraft.network.chat.Component;
 
-import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
-import net.minecraft.client.Mouse;
-import net.minecraft.client.network.ClientPlayerEntity;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.At;
-import wtf.cheeze.sbt.features.misc.MouseLock;
-
-@Mixin(Mouse.class)
-public abstract class MouseLockMixin {
-    @WrapWithCondition(method = "updateMouse", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;changeLookDirection(DD)V"))
-    private boolean sbt$allowMouseMove(ClientPlayerEntity instance, double v, double v2) {
-        return !MouseLock.locked;
-    }
+public interface SBTGuiGraphics {
+    void sbt$drawTextWithBackgroundNoShadow(Font textRenderer, Component text, int x, int y, int width, int color);
 }

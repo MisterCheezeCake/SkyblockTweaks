@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 MisterCheezeCake
+ * Copyright (C) 2026 MisterCheezeCake
  *
  * This file is part of SkyblockTweaks.
  *
@@ -16,37 +16,33 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with SkyblockTweaks. If not, see <https://www.gnu.org/licenses/>.
  */
-package wtf.cheeze.sbt.hud.components;
+package wtf.cheeze.sbt.utils.render;
 
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.events.GuiEventListener;
+import net.minecraft.client.gui.narration.NarratableEntry;
+import net.minecraft.client.gui.narration.NarrationElementOutput;
 
-public class GapComponent implements HudComponent{
-    public static final GapComponent TWO = new GapComponent(2);
-
-    private final int width;
-
-    public GapComponent(int width) {
-        this.width = width;
+/**
+ * An abstract blueprint for screen event listeners
+ */
+public abstract class ScreenListener implements GuiEventListener, NarratableEntry {
+    @Override
+    public void setFocused(boolean focused) {
+        // Do Nothing
     }
 
     @Override
-    public int render(GuiGraphics guiGraphics, int x, int y, float scale) {
-        // This component is used to create a gap in the HUD, so it doesn't need to render anything.
-        return 1;
+    public boolean isFocused() {
+        return false;
     }
 
     @Override
-    public int getWidth() {
-        return width;
+    public NarrationPriority narrationPriority() {
+        return NarrationPriority.NONE;
     }
 
     @Override
-    public int getHeight() {
-        return 0;
-    }
-
-    @Override
-    public int getlines() {
-        return 1;
+    public void updateNarration(NarrationElementOutput narrationElementOutput) {
+        // Do Nothing
     }
 }

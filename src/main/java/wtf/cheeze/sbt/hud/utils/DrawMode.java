@@ -19,7 +19,7 @@
 package wtf.cheeze.sbt.hud.utils;
 
 import dev.isxander.yacl3.api.NameableEnum;
-import net.minecraft.text.Text;
+import net.minecraft.network.chat.Component;
 import wtf.cheeze.sbt.utils.text.TextUtils;
 
 public enum DrawMode implements NameableEnum {
@@ -28,7 +28,7 @@ public enum DrawMode implements NameableEnum {
     OUTLINE;
 
     @Override
-    public Text getDisplayName() {
-        return Text.literal(TextUtils.firstLetterUppercase(name().toLowerCase()));
+    public Component getDisplayName() {
+        return Component.literal(TextUtils.firstLetterUppercase(name().toLowerCase()));
     }
 }

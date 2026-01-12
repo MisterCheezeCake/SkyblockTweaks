@@ -23,11 +23,11 @@ import dev.isxander.yacl3.api.Option;
 import dev.isxander.yacl3.api.OptionGroup;
 import dev.isxander.yacl3.api.controller.ColorControllerBuilder;
 import dev.isxander.yacl3.config.v2.api.SerialEntry;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.text.Text;
+import net.minecraft.client.Minecraft;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SBTConfig;
@@ -67,11 +67,11 @@ public class FetchurFeatures {
     private static final String SUCCESS_MESSAGE = "thanks thats probably what i needed";
     private static final String ALREADY_DONE_MESSAGE = "come back another time, maybe tmrw";
 
-    private static Text waitingToSend;
+    private static Component waitingToSend;
     private static boolean isWaitingToSend = false;
 
     public static void registerEvents() {
-        ChatEvents.ON_GAME.register(message -> {;
+        ChatEvents.ON_GAME.register(message -> {
             var str = TextUtils.removeFormatting(message.getString());
             var matcher = FETCHUR_PATTERN.matcher(str);
             if (!matcher.matches()) return;
@@ -83,7 +83,7 @@ public class FetchurFeatures {
                 if (!SBTConfig.mining().fetchur.chatSolver) return;
                 if (isWaitingToSend) {
                     isWaitingToSend = false;
-                    MinecraftClient.getInstance().send(() -> {
+                    Minecraft.getInstance().schedule(() -> {
                         MessageManager.send(waitingToSend);
                         waitingToSend = null;
                     });
@@ -164,11 +164,8 @@ public class FetchurFeatures {
             }
 
             return list.toArray(CheezePair[]::new);
-
         }
     }
-
-
 
     private static boolean hasFetchuredToday() {
         return TimeUtils.isInSameDayET(System.currentTimeMillis() - 1, PersistentData.get().currentProfile().lastGaveFetchurItem);
@@ -193,22 +190,22 @@ public class FetchurFeatures {
         EMERALD(Items.EMERALD, 50, TextUtils.withColor("50 Emeralds", Colors.WHITE), "theyre green and some dudes trade stuff for it"),
         RDD_WOOL(Items.RED_WOOL, 50, TextUtils.withColor("50 Red Wool", Colors.WHITE), "theyre red and soft"),;
         public final ItemStack stack;
-        public final Text display;
+        public final Component display;
         public final String hisDescription;
 
 
 
-        FetchurItem(Item item, Text display, String hisDescription) {
+        FetchurItem(Item item, Component display, String hisDescription) {
            this.stack = new ItemStack(item);
            this.display = display;
             this.hisDescription = hisDescription;
         }
-        FetchurItem(Item item, int count, Text display,  String hisDescription) {
+        FetchurItem(Item item, int count, Component display, String hisDescription) {
             this.stack = new ItemStack(item, count);
             this.display = display;
             this.hisDescription = hisDescription;
         }
-        FetchurItem(ItemStack stack, Text display,  String hisDescription) {
+        FetchurItem(ItemStack stack, Component display, String hisDescription) {
             this.stack = stack;
             this.display = display;
             this.hisDescription = hisDescription;

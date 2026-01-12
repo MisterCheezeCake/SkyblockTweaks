@@ -22,7 +22,7 @@ import dev.isxander.yacl3.api.Option;
 import dev.isxander.yacl3.api.OptionGroup;
 import dev.isxander.yacl3.api.controller.ColorControllerBuilder;
 import dev.isxander.yacl3.config.v2.api.SerialEntry;
-import net.minecraft.text.Text;
+import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SBTConfig;
@@ -38,7 +38,6 @@ import wtf.cheeze.sbt.utils.skyblock.SkyblockData;
 import java.awt.Color;
 
 public class FpsHud extends TextHud {
-
     public static final FpsHud INSTANCE = new FpsHud();
 
     private FpsHud() {
@@ -56,7 +55,7 @@ public class FpsHud extends TextHud {
                 () -> SBTConfig.huds().fps.color,
                 () -> SBTConfig.huds().fps.outlineColor,
                 () -> SBTConfig.huds().fps.mode,
-                () -> Text.literal(SBTConfig.huds().fps.reverse ?  "FPS: " + client.getCurrentFps() : client.getCurrentFps() + " FPS")
+                () -> Component.literal(SBTConfig.huds().fps.reverse ?  "FPS: " + client.getFps() : client.getFps() + " FPS")
 
         );
     }
@@ -70,7 +69,6 @@ public class FpsHud extends TextHud {
     public @NotNull HudName getName() {
         return new HudName("FPS HUD", Colors.LIGHT_BLUE);
     }
-
 
     public static class Config {
         @SerialEntry
@@ -136,6 +134,7 @@ public class FpsHud extends TextHud {
                             value -> config.huds.fps.reverse = value
                     )
                     .build();
+
             var color = Option.<Color>createBuilder()
                     .name(key("fps.color"))
                     .description(keyD("fps.color"))
@@ -147,6 +146,7 @@ public class FpsHud extends TextHud {
 
                     )
                     .build();
+
             var outline = Option.<Color>createBuilder()
                     .name(key("fps.outlineColor"))
                     .description(keyD("fps.outlineColor"))
@@ -159,6 +159,7 @@ public class FpsHud extends TextHud {
 
                     )
                     .build();
+
             var mode = Option.<DrawMode>createBuilder()
                     .name(key("fps.mode"))
                     .description(keyD("fps.mode"))
@@ -172,6 +173,7 @@ public class FpsHud extends TextHud {
                             }
                     )
                     .build();
+
             var scale = Option.<Float>createBuilder()
                     .name(key("fps.scale"))
                     .description(keyD("fps.scale"))

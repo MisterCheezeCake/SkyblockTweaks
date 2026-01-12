@@ -24,8 +24,8 @@ import dev.isxander.yacl3.api.OptionGroup;
 import dev.isxander.yacl3.api.controller.IntegerFieldControllerBuilder;
 import dev.isxander.yacl3.api.controller.StringControllerBuilder;
 import dev.isxander.yacl3.config.v2.api.SerialEntry;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.text.Text;
+import net.minecraft.client.Minecraft;
+import net.minecraft.network.chat.Component;
 import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SBTConfig;
@@ -44,7 +44,6 @@ import static wtf.cheeze.sbt.config.categories.Chat.key;
 import static wtf.cheeze.sbt.config.categories.Chat.keyD;
 
 public class PartyFeatures {
-
     private static final String FEATURE_ID = "party_commands";
 
     public static final Pattern PARTY_PATTERN = Pattern.compile("Party > ([^:]+): !(.+)");
@@ -54,7 +53,7 @@ public class PartyFeatures {
     public static boolean verboseDebug = false;
     public static long lastPartyCommand = 0;
 
-    private static final MinecraftClient client = MinecraftClient.getInstance();
+    private static final Minecraft client = Minecraft.getInstance();
 
     public static void registerEvents() {
         ChatEvents.ON_GAME.register(message -> {
@@ -98,7 +97,7 @@ public class PartyFeatures {
                             return;
                         }
                         if (verboseDebug) sendDebugMessage("Sending '/p transfer " + name + "'");
-                        client.getNetworkHandler().sendChatCommand("p transfer " + name);
+                        client.getConnection().sendCommand("p transfer " + name);
                     }
                     case "allinv", "allinvite" -> {
                         if (!SkyblockData.Party.leader) {
@@ -106,7 +105,7 @@ public class PartyFeatures {
                             return;
                         }
                         if (verboseDebug) sendDebugMessage("Sending '/p settings allinvite'");
-                        client.getNetworkHandler().sendChatCommand("p settings allinvite");
+                        client.getConnection().sendCommand("p settings allinvite");
                     }
                     case "warp" -> {
                         if (!SkyblockData.Party.leader) {
@@ -114,7 +113,7 @@ public class PartyFeatures {
                             return;
                         }
                         if (verboseDebug) sendDebugMessage("Sending '/p warp'");
-                        client.getNetworkHandler().sendChatCommand("p warp");
+                        client.getConnection().sendCommand("p warp");
                     }
                     case "help" -> {
                         if ((name.equals(client.player.getName().getString()))) {
@@ -122,7 +121,7 @@ public class PartyFeatures {
                             return;
                         }
                         if (verboseDebug) sendDebugMessage("Sending help message");
-                        client.getNetworkHandler().sendChatCommand("pc [SkyblockTweaks] Available party commands: !ptme, !allinvite, !warp, !help");
+                        client.getConnection().sendCommand("pc [SkyblockTweaks] Available party commands: !ptme, !allinvite, !warp, !help");
                     }
                 }
             } else if (s.startsWith("The party was transferred to")) {
@@ -140,7 +139,7 @@ public class PartyFeatures {
                 if (!matcher.matches()) return;
                 var n = matcher.group(1);
                 var name = n.contains(" ") ? n.split(" ")[1] : n;
-                client.send(() -> MessageManager.send(getInviteMessage(name)));
+                client.schedule(() -> MessageManager.send(getInviteMessage(name)));
             }
         });
     }
@@ -152,12 +151,8 @@ public class PartyFeatures {
         public List<String> blockedUsers = new ArrayList<>();
         @SerialEntry
         public int cooldown = 750;
-
         @SerialEntry
         public boolean boopInvites  = true;
-
-
-
 
         public static ListOption<String> getBlackList(ConfigImpl defaults, ConfigImpl config) {
             return ListOption.<String>createBuilder()
@@ -173,8 +168,8 @@ public class PartyFeatures {
                     .collapsed(true)
                     .build();
         }
-        public static OptionGroup getGroup(ConfigImpl defaults, ConfigImpl config) {
 
+        public static OptionGroup getGroup(ConfigImpl defaults, ConfigImpl config) {
             var enabled = Option.<Boolean>createBuilder()
                     .name(key("partyFeatures.enabled"))
                     .description(keyD("partyFeatures.enabled"))
@@ -185,6 +180,7 @@ public class PartyFeatures {
                             value -> config.partyCommands.enabled = value
                     )
                     .build();
+
             var cooldown = Option.<Integer>createBuilder()
                     .name(key("partyFeatures.cooldown"))
                     .description(keyD("partyFeatures.cooldown"))
@@ -207,7 +203,6 @@ public class PartyFeatures {
                     )
                     .build();
 
-
             return  OptionGroup.createBuilder()
                     .name(key("partyFeatures"))
                     .description(keyD("partyFeatures"))
@@ -215,12 +210,10 @@ public class PartyFeatures {
                     .option(cooldown)
                     .option(inviteBoop)
                     .build();
-
         }
-
     }
 
-    private static Text getInviteMessage(String name) {
+    private static Component getInviteMessage(String name) {
         //TODO: Switch this from legacy formatting
         return TextUtils.getTextThatRunsCommand(
                 TextUtils.join(
@@ -236,15 +229,13 @@ public class PartyFeatures {
         );
     }
 
-
-    private static final Text DEBUG_PREFIX = TextUtils.join(
+    private static final Component DEBUG_PREFIX = TextUtils.join(
             TextUtils.withColor("[", Colors.DARK_GRAY),
             TextUtils.withColor("SBT Party Debugger", Colors.GREEN),
             TextUtils.withColor("]", Colors.DARK_GRAY)
     );
+
     private static void sendDebugMessage(String message) {
-        client.player.sendMessage(TextUtils.join(DEBUG_PREFIX, TextUtils.SPACE, TextUtils.withColor(message, Colors.CYAN)), false);
+        client.player.displayClientMessage(TextUtils.join(DEBUG_PREFIX, TextUtils.SPACE, TextUtils.withColor(message, Colors.CYAN)), false);
     }
-
-
 }

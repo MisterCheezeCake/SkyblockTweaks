@@ -21,8 +21,8 @@ package wtf.cheeze.sbt.features.mining;
 import dev.isxander.yacl3.api.*;
 import dev.isxander.yacl3.api.controller.ColorControllerBuilder;
 import dev.isxander.yacl3.config.v2.api.SerialEntry;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.text.Text;
+import net.minecraft.client.Minecraft;
+import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SBTConfig;
@@ -55,9 +55,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
 
-
 public class MiningHud extends MultilineTextHud {
-
     public static final MiningHud INSTANCE = new MiningHud();
 
     private MiningHud() {
@@ -77,7 +75,6 @@ public class MiningHud extends MultilineTextHud {
     private static final String COOLDOWN_FORMAT = "%ds";
     @Override
     public @NotNull HudName getName() {
-
         return new HudName("Mining HUD", Colors.CYAN);
     }
 
@@ -92,8 +89,6 @@ public class MiningHud extends MultilineTextHud {
     public void refreshComposition() {
         this.lines = genLines();
     }
-
-
 
     private HudComponent[] genLines() {
         List<HudComponent> lines = new ArrayList<>();
@@ -165,8 +160,7 @@ public class MiningHud extends MultilineTextHud {
         return lines.toArray(new HudComponent[0]);
     }
 
-
-    private final ArrayList<Cache<Text>> comCache = new ArrayList<>();
+    private final ArrayList<Cache<Component>> comCache = new ArrayList<>();
 
     private FlexibleHudLine.Part[] getComParts() {
             var arr = new FlexibleHudLine.Part[SkyblockData.miningData.comNo];
@@ -189,8 +183,7 @@ public class MiningHud extends MultilineTextHud {
             return arr;
     }
 
-    private CheezePair<Supplier<Text>, Supplier<HudIcon>> genComSuppliers(int i) {
-
+    private CheezePair<Supplier<Component>, Supplier<HudIcon>> genComSuppliers(int i) {
         return new CheezePair<>(
                 () -> {
                     var com = SkyblockData.miningData.coms[i];
@@ -203,9 +196,7 @@ public class MiningHud extends MultilineTextHud {
                     );
                 },
                 () -> MiningData.getComIcon(SkyblockData.miningData.coms[i].key()));
-
     }
-
 
     public enum Entry implements NameableEnum, CompositionEntry {
         COMMISSIONS(TextUtils.withColor("Commissions", Colors.CYAN), TextUtils.join(TextUtils.withColor("Mithril Miner: ", Colors.CYAN), TextUtils.withColor("0/350", Colors.RED)), false),
@@ -214,20 +205,18 @@ public class MiningHud extends MultilineTextHud {
         GLACITE_POWER(TextUtils.withColor("Glacite Power", Colors.LIGHT_BLUE), TextUtils.join(TextUtils.withColor("Glacite Powder: ", Colors.CYAN), TextUtils.withColor("50K", Colors.LIGHT_BLUE)), false),
         COOLDOWN(TextUtils.withColor("Pickaxe Cooldown", Colors.LIME), TextUtils.join(TextUtils.withColor("Pickaxe CD: ", Colors.CYAN), TextUtils.withColor("Ready", Colors.LIME)),false);
 
-
-
-        private final Text name;
-        private final Text preview;
+        private final Component name;
+        private final Component preview;
         private final boolean repeatable;
 
-        Entry(Text name, Text preview, boolean repeatable) {
+        Entry(Component name, Component preview, boolean repeatable) {
             this.name = name;
             this.preview = preview;
             this.repeatable = repeatable;
         }
 
         @Override
-        public Text getDisplayName() {
+        public Component getDisplayName() {
             return name;
         }
 
@@ -237,7 +226,7 @@ public class MiningHud extends MultilineTextHud {
         }
 
         @Override
-        public Text getPreviewText() {
+        public Component getPreviewText() {
             return preview;
         }
     }
@@ -280,10 +269,10 @@ public class MiningHud extends MultilineTextHud {
             var composition = ButtonOption.createBuilder()
                     .name(Mining.key("hud.composition"))
                     .description(Mining.keyD("hud.composition"))
-                    .text(Text.translatable("sbt.gui.config.composition.open"))
+                    .text(Component.translatable("sbt.gui.config.composition.open"))
                     .action((yaclScreen, buttonOption) -> {
                         var screen = new CompositionPopupScreen<>(
-                                TextUtils.join(TextUtils.withColor(Text.translatable("sbt.gui.config.composition"), Colors.CYAN), TextUtils.SPACE, INSTANCE.getName().primaryName()),
+                                TextUtils.join(TextUtils.withColor(Component.translatable("sbt.gui.config.composition"), Colors.CYAN), TextUtils.SPACE, INSTANCE.getName().primaryName()),
                                 yaclScreen,
                                 Binding.generic(
                                         defaults.mining.hud.composition,
@@ -291,7 +280,7 @@ public class MiningHud extends MultilineTextHud {
                                         it -> config.mining.hud.composition = it
                                 ),
                                 Entry.values());
-                        MinecraftClient.getInstance().setScreen(screen);
+                        Minecraft.getInstance().setScreen(screen);
                     })
                     .build();
             var enabled = Option.<Boolean>createBuilder()
@@ -316,7 +305,6 @@ public class MiningHud extends MultilineTextHud {
                     )
                     .build();
 
-
             var abbreviatePowder = Option.<Boolean>createBuilder()
                     .name(Mining.key("hud.abbreviatePowder"))
                     .description(Mining.keyD("hud.abbreviatePowder"))
@@ -338,6 +326,7 @@ public class MiningHud extends MultilineTextHud {
                             value -> config.mining.hud.icons = value
                     )
                     .build();
+
             var color = Option.<Color>createBuilder()
                     .name(Mining.key("hud.color"))
                     .description(Mining.keyD("hud.color"))
@@ -348,6 +337,7 @@ public class MiningHud extends MultilineTextHud {
                             value -> config.mining.hud.color = value.getRGB()
                     )
                     .build();
+
             var outlineColor = Option.<Color>createBuilder()
                     .name(Mining.key("hud.outlineColor"))
                     .description(Mining.keyD("hud.outlineColor"))
@@ -358,7 +348,6 @@ public class MiningHud extends MultilineTextHud {
                             value -> config.mining.hud.outlineColor = value.getRGB()
                     )
                     .build();
-
 
             var drawMode = Option.<DrawMode>createBuilder()
                     .name(Mining.key("hud.mode"))
@@ -373,6 +362,7 @@ public class MiningHud extends MultilineTextHud {
                             }
                     )
                     .build();
+
             var scale = Option.<Float>createBuilder()
                     .name(Mining.key("hud.scale"))
                     .description(Mining.keyD("hud.scale"))
@@ -401,6 +391,3 @@ public class MiningHud extends MultilineTextHud {
         }
     }
 }
-
-
-

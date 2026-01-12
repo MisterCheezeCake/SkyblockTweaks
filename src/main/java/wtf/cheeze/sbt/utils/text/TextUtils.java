@@ -18,7 +18,10 @@
  */
 package wtf.cheeze.sbt.utils.text;
 
-import net.minecraft.text.*;
+import net.minecraft.network.chat.ClickEvent;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.HoverEvent;
+import net.minecraft.network.chat.MutableComponent;
 
 import java.util.Arrays;
 
@@ -28,58 +31,63 @@ public class TextUtils {
     public static String removeFormatting(String text) {
         return text.replaceAll("§[a-f0-9k-oA-FK-O]", "");
     }
-    public static final Text SPACE = Text.literal(" ");
-    public static final Text NEW_LINE = Text.literal("\n");
+    public static final Component SPACE = Component.literal(" ");
+    public static final Component NEW_LINE = Component.literal("\n");
 
-    public static MutableText getTextThatLinksToURL(MutableText text, Text hovered, String url) {
-        return text.styled(style -> {
+    public static MutableComponent getTextThatLinksToURL(MutableComponent text, Component hovered, String url) {
+        return text.withStyle(style -> {
             style = style.withHoverEvent(showTextEvent(hovered));
             style = style.withClickEvent(openURIEvent(url));
             return style;
         });
     }
 
-    public static Text getTextThatLinksToURL(String text, String hovered, String url) {
-        return getTextThatLinksToURL(Text.literal(text), Text.literal(hovered), url);
+    public static Component getTextThatLinksToURL(String text, String hovered, String url) {
+        return getTextThatLinksToURL(Component.literal(text), Component.literal(hovered), url);
     }
 
-    public static Text getTextThatRunsCommand(MutableText text, Text hovered, String command) {
-        return text.styled(style -> {
+    public static Component getTextThatRunsCommand(MutableComponent text, Component hovered, String command) {
+        return text.withStyle(style -> {
             style = style.withHoverEvent(showTextEvent(hovered));
             style = style.withClickEvent(runCommandEvent(command));
             return style;
         });
     }
 
-
-    public static Text getTextThatRunsCommand(String text, String hovered, String command) {
-        return getTextThatRunsCommand(Text.literal(text), Text.literal(hovered), command);
+    public static Component getTextThatRunsCommand(String text, String hovered, String command) {
+        return getTextThatRunsCommand(Component.literal(text), Component.literal(hovered), command);
     }
 
+    public static MutableComponent withColor(String text, int color) {
+        return withColor(Component.literal(text), color);
+    }
 
-    public static MutableText withColor(String text, int color) {
-        return withColor(Text.literal(text), color);
+    public static MutableComponent withColor(MutableComponent text, int color) {
+        return text.withStyle(style -> style.withColor(color));
     }
-    public static MutableText withColor(MutableText text, int color) {
-        return text.styled(style -> style.withColor(color));
+
+    public static MutableComponent withBold(String text) {
+        return withBold(Component.literal(text));
     }
-    public static MutableText withBold(String text) {
-        return withBold(Text.literal(text));
+
+    public static MutableComponent withBold(MutableComponent text) {
+        return text.withStyle(style -> style.withBold(true));
     }
-    public static MutableText withBold(MutableText text) {
-        return text.styled(style -> style.withBold(true));
+
+    public static MutableComponent withItalic(MutableComponent text) {
+        return text.withStyle(style -> style.withItalic(true));
     }
-    public static MutableText withItalic(MutableText text) {
-        return text.styled(style -> style.withItalic(true));
+
+    public static MutableComponent withUnderlined(MutableComponent text) {
+        return text.withStyle(style -> style.withUnderlined(true));
     }
-    public static MutableText withUnderlined(MutableText text) {
-        return text.styled(style -> style.withUnderline(true));
+
+    public static MutableComponent withStrikethrough(MutableComponent text) {
+        return text.withStyle(style -> style.withStrikethrough(true));
     }
-    public static MutableText withStrikethrough(MutableText text) {
-        return text.styled(style -> style.withStrikethrough(true));
-    }
-    public static MutableText withObfuscated(MutableText text) {
-        return text.styled(style -> style.withObfuscated(true));
+
+    public static MutableComponent withObfuscated(MutableComponent text) {
+        return text.withStyle(style -> style.withObfuscated(true));
     }
 
     public static String firstLetterUppercase(String text) {
@@ -96,20 +104,20 @@ public class TextUtils {
         return result.toString().trim();
     }
 
-    public static MutableText join(Text... texts) {
-        var result = Text.empty();
+    public static MutableComponent join(Component... texts) {
+        var result = Component.empty();
         for (var text : texts) {
             result = result.append(text);
         }
         return result;
     }
 
-    public static MutableText join(String... strings) {
-        return join(Arrays.stream(strings).map(Text::literal).toArray(Text[]::new));
+    public static MutableComponent join(String... strings) {
+        return join(Arrays.stream(strings).map(Component::literal).toArray(Component[]::new));
     }
 
-    public static MutableText joinLines(Text... lines) {
-        var result = Text.empty();
+    public static MutableComponent joinLines(Component... lines) {
+        var result = Component.empty();
         boolean first = true;
         for (var line : lines) {
             if (!first) {
@@ -122,11 +130,9 @@ public class TextUtils {
         return result;
     }
 
-    public static MutableText joinLines(String... lines) {
-        return joinLines(Arrays.stream(lines).map(Text::literal).toArray(Text[]::new));
+    public static MutableComponent joinLines(String... lines) {
+        return joinLines(Arrays.stream(lines).map(Component::literal).toArray(Component[]::new));
     }
-
-
 
     public static ClickEvent copyEvent(String text) {
         return new ClickEvent.CopyToClipboard(text);
@@ -140,7 +146,7 @@ public class TextUtils {
         return new ClickEvent.RunCommand(command);
     }
 
-    public static HoverEvent showTextEvent(Text text) {
+    public static HoverEvent showTextEvent(Component text) {
         return new HoverEvent.ShowText(text);
     }
 }

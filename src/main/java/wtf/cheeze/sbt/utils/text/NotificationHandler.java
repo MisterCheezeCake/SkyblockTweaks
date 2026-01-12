@@ -19,15 +19,15 @@
 package wtf.cheeze.sbt.utils.text;
 
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.text.Text;
+import net.minecraft.client.Minecraft;
+import net.minecraft.network.chat.Component;
 import wtf.cheeze.sbt.utils.errors.ErrorHandler;
 import wtf.cheeze.sbt.utils.errors.ErrorLevel;
 
 import java.util.ArrayList;
 public class NotificationHandler {
 
-    private static final ArrayList<Text> NOTIFICATION_QUEUE = new ArrayList<Text>();
+    private static final ArrayList<Component> NOTIFICATION_QUEUE = new ArrayList<>();
 
     public static void registerEvents() {
         ClientPlayConnectionEvents.JOIN.register((handler, sender, client) -> {
@@ -40,18 +40,18 @@ public class NotificationHandler {
                     ErrorHandler.handle(e, "Notification manager failed to sleep thread", ErrorLevel.WARNING);
                 }
                 client.execute(() -> {
-                    for (Text message : NOTIFICATION_QUEUE) {
-                        client.player.sendMessage(message, false);
+                    for (Component message : NOTIFICATION_QUEUE) {
+                        client.player.displayClientMessage(message, false);
                     }
                     NOTIFICATION_QUEUE.clear();
                 });
             }).start();
         });
     }
-    public static void pushChat(Text message) {
-        if (MinecraftClient.getInstance().player == null)  NOTIFICATION_QUEUE.add(message);
+    public static void pushChat(Component message) {
+        if (Minecraft.getInstance().player == null)  NOTIFICATION_QUEUE.add(message);
         else {
-            MinecraftClient.getInstance().player.sendMessage(message, false);
+            Minecraft.getInstance().player.displayClientMessage(message, false);
         }
     }
 }

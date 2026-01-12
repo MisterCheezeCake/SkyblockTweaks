@@ -16,18 +16,12 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with SkyblockTweaks. If not, see <https://www.gnu.org/licenses/>.
  */
-package wtf.cheeze.sbt.mixin.accessors;
+package wtf.cheeze.sbt.utils.injected;
 
+import org.jetbrains.annotations.Nullable;
+import wtf.cheeze.sbt.utils.render.Popup;
 
-import net.minecraft.client.gui.hud.PlayerListHud;
-import net.minecraft.client.network.PlayerListEntry;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.gen.Accessor;
-
-import java.util.Comparator;
-
-@Mixin(PlayerListHud.class)
-public interface PlayerListHudAccessor {
-    @Accessor("ENTRY_ORDERING")
-    static Comparator<PlayerListEntry> getEntryOrdering() { throw new IllegalStateException();}
+ public interface SBTAbstractContainerScreen {
+    @Nullable Popup sbt$getPopup();
+    void sbt$setPopup(@Nullable Popup popup);
 }

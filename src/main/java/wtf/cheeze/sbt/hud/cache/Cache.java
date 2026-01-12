@@ -54,7 +54,6 @@ public class Cache<T>{
         }
     }
 
-
     public Cache(UpdateTiming timing, Supplier<T> supplier, T errorValue) {
         this.timing = timing;
         this.errorValue = errorValue;

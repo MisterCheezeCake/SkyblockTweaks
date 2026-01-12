@@ -18,22 +18,20 @@
  */
 package wtf.cheeze.sbt.hud.screen;
 
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.tooltip.Tooltip;
-import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.text.Text;
-
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.components.Tooltip;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.network.chat.Component;
 
 /**
  * Adapted from <a href="https://github.com/isXander/YetAnotherConfigLib/blob/d40736704c556f3e07fbe607c0dca21222c58e86/src/main/java/dev/isxander/yacl3/gui/TooltipButtonWidget.java">YACL</a>}
  */
-public class TooltipButton extends ButtonWidget {
-
+public class TooltipButton extends Button {
     protected final Screen screen;
 
-    public TooltipButton(Screen screen, int x, int y, int width, int height, Text message, Text tooltip, PressAction onPress) {
-        super(x, y, width, height, message, onPress, DEFAULT_NARRATION_SUPPLIER);
+    public TooltipButton(Screen screen, int x, int y, int width, int height, Component message, Component tooltip, OnPress onPress) {
+        super(x, y, width, height, message, onPress, DEFAULT_NARRATION);
         this.screen = screen;
-        if (tooltip != null) setTooltip(Tooltip.of(tooltip));
+        if (tooltip != null) setTooltip(Tooltip.create(tooltip));
     }
 }

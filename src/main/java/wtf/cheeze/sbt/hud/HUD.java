@@ -19,9 +19,9 @@
 package wtf.cheeze.sbt.hud;
 
 import dev.isxander.yacl3.api.OptionDescription;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.text.Text;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
 import wtf.cheeze.sbt.hud.bounds.Bounds;
 import wtf.cheeze.sbt.hud.bounds.BoundsRelative;
@@ -34,8 +34,7 @@ import wtf.cheeze.sbt.hud.utils.HudName;
  * TODO: Figure out narration
  */
 public abstract class HUD {
-
-    public static final MinecraftClient client = MinecraftClient.getInstance();
+    public static final Minecraft client = Minecraft.getInstance();
 
     public HudInformation INFO;
 
@@ -56,23 +55,23 @@ public abstract class HUD {
 
     public boolean shouldRender(boolean fromHudScreen) {
         // We let the HUD screen handle rendering when it is open
-        if (!fromHudScreen && MinecraftClient.getInstance().currentScreen instanceof HudScreen) return false;
-        return fromHudScreen || !MinecraftClient.getInstance().options.hudHidden;
+        if (!fromHudScreen && Minecraft.getInstance().screen instanceof HudScreen) return false;
+        return fromHudScreen || !Minecraft.getInstance().options.hideGui;
     }
 
     /**
      * Draws the HUD to the screen
-     * @param context the DrawContext
+     * @param guiGraphics the DrawContext
      * @param fromHudScreen whether the HUD is being drawn in the context of the edit screen
      * @param hovered whether the HUD is hovered while being drawn in the context of the edit screen
      */
-    public abstract void render(DrawContext context, boolean fromHudScreen, boolean hovered);
+    public abstract void render(GuiGraphics guiGraphics, boolean fromHudScreen, boolean hovered);
 
     /**
      * Calls the render method with hovered set to false
      */
-    public void render(DrawContext context, boolean fromHudScreen) {
-        render(context, fromHudScreen, false);
+    public void render(GuiGraphics guiGraphics, boolean fromHudScreen) {
+        render(guiGraphics, fromHudScreen, false);
     }
 
 
@@ -98,13 +97,14 @@ public abstract class HUD {
         INFO.setScale.accept(scale);
     }
 
-    public void drawBackground(DrawContext context, int color, boolean hasOutline) {
+    public void drawBackground(GuiGraphics guiGraphics, int color, boolean hasOutline) {
         var bounds = getCurrentBounds();
         int i = (int) (1 * bounds.scale);
-        context.fill(bounds.x - i, bounds.y - i, (int) (bounds.x + bounds.width + i), (int) (bounds.y + bounds.height + i - 1), color);
+        guiGraphics.fill(bounds.x - i, bounds.y - i, (int) (bounds.x + bounds.width + i), (int) (bounds.y + bounds.height + i - 1), color);
     }
-    public void drawBackground(DrawContext context, int color) {
-        drawBackground(context, color, false);
+
+    public void drawBackground(GuiGraphics guiGraphics, int color) {
+        drawBackground(guiGraphics, color, false);
     }
 
     public static final float MIN_SCALE = 0.1f;
@@ -115,31 +115,34 @@ public abstract class HUD {
     public static final int BACKGROUND_HOVERED = -1761607681;
 
     public static int getActualX(float x) {
-        return (int) (x * MinecraftClient.getInstance().getWindow().getScaledWidth());
+        return (int) (x * Minecraft.getInstance().getWindow().getGuiScaledWidth());
     }
+
     public static int getActualY(float y) {
-        return (int) (y * MinecraftClient.getInstance().getWindow().getScaledHeight());
+        return (int) (y * Minecraft.getInstance().getWindow().getGuiScaledHeight());
     }
+
     public static float getRelativeX(double x) {
-        return (float) (x / MinecraftClient.getInstance().getWindow().getScaledWidth());
+        return (float) (x / Minecraft.getInstance().getWindow().getGuiScaledWidth());
     }
+
     public static float getRelativeX(int x) {
-        return (float) (x / MinecraftClient.getInstance().getWindow().getScaledWidth());
+        return (float) (x / Minecraft.getInstance().getWindow().getGuiScaledWidth());
     }
+
     public static float getRelativeY(double y) {
-        return (float) (y / MinecraftClient.getInstance().getWindow().getScaledHeight());
+        return (float) (y / Minecraft.getInstance().getWindow().getGuiScaledHeight());
     }
+
     public static float getRelativeY(int y) {
-        return (float) (y / MinecraftClient.getInstance().getWindow().getScaledHeight());
+        return (float) (y / Minecraft.getInstance().getWindow().getGuiScaledHeight());
     }
 
     private static final String BASE_KEY = "sbt.config.huds.";
-    public static Text key(String key) {
-        return Text.translatable(BASE_KEY + key);
+    public static Component key(String key) {
+        return Component.translatable(BASE_KEY + key);
     }
     public static OptionDescription keyD(String key) {
-        return OptionDescription.of(Text.translatable(BASE_KEY + key + ".desc"));
+        return OptionDescription.of(Component.translatable(BASE_KEY + key + ".desc"));
     }
-
-
 }

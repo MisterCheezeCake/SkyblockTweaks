@@ -18,20 +18,18 @@
  */
 package wtf.cheeze.sbt.hud.icon;
 
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.Identifier;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 
-
 public interface HudIcon {
-
-    void render(DrawContext context, int x, int y, float scale);
+    void render(GuiGraphics guiGraphics, int x, int y, float scale);
 
     static HudIcon of(@NotNull ItemStack stack) {
         return new ItemStackIcon(stack);
     }
-    static HudIcon of(@NotNull Identifier texture) {
+    static HudIcon of(@NotNull ResourceLocation texture) {
         return new TextureIcon(texture);
     }
 

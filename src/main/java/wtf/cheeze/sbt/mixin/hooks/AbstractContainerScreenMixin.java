@@ -18,14 +18,15 @@
  */
 package wtf.cheeze.sbt.mixin.hooks;
 
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.screen.ingame.HandledScreen;
-import net.minecraft.client.gui.screen.ingame.InventoryScreen;
-import net.minecraft.screen.BrewingStandScreenHandler;
-import net.minecraft.screen.ScreenHandler;
-import net.minecraft.screen.slot.Slot;
-import net.minecraft.text.Text;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.input.KeyEvent;
+import net.minecraft.client.input.MouseButtonEvent;
+import net.minecraft.world.inventory.BrewingStandMenu;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -35,24 +36,22 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.events.DrawSlotEvents;
 import wtf.cheeze.sbt.features.overlay.BrewingStandOverlay;
 import wtf.cheeze.sbt.utils.KillSwitch;
-import wtf.cheeze.sbt.utils.injected.SBTHandledScreen;
+import wtf.cheeze.sbt.utils.injected.SBTAbstractContainerScreen;
 import wtf.cheeze.sbt.utils.render.Popup;
 
-import java.util.Optional;
+import java.awt.event.MouseEvent;
 
-@Mixin(HandledScreen.class)
-public abstract class HandledScreenMixin<T extends ScreenHandler> extends Screen implements SBTHandledScreen {
-
+@Mixin(AbstractContainerScreen.class)
+public abstract class AbstractContainerScreenMixin<T extends AbstractContainerMenu> extends Screen implements SBTAbstractContainerScreen {
     @Unique
     private static final String SBT$FEATURE_ID_POPUP = "handled_screen_popups";
 
     @Shadow
     @Final
-    protected T handler;
+    protected T menu;
 
     @Unique @Nullable
     private Popup sbt$popup;
@@ -61,6 +60,7 @@ public abstract class HandledScreenMixin<T extends ScreenHandler> extends Screen
     public @Nullable Popup sbt$getPopup() {
         return sbt$popup;
     }
+
     @Unique @Override
     public void sbt$setPopup(@Nullable Popup popup) {
         if (KillSwitch.shouldKill(SBT$FEATURE_ID_POPUP)) {
@@ -73,32 +73,31 @@ public abstract class HandledScreenMixin<T extends ScreenHandler> extends Screen
         this.sbt$popup = popup;
     }
 
-    @Inject(method = "drawSlot", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawItem(Lnet/minecraft/item/ItemStack;III)V"))
-    protected void sbt$beforeDrawItem(DrawContext context, Slot slot, CallbackInfo ci) {
-        DrawSlotEvents.BEFORE_ITEM.invoker().onDrawSlot(getTitle(), context, slot);
+    @Inject(method = "renderSlot", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;renderItem(Lnet/minecraft/world/item/ItemStack;III)V"))
+    protected void sbt$beforeDrawItem(GuiGraphics guiGraphics, Slot slot, CallbackInfo ci) {
+        DrawSlotEvents.BEFORE_ITEM.invoker().onDrawSlot(getTitle(), guiGraphics, slot);
     }
 
     @Inject(method = "mouseClicked", at = @At("HEAD"), cancellable = true)
-    public void sbt$onMouseClicked(double mouseX, double mouseY, int button, CallbackInfoReturnable<Boolean> cir) {
+    public void sbt$onMouseClicked(MouseButtonEvent event, boolean isDoubleClick, CallbackInfoReturnable<Boolean> cir) {
         if (this.sbt$popup != null) {
-            if (this.sbt$popup.mouseClicked(mouseX, mouseY, button)) {
+            if (this.sbt$popup.mouseClicked(event.x(), event.y(), event.button())) {
                 cir.setReturnValue(true);
             }
         }
     }
 
-
     @Inject(method = "keyPressed", at = @At("HEAD"), cancellable = true)
-    public void sbt$onKeyPressed(int keyCode, int scanCode, int modifiers, CallbackInfoReturnable<Boolean> cir) {
+    public void sbt$onKeyPressed(KeyEvent event, CallbackInfoReturnable<Boolean> cir) {
         if (this.sbt$popup != null) {
-            if (this.sbt$popup.keyPressed(keyCode, scanCode, modifiers)) {
+            if (this.sbt$popup.keyPressed(event.key(), event.scancode(), event.modifiers())) {
                 cir.setReturnValue(true);
             }
         }
     }
 
 //    @Inject(
-//            method = /*? if <=1.21.5 {*//*"render"*//*?} else {*/ "renderMain"/*?}*/,
+//            method = "renderMain",
 //            at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/ingame/HandledScreen;drawSlots(Lnet/minecraft/client/gui/DrawContext;)V")
 //    )
 //    protected void sbtBeforeDrawSlots(DrawContext context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
@@ -108,26 +107,15 @@ public abstract class HandledScreenMixin<T extends ScreenHandler> extends Screen
 //        }
 //    }
 
-    //? if <=1.21.5 {
-    @Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/ingame/HandledScreen;drawSlots(Lnet/minecraft/client/gui/DrawContext;)V"))
-    protected void sbtBeforeDrawSlots(DrawContext context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
+    @Inject(method = "renderContents", at = @At(value = "INVOKE", target = "Lorg/joml/Matrix3x2fStack;popMatrix()Lorg/joml/Matrix3x2fStack;"))
+    protected void sbt$endRenderMain(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta, CallbackInfo ci) {
         if (getTitle().getString().equals("Brewing Stand")) {
-            if (this.handler instanceof BrewingStandScreenHandler) return;
-            BrewingStandOverlay.render(handler.slots, context);
+            if (this.menu instanceof BrewingStandMenu) return;
+            BrewingStandOverlay.render(menu.slots, guiGraphics);
         }
     }
-    //?} else {
-    /*@Inject(method = "renderMain", at = @At(value = "INVOKE", target = "Lorg/joml/Matrix3x2fStack;popMatrix()Lorg/joml/Matrix3x2fStack;"))
-    protected void sbt$endRenderMain(DrawContext context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
-        if (getTitle().getString().equals("Brewing Stand")) {
-            if (this.handler instanceof BrewingStandScreenHandler) return;
-            BrewingStandOverlay.render(handler.slots, context);
-        }
-    }
-    *///?}
 
-
-    private HandledScreenMixin(Text t) {
+    private AbstractContainerScreenMixin(Component t) {
         super(t);
     }
 }

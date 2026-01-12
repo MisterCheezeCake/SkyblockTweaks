@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 MisterCheezeCake
+ * Copyright (C) 2025 MisterCheezeCake
  *
  * This file is part of SkyblockTweaks.
  *
@@ -16,23 +16,18 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with SkyblockTweaks. If not, see <https://www.gnu.org/licenses/>.
  */
-package wtf.cheeze.sbt.utils.injected;
+package wtf.cheeze.sbt.mixin.accessors;
 
-import net.minecraft.client.font.TextRenderer;
-import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.text.Text;
 
-public interface SBTDrawContext {
-    //? if <=1.21.5 {
-    int
-     //?} else {
-    /*void
-    *///?}
-    sbt$drawTextWithBackgroundNoShadow(TextRenderer textRenderer, Text text, int x, int y, int width, int color);
+import net.minecraft.client.gui.components.PlayerTabOverlay;
+import net.minecraft.client.multiplayer.PlayerInfo;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.gen.Accessor;
 
-    /**
-     * You may ask yourself, "Why is this not an accessor?" The answer is that I really did not want to deal with mixins only existing on one version, and this works fine
-     */
-    //? if <=1.21.5
-    VertexConsumerProvider.Immediate sbt$getVertexConsumers();
+import java.util.Comparator;
+
+@Mixin(PlayerTabOverlay.class)
+public interface PlayerTabOverlayAccessor {
+    @Accessor("PLAYER_COMPARATOR")
+    static Comparator<PlayerInfo> getEntryOrdering() { throw new IllegalStateException();}
 }

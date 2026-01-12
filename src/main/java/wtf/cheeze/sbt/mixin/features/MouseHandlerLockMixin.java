@@ -16,12 +16,19 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with SkyblockTweaks. If not, see <https://www.gnu.org/licenses/>.
  */
-package wtf.cheeze.sbt.utils.injected;
+package wtf.cheeze.sbt.mixin.features;
 
-import org.jetbrains.annotations.Nullable;
-import wtf.cheeze.sbt.utils.render.Popup;
+import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
+import net.minecraft.client.MouseHandler;
+import net.minecraft.client.player.LocalPlayer;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.injection.At;
+import wtf.cheeze.sbt.features.misc.MouseLock;
 
-public interface SBTHandledScreen {
-    @Nullable Popup sbt$getPopup();
-    void sbt$setPopup(@Nullable Popup popup);
+@Mixin(MouseHandler.class)
+public abstract class MouseHandlerLockMixin {
+    @WrapWithCondition(method = "turnPlayer", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/LocalPlayer;turn(DD)V"))
+    private boolean sbt$allowMouseMove(LocalPlayer instance, double v, double v2) {
+        return !MouseLock.locked;
+    }
 }

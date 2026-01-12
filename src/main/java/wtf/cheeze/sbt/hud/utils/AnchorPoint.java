@@ -19,13 +19,13 @@
 package wtf.cheeze.sbt.hud.utils;
 
 import dev.isxander.yacl3.api.NameableEnum;
-import net.minecraft.text.Text;
+import net.minecraft.network.chat.Component;
 
 public enum AnchorPoint implements NameableEnum {
     LEFT, CENTER, RIGHT;
 
     @Override
-    public Text getDisplayName() {
-        return Text.literal(name());
+    public Component getDisplayName() {
+        return Component.literal(name());
     }
 }

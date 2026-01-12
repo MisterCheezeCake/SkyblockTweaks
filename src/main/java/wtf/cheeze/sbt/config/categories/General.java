@@ -5,7 +5,7 @@ import dev.isxander.yacl3.api.Option;
 import dev.isxander.yacl3.api.OptionDescription;
 import dev.isxander.yacl3.api.OptionGroup;
 import dev.isxander.yacl3.config.v2.api.SerialEntry;
-import net.minecraft.text.Text;
+import net.minecraft.network.chat.Component;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SBTConfig;
 import wtf.cheeze.sbt.features.overlay.BrewingStandOverlay;
@@ -21,8 +21,8 @@ import wtf.cheeze.sbt.utils.version.UpdateChecker;
 public class General {
     public static ConfigCategory getCategory(ConfigImpl defaults, ConfigImpl config) {
         return ConfigCategory.createBuilder()
-                .name(Text.translatable("sbt.config.general"))
-                .tooltip(Text.translatable("sbt.config.general.desc"))
+                .name(Component.translatable("sbt.config.general"))
+                .tooltip(Component.translatable("sbt.config.general.desc"))
                 .option(GlobalSearchCategory.getOpenGlobalSearchButton(defaults, config))
                 .option(UpdateChecker.getStreamOption(defaults, config))
                 .option(ErrorHandler.getChatAll(defaults, config))
@@ -40,11 +40,12 @@ public class General {
 
     public static final String BASE_KEY = "sbt.config.general.";
 
-    public static Text key(String key) {
-        return Text.translatable(BASE_KEY + key);
+    public static Component key(String key) {
+        return Component.translatable(BASE_KEY + key);
     }
+
     public static OptionDescription keyD(String key) {
-        return OptionDescription.of(Text.translatable(BASE_KEY + key + ".desc"));
+        return OptionDescription.of(Component.translatable(BASE_KEY + key + ".desc"));
     }
 
     // These are subclassed because their features live in mixins and so can't control their own config
@@ -54,7 +55,6 @@ public class General {
 
         @SerialEntry
         public boolean noRenderPotionHud = true;
-
 
         public static OptionGroup getGroup(ConfigImpl defaults, ConfigImpl config) {
             var noRenderPotionHud = Option.<Boolean>createBuilder()
@@ -67,6 +67,7 @@ public class General {
                             value -> config.inventory.noRenderPotionHud = value
                     )
                     .build();
+
             var redirectRecipeBook = Option.<Boolean>createBuilder()
                     .name(key("inventory.redirectRecipeBook"))
                     .description(keyD("inventory.redirectRecipeBook"))
@@ -77,7 +78,6 @@ public class General {
                             value -> config.inventory.redirectRecipeBook = value
                     )
                     .build();
-
 
             return OptionGroup.createBuilder()
                     .name(key("inventory"))
@@ -136,7 +136,6 @@ public class General {
                     )
                     .build();
 
-
             var showHearsInRift = Option.<Boolean>createBuilder()
                     .name(key("hudTweaks.showHeartsInRift"))
                     .description(keyD("hudTweaks.showHeartsInRift"))
@@ -162,7 +161,6 @@ public class General {
                     )
                     .build();
 
-
             var noRenderArmor = Option.<Boolean>createBuilder()
                     .name(key("hudTweaks.noRenderArmor"))
                     .description(keyD("hudTweaks.noRenderArmor"))
@@ -184,6 +182,7 @@ public class General {
                             value -> config.hudTweaks.noRenderHunger = value
                     )
                     .build();
+
             var noRenderMountHealth = Option.<Boolean>createBuilder()
                     .name(key("hudTweaks.noRenderMountHealth"))
                     .description(keyD("hudTweaks.noRenderMountHealth"))
@@ -205,7 +204,6 @@ public class General {
                             value -> config.hudTweaks.noRenderPotionOverlay = value
                     )
                     .build();
-
 
             return OptionGroup.createBuilder()
                     .name(key("hudTweaks"))

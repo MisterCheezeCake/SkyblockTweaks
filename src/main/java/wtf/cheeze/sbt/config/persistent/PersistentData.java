@@ -24,20 +24,18 @@ import dev.isxander.yacl3.config.v2.api.SerialEntry;
 import dev.isxander.yacl3.config.v2.api.serializer.GsonConfigSerializerBuilder;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.client.gui.screen.ChatScreen;
-import net.minecraft.util.Identifier;
+import net.minecraft.client.gui.screens.ChatScreen;
+import net.minecraft.resources.ResourceLocation;
 import wtf.cheeze.sbt.utils.skyblock.SkyblockData;
 
 import java.nio.file.Path;
 import java.util.HashMap;
-
 
 /**
  * This class stores non user-configurable data that needs to be saved between sessions. Almost everything is stored by profile id, which are v4 UUIDs.
  * We use these instead of the cute names so that profiles, even across accounts, will never inherit the persistent data of another
  */
 public class PersistentData {
-
     @SerialEntry
     public HashMap<String, ProfileData> profiles = new HashMap<>();
 
@@ -45,10 +43,9 @@ public class PersistentData {
         return profiles.getOrDefault(SkyblockData.getCurrentProfileUnique(), new ProfileData());
     }
 
-
     private static final Path pdPath = FabricLoader.getInstance().getConfigDir().resolve("skyblocktweaks-persistent.json");
     private static final ConfigClassHandler<PersistentData> HANDLER = ConfigClassHandler.createBuilder(PersistentData.class)
-            .id(Identifier.of("skyblocktweaks", "persistent"))
+            .id(ResourceLocation.fromNamespaceAndPath("skyblocktweaks", "persistent"))
             .serializer(config -> GsonConfigSerializerBuilder.create(config).appendGsonBuilder(builder -> builder.setFieldNamingPolicy(FieldNamingPolicy.IDENTITY))
                     .setPath(pdPath)
                     .build())
@@ -68,13 +65,12 @@ public class PersistentData {
         HANDLER.save();
     }
 
-
     public static void registerEvents() {
         HANDLER.load();
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             if (!get().needsSave) return;
-            if (client.world != null) {
-                if (client.currentScreen != null && !(client.currentScreen instanceof ChatScreen)) return; // Don't save while in a screen, but allow the ChatScreen
+            if (client.level != null) {
+                if (client.screen != null && !(client.screen instanceof ChatScreen)) return; // Don't save while in a screen, but allow the ChatScreen
                 save();
             } else {
                 save();

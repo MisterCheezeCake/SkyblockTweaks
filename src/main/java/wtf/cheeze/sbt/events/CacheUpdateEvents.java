@@ -29,9 +29,7 @@ public class CacheUpdateEvents {
     public static final Event<Runnable> HALF_SECOND = EventUtils.getRunnableBackedEvent();
     public static final Event<Runnable> QUARTER_SECOND = EventUtils.getRunnableBackedEvent();
 
-
     private static final Timer timer = new Timer();
-
 
     static {
         timer.scheduleAtFixedRate(new java.util.TimerTask() {
@@ -53,6 +51,4 @@ public class CacheUpdateEvents {
             }
         }, 0, 1000);
     }
-
-
 }

@@ -18,14 +18,14 @@
  */
 package wtf.cheeze.sbt.config;
 
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.screen.ConfirmLinkScreen;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.tooltip.Tooltip;
-import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.screens.ConfirmLinkScreen;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.components.Tooltip;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.hud.HudManager;
 import wtf.cheeze.sbt.utils.render.Colors;
@@ -33,69 +33,52 @@ import wtf.cheeze.sbt.utils.render.RenderUtils;
 import wtf.cheeze.sbt.hud.screen.HudScreen;
 
 public class SkyblockTweaksScreenMain extends Screen {
-    public static final Identifier ICON = Identifier.of("skyblocktweaks", "icon.png");
+    public static final ResourceLocation ICON = ResourceLocation.fromNamespaceAndPath("skyblocktweaks", "icon.png");
     private final Screen parent;
 
-    private ButtonWidget hudButton;
     public SkyblockTweaksScreenMain(Screen parent) {
-        super(Text.literal("SkyBlockTweaks"));
+        super(Component.literal("SkyBlockTweaks"));
         this.parent = parent;
     }
     @Override
     @SuppressWarnings("MagicNumber")
     public void init() {
-        MinecraftClient mc = MinecraftClient.getInstance();
-        var centerx = mc.getWindow().getScaledWidth() / 2;
+        Minecraft mc = Minecraft.getInstance();
+        var centerx = mc.getWindow().getGuiScaledWidth() / 2;
         var leftColumn = centerx - 100;
         var rightColumn = centerx + 5;
-        ButtonWidget configButton = ButtonWidget.builder(Text.literal("Open Config"), button -> {
-            mc.send(() -> mc.setScreen(SBTConfig.getScreen(this)));
-        }).dimensions(centerx - 100, 55, 200, 20).build();
-        hudButton = ButtonWidget.builder(Text.literal("Edit HUD Positions"), button -> {
-            mc.send(() -> mc.setScreen(new HudScreen(Text.literal("SkyBlockTweaks"), HudManager.HUDS, this)));
-        }).dimensions(centerx - 100, 85, 200, 20).build();
-        ButtonWidget modrinthButton = ButtonWidget.builder(Text.literal("Modrinth"), button -> {
-            ConfirmLinkScreen.open(this, "https://modrinth.com/mod/sbt", true);
-        }).dimensions(leftColumn, 115, 95, 20).build();
-        ButtonWidget githubButton = ButtonWidget.builder(Text.literal("GitHub"), button -> {
-            ConfirmLinkScreen.open(this, "https://github.com/MisterCheezeCake/SkyblockTweaks", true);
-        }).dimensions(rightColumn, 115, 95, 20).build();
-        ButtonWidget discordButton = ButtonWidget.builder(Text.literal("Discord"), button -> {
-            ConfirmLinkScreen.open(this, "https://discord.gg/YH3hw926hz", true);
-        }).dimensions(leftColumn, 145, 95, 20).build();
-        ButtonWidget legalButton = ButtonWidget.builder(Text.literal("Legal"), button -> {
-            ConfirmLinkScreen.open(this, "https://github.com/MisterCheezeCake/SkyblockTweaks/blob/main/OPENSOURCE.md", true);
-        }).dimensions(rightColumn, 145, 95, 20).build();
-        ButtonWidget closeButton = ButtonWidget.builder(Text.literal("Close"), button -> {
-            mc.send(() -> mc.setScreen(parent));
-        }).dimensions(centerx - 100, 175, 200, 20).build();
-        this.addDrawableChild(configButton);
-        this.addDrawableChild(hudButton);
-        this.addDrawableChild(modrinthButton);
-        this.addDrawableChild(githubButton);
-        this.addDrawableChild(discordButton);
-        this.addDrawableChild(legalButton);
-        this.addDrawableChild(closeButton);
-        if (MinecraftClient.getInstance().world == null) {
+        Button configButton = Button.builder(Component.literal("Open Config"), button -> mc.schedule(() -> mc.setScreen(SBTConfig.getScreen(this)))).bounds(centerx - 100, 55, 200, 20).build();
+        Button hudButton = Button.builder(Component.literal("Edit HUD Positions"), button -> mc.schedule(() -> mc.setScreen(new HudScreen(Component.literal("SkyBlockTweaks"), HudManager.HUDS, this)))).bounds(centerx - 100, 85, 200, 20).build();
+        Button modrinthButton = Button.builder(Component.literal("Modrinth"), button -> ConfirmLinkScreen.confirmLinkNow(this, "https://modrinth.com/mod/sbt", true)).bounds(leftColumn, 115, 95, 20).build();
+        Button githubButton = Button.builder(Component.literal("GitHub"), button -> ConfirmLinkScreen.confirmLinkNow(this, "https://github.com/MisterCheezeCake/SkyblockTweaks", true)).bounds(rightColumn, 115, 95, 20).build();
+        Button discordButton = Button.builder(Component.literal("Discord"), button -> ConfirmLinkScreen.confirmLinkNow(this, "https://discord.gg/YH3hw926hz", true)).bounds(leftColumn, 145, 95, 20).build();
+        Button legalButton = Button.builder(Component.literal("Legal"), button -> ConfirmLinkScreen.confirmLinkNow(this, "https://github.com/MisterCheezeCake/SkyblockTweaks/blob/main/OPENSOURCE.md", true)).bounds(rightColumn, 145, 95, 20).build();
+        Button closeButton = Button.builder(Component.literal("Close"), button -> mc.schedule(() -> mc.setScreen(parent))).bounds(centerx - 100, 175, 200, 20).build();
+        this.addRenderableWidget(configButton);
+        this.addRenderableWidget(hudButton);
+        this.addRenderableWidget(modrinthButton);
+        this.addRenderableWidget(githubButton);
+        this.addRenderableWidget(discordButton);
+        this.addRenderableWidget(legalButton);
+        this.addRenderableWidget(closeButton);
+        if (Minecraft.getInstance().level == null) {
             hudButton.active = false;
-            hudButton.setTooltip(Tooltip.of(Text.literal("Join a world/server to edit HUD Positions")));
+            hudButton.setTooltip(Tooltip.create(Component.literal("Join a world/server to edit HUD Positions")));
         }
-
-
-
-    }
-    @Override
-    public void close() {
-        MinecraftClient.getInstance().setScreen(parent);
     }
 
     @Override
-    public void render(DrawContext context, int mouseX, int mouseY, float delta) {
-        MinecraftClient mc = MinecraftClient.getInstance();
-        var centerX = mc.getWindow().getScaledWidth() / 2;
-        super.render(context, mouseX, mouseY, delta);
-        RenderUtils.drawCenteredText(context, Text.literal("SkyblockTweaks"), centerX, 3, Colors.SBT_GREEN, true, 2.5f);
-        RenderUtils.drawCenteredText(context, Text.literal("v" + SkyblockTweaks.VERSION.getVersionString()), centerX, 25, Colors.WHITE, true);
-        RenderUtils.drawCenteredText(context, Text.literal("By MisterCheezeCake"), centerX, 36, Colors.RED, true);
+    public void onClose() {
+        Minecraft.getInstance().setScreen(parent);
+    }
+
+    @Override
+    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
+        Minecraft mc = Minecraft.getInstance();
+        var centerX = mc.getWindow().getGuiScaledWidth() / 2;
+        super.render(guiGraphics, mouseX, mouseY, delta);
+        RenderUtils.drawCenteredText(guiGraphics, Component.literal("SkyblockTweaks"), centerX, 3, Colors.SBT_GREEN, true, 2.5f);
+        RenderUtils.drawCenteredText(guiGraphics, Component.literal("v" + SkyblockTweaks.VERSION.getVersionString()), centerX, 25, Colors.WHITE, true);
+        RenderUtils.drawCenteredText(guiGraphics, Component.literal("By MisterCheezeCake"), centerX, 36, Colors.RED, true);
     }
 }

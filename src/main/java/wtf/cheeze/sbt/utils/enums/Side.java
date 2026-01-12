@@ -1,7 +1,7 @@
 package wtf.cheeze.sbt.utils.enums;
 
 import dev.isxander.yacl3.api.NameableEnum;
-import net.minecraft.text.Text;
+import net.minecraft.network.chat.Component;
 import wtf.cheeze.sbt.utils.text.TextUtils;
 
 public enum Side implements NameableEnum {
@@ -19,7 +19,7 @@ public enum Side implements NameableEnum {
     }
 
     @Override
-    public Text getDisplayName() {
-        return Text.literal(TextUtils.firstLetterUppercase(this.name().toLowerCase()));
+    public Component getDisplayName() {
+        return Component.literal(TextUtils.firstLetterUppercase(this.name().toLowerCase()));
     }
 }

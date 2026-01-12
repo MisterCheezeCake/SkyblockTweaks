@@ -18,16 +18,15 @@
  */
 package wtf.cheeze.sbt.hud.components;
 
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.text.Text;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.network.chat.Component;
 import wtf.cheeze.sbt.utils.text.TextUtils;
 import wtf.cheeze.sbt.utils.render.Colors;
 
 public interface HudComponent {
+    Component ERROR = TextUtils.withColor("ERROR", Colors.RED);
 
-    Text ERROR = TextUtils.withColor("ERROR", Colors.RED);
-
-    int render(DrawContext context, int x, int y, float scale);
+    int render(GuiGraphics guiGraphics, int x, int y, float scale);
     int getWidth();
     int getHeight();
     int getlines();

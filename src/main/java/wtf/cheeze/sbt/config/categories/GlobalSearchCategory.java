@@ -21,8 +21,8 @@ package wtf.cheeze.sbt.config.categories;
 import dev.isxander.yacl3.api.ButtonOption;
 import dev.isxander.yacl3.api.ConfigCategory;
 import dev.isxander.yacl3.api.OptionDescription;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.text.Text;
+import net.minecraft.client.Minecraft;
+import net.minecraft.network.chat.Component;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SBTConfig;
 import wtf.cheeze.sbt.features.mining.FetchurFeatures;
@@ -45,11 +45,10 @@ import wtf.cheeze.sbt.utils.version.UpdateChecker;
 
 
 public class GlobalSearchCategory {
-
     public static ConfigCategory getCategory(ConfigImpl defaults, ConfigImpl config) {
         return ConfigCategory.createBuilder()
-                .name(Text.translatable("sbt.config.globalSearch"))
-                .tooltip(Text.translatable("sbt.config.globalSearch.desc"))
+                .name(Component.translatable("sbt.config.globalSearch"))
+                .tooltip(Component.translatable("sbt.config.globalSearch.desc"))
                 .option(UpdateChecker.getStreamOption(defaults, config))
                 .option(ErrorHandler.getChatAll(defaults, config))
                 .option(ModAPI.getShowErrors(defaults, config))
@@ -96,20 +95,15 @@ public class GlobalSearchCategory {
 
     public static ButtonOption getOpenGlobalSearchButton(ConfigImpl defaults, ConfigImpl config) {
         return ButtonOption.createBuilder()
-                .name(Text.translatable("sbt.config.globalSearch.open"))
-                .description(OptionDescription.of(Text.translatable("sbt.config.globalSearch.open.desc")))
-                .text(Text.translatable("sbt.config.globalSearch.open.text"))
+                .name(Component.translatable("sbt.config.globalSearch.open"))
+                .description(OptionDescription.of(Component.translatable("sbt.config.globalSearch.open.desc")))
+                .text(Component.translatable("sbt.config.globalSearch.open.text"))
                 .action((y, o) -> {
-
                     if (y.pendingChanges()) {
                         y.finishOrSave();
                     }
-                   MinecraftClient.getInstance().setScreen(SBTConfig.getSpecialGlobalSearchScreen(((YACLScreenAccessor) y).sbt$getParent()));
-
-
+                    Minecraft.getInstance().setScreen(SBTConfig.getSpecialGlobalSearchScreen(((YACLScreenAccessor) y).sbt$getParent()));
                 })
                 .build();
     }
-
-
 }

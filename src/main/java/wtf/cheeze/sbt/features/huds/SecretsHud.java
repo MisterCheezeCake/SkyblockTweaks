@@ -4,7 +4,7 @@ import dev.isxander.yacl3.api.Option;
 import dev.isxander.yacl3.api.OptionGroup;
 import dev.isxander.yacl3.api.controller.ColorControllerBuilder;
 import dev.isxander.yacl3.config.v2.api.SerialEntry;
-import net.minecraft.text.Text;
+import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SBTConfig;
@@ -42,20 +42,17 @@ public class SecretsHud extends TextHud {
                 DataUtils.ALWAYS_WHITE,
                 () -> SBTConfig.huds().time.outlineColor,
                 () -> SBTConfig.huds().time.mode,
-                () ->  {
-                   return SBTConfig.huds().secrets.label ?
-                           TextUtils.join(
-                                   TextUtils.withColor("Secrets: ", SBTConfig.huds().secrets.labelColor),
-                                   getNumText()
-                           ) : getNumText();
-
-                },
+                () -> SBTConfig.huds().secrets.label ?
+                        TextUtils.join(
+                                TextUtils.withColor("Secrets: ", SBTConfig.huds().secrets.labelColor),
+                                getNumText()
+                        ) : getNumText(),
                 () -> Icons.CHEST,
                 () -> SBTConfig.huds().secrets.icon
         );
     }
 
-    private Text getNumText() {
+    private Component getNumText() {
         return TextUtils.withColor(SkyblockData.Stats.secretsFound + "/" + SkyblockData.Stats.secretsTotal, SBTConfig.huds().secrets.numberColor);
     }
 

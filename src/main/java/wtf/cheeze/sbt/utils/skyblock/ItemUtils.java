@@ -18,19 +18,22 @@
  */
 package wtf.cheeze.sbt.utils.skyblock;
 
-import com.mojang.authlib.properties.Property;
+import com.google.gson.JsonParser;
+import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.PropertyMap;
-import net.minecraft.component.ComponentChanges;
-import net.minecraft.component.DataComponentTypes;
-import net.minecraft.component.type.NbtComponent;
-import net.minecraft.component.type.ProfileComponent;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.util.Identifier;
+import com.mojang.serialization.JsonOps;
+import net.minecraft.core.component.DataComponentPatch;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.util.ExtraCodecs;
+import net.minecraft.world.item.component.CustomData;
+import net.minecraft.world.item.component.ResolvableProfile;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.Holder;
+import net.minecraft.resources.ResourceLocation;
 import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.utils.errors.ErrorHandler;
 import wtf.cheeze.sbt.utils.errors.ErrorLevel;
@@ -40,6 +43,7 @@ import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 public class ItemUtils {
 
@@ -53,18 +57,18 @@ public class ItemUtils {
     }
 
     public static String getSkyblockId(ItemStack stack) {
-        var data = stack.get(DataComponentTypes.CUSTOM_DATA);
+        var data = stack.get(DataComponents.CUSTOM_DATA);
         if (data == null) return "";
-        var customId = data.nbt.get("id");
+        var customId = data.tag.get("id");
         if (customId == null) return "";
 
         return customId.asString().orElse("");
     }
 
     public static String getReforge(ItemStack stack) {
-        var data = stack.get(DataComponentTypes.CUSTOM_DATA);
+        var data = stack.get(DataComponents.CUSTOM_DATA);
         if (data == null) return "";
-        var reforge = data.nbt.get("modifier");
+        var reforge = data.tag.get("modifier");
         if (reforge == null) return "";
 
         return reforge.asString().orElse("");
@@ -104,9 +108,9 @@ public class ItemUtils {
         return new ItemStack(
                 getRegistryEntry(minecraftID),
                 count,
-                ComponentChanges.builder()
-                        .add(DataComponentTypes.CUSTOM_DATA, getSkyblockItemNBT(skyblockID))
-                        .add(DataComponentTypes.ENCHANTMENT_GLINT_OVERRIDE, enchanted)
+                DataComponentPatch.builder()
+                        .set(DataComponents.CUSTOM_DATA, getSkyblockItemNBT(skyblockID))
+                        .set(DataComponents.ENCHANTMENT_GLINT_OVERRIDE, enchanted)
                         .build());
     }
 
@@ -121,10 +125,10 @@ public class ItemUtils {
         return new ItemStack(
                 getRegistryEntry("player_head"),
                 1,
-                ComponentChanges.builder()
-                        .add(DataComponentTypes.PROFILE, new ProfileComponent(Optional.empty(), Optional.empty(), headProps(SkullMap.get(skullName))))
-                        .add(DataComponentTypes.CUSTOM_DATA, getSkyblockItemNBT(skyblockID))
-                        .add(DataComponentTypes.ENCHANTMENT_GLINT_OVERRIDE, enchanted)
+                DataComponentPatch.builder()
+                        .set(DataComponents.PROFILE, ResolvableProfile.createResolved(new GameProfile(UUID.randomUUID(), "sbt-skull", headProps(SkullMap.get(skullName)))))
+                        .set(DataComponents.CUSTOM_DATA, getSkyblockItemNBT(skyblockID))
+                        .set(DataComponents.ENCHANTMENT_GLINT_OVERRIDE, enchanted)
                         .build()
         );
     }
@@ -140,35 +144,36 @@ public class ItemUtils {
         return new ItemStack(
                 getRegistryEntry("player_head"),
                 1,
-                ComponentChanges.builder()
-                        .add(DataComponentTypes.PROFILE, new ProfileComponent(Optional.empty(), Optional.empty(), headProps(SkullMap.get(skullName))))
+                DataComponentPatch.builder()
+                        .set(DataComponents.PROFILE, ResolvableProfile.createResolved(new GameProfile(UUID.randomUUID(), "sbt-skull", headProps(SkullMap.get(skullName)))))
                         .build()
         );
     }
 
+
+
     private static PropertyMap headProps(String texture) {
         if (texture == null) {
-            return new PropertyMap();
+            return PropertyMap.EMPTY;
         }
         try {
-            var props = new PropertyMap();
-            props.put("textures", new Property("textures", texture));
-            return props;
+            // Taken from Skyblocker
+            return ExtraCodecs.PROPERTY_MAP.parse(JsonOps.INSTANCE, JsonParser.parseString("[{\"name\":\"textures\",\"value\":\"" + texture + "\"}]")).getOrThrow();
         } catch (Exception e) {
             ErrorHandler.handle(e, "Error while creating skull texture", ErrorLevel.WARNING);
-            return new PropertyMap();
+            return PropertyMap.EMPTY;
         }
     }
 
 
-    private static NbtComponent getSkyblockItemNBT(String skyblockID) {
-        var tag = new NbtCompound();
+    private static CustomData getSkyblockItemNBT(String skyblockID) {
+        var tag = new CompoundTag();
         tag.putString("id", skyblockID);
-        return NbtComponent.of(tag);
+        return CustomData.of(tag);
     }
 
-    private static RegistryEntry<Item> getRegistryEntry(String minecraftID) {
-        return RegistryEntry.of(Registries.ITEM.get(Identifier.of(minecraftID)));
+    private static Holder<Item> getRegistryEntry(String minecraftID) {
+        return Holder.direct(BuiltInRegistries.ITEM.getValue(ResourceLocation.parse(minecraftID)));
     }
 
     public static class SkullMap {

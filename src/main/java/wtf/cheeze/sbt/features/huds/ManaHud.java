@@ -23,7 +23,7 @@ import dev.isxander.yacl3.api.OptionGroup;
 import dev.isxander.yacl3.api.controller.ColorControllerBuilder;
 import dev.isxander.yacl3.api.controller.StringControllerBuilder;
 import dev.isxander.yacl3.config.v2.api.SerialEntry;
-import net.minecraft.text.Text;
+import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SBTConfig;
@@ -41,7 +41,6 @@ import wtf.cheeze.sbt.utils.skyblock.SkyblockData;
 import java.awt.*;
 
 public class ManaHud extends TextHud {
-
     public static final ManaHud INSTANCE = new ManaHud();
 
     private ManaHud() {
@@ -59,9 +58,10 @@ public class ManaHud extends TextHud {
                 () -> SBTConfig.huds().mana.color,
                 () -> SBTConfig.huds().mana.outlineColor,
                 () -> SBTConfig.huds().mana.mode,
-                () -> Text.literal(NumberUtils.formatNumber((int) SkyblockData.Stats.mana, SBTConfig.huds().mana.separator) + "/" + NumberUtils.formatNumber((int) SkyblockData.Stats.maxMana, SBTConfig.huds().mana.separator) + (SBTConfig.huds().mana.icon ? "✎" : ""))
+                () -> Component.literal(NumberUtils.formatNumber((int) SkyblockData.Stats.mana, SBTConfig.huds().mana.separator) + "/" + NumberUtils.formatNumber((int) SkyblockData.Stats.maxMana, SBTConfig.huds().mana.separator) + (SBTConfig.huds().mana.icon ? "✎" : ""))
         );
     }
+
     @Override
     public boolean shouldRender(boolean fromHudScreen) {
         if (!super.shouldRender(fromHudScreen)) return false;
@@ -73,7 +73,6 @@ public class ManaHud extends TextHud {
         return new HudName("Mana HUD", Colors.BLUE);
     }
     public static class Config {
-
         @SerialEntry
         public boolean enabled = false;
 
@@ -118,6 +117,7 @@ public class ManaHud extends TextHud {
                             value -> config.huds.mana.enabled = value
                     )
                     .build();
+
             var color = Option.<Color>createBuilder()
                     .name(key("mana.color"))
                     .description(keyD("mana.color"))
@@ -129,6 +129,7 @@ public class ManaHud extends TextHud {
 
                     )
                     .build();
+
             var outline = Option.<Color>createBuilder()
                     .name(key("mana.outlineColor"))
                     .description(keyD("mana.outlineColor"))
@@ -141,6 +142,7 @@ public class ManaHud extends TextHud {
 
                     )
                     .build();
+
             var mode = Option.<DrawMode>createBuilder()
                     .name(key("mana.mode"))
                     .description(keyD("mana.mode"))
@@ -154,6 +156,7 @@ public class ManaHud extends TextHud {
                             }
                     )
                     .build();
+
             var icon = Option.<Boolean>createBuilder()
                     .name(key("mana.icon"))
                     .description(keyD("mana.icon"))
@@ -164,6 +167,7 @@ public class ManaHud extends TextHud {
                             value -> config.huds.mana.icon = value
                     )
                     .build();
+
             var separator = Option.<String>createBuilder()
                     .name(key("mana.separator"))
                     .description(keyD("mana.separator"))
@@ -174,6 +178,7 @@ public class ManaHud extends TextHud {
                             value -> config.huds.mana.separator = value
                     )
                     .build();
+
             var scale = Option.<Float>createBuilder()
                     .name(key("mana.scale"))
                     .description(keyD("mana.scale"))
@@ -184,6 +189,7 @@ public class ManaHud extends TextHud {
                             value -> config.huds.mana.scale = value
                     )
                     .build();
+
             return OptionGroup.createBuilder()
                     .name(key("mana"))
                     .description(keyD("mana"))
@@ -197,6 +203,5 @@ public class ManaHud extends TextHud {
                     .collapsed(true)
                     .build();
         }
-
     }
 }
