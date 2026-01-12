@@ -30,6 +30,7 @@ import net.minecraft.client.gui.components.StringWidget;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.config.SBTConfig;
 import wtf.cheeze.sbt.hud.utils.CompositionEntry;
 import wtf.cheeze.sbt.utils.errors.ErrorHandler;
@@ -146,7 +147,7 @@ public class CompositionPopupScreen<T extends CompositionEntry> extends Screen {
         this.addRenderableWidget(doneButton);
         this.addRenderableWidget(resetCompositionButton);
 
-        this.addWidget(new EventListener());
+      //  this.addWidget(new EventListener());
     }
 
 
@@ -180,6 +181,8 @@ public class CompositionPopupScreen<T extends CompositionEntry> extends Screen {
         } else {
             previewButton.setTooltip(PREVIEW_INACTIVE);
         }
+        for (var entry: newItemList.children()) guiGraphics.drawCenteredString(client.font, entry.item.getDisplayName(), entry.getX() + 90 / 2, entry.getY() + 2, Colors.WHITE);
+        for (var entry: modifyItemList.children()) guiGraphics.drawCenteredString(client.font, entry.item.getDisplayName(), entry.getX() + 90 / 2, entry.getY() + 2, Colors.WHITE);
     }
 
     private class NewItemList extends AbstractList<NewItemListEntry> {
@@ -220,10 +223,14 @@ public class CompositionPopupScreen<T extends CompositionEntry> extends Screen {
         }
 
 
+
+
         @Override
         public void renderContent(GuiGraphics guiGraphics, int mouseX, int mouseY, boolean isHovering, float partialTick) {
-            guiGraphics.fill(CompositionPopupScreen.this.popupX -1  , getY() - 2, getX() + WIDTH , getY() + HEIGHT + 2, CompositionPopupScreen.this.children().indexOf(this) % 2 == 0 ? HIGHLIGHT_1: HIGHLIGHT_2);
-            guiGraphics.drawCenteredString(client.font, item.getDisplayName(), getX() + WIDTH / 2, getY() + 2, Colors.WHITE);
+            guiGraphics.fill(CompositionPopupScreen.this.popupX -1  , getY() - 2, getX() + WIDTH , getY() + ENTRY_HEIGHT + 2, CompositionPopupScreen.this.children().indexOf(this) % 2 == 0 ? HIGHLIGHT_1: HIGHLIGHT_2);
+            // TODO: Why is it not rendering here and I had to move it up?
+            // guiGraphics.drawCenteredString(client.font, item.getDisplayName(), getX() + WIDTH / 2, getY() + 2, Colors.WHITE);
+            //guiGraphics.drawString(client.font, TextUtils.withBold("Hi"), 1, 1, Colors.WHITE);
         }
     }
 
@@ -263,9 +270,10 @@ public class CompositionPopupScreen<T extends CompositionEntry> extends Screen {
                 var before = getEntry(listI - 1);
                 list.set(listI - 1, entry.item);
                 list.set(listI, before.item);
-                this.children().set(listI - 1, entry);
-                this.children().set(listI, before);
+                this.children.set(listI - 1, entry);
+                this.children.set(listI, before);
                 binding.setValue(list);
+                CompositionPopupScreen.this.modifyItemList.reload();
                 return true;
             } catch (Exception e) {
                 ErrorHandler.handle(e, "Failed to move item up", ErrorLevel.WARNING);
@@ -281,12 +289,13 @@ public class CompositionPopupScreen<T extends CompositionEntry> extends Screen {
                 var after = getEntry(listI + 1);
                 list.set(listI + 1, entry.item);
                 list.set(listI, after.item);
-                this.children().set(listI + 1, entry);
-                this.children().set(listI, after);
+                this.children.set(listI + 1, entry);
+                this.children.set(listI, after);
                 binding.setValue(list);
+                CompositionPopupScreen.this.modifyItemList.reload();
                 return true;
             } catch (Exception e) {
-                    ErrorHandler.handle(e, "Failed to move item up", ErrorLevel.WARNING);
+                    ErrorHandler.handle(e, "Failed to move item down", ErrorLevel.WARNING);
                     return false;
             }
         }
@@ -358,8 +367,11 @@ public class CompositionPopupScreen<T extends CompositionEntry> extends Screen {
         public void renderContent(GuiGraphics guiGraphics, int mouseX, int mouseY, boolean isHovering, float partialTick) {
             moveUp.setPosition(getX() - 1 - 2*BUTTON_DIMENSION, getY() - 2);
             moveDown.setPosition(getX() - 1 - BUTTON_DIMENSION, getY() - 2);
-            guiGraphics.fill(getX(), getY() - 2, getX() + width , getY() + width + 2, CompositionPopupScreen.this.children().indexOf(this) % 2 == 0 ? HIGHLIGHT_1: HIGHLIGHT_2);
-            guiGraphics.drawCenteredString(client.font, item.getDisplayName(), getX() + WIDTH / 2, getY() + 2, Colors.WHITE);
+
+            guiGraphics.fill(getX(), getY() - 2, getX() + width , getY() + ENTRY_HEIGHT + 2, CompositionPopupScreen.this.children().indexOf(this) % 2 == 0 ? HIGHLIGHT_1: HIGHLIGHT_2);
+                   // TODO: Why is it not rendering here and I had to move it up?
+         //   guiGraphics.drawCenteredString(client.font, item.getDisplayName(), getX() + WIDTH / 2, getY() + 2, Colors.WHITE);
+           // RenderUtils.drawText(guiGraphics, Component.literal("Test"), 0, 0, Colors.WHITE, true);
         }
     }
 
@@ -445,14 +457,13 @@ public class CompositionPopupScreen<T extends CompositionEntry> extends Screen {
         }
     }
 
-    private class EventListener extends ScreenListener {
-        @Override
-        public boolean mouseClicked(MouseButtonEvent event, boolean isDoubleClicked) {
-            if (event.x() < CompositionPopupScreen.this.popupX - CLICK_CLOSE_BUFFER || event.x() > CompositionPopupScreen.this.rightEdge + CLICK_CLOSE_BUFFER || event.y() < CompositionPopupScreen.this.popupY - CLICK_CLOSE_BUFFER || event.y() > popupY + HEIGHT + CLICK_CLOSE_BUFFER) {
-                onClose();
-                return true;
-            }
-            return super.mouseClicked(event, isDoubleClicked);
+    @Override
+    public boolean mouseClicked(MouseButtonEvent event, boolean isDoubleClicked) {
+        if (event.x() < this.popupX - CLICK_CLOSE_BUFFER || event.x() > this.rightEdge + CLICK_CLOSE_BUFFER || event.y() < CompositionPopupScreen.this.popupY - CLICK_CLOSE_BUFFER || event.y() > popupY + HEIGHT + CLICK_CLOSE_BUFFER) {
+            onClose();
+            return true;
         }
+        return super.mouseClicked(event, isDoubleClicked);
     }
+
 }

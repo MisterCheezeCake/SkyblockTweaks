@@ -127,7 +127,7 @@ public class HudScreen extends Screen {
         this.addRenderableWidget(cancelButton);
         this.addRenderableWidget(resetButton);
         this.addRenderableWidget(resetModeButton);
-        this.addWidget(new EventListener());
+        //this.addWidget(new EventListener());
     }
 
     @Override
@@ -343,6 +343,7 @@ public class HudScreen extends Screen {
 
     }
 
+    //TODO: Popup button is blinking
     public void addPopup(Component title, int desiredX, int desiredY, List<CheezePair<String, ? extends AbstractWidget>> widgets) {
         this.setMode(Mode.TEXT);
         ScreenRectangle bounds;
@@ -376,46 +377,48 @@ public class HudScreen extends Screen {
         DRAG, TEXT, RESET
     }
 
-    private class EventListener extends ScreenListener {
-        @Override
-        public boolean mouseReleased(MouseButtonEvent event) {
-            if (HudScreen.this.mode == Mode.DRAG) selectedElement = null;
-            return false;
-        }
+    @Override
+    public boolean mouseReleased(MouseButtonEvent event) {
+        if (this.mode == Mode.DRAG) selectedElement = null;
+        return super.mouseReleased(event);
+    }
 
-        @Override
-        public boolean mouseClicked(MouseButtonEvent event, boolean isDoubleClick) {
-            HudScreen.this.selectedViaTheKeyboard = null;
-            for (HUD hud : huds) {
-                if (clickInBounds(hud, event.x(), event.y())) {
-                    if (HudScreen.this.mode == Mode.DRAG) {
-                        selectedElement = hud;
-                        updateOffset(hud, event.x(), event.y());
-                    }
-                    if (Minecraft.getInstance().hasControlDown() || (HudScreen.this.mode == Mode.TEXT && !clickInBounds(popup.getBounds(), event.x(), event.y()))) {
-                        HudScreen.this.addPopup(hud.getName().name(EditorPopup.WIDTH), (int) event.x(), (int) event.y(), getPopupWidgets(hud));
-                        return false;
-                    }
+    @Override
+    public boolean mouseClicked(MouseButtonEvent event, boolean isDoubleClick) {
+        this.selectedViaTheKeyboard = null;
+        for (HUD hud : huds) {
+            if (clickInBounds(hud, event.x(), event.y())) {
+                if (this.mode == Mode.DRAG) {
+                    selectedElement = hud;
+                    updateOffset(hud, event.x(), event.y());
+                }
+                if (Minecraft.getInstance().hasControlDown() || (this.mode == Mode.TEXT && !clickInBounds(popup.getBounds(), event.x(), event.y()))) {
+                    this.addPopup(hud.getName().name(EditorPopup.WIDTH), (int) event.x(), (int) event.y(), getPopupWidgets(hud));
+                    return super.mouseClicked(event, isDoubleClick);
                 }
             }
-            if (HudScreen.this.popup != null && !clickInBounds(HudScreen.this.popup.getBounds(), event.x(), event.y())) {
-                HudScreen.this.popup.remove();
-                HudScreen.this.popup = null;
-                HudScreen.this.setMode(Mode.DRAG);
-            }
-            return false;
         }
-
-        @Override
-        public boolean mouseDragged(MouseButtonEvent event, double mouseX, double mouseY) {
-            // TODO: What are these parameters?
-            if (HudScreen.this.mode != Mode.DRAG) return false;
-            if (HudScreen.this.selectedElement != null) {
-                HudScreen.this.selectedElement.updatePosition(HUD.getRelativeX(event.x() - HudScreen.this.offsetX), HUD.getRelativeY(event.y() - HudScreen.this.offsetY));
-            }
-            return false;
+        if (this.popup != null && !clickInBounds(this.popup.getBounds(), event.x(), event.y())) {
+            this.popup.remove();
+            this.popup = null;
+            this.setMode(Mode.DRAG);
         }
+        return super.mouseClicked(event, isDoubleClick);
+    }
 
+    @Override
+    public boolean mouseDragged(MouseButtonEvent event, double mouseX, double mouseY) {
+        // TODO: What are these parameters?
+        if (this.mode != Mode.DRAG) return super.mouseDragged(event, mouseX, mouseY);
+        if (this.selectedElement != null) {
+            this.selectedElement.updatePosition(HUD.getRelativeX(event.x() - this.offsetX), HUD.getRelativeY(event.y()- this.offsetY));
+        }
+        return super.mouseDragged(event, mouseX, mouseY);
     }
 
 }
+
+
+
+
+
