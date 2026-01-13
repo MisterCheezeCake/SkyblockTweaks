@@ -19,9 +19,9 @@ base {
 loom {
     accessWidenerPath = project.file("src/main/resources/skyblocktweaks.accesswidener")
 
-//    runConfigs.all {
-//        ideConfigGenerated(stonecutter.current.isActive)
-//    }
+    runConfigs.all {
+        ideConfigGenerated(stonecutter.current.isActive)
+    }
 
     runConfigs.remove(runConfigs["server"])
 }
@@ -62,8 +62,8 @@ dependencies {
 //    })
     mappings(loom.layered {
         officialMojangMappings()
-		parchment("org.parchmentmc.data:parchment-${property("minecraft_version")}:${property("parchment_version")}@zip")
-        //mappings("dev.lambdaurora:yalmm-mojbackward:1.21.8+build.${property("yalmm_version")}")
+		parchment("org.parchmentmc.data:parchment-${property("parchment_version")}@zip")
+        mappings("dev.lambdaurora:yalmm-mojbackward:${property("minecraft_version")}+build.${property("yalmm_version")}")
 		// ^ Disabled as of 1/11 due to causing issues with decomp
     })
 	modImplementation ("net.fabricmc:fabric-loader:${property("loader_version")}")

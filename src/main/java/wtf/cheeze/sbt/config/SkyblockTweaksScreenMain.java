@@ -25,7 +25,7 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.hud.HudManager;
 import wtf.cheeze.sbt.utils.render.Colors;
@@ -33,7 +33,7 @@ import wtf.cheeze.sbt.utils.render.RenderUtils;
 import wtf.cheeze.sbt.hud.screen.HudScreen;
 
 public class SkyblockTweaksScreenMain extends Screen {
-    public static final ResourceLocation ICON = ResourceLocation.fromNamespaceAndPath("skyblocktweaks", "icon.png");
+    public static final Identifier ICON = Identifier.fromNamespaceAndPath("skyblocktweaks", "icon.png");
     private final Screen parent;
 
     public SkyblockTweaksScreenMain(Screen parent) {

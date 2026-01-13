@@ -51,7 +51,13 @@ public class TabListParser {
                 var displayName = entry.getTabListDisplayName();
                 if (displayName == null) continue;
                 var content = displayName.getString();
-                var profileName = entry.getProfile().name();
+                var profileName = entry.getProfile()
+                        //?if >1.21.8 {
+                         .name();
+                        //?} else {
+                        /*.getName();
+                        *///?}
+
                 if (profileName.endsWith("a")) { // Column headers
                     if (content.trim().equals("Info")) {
                         inInfoColumn = true;

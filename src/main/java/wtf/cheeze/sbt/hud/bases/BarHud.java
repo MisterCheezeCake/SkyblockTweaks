@@ -19,7 +19,7 @@
 package wtf.cheeze.sbt.hud.bases;
 
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import org.jetbrains.annotations.NotNull;
 import wtf.cheeze.sbt.hud.bounds.Bounds;
 import wtf.cheeze.sbt.hud.bounds.BoundsRelative;
@@ -30,8 +30,8 @@ import wtf.cheeze.sbt.utils.render.RenderUtils;
  * A HUD that displays a bar, code liberally inspired by SBA, but way simpler thanks to modern mc, bar textures taken directly from SBA
  */
 public abstract class BarHud extends HUD {
-    public static final ResourceLocation UNFILLED = ResourceLocation.fromNamespaceAndPath("skyblocktweaks", "bars/unfilled.png");
-    public static final ResourceLocation FILLED = ResourceLocation.fromNamespaceAndPath("skyblocktweaks", "bars/filled.png");
+    public static final Identifier UNFILLED = Identifier.fromNamespaceAndPath("skyblocktweaks", "bars/unfilled.png");
+    public static final Identifier FILLED = Identifier.fromNamespaceAndPath("skyblocktweaks", "bars/filled.png");
 
     public abstract int getColor();
     public abstract float getFill();

@@ -29,8 +29,6 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.EditBox;
-import net.minecraft.client.input.KeyEvent;
-import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
@@ -40,10 +38,19 @@ import wtf.cheeze.sbt.hud.HUD;
 import wtf.cheeze.sbt.hud.bounds.Bounds;
 import wtf.cheeze.sbt.hud.utils.AnchorPoint;
 import wtf.cheeze.sbt.utils.CheezePair;
+import wtf.cheeze.sbt.utils.MultiUtils;
 import wtf.cheeze.sbt.utils.render.ScreenListener;
 import wtf.cheeze.sbt.utils.text.Predicates;
 import wtf.cheeze.sbt.utils.render.Colors;
 import wtf.cheeze.sbt.utils.render.RenderUtils;
+
+//?if >1.21.8 {
+
+import net.minecraft.client.input.KeyEvent;
+import net.minecraft.client.input.MouseButtonEvent;
+
+
+//?}
 
 import java.util.ArrayList;
 import java.util.List;
@@ -141,8 +148,7 @@ public class HudScreen extends Screen {
             hud.render(guiGraphics, true, inBounds);
             if (inBounds) {
                 hovered = hud;
-                // TODO: Reduce Reliance on YAc
-                if (KeyUtils.hasShiftDown()) {
+                if (MultiUtils.shiftDown()) {
 //                    context.drawTooltip(hud.getName().primaryName(),);
                     if (!drawnTooltip) guiGraphics.setTooltipForNextFrame(Minecraft.getInstance().font, hud.getName().primaryName(), mouseX, mouseY );
                     drawnTooltip = true;
@@ -177,18 +183,24 @@ public class HudScreen extends Screen {
     }
 
     @Override
+    //? if >1.21.8 {
     public boolean keyPressed(KeyEvent event) {
+    int keyCode = event.key();
+    
+    //?} else {
+    /*public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
 
-        if (Minecraft.getInstance().hasAltDown() && Minecraft.getInstance().hasControlDown()) {
+    *///?}
+        if (MultiUtils.altDown() && MultiUtils.controlDown()) {
             textToggledOff = !textToggledOff;
         }
 
-        if (event.key() == GLFW.GLFW_KEY_R && Minecraft.getInstance().hasControlDown()) {
+        if (keyCode == GLFW.GLFW_KEY_R && MultiUtils.controlDown()) {
             setMode(Mode.RESET);
         }
         if (this.mode == Mode.DRAG) {
             if (this.hoveredElement != null) {
-                switch (event.key()) {
+                switch (keyCode) {
                     case GLFW.GLFW_KEY_UP -> {
                         moveVertical(hoveredElement, -getMoveAmount());
                         selectedViaTheKeyboard = hoveredElement;
@@ -216,7 +228,7 @@ public class HudScreen extends Screen {
                     }
                 }
             } else if (this.selectedViaTheKeyboard != null) {
-                switch (event.key()) {
+                switch (keyCode) {
                     case GLFW.GLFW_KEY_UP -> moveVertical(selectedViaTheKeyboard, -getMoveAmount());
                     case GLFW.GLFW_KEY_DOWN -> moveVertical(selectedViaTheKeyboard, getMoveAmount());
                     case GLFW.GLFW_KEY_LEFT -> moveHorizontal(selectedViaTheKeyboard, -getMoveAmount());
@@ -228,7 +240,7 @@ public class HudScreen extends Screen {
                 }
             }
         }
-        if (event.key() == GLFW.GLFW_KEY_ESCAPE) {
+        if (keyCode == GLFW.GLFW_KEY_ESCAPE) {
             if (this.popup != null) {
                 this.popup.remove();
                 this.popup = null;
@@ -240,7 +252,13 @@ public class HudScreen extends Screen {
                 return true;
             }
         }
-        return super.keyPressed(event);
+        return
+                //?if >1.21.8 {
+                super.keyPressed(event);
+                //?} else {
+        /*super.keyPressed(keyCode, scanCode, modifiers);
+
+        *///?}
     }
 
     private void setMode(Mode newMode) {
@@ -262,7 +280,7 @@ public class HudScreen extends Screen {
     }
 
     private boolean shouldShowText() {
-        if (Minecraft.getInstance().hasAltDown()) return false;
+        if (MultiUtils.altDown()) return false;
         return !textToggledOff;
     }
 
@@ -377,43 +395,89 @@ public class HudScreen extends Screen {
         DRAG, TEXT, RESET
     }
 
+
     @Override
+    //?if > 1.21.8 {
     public boolean mouseReleased(MouseButtonEvent event) {
         if (this.mode == Mode.DRAG) selectedElement = null;
         return super.mouseReleased(event);
     }
+     
+    //?} else {
+    /*public boolean mouseReleased(double mouseX, double mouseY, int button) {
+        boolean x = super.mouseReleased(mouseX, mouseY, button);
+        if (this.mode == Mode.DRAG) selectedElement = null;
+        return x;
+    }
+    *///?}
+
+
 
     @Override
+    //?if >1.21.8 {
+    
     public boolean mouseClicked(MouseButtonEvent event, boolean isDoubleClick) {
+        double x = event.x();
+        double y = event.y();
+     //?} else {
+     /*public boolean mouseClicked(double x, double y, int button) {
+     *///?}
         this.selectedViaTheKeyboard = null;
         for (HUD hud : huds) {
-            if (clickInBounds(hud, event.x(), event.y())) {
+            if (clickInBounds(hud, x, y)) {
                 if (this.mode == Mode.DRAG) {
                     selectedElement = hud;
-                    updateOffset(hud, event.x(), event.y());
+                    updateOffset(hud, x, y);
                 }
-                if (Minecraft.getInstance().hasControlDown() || (this.mode == Mode.TEXT && !clickInBounds(popup.getBounds(), event.x(), event.y()))) {
-                    this.addPopup(hud.getName().name(EditorPopup.WIDTH), (int) event.x(), (int) event.y(), getPopupWidgets(hud));
-                    return super.mouseClicked(event, isDoubleClick);
+                if (MultiUtils.controlDown() || (this.mode == Mode.TEXT && !clickInBounds(popup.getBounds(), x, y))) {
+                    this.addPopup(hud.getName().name(EditorPopup.WIDTH), (int) x, (int) y, getPopupWidgets(hud));
+                    return
+                            //? if >1.21.8 {
+                            super.mouseClicked(event, isDoubleClick);
+                            //?} else {
+                            /*super.mouseClicked(x, y, button);
+                            *///?}
                 }
             }
         }
-        if (this.popup != null && !clickInBounds(this.popup.getBounds(), event.x(), event.y())) {
+        if (this.popup != null && !clickInBounds(this.popup.getBounds(), x, y)) {
             this.popup.remove();
             this.popup = null;
             this.setMode(Mode.DRAG);
         }
-        return super.mouseClicked(event, isDoubleClick);
+        return
+                //? if >1.21.8 {
+                super.mouseClicked(event, isDoubleClick);
+                 //?} else {
+                /*super.mouseClicked(x, y, button);
+        *///?}
     }
 
     @Override
-    public boolean mouseDragged(MouseButtonEvent event, double mouseX, double mouseY) {
+    //?if >1.21.8 {
+    public boolean mouseDragged(MouseButtonEvent event, double mouseXIgnore, double mouseYIgnore) {
+        double x = event.x();
+        double y = event.y();
+        //?} else {
+    /*public boolean mouseDragged(double x, double y, int button, double deltaX, double deltaY) {
+        *///?}
         // TODO: What are these parameters?
-        if (this.mode != Mode.DRAG) return super.mouseDragged(event, mouseX, mouseY);
+        if (this.mode != Mode.DRAG) return
+                //?if >1.21.8 {
+                 super.mouseDragged(event, mouseXIgnore, mouseYIgnore);
+                //?} else {
+                /*super.mouseDragged(x, y, button, deltaX, deltaY);
+                *///?}
         if (this.selectedElement != null) {
-            this.selectedElement.updatePosition(HUD.getRelativeX(event.x() - this.offsetX), HUD.getRelativeY(event.y()- this.offsetY));
+            this.selectedElement.updatePosition(HUD.getRelativeX(x - this.offsetX), HUD.getRelativeY(y - this.offsetY));
         }
-        return super.mouseDragged(event, mouseX, mouseY);
+
+        return
+                //?if >1.21.8 {
+                 super.mouseDragged(event, mouseXIgnore, mouseYIgnore);
+                //?} else {
+                /*super.mouseDragged(x, y, button, deltaX, deltaY);
+                  *///?}
     }
 
 }

@@ -27,7 +27,7 @@ import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import wtf.cheeze.sbt.config.categories.*;
 import wtf.cheeze.sbt.config.migration.BarColorTransformation;
 import wtf.cheeze.sbt.config.migration.MigrationManager;
@@ -43,7 +43,7 @@ public class  SBTConfig {
     public static final Path PATH = FabricLoader.getInstance().getConfigDir().resolve("skyblocktweaks-config.json");
 
     private static final ConfigClassHandler<ConfigImpl> HANDLER = ConfigClassHandler.createBuilder(ConfigImpl.class)
-            .id(ResourceLocation.fromNamespaceAndPath("skyblocktweaks", "config"))
+            .id(Identifier.fromNamespaceAndPath("skyblocktweaks", "config"))
             .serializer(config -> GsonConfigSerializerBuilder.create(config).appendGsonBuilder(builder -> builder.setFieldNamingPolicy(FieldNamingPolicy.IDENTITY))
                     .setPath(PATH)
                     .build())

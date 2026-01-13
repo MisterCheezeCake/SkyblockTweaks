@@ -25,7 +25,7 @@ import dev.isxander.yacl3.config.v2.api.serializer.GsonConfigSerializerBuilder;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.gui.screens.ChatScreen;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import wtf.cheeze.sbt.utils.skyblock.SkyblockData;
 
 import java.nio.file.Path;
@@ -45,7 +45,7 @@ public class PersistentData {
 
     private static final Path pdPath = FabricLoader.getInstance().getConfigDir().resolve("skyblocktweaks-persistent.json");
     private static final ConfigClassHandler<PersistentData> HANDLER = ConfigClassHandler.createBuilder(PersistentData.class)
-            .id(ResourceLocation.fromNamespaceAndPath("skyblocktweaks", "persistent"))
+            .id(Identifier.fromNamespaceAndPath("skyblocktweaks", "persistent"))
             .serializer(config -> GsonConfigSerializerBuilder.create(config).appendGsonBuilder(builder -> builder.setFieldNamingPolicy(FieldNamingPolicy.IDENTITY))
                     .setPath(pdPath)
                     .build())

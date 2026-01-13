@@ -28,7 +28,6 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.EditBox;
-import net.minecraft.client.input.KeyEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.network.chat.Component;
 import org.lwjgl.glfw.GLFW;
@@ -45,6 +44,8 @@ import wtf.cheeze.sbt.utils.render.Popup;
 import wtf.cheeze.sbt.utils.render.RenderUtils;
 import wtf.cheeze.sbt.utils.skyblock.ItemUtils;
 import wtf.cheeze.sbt.utils.text.TextUtils;
+//? if >1.21.8
+import net.minecraft.client.input.KeyEvent;
 
 import java.util.List;
 import java.util.stream.Stream;
@@ -199,9 +200,22 @@ public class ReforgeOverlay {
                     matchWidget.setFocused(false);
                     return true;
                 }
-                if (!inv) return matchWidget.keyPressed(new KeyEvent(keyCode, scanCode, modifiers));
+                if (!inv) return matchWidget.keyPressed(
+                        //?if >1.21.8
+                        new KeyEvent(
+                        keyCode, scanCode, modifiers
+
+                                //?if >1.21.8
+                )
+                );
                 else {
-                    matchWidget.keyPressed(new KeyEvent(keyCode, scanCode, modifiers));
+                    matchWidget.keyPressed(
+                            //?if >1.21.8
+                            new KeyEvent(
+                                    keyCode, scanCode, modifiers
+                                    //?if >1.21.8
+                            )
+                    );
                     return true;
                 }
             }
@@ -210,9 +224,21 @@ public class ReforgeOverlay {
                     exclusionWidget.setFocused(false);
                     return true;
                 }
-                if (!inv) return exclusionWidget.keyPressed(new KeyEvent(keyCode, scanCode, modifiers));
+                if (!inv) return exclusionWidget.keyPressed(
+                        //?if >1.21.8
+                        new KeyEvent(
+                                keyCode, scanCode, modifiers
+                                //?if >1.21.8
+                        )
+                );
                 else {
-                    exclusionWidget.keyPressed(new KeyEvent(keyCode, scanCode, modifiers));
+                    exclusionWidget.keyPressed(
+                            //?if >1.21.8
+                            new KeyEvent(
+                                    keyCode, scanCode, modifiers
+                                    //?if >1.21.8
+                            )
+                    );
                     return true;
                 }
             }

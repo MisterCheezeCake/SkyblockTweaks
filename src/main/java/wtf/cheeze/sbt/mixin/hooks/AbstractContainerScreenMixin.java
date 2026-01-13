@@ -21,8 +21,6 @@ package wtf.cheeze.sbt.mixin.hooks;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
-import net.minecraft.client.input.KeyEvent;
-import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.world.inventory.BrewingStandMenu;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.Slot;
@@ -42,7 +40,13 @@ import wtf.cheeze.sbt.utils.KillSwitch;
 import wtf.cheeze.sbt.utils.injected.SBTAbstractContainerScreen;
 import wtf.cheeze.sbt.utils.render.Popup;
 
-import java.awt.event.MouseEvent;
+//?if >1.21.8 {
+
+import net.minecraft.client.input.KeyEvent;
+import net.minecraft.client.input.MouseButtonEvent;
+
+//?}
+
 
 @Mixin(AbstractContainerScreen.class)
 public abstract class AbstractContainerScreenMixin<T extends AbstractContainerMenu> extends Screen implements SBTAbstractContainerScreen {
@@ -79,18 +83,46 @@ public abstract class AbstractContainerScreenMixin<T extends AbstractContainerMe
     }
 
     @Inject(method = "mouseClicked", at = @At("HEAD"), cancellable = true)
-    public void sbt$onMouseClicked(MouseButtonEvent event, boolean isDoubleClick, CallbackInfoReturnable<Boolean> cir) {
+    public void sbt$onMouseClicked(
+            //? if >1.21.8 {
+             MouseButtonEvent event, boolean isDoubleClick,
+            //? } else {
+            /*double mouseX, double mouseY, int button,
+            *///?}
+            CallbackInfoReturnable<Boolean> cir) {
         if (this.sbt$popup != null) {
-            if (this.sbt$popup.mouseClicked(event.x(), event.y(), event.button())) {
+            if (this.sbt$popup.mouseClicked(
+                    //?if >1.21.8 {
+                    
+                    event.x(), event.y(), event.button()
+                     
+                    //?} else {
+                    /*mouseX, mouseY, button
+                    *///?}
+            )) {
                 cir.setReturnValue(true);
             }
         }
     }
 
+
     @Inject(method = "keyPressed", at = @At("HEAD"), cancellable = true)
-    public void sbt$onKeyPressed(KeyEvent event, CallbackInfoReturnable<Boolean> cir) {
+    public void sbt$onKeyPressed(
+            //? if >1.21.8 {
+            KeyEvent event,
+            //?} else {
+            /*int keyCode, int scanCode, int modifiers,
+            *///?}
+            CallbackInfoReturnable<Boolean> cir) {
         if (this.sbt$popup != null) {
-            if (this.sbt$popup.keyPressed(event.key(), event.scancode(), event.modifiers())) {
+            if (this.sbt$popup.keyPressed(
+                    //? if >1.21.8 {
+                    event.key(), event.scancode(), event.modifiers()
+                    //?} else {
+                    /*keyCode, scanCode, modifiers
+                    *///?}
+
+            )) {
                 cir.setReturnValue(true);
             }
         }

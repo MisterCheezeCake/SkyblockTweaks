@@ -19,7 +19,7 @@
 package wtf.cheeze.sbt.hud.bases;
 
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import org.jetbrains.annotations.NotNull;
 import wtf.cheeze.sbt.features.huds.TickerHud;
 import wtf.cheeze.sbt.hud.bounds.Bounds;
@@ -31,8 +31,8 @@ import wtf.cheeze.sbt.utils.render.RenderUtils;
  * The abstract representation of the ticker HUD, for the implementation, see {@link TickerHud}
  */
 public abstract class AbstractTickerHud extends HUD {
-    private static final ResourceLocation FULL = ResourceLocation.fromNamespaceAndPath("skyblocktweaks", "tickers/full.png");
-    private static final ResourceLocation BLANK = ResourceLocation.fromNamespaceAndPath("skyblocktweaks", "tickers/blank.png");
+    private static final Identifier FULL = Identifier.fromNamespaceAndPath("skyblocktweaks", "tickers/full.png");
+    private static final Identifier BLANK = Identifier.fromNamespaceAndPath("skyblocktweaks", "tickers/blank.png");
     private static final int DIMENSION = 9;
 
     /**

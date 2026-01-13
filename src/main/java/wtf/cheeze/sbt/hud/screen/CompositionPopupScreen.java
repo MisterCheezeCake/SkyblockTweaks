@@ -27,21 +27,22 @@ import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.components.ObjectSelectionList;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.StringWidget;
-import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
-import wtf.cheeze.sbt.SkyblockTweaks;
+import net.minecraft.resources.Identifier;
 import wtf.cheeze.sbt.config.SBTConfig;
 import wtf.cheeze.sbt.hud.utils.CompositionEntry;
+import wtf.cheeze.sbt.utils.MultiUtils;
 import wtf.cheeze.sbt.utils.errors.ErrorHandler;
 import wtf.cheeze.sbt.utils.errors.ErrorLevel;
 import wtf.cheeze.sbt.utils.render.Colors;
 import wtf.cheeze.sbt.utils.render.RenderUtils;
-import wtf.cheeze.sbt.utils.render.ScreenListener;
 import wtf.cheeze.sbt.utils.text.Symbols;
 import wtf.cheeze.sbt.utils.text.TextUtils;
 
 import java.util.List;
+
+//?if >1.21.8
+import net.minecraft.client.input.MouseButtonEvent;
 
 /**
  * A popup screen for changing HUD composition
@@ -49,7 +50,7 @@ import java.util.List;
  * TODO: Reset only works the first time its used
  */
 public class CompositionPopupScreen<T extends CompositionEntry> extends Screen {
-    private static final ResourceLocation BACKGROUND = ResourceLocation.fromNamespaceAndPath("skyblocktweaks", "gui/panel_super_wide.png");
+    private static final Identifier BACKGROUND = Identifier.fromNamespaceAndPath("skyblocktweaks", "gui/panel_super_wide.png");
     private static final Minecraft client = Minecraft.getInstance();
     private static final int WIDTH = 300;
     private static final int HEIGHT = 150;
@@ -167,7 +168,7 @@ public class CompositionPopupScreen<T extends CompositionEntry> extends Screen {
             drawable.render(guiGraphics, mouseX, mouseY, delta);
         }
 
-        if (Minecraft.getInstance().hasShiftDown()) {
+        if (MultiUtils.shiftDown()) {
             var base = Component.empty();
             boolean first = true;
 
@@ -181,8 +182,12 @@ public class CompositionPopupScreen<T extends CompositionEntry> extends Screen {
         } else {
             previewButton.setTooltip(PREVIEW_INACTIVE);
         }
+        //?if >1.21.8 {
+        
         for (var entry: newItemList.children()) guiGraphics.drawCenteredString(client.font, entry.item.getDisplayName(), entry.getX() + 90 / 2, entry.getY() + 2, Colors.WHITE);
         for (var entry: modifyItemList.children()) guiGraphics.drawCenteredString(client.font, entry.item.getDisplayName(), entry.getX() + 90 / 2, entry.getY() + 2, Colors.WHITE);
+       
+        //?}
     }
 
     private class NewItemList extends AbstractList<NewItemListEntry> {
@@ -222,16 +227,21 @@ public class CompositionPopupScreen<T extends CompositionEntry> extends Screen {
             super(item);
         }
 
-
-
-
         @Override
+        //?if >1.21.8 {
+        
         public void renderContent(GuiGraphics guiGraphics, int mouseX, int mouseY, boolean isHovering, float partialTick) {
             guiGraphics.fill(CompositionPopupScreen.this.popupX -1  , getY() - 2, getX() + WIDTH , getY() + ENTRY_HEIGHT + 2, CompositionPopupScreen.this.children().indexOf(this) % 2 == 0 ? HIGHLIGHT_1: HIGHLIGHT_2);
             // TODO: Why is it not rendering here and I had to move it up?
             // guiGraphics.drawCenteredString(client.font, item.getDisplayName(), getX() + WIDTH / 2, getY() + 2, Colors.WHITE);
             //guiGraphics.drawString(client.font, TextUtils.withBold("Hi"), 1, 1, Colors.WHITE);
+        } 
+        //?} else {
+        /*public void render(GuiGraphics guiGraphics, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
+            guiGraphics.fill(x -1  , y - 2, x + entryWidth , y + entryHeight + 2, index % 2 == 0 ? HIGHLIGHT_1: HIGHLIGHT_2);
+            guiGraphics.drawCenteredString(client.font, item.getDisplayName(), x + entryWidth / 2, y + 2, Colors.WHITE);
         }
+        *///?}
     }
 
     private static final Component MOVE_UP = Component.translatable("sbt.gui.config.move_up");
@@ -364,6 +374,8 @@ public class CompositionPopupScreen<T extends CompositionEntry> extends Screen {
         }
 
         @Override
+        //? if >1.21.8 {
+        
         public void renderContent(GuiGraphics guiGraphics, int mouseX, int mouseY, boolean isHovering, float partialTick) {
             moveUp.setPosition(getX() - 1 - 2*BUTTON_DIMENSION, getY() - 2);
             moveDown.setPosition(getX() - 1 - BUTTON_DIMENSION, getY() - 2);
@@ -373,6 +385,15 @@ public class CompositionPopupScreen<T extends CompositionEntry> extends Screen {
          //   guiGraphics.drawCenteredString(client.font, item.getDisplayName(), getX() + WIDTH / 2, getY() + 2, Colors.WHITE);
            // RenderUtils.drawText(guiGraphics, Component.literal("Test"), 0, 0, Colors.WHITE, true);
         }
+        
+        //?} else {
+        /*public void render(GuiGraphics guiGraphics, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
+            moveUp.setPosition(x - 1 - 2*BUTTON_DIMENSION, y - 2);
+            moveDown.setPosition(x - 1 - BUTTON_DIMENSION, y - 2);
+            guiGraphics.fill(x, y - 2, x + entryWidth , y + entryHeight + 2, index % 2 == 0 ? HIGHLIGHT_1: HIGHLIGHT_2);
+            guiGraphics.drawCenteredString(client.font, item.getDisplayName(), x + entryWidth / 2, y + 2, Colors.WHITE);
+        }
+        *///?}
     }
 
     private abstract static class AbstractList<E extends ObjectSelectionList.Entry<E>> extends ObjectSelectionList<E> {
@@ -457,7 +478,10 @@ public class CompositionPopupScreen<T extends CompositionEntry> extends Screen {
         }
     }
 
+
     @Override
+    //?if >1.21.8 {
+    
     public boolean mouseClicked(MouseButtonEvent event, boolean isDoubleClicked) {
         if (event.x() < this.popupX - CLICK_CLOSE_BUFFER || event.x() > this.rightEdge + CLICK_CLOSE_BUFFER || event.y() < CompositionPopupScreen.this.popupY - CLICK_CLOSE_BUFFER || event.y() > popupY + HEIGHT + CLICK_CLOSE_BUFFER) {
             onClose();
@@ -465,5 +489,15 @@ public class CompositionPopupScreen<T extends CompositionEntry> extends Screen {
         }
         return super.mouseClicked(event, isDoubleClicked);
     }
+     
+    //? } else {
+    /*public boolean mouseClicked(double mouseX, double mouseY, int button) {
+        if (mouseX < popupX - CLICK_CLOSE_BUFFER || mouseX > rightEdge + CLICK_CLOSE_BUFFER || mouseY < popupY - CLICK_CLOSE_BUFFER || mouseY > popupY + HEIGHT + CLICK_CLOSE_BUFFER) {
+            onClose();
+            return true;
+        }
+        return super.mouseClicked(mouseX, mouseY, button);
+    }
+    *///?}
 
 }

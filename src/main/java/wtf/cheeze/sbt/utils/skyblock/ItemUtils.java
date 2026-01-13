@@ -20,6 +20,7 @@ package wtf.cheeze.sbt.utils.skyblock;
 
 import com.google.gson.JsonParser;
 import com.mojang.authlib.GameProfile;
+import com.mojang.authlib.properties.Property;
 import com.mojang.authlib.properties.PropertyMap;
 import com.mojang.serialization.JsonOps;
 import net.minecraft.core.component.DataComponentPatch;
@@ -33,7 +34,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.Holder;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.utils.errors.ErrorHandler;
 import wtf.cheeze.sbt.utils.errors.ErrorLevel;
@@ -121,17 +122,24 @@ public class ItemUtils {
      * @param enchanted Whether the item should have an enchantment glint
      * @param skullName The name of the skull texture, must be present in the {@code skullmap.json} file
      */
+
     public static ItemStack getHead(String skyblockID, boolean enchanted, String skullName) {
         return new ItemStack(
                 getRegistryEntry("player_head"),
                 1,
                 DataComponentPatch.builder()
+                        //?if >1.21.8 {
                         .set(DataComponents.PROFILE, ResolvableProfile.createResolved(new GameProfile(UUID.randomUUID(), "sbt-skull", headProps(SkullMap.get(skullName)))))
+                        //? } else {
+                        /*.set(DataComponents.PROFILE, new ResolvableProfile(Optional.empty(), Optional.empty(), headProps(SkullMap.get(skullName))))
+                        *///?}
                         .set(DataComponents.CUSTOM_DATA, getSkyblockItemNBT(skyblockID))
                         .set(DataComponents.ENCHANTMENT_GLINT_OVERRIDE, enchanted)
                         .build()
         );
     }
+
+
     public static ItemStack getHead(String skyblockID, String skullName) {
         return getHead(skyblockID, false, skullName);
     }
@@ -145,7 +153,11 @@ public class ItemUtils {
                 getRegistryEntry("player_head"),
                 1,
                 DataComponentPatch.builder()
+                        //?if >1.21.8 {
                         .set(DataComponents.PROFILE, ResolvableProfile.createResolved(new GameProfile(UUID.randomUUID(), "sbt-skull", headProps(SkullMap.get(skullName)))))
+                        //? } else {
+                        /*.set(DataComponents.PROFILE, new ResolvableProfile(Optional.empty(), Optional.empty(), headProps(SkullMap.get(skullName))))
+                        *///?}
                         .build()
         );
     }
@@ -154,14 +166,29 @@ public class ItemUtils {
 
     private static PropertyMap headProps(String texture) {
         if (texture == null) {
+            //?if >1.21.8 {
             return PropertyMap.EMPTY;
+            //? } else {
+            /*return new PropertyMap();
+            *///?}
         }
         try {
-            // Taken from Skyblocker
+            //Taken from Skyblocker
+            //?if >1.21.8 {
+             
             return ExtraCodecs.PROPERTY_MAP.parse(JsonOps.INSTANCE, JsonParser.parseString("[{\"name\":\"textures\",\"value\":\"" + texture + "\"}]")).getOrThrow();
+            //? } else {
+            /*var props = new PropertyMap();
+            props.put("textures", new Property("textures", texture));
+            return props;
+            *///?}
         } catch (Exception e) {
             ErrorHandler.handle(e, "Error while creating skull texture", ErrorLevel.WARNING);
+            //?if >1.21.8 {
             return PropertyMap.EMPTY;
+            //? } else {
+            /*return new PropertyMap();
+            *///?}
         }
     }
 
@@ -173,7 +200,7 @@ public class ItemUtils {
     }
 
     private static Holder<Item> getRegistryEntry(String minecraftID) {
-        return Holder.direct(BuiltInRegistries.ITEM.getValue(ResourceLocation.parse(minecraftID)));
+        return Holder.direct(BuiltInRegistries.ITEM.getValue(Identifier.parse(minecraftID)));
     }
 
     public static class SkullMap {

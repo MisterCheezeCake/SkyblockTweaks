@@ -18,7 +18,7 @@
  */
 package wtf.cheeze.sbt.hud.icon;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 import java.util.Map;
 
@@ -40,7 +40,7 @@ public class Icons {
     public static final HudIcon WATER_BUCKET = itemID("water_bucket");
     public static final HudIcon DEFAULT_HEAD = itemStack("player_head");
 
-    public static final HudIcon DEFAULT_ICON = HudIcon.of(ResourceLocation.fromNamespaceAndPath("skyblocktweaks", "missing.png"));
+    public static final HudIcon DEFAULT_ICON = HudIcon.of(Identifier.fromNamespaceAndPath("skyblocktweaks", "missing.png"));
     public static final Map<Skill, HudIcon> SKILL_ICONS = Map.ofEntries(
             entry(Skill.COMBAT, IRON_SWORD),
             entry(Skill.FARMING, itemID("golden_hoe")),
@@ -110,11 +110,11 @@ public class Icons {
 
 
     private static HudIcon itemID(String name) {
-        return HudIcon.of(ResourceLocation.withDefaultNamespace("textures/item/" + name + ".png"));
+        return HudIcon.of(Identifier.withDefaultNamespace("textures/item/" + name + ".png"));
     }
 
     private static HudIcon blockID(String name) {
-        return HudIcon.of(ResourceLocation.withDefaultNamespace("textures/block/" + name + ".png"));
+        return HudIcon.of(Identifier.withDefaultNamespace("textures/block/" + name + ".png"));
     }
 
     private static HudIcon itemStack(String name) {
