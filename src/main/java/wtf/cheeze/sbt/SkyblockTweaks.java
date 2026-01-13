@@ -29,6 +29,7 @@ import wtf.cheeze.sbt.config.persistent.PersistentData;
 import wtf.cheeze.sbt.events.HudRenderEvents;
 import wtf.cheeze.sbt.features.mining.FetchurFeatures;
 import wtf.cheeze.sbt.features.mining.MiningTitles;
+import wtf.cheeze.sbt.features.misc.HudElementHider;
 import wtf.cheeze.sbt.features.overlay.MenuHighlights;
 import wtf.cheeze.sbt.features.overlay.MinionExp;
 import wtf.cheeze.sbt.features.misc.MouseLock;
@@ -80,5 +81,7 @@ public class SkyblockTweaks implements ModInitializer {
 		ReforgeOverlay.registerEvents();
 		HudRenderEvents.registerEvents();
 		UpdateChecker.checkForUpdates();
+
+        HudElementHider.hideElements();
 	}
 }

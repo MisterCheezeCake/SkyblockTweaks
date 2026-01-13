@@ -6,8 +6,6 @@
     "accessors.BossHealthOverlayAccessor",
     "accessors.PlayerTabOverlayAccessor",
     "accessors.YACLScreenAccessor",
-    "features.BossBarHiderMixin",
-    "features.HudElementHiderMixin",
     "features.MouseHandlerLockMixin",
     "features.NoShadowActionBarMixin",
     "features.RecipeBookRedirectorMixin",
