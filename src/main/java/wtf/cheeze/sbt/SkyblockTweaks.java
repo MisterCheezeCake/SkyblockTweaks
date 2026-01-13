@@ -29,6 +29,7 @@ import wtf.cheeze.sbt.config.persistent.PersistentData;
 import wtf.cheeze.sbt.events.HudRenderEvents;
 import wtf.cheeze.sbt.features.mining.FetchurFeatures;
 import wtf.cheeze.sbt.features.mining.MiningTitles;
+import wtf.cheeze.sbt.features.misc.HudElementHider;
 import wtf.cheeze.sbt.features.overlay.MenuHighlights;
 import wtf.cheeze.sbt.features.overlay.MinionExp;
 import wtf.cheeze.sbt.features.misc.MouseLock;
@@ -48,37 +49,38 @@ import wtf.cheeze.sbt.features.chat.*;
 import wtf.cheeze.sbt.utils.version.VersionType;
 
 public class SkyblockTweaks implements ModInitializer {
-	public static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
+    public static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     public static final Logger LOGGER = LoggerFactory.getLogger("SkyblockTweaks");
 
-	public static final Version VERSION = new Version(VersionType.ALPHA, 0, 1, 0, 18);
-	//public static final Version VERSION = new Version(VersionType.UNSTABLE);
+    public static final Version VERSION = new Version(VersionType.ALPHA, 0, 1, 0, 18);
+    //public static final Version VERSION = new Version(VersionType.UNSTABLE);
 
+    @Override
+    public void onInitialize() {
+        SBTConfig.load();
+        PersistentData.registerEvents();
 
-	@Override
-	public void onInitialize() {
-		SBTConfig.load();
-		PersistentData.registerEvents();
+        KillSwitch.registerEvents();
+        ConstantLoader.registerEvents();
+        HudManager.registerEvents();
+        SBTCommand.registerEvents();
+        ActionBarTransformer.registerEvents();
+        SkyblockData.registerEvents();
+        NotificationHandler.registerEvents();
+        ModAPI.registerEvents();
+        PartyFeatures.registerEvents();
+        ChatProtections.registerEvents();
+        ProfileManager.registerEvents();
+        TabListParser.registerEvents();
+        MouseLock.registerEvents();
+        MenuHighlights.registerEvents();
+        MinionExp.registerEvents();
+        MiningTitles.registerEvents();
+        FetchurFeatures.registerEvents();
+        ReforgeOverlay.registerEvents();
+        HudRenderEvents.registerEvents();
+        UpdateChecker.checkForUpdates();
 
-		KillSwitch.registerEvents();
-		ConstantLoader.registerEvents();
-		HudManager.registerEvents();
-		SBTCommand.registerEvents();
-		ActionBarTransformer.registerEvents();
-		SkyblockData.registerEvents();
-		NotificationHandler.registerEvents();
-		ModAPI.registerEvents();
-		PartyFeatures.registerEvents();
-		ChatProtections.registerEvents();
-		ProfileManager.registerEvents();
-		TabListParser.registerEvents();
-		MouseLock.registerEvents();
-		MenuHighlights.registerEvents();
-		MinionExp.registerEvents();
-		MiningTitles.registerEvents();
-		FetchurFeatures.registerEvents();
-		ReforgeOverlay.registerEvents();
-		HudRenderEvents.registerEvents();
-		UpdateChecker.checkForUpdates();
-	}
+        HudElementHider.hideElements();
+    }
 }

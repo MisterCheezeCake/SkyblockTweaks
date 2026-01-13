@@ -47,7 +47,7 @@ public abstract class GuiGraphicsMixin implements SBTGuiGraphics {
         int i = this.minecraft.options.getBackgroundColor(0.0F);
         if (i != 0) {
             Objects.requireNonNull(textRenderer);
-            this.fill(x -2, y-2 , x + width + 2, y + 9 + 2, ARGB./*? if >=1.21.3 {*/multiply/*?} else {*//*Argb.mixColor*//*?}*/(i, color));
+            this.fill(x -2, y-2 , x + width + 2, y + 9 + 2, ARGB.multiply(i, color));
         }
         this.drawString(textRenderer, text, x, y, color, false);
     }
