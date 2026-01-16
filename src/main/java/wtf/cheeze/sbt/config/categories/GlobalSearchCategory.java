@@ -27,15 +27,12 @@ import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SBTConfig;
 import wtf.cheeze.sbt.features.mining.FetchurFeatures;
 import wtf.cheeze.sbt.features.mining.MiningTitles;
-import wtf.cheeze.sbt.features.overlay.BrewingStandOverlay;
-import wtf.cheeze.sbt.features.overlay.MenuHighlights;
+import wtf.cheeze.sbt.features.overlay.*;
 import wtf.cheeze.sbt.features.chat.ChatProtections;
 import wtf.cheeze.sbt.features.chat.PartyFeatures;
 import wtf.cheeze.sbt.features.huds.*;
 import wtf.cheeze.sbt.features.mining.EventTimerHud;
 import wtf.cheeze.sbt.features.mining.MiningHud;
-import wtf.cheeze.sbt.features.overlay.MinionExp;
-import wtf.cheeze.sbt.features.overlay.ReforgeOverlay;
 import wtf.cheeze.sbt.mixin.accessors.YACLScreenAccessor;
 import wtf.cheeze.sbt.utils.actionbar.ActionBarTransformer;
 import wtf.cheeze.sbt.utils.constants.loader.ConstantLoader;
@@ -57,6 +54,7 @@ public class GlobalSearchCategory {
                 .group(BrewingStandOverlay.Config.getGroup(defaults, config))
                 .group(MinionExp.Config.getGroup(defaults, config))
                 .group(ReforgeOverlay.Config.getGroup(defaults, config))
+                .group(TooltipColors.Config.getGroup(defaults, config))
                 .group(General.HudTweaks.getGroup(defaults, config))
                 .group(ActionBarTransformer.Config.getGroup(defaults, config))
                 .group(ConstantLoader.Config.getGroup(defaults, config))

@@ -39,6 +39,7 @@ public class SkyblockUtils {
         };
     }
 
+
     public static Slayer castStringToSlayerType(String input) {
         input = input.toLowerCase();
         return switch (input) {

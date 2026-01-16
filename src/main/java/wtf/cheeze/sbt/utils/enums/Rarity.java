@@ -18,15 +18,52 @@
  */
 package wtf.cheeze.sbt.utils.enums;
 
+import org.jetbrains.annotations.Nullable;
+
+import java.util.HashMap;
+import java.util.Map;
+
 public enum Rarity {
-    COMMON,
-    UNCOMMON,
-    RARE,
-    EPIC,
-    LEGENDARY,
-    MYTHIC,
-    DIVINE,
-    SPECIAL,
-    VERY_SPECIAL,
-    ULTIMATE
+    COMMON(16777215, "common", true),
+    UNCOMMON(5635925, "uncommon", true),
+    RARE(5592575, "rare", true),
+    EPIC(11141290, "epic", true),
+    LEGENDARY(16755200, "legendary", true),
+    MYTHIC(16733695, "mythic", true),
+    DIVINE(5636095, "divine", false),
+    SPECIAL(16733525, "special", false),
+    // This is called VERY rather than VERY_SPECIAL because of how rarity on items is parsed
+    VERY(16733525, "special", false),
+    ULTIMATE(16733525, "ultimate", false),
+    ADMIN(16733525, "ultimate", false);
+
+    public final String tooltipId;
+    public final int color;
+    public final boolean hasPets;
+
+    Rarity(int color, String toolTipId, boolean hasPets) {
+        this.color = color;
+        this.tooltipId = toolTipId;
+        this.hasPets = hasPets;
+    }
+
+
+    private static final Map<String, Rarity> STRING_RARITY_MAP;
+
+    static {
+        STRING_RARITY_MAP = new HashMap<>();
+        for (Rarity rarity : values()) {
+            STRING_RARITY_MAP.put(rarity.name(), rarity);
+        }
+    }
+
+    /**
+     * Parses Rarity from string
+     * @param str must be uppercase and align with name in enum
+     */
+    public static @Nullable Rarity parse(String str) {
+        return STRING_RARITY_MAP.get(str);
+    }
+
+
 }

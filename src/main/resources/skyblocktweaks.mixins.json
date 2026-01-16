@@ -10,10 +10,12 @@
     "features.NoShadowActionBarMixin",
     "features.RecipeBookRedirectorMixin",
     "features.StatusEffectHiderMixin",
-    "hooks.GuiGraphicsMixin",
+    "features.TooltipColorsMixin",
     "hooks.AbstractContainerScreenMixin",
     "hooks.ChatListenerMixin",
-    "hooks.MinecraftMixin"
+    "hooks.GuiGraphicsMixin",
+    "hooks.MinecraftMixin",
+    "hooks.TooltipRenderUtilMixin"
   ],
   "injectors": {
     "defaultRequire": 1

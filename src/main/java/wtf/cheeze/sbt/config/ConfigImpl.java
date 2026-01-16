@@ -22,12 +22,9 @@ import dev.isxander.yacl3.config.v2.api.SerialEntry;
 import wtf.cheeze.sbt.config.categories.General;
 import wtf.cheeze.sbt.config.categories.Huds;
 import wtf.cheeze.sbt.config.categories.Mining;
-import wtf.cheeze.sbt.features.overlay.BrewingStandOverlay;
-import wtf.cheeze.sbt.features.overlay.MenuHighlights;
-import wtf.cheeze.sbt.features.overlay.MinionExp;
+import wtf.cheeze.sbt.features.overlay.*;
 import wtf.cheeze.sbt.features.chat.ChatProtections;
 import wtf.cheeze.sbt.features.chat.PartyFeatures;
-import wtf.cheeze.sbt.features.overlay.ReforgeOverlay;
 import wtf.cheeze.sbt.utils.actionbar.ActionBarTransformer;
 import wtf.cheeze.sbt.utils.constants.loader.ConstantLoader;
 import wtf.cheeze.sbt.utils.version.UpdateChecker;
@@ -75,6 +72,10 @@ public class ConfigImpl extends VersionedObject {
 
     @SerialEntry
     public ChatProtections.Config chatProtections = new ChatProtections.Config();
+
+    @SerialEntry
+
+    public TooltipColors.Config tooltipColors = new TooltipColors.Config();
 
     @SerialEntry
     public Huds huds = new Huds();

@@ -8,10 +8,7 @@ import dev.isxander.yacl3.config.v2.api.SerialEntry;
 import net.minecraft.network.chat.Component;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SBTConfig;
-import wtf.cheeze.sbt.features.overlay.BrewingStandOverlay;
-import wtf.cheeze.sbt.features.overlay.MenuHighlights;
-import wtf.cheeze.sbt.features.overlay.MinionExp;
-import wtf.cheeze.sbt.features.overlay.ReforgeOverlay;
+import wtf.cheeze.sbt.features.overlay.*;
 import wtf.cheeze.sbt.utils.actionbar.ActionBarTransformer;
 import wtf.cheeze.sbt.utils.constants.loader.ConstantLoader;
 import wtf.cheeze.sbt.utils.errors.ErrorHandler;
@@ -32,6 +29,7 @@ public class General {
                 .group(BrewingStandOverlay.Config.getGroup(defaults, config))
                 .group(MinionExp.Config.getGroup(defaults, config))
                 .group(ReforgeOverlay.Config.getGroup(defaults, config))
+                .group(TooltipColors.Config.getGroup(defaults, config))
                 .group(HudTweaks.getGroup(defaults, config))
                 .group(ActionBarTransformer.Config.getGroup(defaults, config))
                 .group(ConstantLoader.Config.getGroup(defaults, config))
