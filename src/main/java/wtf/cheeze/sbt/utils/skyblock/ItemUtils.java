@@ -20,6 +20,7 @@ package wtf.cheeze.sbt.utils.skyblock;
 
 import com.google.gson.JsonParser;
 import com.mojang.authlib.GameProfile;
+import com.mojang.authlib.properties.Property;
 import com.mojang.authlib.properties.PropertyMap;
 import com.mojang.serialization.JsonOps;
 import net.minecraft.core.component.DataComponentPatch;
