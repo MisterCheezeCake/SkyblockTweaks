@@ -20,13 +20,13 @@ package wtf.cheeze.sbt.utils.skyblock;
 
 import com.google.gson.JsonParser;
 import com.mojang.authlib.GameProfile;
-import com.mojang.authlib.properties.Property;
 import com.mojang.authlib.properties.PropertyMap;
 import com.mojang.serialization.JsonOps;
 import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.item.component.CustomData;
+import net.minecraft.world.item.component.ItemLore;
 import net.minecraft.world.item.component.ResolvableProfile;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -35,7 +35,9 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.Holder;
 import net.minecraft.resources.Identifier;
+import org.jetbrains.annotations.Nullable;
 import wtf.cheeze.sbt.SkyblockTweaks;
+import wtf.cheeze.sbt.utils.enums.Rarity;
 import wtf.cheeze.sbt.utils.errors.ErrorHandler;
 import wtf.cheeze.sbt.utils.errors.ErrorLevel;
 
@@ -73,6 +75,23 @@ public class ItemUtils {
         if (reforge == null) return "";
 
         return reforge.asString().orElse("");
+    }
+
+
+    public static @Nullable Rarity getRarity(ItemStack stack) {
+        var data = stack.get(DataComponents.CUSTOM_DATA);
+        if (data == null) return null;
+        var idTag = data.tag.get("id");
+        if (idTag == null) return null; // We don't want to have to parse through text if we know it has no ID
+        var lines = stack.getOrDefault(DataComponents.LORE, ItemLore.EMPTY).lines();
+        if (lines.isEmpty()) return null;
+
+        String[] last = lines.getLast().getString().split(" ");
+        String possibleRarity = last[0];
+        // Handle recoms
+        if (possibleRarity.length() == 1 && last.length > 1) possibleRarity = last[1];
+
+        return Rarity.parse(possibleRarity);
     }
 
 

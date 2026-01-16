@@ -546,6 +546,9 @@
   "sbt.config.general.reforgeOverlay.filterOverlayShadow": "Shadow Text",
   "sbt.config.general.reforgeOverlay.filterOverlayShadow.desc": "Whether to render the text in the Reforge Filter Overlay with a shadow",
   "sbt.config.general.reforgeOverlay.filterOverlaySide": "Filter Overlay Position",
-  "sbt.config.general.reforgeOverlay.filterOverlaySide.desc": "Whether to render the Reforge Filter Overlay on the left or right side of the screen"
-
+  "sbt.config.general.reforgeOverlay.filterOverlaySide.desc": "Whether to render the Reforge Filter Overlay on the left or right side of the screen",
+  "sbt.config.general.tooltipColors": "Tooltip Border Colors",
+  "sbt.config.general.tooltipColors.desc": "Options for Coloring Tooltip Borders",
+  "sbt.config.general.tooltipColors.enabled": "Enable Rarity Colored Borders",
+  "sbt.config.general.tooltipColors.enabled.desc": "Whether to replace an item's tooltip border with one colored based on the item rarity"
 }
