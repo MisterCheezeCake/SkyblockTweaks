@@ -39,6 +39,8 @@ import wtf.cheeze.sbt.hud.bounds.Bounds;
 import wtf.cheeze.sbt.hud.utils.AnchorPoint;
 import wtf.cheeze.sbt.utils.CheezePair;
 import wtf.cheeze.sbt.utils.MultiUtils;
+import wtf.cheeze.sbt.utils.errors.ErrorHandler;
+import wtf.cheeze.sbt.utils.errors.ErrorLevel;
 import wtf.cheeze.sbt.utils.render.ScreenListener;
 import wtf.cheeze.sbt.utils.text.Predicates;
 import wtf.cheeze.sbt.utils.render.Colors;
@@ -145,7 +147,11 @@ public class HudScreen extends Screen {
         boolean drawnTooltip = false;
         for (HUD hud : huds) {
             boolean inBounds = clickInBounds(hud, mouseX, mouseY);
-            hud.render(guiGraphics, true, inBounds);
+            try {
+                hud.render(guiGraphics, true, inBounds);
+            } catch (Exception e) {
+                ErrorHandler.handle(e, "Failed to render " + hud.getName().pName() + "in HudScreen", ErrorLevel.WARNING);
+            }
             if (inBounds) {
                 hovered = hud;
                 if (MultiUtils.shiftDown()) {

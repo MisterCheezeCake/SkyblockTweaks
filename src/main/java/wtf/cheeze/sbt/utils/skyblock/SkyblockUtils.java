@@ -113,6 +113,7 @@ public class SkyblockUtils {
 
     public static float getSpeed() {
         Minecraft mc = Minecraft.getInstance();
+        if (mc.player == null) return 100;
         // sprint = 1.3 x base speed
         return mc.player.isSprinting() ? (mc.player.getSpeed() / SPRINT_MULT) * 1000 : mc.player.getSpeed() * 1000;
     }

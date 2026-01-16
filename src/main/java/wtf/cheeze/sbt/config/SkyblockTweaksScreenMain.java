@@ -61,10 +61,10 @@ public class SkyblockTweaksScreenMain extends Screen {
         this.addRenderableWidget(discordButton);
         this.addRenderableWidget(legalButton);
         this.addRenderableWidget(closeButton);
-        if (Minecraft.getInstance().level == null) {
-            hudButton.active = false;
-            hudButton.setTooltip(Tooltip.create(Component.literal("Join a world/server to edit HUD Positions")));
-        }
+//        if (Minecraft.getInstance().level == null) {
+//            hudButton.active = false;
+//            hudButton.setTooltip(Tooltip.create(Component.literal("Join a world/server to edit HUD Positions")));
+//        }
     }
 
     @Override

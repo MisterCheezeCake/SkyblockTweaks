@@ -57,7 +57,7 @@ public class CoordinatesHud extends TextHud {
                 () -> SBTConfig.huds().coordinates.color,
                 () -> SBTConfig.huds().coordinates.outlineColor,
                 () -> SBTConfig.huds().coordinates.mode,
-                () -> Component.literal(String.format("X: %s Y: %s Z: %s" , NumberUtils.formattedRound(client.player.getX(), SBTConfig.huds().coordinates.decimalPlaces), NumberUtils.formattedRound(client.player.getY(), SBTConfig.huds().coordinates.decimalPlaces), NumberUtils.formattedRound(client.player.getZ(), SBTConfig.huds().coordinates.decimalPlaces)))
+                () -> client.player == null ? Component.literal("X: 0 Y: 0 Z: 0") : Component.literal(String.format("X: %s Y: %s Z: %s" , NumberUtils.formattedRound(client.player.getX(), SBTConfig.huds().coordinates.decimalPlaces), NumberUtils.formattedRound(client.player.getY(), SBTConfig.huds().coordinates.decimalPlaces), NumberUtils.formattedRound(client.player.getZ(), SBTConfig.huds().coordinates.decimalPlaces)))
         );
     }
 
