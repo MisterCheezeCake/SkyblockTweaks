@@ -25,7 +25,7 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SBTConfig;
-import wtf.cheeze.sbt.config.categories.General;
+import wtf.cheeze.sbt.config.categories.Overlays;
 import wtf.cheeze.sbt.utils.enums.Rarity;
 import wtf.cheeze.sbt.utils.skyblock.ItemUtils;
 
@@ -45,8 +45,8 @@ public class TooltipColors {
 
         public static OptionGroup getGroup(ConfigImpl defaults, ConfigImpl config) {
             var enabled = Option.<Boolean>createBuilder()
-                    .name(General.key("tooltipColors.enabled"))
-                    .description(General.keyD("tooltipColors.enabled"))
+                    .name(Overlays.key("tooltipColors.enabled"))
+                    .description(Overlays.keyD("tooltipColors.enabled"))
                     .controller(SBTConfig::generateBooleanController)
                     .binding(
                             defaults.tooltipColors.enabled,
@@ -56,8 +56,8 @@ public class TooltipColors {
                     .build();
 
             return OptionGroup.createBuilder()
-                    .name(General.key("tooltipColors"))
-                    .description(General.keyD("tooltipColors"))
+                    .name(Overlays.key("tooltipColors"))
+                    .description(Overlays.keyD("tooltipColors"))
                     .option(enabled)
                     .build();
 

@@ -26,7 +26,7 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.core.NonNullList;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SBTConfig;
-import wtf.cheeze.sbt.config.categories.General;
+import wtf.cheeze.sbt.config.categories.Overlays;
 import wtf.cheeze.sbt.utils.render.Colors;
 import wtf.cheeze.sbt.utils.render.RenderUtils;
 
@@ -72,8 +72,8 @@ public class BrewingStandOverlay {
 
         public static OptionGroup getGroup(ConfigImpl defaults, ConfigImpl config) {
             var enabled = Option.<Boolean>createBuilder()
-                    .name(General.key("brewingStandOverlay.enabled"))
-                    .description(General.keyD("brewingStandOverlay.enabled"))
+                    .name(Overlays.key("brewingStandOverlay.enabled"))
+                    .description(Overlays.keyD("brewingStandOverlay.enabled"))
                     .controller(SBTConfig::generateBooleanController)
                     .binding(
                             defaults.brewingStandOverlay.enabled,
@@ -83,8 +83,8 @@ public class BrewingStandOverlay {
                     .build();
 
             return OptionGroup.createBuilder()
-                    .name(General.key("brewingStandOverlay"))
-                    .description(General.keyD("brewingStandOverlay"))
+                    .name(Overlays.key("brewingStandOverlay"))
+                    .description(Overlays.keyD("brewingStandOverlay"))
                     .option(enabled)
                     .build();
 

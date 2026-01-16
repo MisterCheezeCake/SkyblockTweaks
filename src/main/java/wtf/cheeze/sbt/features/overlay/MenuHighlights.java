@@ -31,8 +31,8 @@ import wtf.cheeze.sbt.config.SBTConfig;
 import wtf.cheeze.sbt.events.DrawSlotEvents;
 
 import java.util.regex.Pattern;
-import static wtf.cheeze.sbt.config.categories.General.key;
-import static wtf.cheeze.sbt.config.categories.General.keyD;
+import static wtf.cheeze.sbt.config.categories.Overlays.key;
+import static wtf.cheeze.sbt.config.categories.Overlays.keyD;
 
 public class MenuHighlights {
     // Players: n/80

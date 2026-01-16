@@ -55,6 +55,7 @@ public class  SBTConfig {
         var config = HANDLER.instance();
         return baseBuilder()
                 .category(General.getCategory(defaults, config))
+                .category(Overlays.getCategory(defaults, config))
                 .category(Chat.getCategory(defaults, config))
                 .category(Huds.getCategory(defaults, config))
                 .category(Mining.getCategory(defaults, config))

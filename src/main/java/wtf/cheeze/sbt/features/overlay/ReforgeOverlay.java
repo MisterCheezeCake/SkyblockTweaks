@@ -33,7 +33,7 @@ import net.minecraft.network.chat.Component;
 import org.lwjgl.glfw.GLFW;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SBTConfig;
-import wtf.cheeze.sbt.config.categories.General;
+import wtf.cheeze.sbt.config.categories.Overlays;
 import wtf.cheeze.sbt.events.DrawSlotEvents;
 import wtf.cheeze.sbt.utils.KillSwitch;
 import wtf.cheeze.sbt.utils.constants.loader.Constants;
@@ -296,8 +296,8 @@ public class ReforgeOverlay {
 
         public static OptionGroup getGroup(ConfigImpl defaults, ConfigImpl config) {
             var overlay = Option.<Boolean>createBuilder()
-                    .name(General.key("reforgeOverlay.filterOverlay"))
-                    .description(General.keyD("reforgeOverlay.filterOverlay"))
+                    .name(Overlays.key("reforgeOverlay.filterOverlay"))
+                    .description(Overlays.keyD("reforgeOverlay.filterOverlay"))
                     .controller(SBTConfig::generateBooleanController)
                     .binding(
                             defaults.reforgeOverlay.filterOverlay,
@@ -308,8 +308,8 @@ public class ReforgeOverlay {
 
 
             var side = Option.<Side>createBuilder()
-                    .name(General.key("reforgeOverlay.filterOverlaySide"))
-                    .description(General.keyD("reforgeOverlay.filterOverlaySide"))
+                    .name(Overlays.key("reforgeOverlay.filterOverlaySide"))
+                    .description(Overlays.keyD("reforgeOverlay.filterOverlaySide"))
                     .controller(SBTConfig::generateSideController)
                     .binding(
                             defaults.reforgeOverlay.filterOverlaySide,
@@ -319,8 +319,8 @@ public class ReforgeOverlay {
                     .build();
 
             var shadow = Option.<Boolean>createBuilder()
-                    .name(General.key("reforgeOverlay.filterOverlayShadow"))
-                    .description(General.keyD("reforgeOverlay.filterOverlayShadow"))
+                    .name(Overlays.key("reforgeOverlay.filterOverlayShadow"))
+                    .description(Overlays.keyD("reforgeOverlay.filterOverlayShadow"))
                     .controller(SBTConfig::generateBooleanController)
                     .binding(
                             defaults.reforgeOverlay.filterOverlayShadow,
@@ -330,8 +330,8 @@ public class ReforgeOverlay {
                     .build();
 
             var toolTip = Option.<Boolean>createBuilder()
-                    .name(General.key("reforgeOverlay.nameTooltip"))
-                    .description(General.keyD("reforgeOverlay.nameTooltip"))
+                    .name(Overlays.key("reforgeOverlay.nameTooltip"))
+                    .description(Overlays.keyD("reforgeOverlay.nameTooltip"))
                     .controller(SBTConfig::generateBooleanController)
                     .binding(
                             defaults.reforgeOverlay.nameTooltip,
@@ -342,8 +342,8 @@ public class ReforgeOverlay {
 
 
             return OptionGroup.createBuilder()
-                    .name(General.key("reforgeOverlay"))
-                    .description(General.keyD("reforgeOverlay"))
+                    .name(Overlays.key("reforgeOverlay"))
+                    .description(Overlays.keyD("reforgeOverlay"))
                     .option(overlay)
                     .option(side)
                     .option(shadow)

@@ -35,7 +35,7 @@ import org.lwjgl.glfw.GLFW;
 import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.config.ConfigImpl;
 import wtf.cheeze.sbt.config.SBTConfig;
-import wtf.cheeze.sbt.config.categories.General;
+import wtf.cheeze.sbt.config.categories.Overlays;
 import wtf.cheeze.sbt.config.persistent.PersistentData;
 import wtf.cheeze.sbt.utils.KillSwitch;
 import wtf.cheeze.sbt.utils.NumberUtils;
@@ -226,8 +226,8 @@ public class MinionExp {
 
         public static OptionGroup getGroup(ConfigImpl defaults, ConfigImpl config) {
             var enabled = Option.<Boolean>createBuilder()
-                    .name(General.key("minionExp.enabled"))
-                    .description(General.keyD("minionExp.enabled"))
+                    .name(Overlays.key("minionExp.enabled"))
+                    .description(Overlays.keyD("minionExp.enabled"))
                     .controller(SBTConfig::generateBooleanController)
                     .binding(
                             defaults.minionExp.enabled,
@@ -237,8 +237,8 @@ public class MinionExp {
                     .build();
 
             var shadowText = Option.<Boolean>createBuilder()
-                    .name(General.key("minionExp.shadowText"))
-                    .description(General.keyD("minionExp.shadowText"))
+                    .name(Overlays.key("minionExp.shadowText"))
+                    .description(Overlays.keyD("minionExp.shadowText"))
                     .controller(SBTConfig::generateBooleanController)
                     .binding(
                             defaults.minionExp.shadowText,
@@ -248,8 +248,8 @@ public class MinionExp {
                     .build();
 
             var side = Option.<Side>createBuilder()
-                    .name(General.key("minionExp.side"))
-                    .description(General.keyD("minionExp.side"))
+                    .name(Overlays.key("minionExp.side"))
+                    .description(Overlays.keyD("minionExp.side"))
                     .controller(SBTConfig::generateSideController)
                     .binding(
                             defaults.minionExp.side,
@@ -259,8 +259,8 @@ public class MinionExp {
                     .build();
 
             return OptionGroup.createBuilder()
-                    .name(General.key("minionExp"))
-                    .description(General.keyD("minionExp"))
+                    .name(Overlays.key("minionExp"))
+                    .description(Overlays.keyD("minionExp"))
                     .option(enabled)
                     .option(side)
                     .option(shadowText)
