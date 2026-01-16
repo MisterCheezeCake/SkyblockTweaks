@@ -18,6 +18,7 @@
  */
 package wtf.cheeze.sbt.mixin.features;
 
+import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
@@ -29,8 +30,17 @@ import wtf.cheeze.sbt.utils.skyblock.SkyblockData;
 
 @Mixin(InventoryScreen.class)
 public abstract class StatusEffectHiderMixin {
-    @WrapWithCondition(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/inventory/EffectsInInventory;renderEffects(Lnet/minecraft/client/gui/GuiGraphics;II)V"))
+
+    @WrapWithCondition(method = "render", at = @At(value = "INVOKE", target =
+              //? if <1.21.11   {
+            /*"Lnet/minecraft/client/gui/screens/inventory/EffectsInInventory;renderEffects(Lnet/minecraft/client/gui/GuiGraphics;II)V" */
+            //? } else {
+            "Lnet/minecraft/client/gui/screens/inventory/EffectsInInventory;render(Lnet/minecraft/client/gui/GuiGraphics;II)V"
+            //?}
+    ))
     private boolean sbt$onDrawStatusEffects(EffectsInInventory instance, GuiGraphics guiGraphics, int mouseX, int mouseY) {
         return !SBTConfig.get().inventory.noRenderPotionHud || !SkyblockData.inSB;
     }
+
+
 }

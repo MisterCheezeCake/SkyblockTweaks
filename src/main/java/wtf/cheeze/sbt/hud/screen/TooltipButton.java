@@ -26,7 +26,10 @@ import net.minecraft.network.chat.Component;
 /**
  * Adapted from <a href="https://github.com/isXander/YetAnotherConfigLib/blob/d40736704c556f3e07fbe607c0dca21222c58e86/src/main/java/dev/isxander/yacl3/gui/TooltipButtonWidget.java">YACL</a>}
  */
-public class TooltipButton extends Button {
+public class TooltipButton extends Button
+        //?if >=1.21.11
+        .Plain
+{
     protected final Screen screen;
 
     public TooltipButton(Screen screen, int x, int y, int width, int height, Component message, Component tooltip, OnPress onPress) {

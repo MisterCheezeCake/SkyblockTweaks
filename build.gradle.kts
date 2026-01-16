@@ -63,8 +63,10 @@ dependencies {
     mappings(loom.layered {
         officialMojangMappings()
 		parchment("org.parchmentmc.data:parchment-${property("parchment_version")}@zip")
-        mappings("dev.lambdaurora:yalmm-mojbackward:${property("minecraft_version")}+build.${property("yalmm_version")}")
-		// ^ Disabled as of 1/11 due to causing issues with decomp
+		if (sc.current.parsed < "1.21.11") {
+			mappings("dev.lambdaurora:yalmm-mojbackward:${property("minecraft_version")}+build.${property("yalmm_version")}")
+		}
+
     })
 	modImplementation ("net.fabricmc:fabric-loader:${property("loader_version")}")
 	modImplementation ("net.fabricmc.fabric-api:fabric-api:${property("fabric_version")}")

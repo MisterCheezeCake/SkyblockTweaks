@@ -24,7 +24,10 @@ import net.minecraft.network.chat.Component;
 /**
  * This used to be a MatrixConsumingButton
  */
-public class ConstructableButton extends Button {
+public class ConstructableButton extends Button
+//?if >=1.21.11
+    .Plain
+{
     public ConstructableButton(Component message, OnPress onPress, int x, int y, int width, int height) {
         super(x, y, width, height, message, onPress, Button.DEFAULT_NARRATION);
     }

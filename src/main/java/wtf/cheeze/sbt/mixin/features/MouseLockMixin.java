@@ -26,7 +26,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import wtf.cheeze.sbt.features.misc.MouseLock;
 
 @Mixin(MouseHandler.class)
-public abstract class MouseHandlerLockMixin {
+public abstract class MouseLockMixin {
     @WrapWithCondition(method = "turnPlayer", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/LocalPlayer;turn(DD)V"))
     private boolean sbt$allowMouseMove(LocalPlayer instance, double v, double v2) {
         return !MouseLock.locked;
