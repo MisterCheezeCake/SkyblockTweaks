@@ -26,7 +26,7 @@ import net.minecraft.network.chat.Component;
  */
 public class ConstructableButton extends Button
 //?if >=1.21.11
-    .Plain
+    //.Plain
 {
     public ConstructableButton(Component message, OnPress onPress, int x, int y, int width, int height) {
         super(x, y, width, height, message, onPress, Button.DEFAULT_NARRATION);

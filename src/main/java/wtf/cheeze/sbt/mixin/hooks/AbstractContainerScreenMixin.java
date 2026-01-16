@@ -80,7 +80,7 @@ public abstract class AbstractContainerScreenMixin<T extends AbstractContainerMe
     @Inject(method = "renderSlot", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;renderItem(Lnet/minecraft/world/item/ItemStack;III)V"))
     protected void sbt$beforeDrawItem(GuiGraphics guiGraphics, Slot slot,
                                       //?if >=1.21.11
-                                      int i, int j,
+                                      //int i, int j,
                                       CallbackInfo ci)
     {
         DrawSlotEvents.BEFORE_ITEM.invoker().onDrawSlot(getTitle(), guiGraphics, slot);

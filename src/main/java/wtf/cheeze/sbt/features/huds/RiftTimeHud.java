@@ -214,6 +214,7 @@ public class RiftTimeHud extends TextHud {
                     .option(showLeftText)
                     .option(mode)
                     .option(color)
+                    .option(inactiveColor)
                     .option(outline)
                     .option(icon)
                     .option(scale)

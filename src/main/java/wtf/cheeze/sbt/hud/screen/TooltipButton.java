@@ -28,7 +28,7 @@ import net.minecraft.network.chat.Component;
  */
 public class TooltipButton extends Button
         //?if >=1.21.11
-        .Plain
+        //.Plain
 {
     protected final Screen screen;
 
