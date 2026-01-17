@@ -149,7 +149,7 @@ public class OverflowManaHud extends TextHud {
                     .name(key("overflowMana.outlineColor"))
                     .description(keyD("overflowMana.outlineColor"))
                     .controller(ColorControllerBuilder::create)
-                    .available(config.huds.overflowMana.mode == DrawMode.OUTLINE)
+                    .available(config.huds.overflowMana.mode.outline)
                     .binding(
                             new Color(defaults.huds.overflowMana.outlineColor),
                             () ->  new Color(config.huds.overflowMana.outlineColor),
@@ -167,7 +167,7 @@ public class OverflowManaHud extends TextHud {
                             () -> config.huds.overflowMana.mode,
                             value -> {
                                 config.huds.overflowMana.mode = value;
-                                outline.setAvailable(value == DrawMode.OUTLINE);
+                                outline.setAvailable(value.outline);
                             }
                     )
                     .build();

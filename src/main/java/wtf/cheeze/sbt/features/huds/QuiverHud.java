@@ -137,7 +137,7 @@ public class QuiverHud extends TextHud {
                     .name(key("quiver.outlineColor"))
                     .description(keyD("quiver.outlineColor"))
                     .controller(ColorControllerBuilder::create)
-                    .available(config.huds.quiver.mode == DrawMode.OUTLINE)
+                    .available(config.huds.quiver.mode.outline)
                     .binding(
                             new Color(defaults.huds.quiver.outlineColor),
                             () ->  new Color(config.huds.quiver.outlineColor),
@@ -155,7 +155,7 @@ public class QuiverHud extends TextHud {
                             () -> config.huds.quiver.mode,
                             value -> {
                                 config.huds.quiver.mode = value;
-                                outline.setAvailable(value == DrawMode.OUTLINE);
+                                outline.setAvailable(value.outline);
                             }
                     )
                     .build();

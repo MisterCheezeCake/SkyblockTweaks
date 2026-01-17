@@ -23,12 +23,22 @@ import net.minecraft.network.chat.Component;
 import wtf.cheeze.sbt.utils.text.TextUtils;
 
 public enum DrawMode implements NameableEnum {
-    PURE,
-    SHADOW,
-    OUTLINE;
+    PURE("Pure", false),
+    SHADOW("Shadow", false),
+    OUTLINE("Full Outline", true),
+    CARDINAL_OUTLINE("Cardinal Outline", true);
+
+    public final String displayName;
+    /**Whether or not this draw mode requires an outline color*/
+    public final boolean outline;
+
+    DrawMode (String displayName, boolean outline) {
+        this.displayName = displayName;
+        this.outline = outline;
+    }
 
     @Override
     public Component getDisplayName() {
-        return Component.literal(TextUtils.firstLetterUppercase(name().toLowerCase()));
+        return Component.literal(displayName);
     }
 }

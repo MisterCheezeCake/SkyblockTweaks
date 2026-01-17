@@ -158,7 +158,7 @@ public class CoordinatesHud extends TextHud {
                     .name(key("coordinates.outlineColor"))
                     .description(keyD("coordinates.outlineColor"))
                     .controller(ColorControllerBuilder::create)
-                    .available(config.huds.coordinates.mode == DrawMode.OUTLINE)
+                    .available(config.huds.coordinates.mode.outline)
                     .binding(
                             new Color(defaults.huds.coordinates.outlineColor),
                             () ->  new Color(config.huds.coordinates.outlineColor),
@@ -176,7 +176,7 @@ public class CoordinatesHud extends TextHud {
                             () -> config.huds.coordinates.mode,
                             value -> {
                                 config.huds.coordinates.mode = value;
-                                outline.setAvailable(value == DrawMode.OUTLINE);
+                                outline.setAvailable(value.outline);
                             }
                     )
                     .build();

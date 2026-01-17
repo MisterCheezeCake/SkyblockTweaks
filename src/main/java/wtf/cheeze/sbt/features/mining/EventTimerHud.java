@@ -167,6 +167,7 @@ public class EventTimerHud extends TextHud {
             var outlineColor = Option.<Color>createBuilder()
                     .name(Mining.key("eventHud.outlineColor"))
                     .description(Mining.keyD("eventHud.outlineColor"))
+                    .available(config.mining.eventTimer.mode.outline)
                     .controller(ColorControllerBuilder::create)
                     .binding(
                             new Color(defaults.mining.eventTimer.outlineColor),
@@ -185,7 +186,7 @@ public class EventTimerHud extends TextHud {
                             () -> config.mining.eventTimer.mode,
                             value -> {
                                 config.mining.eventTimer.mode = value;
-                                outlineColor.setAvailable(value == DrawMode.OUTLINE);
+                                outlineColor.setAvailable(value.outline);
                             }
                     )
                     .build();

@@ -130,7 +130,7 @@ public class DefenseHud extends TextHud {
                     .name(key("defense.outlineColor"))
                     .description(keyD("defense.outlineColor"))
                     .controller(ColorControllerBuilder::create)
-                    .available(config.huds.defense.mode == DrawMode.OUTLINE)
+                    .available(config.huds.defense.mode.outline)
                     .binding(
                             new Color(defaults.huds.defense.outlineColor),
                             () ->  new Color(config.huds.defense.outlineColor),
@@ -148,7 +148,7 @@ public class DefenseHud extends TextHud {
                             () -> config.huds.defense.mode,
                             value -> {
                                 config.huds.defense.mode = value;
-                                outline.setAvailable(value == DrawMode.OUTLINE);
+                                outline.setAvailable(value.outline);
                             }
                     )
                     .build();

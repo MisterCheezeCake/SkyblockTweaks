@@ -124,7 +124,7 @@ public class DamageReductionHud extends TextHud {
                     .name(key("dr.outlineColor"))
                     .description(keyD("dr.outlineColor"))
                     .controller(ColorControllerBuilder::create)
-                    .available(config.huds.dr.mode == DrawMode.OUTLINE)
+                    .available(config.huds.dr.mode.outline)
                     .binding(
                             new Color(defaults.huds.dr.outlineColor),
                             () ->  new Color(config.huds.dr.outlineColor),
@@ -142,7 +142,7 @@ public class DamageReductionHud extends TextHud {
                             () -> config.huds.dr.mode,
                             value -> {
                                 config.huds.dr.mode = value;
-                                outline.setAvailable(value == DrawMode.OUTLINE);
+                                outline.setAvailable(value.outline);
                             }
                     )
                     .build();

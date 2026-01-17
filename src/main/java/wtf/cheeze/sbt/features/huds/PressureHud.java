@@ -148,7 +148,7 @@ public class PressureHud extends TextHud {
                     .name(key("pressure.outlineColor"))
                     .description(keyD("pressure.outlineColor"))
                     .controller(ColorControllerBuilder::create)
-                    .available(config.huds.pressure.mode == DrawMode.OUTLINE)
+                    .available(config.huds.pressure.mode.outline)
                     .binding(
                             new Color(defaults.huds.pressure.outlineColor),
                             () -> new Color(config.huds.pressure.outlineColor),
@@ -165,7 +165,7 @@ public class PressureHud extends TextHud {
                             () -> config.huds.pressure.mode,
                             value -> {
                                 config.huds.pressure.mode = value;
-                                outline.setAvailable(value == DrawMode.OUTLINE);
+                                outline.setAvailable(value.outline);
                             }
                     )
                     .build();

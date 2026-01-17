@@ -120,7 +120,7 @@ public class EhpHud extends TextHud {
                     .name(key("ehp.outlineColor"))
                     .description(keyD("ehp.outlineColor"))
                     .controller(ColorControllerBuilder::create)
-                    .available(config.huds.ehp.mode == DrawMode.OUTLINE)
+                    .available(config.huds.ehp.mode.outline)
                     .binding(
                             new Color(defaults.huds.ehp.outlineColor),
                             () ->  new Color(config.huds.ehp.outlineColor),
@@ -140,7 +140,7 @@ public class EhpHud extends TextHud {
                             () -> config.huds.ehp.mode,
                             value -> {
                                 config.huds.ehp.mode = value;
-                                outline.setAvailable(value == DrawMode.OUTLINE);
+                                outline.setAvailable(value.outline);
                             }
                     )
                     .build();

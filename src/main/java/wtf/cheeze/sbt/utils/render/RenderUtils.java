@@ -24,6 +24,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.navigation.ScreenRectangle;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
+import wtf.cheeze.sbt.SkyblockTweaks;
 import wtf.cheeze.sbt.hud.bases.BarHud;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTextTooltip;
@@ -74,29 +75,30 @@ public class RenderUtils {
         guiGraphics.drawString(client.font, text, x, y, color, shadow);
     }
 
-    public static void drawTextWithOutline(GuiGraphics guiGraphics, Component text, int x, int y, int color, int outlineColor) {
-        // We reimplement it ourselves post 1.21.6 because it's more annoying to make the vanilla method work with rendering changes
-        //TODO: Check if this works well and explore replacing it if possible
-        guiGraphics.drawString(client.font, text, x -1, y -1, outlineColor, false);
-        guiGraphics.drawString(client.font, text, x, y -1, outlineColor, false);
-        guiGraphics.drawString(client.font, text, x + 1, y -1, outlineColor, false);
-        guiGraphics.drawString(client.font, text, x + 1, y, outlineColor, false);
-        guiGraphics.drawString(client.font, text, x + 1, y + 1, outlineColor, false);
-        guiGraphics.drawString(client.font, text, x, y + 1, outlineColor, false);
-        guiGraphics.drawString(client.font, text, x - 1, y + 1, outlineColor, false);
-        guiGraphics.drawString(client.font, text, x - 1, y, outlineColor, false);
+    public static void drawTextWithOutline(GuiGraphics guiGraphics, Component text, int x, int y, int color, int outlineColor, boolean cardinalOnly) {
+        // Done so that the outline color is not overridden by pre-existing styling in the component
+        // TODO: This wont work with bold or italicized texts, if we ever support those
+        Component outlineText = Component.literal(text.getString());
+
+        guiGraphics.drawString(client.font, outlineText, x, y -1, outlineColor, false);
+        guiGraphics.drawString(client.font, outlineText, x + 1, y, outlineColor, false);
+        guiGraphics.drawString(client.font, outlineText, x, y + 1, outlineColor, false);
+        guiGraphics.drawString(client.font, outlineText, x - 1, y, outlineColor, false);
+        if (!cardinalOnly) {
+            guiGraphics.drawString(client.font, outlineText, x + 1, y + 1, outlineColor, false);
+            guiGraphics.drawString(client.font, outlineText, x -1, y -1, outlineColor, false);
+            guiGraphics.drawString(client.font, outlineText, x + 1, y -1, outlineColor, false);
+            guiGraphics.drawString(client.font, outlineText, x - 1, y + 1, outlineColor, false);
+        }
         guiGraphics.drawString(client.font, text, x, y, color, false);
     }
 
-    public static void drawScaledTextWithOutline(GuiGraphics guiGraphics, Component text, int x, int y, int color, int outlineColor, float scale) {
-        beginScale(guiGraphics, scale);
-        drawTextWithOutline(guiGraphics, text, (int) (x/scale), (int) (y/scale), color, outlineColor);
-        popMatrix(guiGraphics);
+    public static void drawTextWithOutline(GuiGraphics guiGraphics, Component text, int x, int y, int color, int outlineColor, float scale, boolean cardinalOnly) {
+        drawTextWithOutline(guiGraphics, text, (int) (x/scale), (int) (y/scale), color, outlineColor, cardinalOnly);
     }
 
-    public static void drawTextWithOutline(GuiGraphics guiGraphics, Component text, int x, int y, int color, int outlineColor, float scale) {
-        drawTextWithOutline(guiGraphics, text, (int) (x/scale), (int) (y/scale), color, outlineColor);
-    }
+
+
 
     public static void drawCenteredText(GuiGraphics guiGraphics, Component text, int x, int y, int color, boolean shadow, float scale) {
         int width = (int) (getStringWidth(text) * scale);

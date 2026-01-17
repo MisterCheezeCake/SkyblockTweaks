@@ -206,7 +206,7 @@ public class RealTimeHud extends TextHud {
                     .name(key("time.outlineColor"))
                     .description(keyD("time.outlineColor"))
                     .controller(ColorControllerBuilder::create)
-                    .available(config.huds.time.mode == DrawMode.OUTLINE)
+                    .available(config.huds.time.mode.outline)
                     .binding(
                             new Color(defaults.huds.time.outlineColor),
                             () ->  new Color(config.huds.time.outlineColor),
@@ -224,7 +224,7 @@ public class RealTimeHud extends TextHud {
                             () -> config.huds.time.mode,
                             value -> {
                                 config.huds.time.mode = value;
-                                outline.setAvailable(value == DrawMode.OUTLINE);
+                                outline.setAvailable(value.outline);
                             }
                     )
                     .build();

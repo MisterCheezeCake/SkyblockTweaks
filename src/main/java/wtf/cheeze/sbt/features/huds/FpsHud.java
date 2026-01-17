@@ -151,7 +151,7 @@ public class FpsHud extends TextHud {
                     .name(key("fps.outlineColor"))
                     .description(keyD("fps.outlineColor"))
                     .controller(ColorControllerBuilder::create)
-                    .available(config.huds.fps.mode == DrawMode.OUTLINE)
+                    .available(config.huds.fps.mode.outline)
                     .binding(
                             new Color(defaults.huds.fps.outlineColor),
                             () ->  new Color(config.huds.fps.outlineColor),
@@ -169,7 +169,7 @@ public class FpsHud extends TextHud {
                             () -> config.huds.fps.mode,
                             value -> {
                                 config.huds.fps.mode = value;
-                                outline.setAvailable(value == DrawMode.OUTLINE);
+                                outline.setAvailable(value.outline);
                             }
                     )
                     .build();

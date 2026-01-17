@@ -151,7 +151,7 @@ public class RiftTimeHud extends TextHud {
                     .name(key("riftTime.outlineColor"))
                     .description(keyD("riftTime.outlineColor"))
                     .controller(ColorControllerBuilder::create)
-                    .available(config.huds.riftTime.mode == DrawMode.OUTLINE)
+                    .available(config.huds.riftTime.mode.outline)
                     .binding(
                             new Color(defaults.huds.riftTime.outlineColor),
                             () ->  new Color(config.huds.riftTime.outlineColor),
@@ -169,7 +169,7 @@ public class RiftTimeHud extends TextHud {
                             () -> config.huds.riftTime.mode,
                             value -> {
                                 config.huds.riftTime.mode = value;
-                                outline.setAvailable(value == DrawMode.OUTLINE);
+                                outline.setAvailable(value.outline);
                             }
                     )
                     .build();

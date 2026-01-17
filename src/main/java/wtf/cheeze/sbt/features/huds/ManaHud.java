@@ -134,7 +134,7 @@ public class ManaHud extends TextHud {
                     .name(key("mana.outlineColor"))
                     .description(keyD("mana.outlineColor"))
                     .controller(ColorControllerBuilder::create)
-                    .available(config.huds.mana.mode == DrawMode.OUTLINE)
+                    .available(config.huds.mana.mode.outline)
                     .binding(
                             new Color(defaults.huds.mana.outlineColor),
                             () ->  new Color(config.huds.mana.outlineColor),
@@ -152,7 +152,7 @@ public class ManaHud extends TextHud {
                             () -> config.huds.mana.mode,
                             value -> {
                                 config.huds.mana.mode = value;
-                                outline.setAvailable(value == DrawMode.OUTLINE);
+                                outline.setAvailable(value.outline);
                             }
                     )
                     .build();

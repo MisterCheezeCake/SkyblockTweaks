@@ -108,7 +108,7 @@ public class FlexibleHudLine implements HudComponent {
         switch (mode) {
             case PURE -> RenderUtils.drawText(guiGraphics, text, x, y, color, false, scale);
             case SHADOW -> RenderUtils.drawText(guiGraphics, text, x, y, color, true, scale);
-            case OUTLINE -> RenderUtils.drawTextWithOutline(guiGraphics, text, x, y, color, outlineColor, scale);
+            case OUTLINE, CARDINAL_OUTLINE -> RenderUtils.drawTextWithOutline(guiGraphics, text, x, y, color, outlineColor, scale, mode == DrawMode.CARDINAL_OUTLINE);
         }
     }
 
@@ -117,7 +117,7 @@ public class FlexibleHudLine implements HudComponent {
         switch (mode) {
             case PURE -> RenderUtils.drawText(guiGraphics, text, x + (int) (10 * scale), y, color, false, scale);
             case SHADOW -> RenderUtils.drawText(guiGraphics, text, x + (int) (10 * scale), y, color, true, scale);
-            case OUTLINE -> RenderUtils.drawTextWithOutline(guiGraphics, text, x + (int) (10 * scale), y, color, outlineColor, scale);
+            case OUTLINE, CARDINAL_OUTLINE -> RenderUtils.drawTextWithOutline(guiGraphics, text, x + (int) (10 * scale), y, color, outlineColor, scale, mode == DrawMode.CARDINAL_OUTLINE);
         }
     }
 

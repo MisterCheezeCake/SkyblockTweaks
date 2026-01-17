@@ -367,7 +367,7 @@ public class FetchurFeatures {
                     .name(Mining.key("fetchur.outlineColor"))
                     .description(Mining.keyD("fetchur.outlineColor"))
                     .controller(ColorControllerBuilder::create)
-                    .available(SBTConfig.mining().fetchur.mode == DrawMode.OUTLINE)
+                    .available(SBTConfig.mining().fetchur.mode.outline)
                     .binding(
                             new Color(defaults.mining.fetchur.outlineColor),
                             () -> new Color(config.mining.fetchur.outlineColor),
@@ -384,7 +384,7 @@ public class FetchurFeatures {
                             () -> config.mining.fetchur.mode,
                             value -> {
                                 config.mining.fetchur.mode = value;
-                                outlineColor.setAvailable(value == DrawMode.OUTLINE);
+                                outlineColor.setAvailable(value.outline);
                             }
                     )
                     .build();

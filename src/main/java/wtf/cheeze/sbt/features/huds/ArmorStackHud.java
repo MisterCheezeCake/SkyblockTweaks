@@ -124,7 +124,7 @@ public class ArmorStackHud extends TextHud {
                     .name(key("armorStack.outlineColor"))
                     .description(keyD("armorStack.outlineColor"))
                     .controller(ColorControllerBuilder::create)
-                    .available(config.huds.armorStack.mode == DrawMode.OUTLINE)
+                    .available(config.huds.armorStack.mode.outline)
                     .binding(
                             new Color(defaults.huds.armorStack.outlineColor),
                             () ->  new Color(config.huds.armorStack.outlineColor),
@@ -142,7 +142,7 @@ public class ArmorStackHud extends TextHud {
                             () -> config.huds.armorStack.mode,
                             value -> {
                                 config.huds.armorStack.mode = value;
-                                outline.setAvailable(value == DrawMode.OUTLINE);
+                                outline.setAvailable(value.outline);
                             }
                     )
                     .build();

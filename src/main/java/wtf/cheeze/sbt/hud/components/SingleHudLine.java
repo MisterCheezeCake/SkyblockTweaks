@@ -77,16 +77,16 @@ public class SingleHudLine implements HudComponent {
             cache.update();
         }
 
-        switch (mode.get()) {
+        DrawMode drawMode = mode.get();
+        switch (drawMode) {
             case PURE -> render(guiGraphics, x, y, scale, false);
             case SHADOW ->  render(guiGraphics, x, y, scale, true);
-            case OUTLINE -> {
+            case OUTLINE, CARDINAL_OUTLINE -> {
                 if (useIcon.get()) {
                     icon.get().render(guiGraphics, x, y, scale);
-
-                    RenderUtils.drawTextWithOutline(guiGraphics, cache.get(), x + (int) (10 * scale), y, color.get(), outlineColor.get(), scale);
+                    RenderUtils.drawTextWithOutline(guiGraphics, cache.get(), x + (int) (10 * scale), y, color.get(), outlineColor.get(), scale, drawMode == DrawMode.CARDINAL_OUTLINE);
                 } else {
-                    RenderUtils.drawTextWithOutline(guiGraphics, cache.get(), x, y, color.get(), outlineColor.get(), scale);
+                    RenderUtils.drawTextWithOutline(guiGraphics, cache.get(), x, y, color.get(), outlineColor.get(), scale, drawMode == DrawMode.CARDINAL_OUTLINE);
                 }
             }
         }

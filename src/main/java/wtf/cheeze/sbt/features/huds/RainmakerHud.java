@@ -173,7 +173,7 @@ public class RainmakerHud extends TextHud {
                     .name(key("rainmaker.outlineColor"))
                     .description(keyD("rainmaker.outlineColor"))
                     .controller(ColorControllerBuilder::create)
-                    .available(config.huds.rainmaker.mode == DrawMode.OUTLINE)
+                    .available(config.huds.rainmaker.mode.outline)
                     .binding(
                             new Color(defaults.huds.rainmaker.outlineColor),
                             () ->  new Color(config.huds.rainmaker.outlineColor),
@@ -191,7 +191,7 @@ public class RainmakerHud extends TextHud {
                             () -> config.huds.rainmaker.mode,
                             value -> {
                                 config.huds.rainmaker.mode = value;
-                                outline.setAvailable(value == DrawMode.OUTLINE);
+                                outline.setAvailable(value.outline);
                             }
                     )
                     .build();

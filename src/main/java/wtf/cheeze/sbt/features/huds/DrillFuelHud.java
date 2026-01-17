@@ -147,7 +147,7 @@ public class DrillFuelHud extends TextHud {
                     .name(key("drillFuel.outlineColor"))
                     .description(keyD("drillFuel.outlineColor"))
                     .controller(ColorControllerBuilder::create)
-                    .available(config.huds.drillFuel.mode == DrawMode.OUTLINE)
+                    .available(config.huds.drillFuel.mode.outline)
                     .binding(
                             new Color(defaults.huds.drillFuel.outlineColor),
                             () ->  new Color(config.huds.drillFuel.outlineColor),
@@ -164,7 +164,7 @@ public class DrillFuelHud extends TextHud {
                             () -> config.huds.drillFuel.mode,
                             value -> {
                                 config.huds.drillFuel.mode = value;
-                                outline.setAvailable(value == DrawMode.OUTLINE);
+                                outline.setAvailable(value.outline);
                             }
                     )
                     .build();

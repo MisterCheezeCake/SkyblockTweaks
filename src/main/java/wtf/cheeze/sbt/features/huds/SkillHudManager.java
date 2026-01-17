@@ -325,7 +325,7 @@ public class SkillHudManager {
                         .name(key("skills.outlineColor"))
                         .description(keyD("skills.outlineColor"))
                         .controller(ColorControllerBuilder::create)
-                        .available(config.huds.skills.mode == DrawMode.OUTLINE)
+                        .available(config.huds.skills.mode.outline)
                         .binding(
                                 new Color(defaults.huds.skills.outlineColor),
                                 () -> new Color(config.huds.skills.outlineColor),
@@ -343,7 +343,7 @@ public class SkillHudManager {
                                 () -> config.huds.skills.mode,
                                 value -> {
                                     config.huds.skills.mode = value;
-                                    outline.setAvailable(value == DrawMode.OUTLINE);
+                                    outline.setAvailable(value.outline);
                                 }
                         )
                         .build();

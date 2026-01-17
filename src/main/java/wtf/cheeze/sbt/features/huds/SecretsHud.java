@@ -144,7 +144,7 @@ public class SecretsHud extends TextHud {
                     .name(key("secrets.outlineColor"))
                     .description(keyD("secrets.outlineColor"))
                     .controller(ColorControllerBuilder::create)
-                    .available(config.huds.secrets.mode == DrawMode.OUTLINE)
+                    .available(config.huds.secrets.mode.outline)
                     .binding(
                             new Color(defaults.huds.secrets.outlineColor),
                             () ->  new Color(config.huds.secrets.outlineColor),
@@ -161,7 +161,7 @@ public class SecretsHud extends TextHud {
                             () -> config.huds.secrets.mode,
                             value -> {
                                 config.huds.secrets.mode = value;
-                                outline.setAvailable(value == DrawMode.OUTLINE);
+                                outline.setAvailable(value.outline);
                             }
                     )
                     .build();

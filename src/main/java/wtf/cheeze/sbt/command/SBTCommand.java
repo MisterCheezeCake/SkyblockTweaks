@@ -324,6 +324,16 @@ public class SBTCommand {
                             return 1;
                         }))
                         .then(literal("debug")
+                                .then(literal("rarity").executes
+                                        (context -> {
+                                            Rarity rarity = ItemUtils.getRarity(context.getSource().getClient().player.getMainHandItem());
+                                            Component text = TextUtils.join(
+                                                    TextUtils.withColor("Your held item's rarity is: ", Colors.CYAN),
+                                                    rarity == null ? TextUtils.withColor("null", Colors.GRAY) : TextUtils.withColor(rarity.name(), rarity.color)
+                                            );
+                                            MessageManager.send(text);
+                                            return 0;
+                                        }))
                                         .then(literal("forcevalue")
                                                 .then(argument("key", StringArgumentType.string())
                                                         .then(argument("value", StringArgumentType.string())

@@ -342,6 +342,7 @@ public class MiningHud extends MultilineTextHud {
                     .name(Mining.key("hud.outlineColor"))
                     .description(Mining.keyD("hud.outlineColor"))
                     .controller(ColorControllerBuilder::create)
+                    .available(config.mining.hud.mode.outline)
                     .binding(
                             new Color(defaults.mining.hud.outlineColor),
                             () -> new Color(config.mining.hud.outlineColor),
@@ -358,7 +359,7 @@ public class MiningHud extends MultilineTextHud {
                             () -> config.mining.hud.mode,
                             value -> {
                                 config.mining.hud.mode = value;
-                                outlineColor.setAvailable(value == DrawMode.OUTLINE);
+                                outlineColor.setAvailable(value.outline);
                             }
                     )
                     .build();

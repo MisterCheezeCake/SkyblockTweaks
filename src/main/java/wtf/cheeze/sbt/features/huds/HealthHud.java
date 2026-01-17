@@ -148,7 +148,7 @@ public class HealthHud extends TextHud {
                     .name(key("health.outlineColor"))
                     .description(keyD("health.outlineColor"))
                     .controller(ColorControllerBuilder::create)
-                    .available(config.huds.health.mode == DrawMode.OUTLINE)
+                    .available(config.huds.health.mode.outline)
                     .binding(
                             new Color(defaults.huds.health.outlineColor),
                             () ->  new Color(config.huds.health.outlineColor),
@@ -166,7 +166,7 @@ public class HealthHud extends TextHud {
                             () -> config.huds.health.mode,
                             value -> {
                                 config.huds.health.mode = value;
-                                outline.setAvailable(value == DrawMode.OUTLINE);
+                                outline.setAvailable(value.outline);
                             }
                     )
                     .build();

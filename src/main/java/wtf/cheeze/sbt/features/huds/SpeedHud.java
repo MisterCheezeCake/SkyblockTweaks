@@ -124,7 +124,7 @@ public class SpeedHud extends TextHud {
                     .name(key("speed.outlineColor"))
                     .description(keyD("speed.outlineColor"))
                     .controller(ColorControllerBuilder::create)
-                    .available(config.huds.speed.mode == DrawMode.OUTLINE)
+                    .available(config.huds.speed.mode.outline)
                     .binding(
                             new Color(defaults.huds.speed.outlineColor),
                             () ->  new Color(config.huds.speed.outlineColor),
@@ -142,7 +142,7 @@ public class SpeedHud extends TextHud {
                             () -> config.huds.speed.mode,
                             value -> {
                                 config.huds.speed.mode = value;
-                                outline.setAvailable(value == DrawMode.OUTLINE);
+                                outline.setAvailable(value.outline);
                             }
                     )
                     .build();
